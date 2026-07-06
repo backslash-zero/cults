@@ -1,3 +1,14 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+@font-face {
+  font-family: Terminal-Grotesque;
+  src: url(/fonts/TerminalGrotesque-Regular.ttf) format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-terminal-grotesque: Terminal-Grotesque, sans-serif;
+}
