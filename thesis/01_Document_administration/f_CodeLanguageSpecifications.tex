@@ -1,0 +1,92 @@
+\definecolor{commentgreen}{RGB}{34,139,34}
+\definecolor{emphblue}{RGB}{0,0,255}
+\definecolor{keywordlila}{RGB}{160,32,240}
+\definecolor{commentgrey}{RGB}{96,96,96}
+%------------------------------
+% AMPL SPECS
+%------------------------------
+\lstdefinelanguage{ampl}{
+  emph={%
+    if, then, else, or,  exists, forall,  and, in, within, 
+    not, union, diff, symdiff, inter, cross, setof, by, 
+    set, param, var, arc, minimize, maximize, subject, to, node,
+    dimen, default, card, ordered, by, reversed, circular,
+    param, binary, integer, symbolic, check, Infinity
+    var,  coeff, cover, obj,
+    include, model, data, let, objective, drop, restore, solve,
+    solution, quit, end, option, reset, update, commands,
+    function, pipe, 
+    coef, difference, dimen, dimension, intersect, intersection, s.t., 
+    for, while, repeat, break,
+    purge, problem, redeclare, xref,
+    complements, 
+    table, IN, OUT, INOUT, read, write, 
+    expand,
+    for, commands, repeat, until, while, break, continue,
+  },
+  keywordstyle=\color{keywordlila},
+  commentstyle=\color{commentgreen},
+  emphstyle=\color{emphblue},
+  sensitive=true,
+  breaklines=true,
+  numbers=left,
+  frame=single,
+  captionpos=b,  
+  tabsize=4,
+  basicstyle=\footnotesize\ttfamily ,
+  comment=[l]{\#},
+  morecomment=[s]{/*}{*/},
+  string=[b]",
+  morestring=[b]',
+}[keywords,comments,strings]
+%------------------------------
+% MATLAB SPECS
+%------------------------------
+\lstdefinelanguage{matlab}{
+  emph={%
+  	if, else, for, while, break, end,
+  },
+  morekeywords={%
+    all
+  },
+  keywordstyle=\color{keywordlila},
+  commentstyle=\color{commentgreen},
+  emphstyle=\color{emphblue},
+  sensitive=true,
+  breaklines=true,
+  numbers=left,
+  frame=single,
+  captionpos=b,
+  tabsize=4,
+  basicstyle=\footnotesize\ttfamily ,  
+  comment=[l]{\%},
+  morecomment=[s]{\%\{}{\%\}},
+  string=[b]",
+  morestring=[b]',
+}[keywords,comments,strings]
+%------------------------------
+% LATEX SPECS
+%------------------------------
+\lstdefinelanguage{latex}{
+  emph={%
+  	begin,  end,
+  },
+  morekeywords={%
+  },
+  keywordstyle=\color{emphblue},
+  commentstyle=\color{commentgrey},
+  emphstyle=\color{emphblue},
+  sensitive=true,
+  breaklines=true,
+  numbers=none,
+  frame=single,
+  captionpos=b,
+  tabsize=4,
+  keepspaces=true,
+  escapeinside={\%*}{*)},
+  basicstyle=\footnotesize\ttfamily ,  
+  comment=[l]{\%},
+  morecomment=[s]{\%\{}{\%\}},
+  string=[b]",
+  morestring=[b]',
+}[keywords,comments,strings]

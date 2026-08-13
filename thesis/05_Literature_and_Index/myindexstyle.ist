@@ -1,0 +1,7 @@
+headings_flag 1
+page_precedence "rnAR"
+heading_prefix  "\\colorbox{black!50}{\\makebox[0.9\\columnwidth][l]{\\bfseries\\color{white}"
+heading_suffix "{}}}\\nopagebreak\n"
+delim_0 " \\dotfill "
+delim_1 " \\dotfill "
+delim_2 " \\dotfill "

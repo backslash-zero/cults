@@ -1,0 +1,69 @@
+\setnomtableformat{@{}cp{0.6\textwidth}l@{}r@{}l@{}}	% table format of all categories
+\newcommand{\nomgroupX}[5]{	% writes group head for each group (see below).
+	\\[1.5ex]				% distance from previous group to new group head
+	\item & \multicolumn{5}{@{}l@{}}{\sffamily\Large\bfseries #1} \\[0.1ex]%
+	\item & \bfseries #2 & \bfseries #3 & \bfseries #4 & \bfseries #5 \\
+	\bottomrule
+}
+%------------------------------
+% ENGLISH
+%------------------------------
+\iflanguage{english}{
+	\renewcommand\nomgroup[1]{%				% defines all different groups, can be extended if necessary
+  		\ifx#1L\relax	% if the optional argument is L
+    	\nomgroupX{Latin Symbols}{Symbol}{Description}{}{Unit}
+  		\fi
+  		\ifx#1G\relax % if the optional argument is G
+    	\nomgroupX{Greek Symbols}{Symbol}{Description}{}{Unit}    
+  		\fi
+  		\ifx#1X\relax
+    	\nomgroupX{Superscripts}{Symbol}{Description}{}{}       
+  		\fi
+  		\ifx#1Z\relax
+   		\nomgroupX{Subscripts}{Symbol}{Description}{}{}    
+  		\fi
+  		\ifx#1C\relax
+		\nomgroupX{Constants}{Symbol}{Description}{}{Unit}    
+  		\fi
+  		\ifx#1D\relax
+		\nomgroupX{Dimensionless Numbers}{Symbol}{Description}{}{Definition}       
+  		\fi
+  		\ifx#1O\relax
+		\nomgroupX{Operators}{Symbol}{Description}{}{Definition}      
+  		\fi
+  		\ifx#1I\relax
+		\nomgroupX{Indices}{Symbol}{Description}{}{}     
+  		\fi          
+	}
+%------------------------------
+% DEUTSCH
+%------------------------------	
+}{\iflanguage{ngerman}{
+	\renewcommand\nomgroup[1]{%								% defines all different groups, can be extended if necessary
+  		\ifx#1L\relax	% if the optional argument is L
+    	\nomgroupX{Lateinische Symbole}{Symbol}{Beschreibung}{}{Einheit}
+  		\fi
+  		\ifx#1G\relax % if the optional argument is G
+    	\nomgroupX{Griechische Symbole}{Symbol}{Beschreibung}{}{Einheit}  
+  		\fi
+  		\ifx#1X\relax
+    	\nomgroupX{Superskripte}{Symbol}{Beschreibung}{}{}       
+  		\fi
+  		\ifx#1Z\relax
+    	\nomgroupX{Subskripte}{Symbol}{Beschreibung}{}{}    
+  		\fi
+  		\ifx#1C\relax
+		\nomgroupX{Konstanten}{Symbol}{Beschreibung}{}{Einheit}     
+  		\fi
+  		\ifx#1D\relax
+		\nomgroupX{Dimensionslose Kennzahlen}{Symbol}{Beschreibung}{}{Definition}      
+  		\fi
+  		\ifx#1O\relax
+		\nomgroupX{Operatoren}{Symbol}{Beschreibung}{}{Definition}     
+ 		\fi
+  		\ifx#1I\relax
+		\nomgroupX{Indizes}{Symbol}{Beschreibung}{}{}      
+  		\fi          
+		}
+	}{}
+}

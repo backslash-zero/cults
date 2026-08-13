@@ -1,0 +1,63 @@
+\chapter{Methods}
+
+\section{Data Collection}
+% - Gather corpus from the 3 epistemologies:
+%   - Selected corpus of cult studies / New Religious Movement (NRM) studies
+%     -- methodology for corpus selection.
+%   - Selected corpus of sectarian drifts (MIVILUDES).
+%   - Prototype gathering (survey / free-listing).
+% - Gather data from dictionaries to test different things:
+%   - Naive, a priori dimensions.
+%   - A dictionary of most common substantives in English.
+%   - Religious studies vocabulary.
+%   - Other semantic datasets worth comparing against.
+
+\section{Vectorisation}
+
+\subsection{Vectorising the MIVILUDES Framework}
+% Pure dimensions given directly by the framework -- extrapolate pure objects,
+% e.g. sectarian drift A: (1,0,0,0,0,...), sectarian drift B: (0,1,0,0,0,...).
+% Can also extrapolate from entities tried within the French legal system and
+% see how they score against the sectarian-drift indicators.
+
+\subsection{Vectorising Scholarly Work}
+% Cannot assume the dimensions of the vectors used, since there is no single
+% agreed-upon definition to anchor them to.
+
+\subsection{Vectorising Prototypes}
+% Qualitative survey data is difficult to extract dimensions from manually --
+% problems of arbitrary interpretation (e.g. category assignment) and of
+% matrix growth (every dimension must be accounted for, for every object).
+
+\section{Embeddings}
+% Using pre-trained embeddings on a larger corpus instead of extracting
+% dimensions / building a space from scratch: query each object's vector
+% coordinate in a large latent space. Embeddings provide one reproducible
+% operationalisation of semantic proximity, while introducing their own
+% theoretical and methodological assumptions.
+
+\section{Representation}
+% Comparing representation/dimensionality-reduction techniques (e.g. t-SNE,
+% UMAP) and which to use; cosine similarity or other distance measures.
+
+\section{Analysis}
+% Once spaces are constructed, analysis is limited (for the scope of this
+% work) to geometrical centres, comparison across spaces, identification of a
+% central "cult" object and its properties, and extreme objects at the edges
+% of the space. Potential non-existing objects may also be generated (e.g. via
+% averaging).
+%
+% Within each independent epistemology:
+%   - Centre of each epistemology and its closest objects.
+%   - Which objects sit far out.
+%   - Clustering within each field.
+%   - Which objects are closest to one another.
+%
+% Across epistemologies together:
+%   - How much do they intersect (space convexity)?
+%   - Do they validate the hypothesis?
+%   - Comparing centres and clusters across epistemologies.
+%   - Closest objects when looked at jointly.
+%
+% Against semantic dictionaries:
+%   - Which notions sit closest to the different clusters/notions.

@@ -1,0 +1,131 @@
+%------------------------------
+% This document was written by
+% Dr.-Ing. Christian Hoffmann
+% Fachgebiet dbta
+% Technische Universität Berlin
+%------------------------------
+%------------------------------
+% SET ADDITIONAL OPTIONS FOR PACKAGES BEFORE THEY ARE LOADED
+%------------------------------
+\PassOptionsToPackage{hyphens}{url}
+%------------------------------
+% SPECIFY METADATA FOR PDF
+%------------------------------
+\begin{filecontents*}[overwrite]{\jobname.xmpdata}
+ \Title{\mytitle}
+ \Author{\autor}
+ \Keywords{\englishkeywords; \germankeywords}
+ \Subject{\mydocumenttype}
+ \Language{English; German}
+ \Copyright{CC BY 4.0}
+ \CopyrightURL{https://creativecommons.org/licenses/by/4.0/}
+ \pdfxEnableCommands{\def\utext#1{#1,}}
+\end{filecontents*}
+%------------------------------
+% LOAD DOCUMENTCLASS
+%------------------------------
+\documentclass[
+	appendixprefix=true,			% add the word appendix to the numeration of the chapters in the appendix
+	BCOR=20mm,					% binding correction
+	bibliography=totoc, 			% references in table of contents
+    DIV=11,						% page division factor, see KOMA script documentation
+    draft=false,					% status of document
+    fontsize=11pt,				% font size
+    headinclude=true,			% header is part of the type area
+    headings=optiontohead,		% optional argument before chapter or section title appears in the header
+    listof=chaptergapsmall,		% small vertical space between figures of different chapters in the lists of figures and tables
+    listof=totoc,				% lists of figures and tables in table of contents
+    numbers=noenddot,			% no second point in the numbering of figures, ...
+    open=right,					% chapter always starts on right side
+    paper=a4, 					% paper format
+    parskip=half, 				% distance between paragraphs
+    twoside, 					% twoside document  
+]{scrreprt}
+%------------------------------
+% PREAMBLE
+%------------------------------
+\input{01_Document_administration/a_Packages} 				% all packages of this template
+\input{01_Document_administration/b_Meta}						% meta information of this document, such as title, author, etc.
+\input{01_Document_administration/c_Commands} 				% all additional commands and options
+\input{01_Document_administration/d_NomenclatureCommands} 	% commands for the list of symbols
+\input{01_Document_administration/e_AbbreviationDefinitions}	% include abbreviations
+\input{01_Document_administration/f_CodeLanguageSpecifications}% commands for code specifications
+\addbibresource{05_Literature_and_Index/Bibliography.bib}
+\KOMAoptions{DIV=last}          % recalculate type area
+%------------------------------
+% BEGIN DOCUMENT
+%------------------------------
+\begin{document}
+%------------------------------
+% COVER
+%------------------------------
+\begin{spacing}{1}				% one-line spacing here
+	\pagenumbering{gobble}		% turn off page numbering, necessary for correct backreferencing via the biblatex package
+	\pagestyle{empty}
+	\input{02_Prematter/a_Cover}
+	\cleardoublepage
+	%------------------------------
+	% DEDICATION (dissertation) OR THESIS TASK (thesis)
+	%------------------------------	
+	\input{02_Prematter/b_Declaration}
+	\cleardoublepage	
+	\ifthenelse{\boolean{isDiss}}{\input{02_Prematter/c_Dedication}\cleardoublepage}{\includepdf[pages={1-}]{02_Prematter/c_Task}}
+	\cleardoublepage
+\end{spacing}
+%------------------------------
+% PREMATTER
+%------------------------------
+\input{02_Prematter/d_Acknowledgements}
+\cleardoublepage
+\input{02_Prematter/e_Abstract}
+\cleardoublepage
+%------------------------------
+% ONLY for dissertations: list of publications (can also be removed for a B/M thesis)
+%------------------------------
+\ifthenelse{\boolean{isDiss}}{\input{02_Prematter/f_Publications.tex}\cleardoublepage}{}
+%------------------------------
+% LISTS OF...
+%------------------------------
+\begin{spacing}{1}				% one-line spacing here
+	\tableofcontents			% table of contents
+	\cleardoublepage
+	\pagestyle{scrheadings}		% set page style with header and footer information 
+	\pagenumbering{roman}		% small roman page numbers
+	\listoffigures 				% make list of figures
+	\listoftables 				% make list of tables
+	\listofalgorithms 			% make list of algorithms
+	\lstlistoflistings			% make list of codes
+	\include{02_Prematter/g_Nomenclature} % include all symbols in nomenclature
+	\printnomenclature 			% make list of symbols
+	\cleardoublepage
+	\input{02_Prematter/h_Abbreviations}
+	\listoftodos				% make list of todos
+	\todototoc					% add list of todos to list of contents	
+	\cleardoublepage
+\end{spacing}
+%------------------------------
+% TEXT
+%------------------------------
+\pagenumbering{arabic}			% arabic page numbers
+\input{03_Content/0_Text} 		% include chapters
+\cleardoublepage
+%------------------------------
+% REFERENCES
+%------------------------------
+\printbibliography[category=inbib,resetnumbers]
+%------------------------------
+% APPENDIX
+%------------------------------
+\appendix
+\input{04_Appendix/0_Appendix}	% include appendices
+\cleardoublepage
+%------------------------------
+% INDEX
+%------------------------------
+\phantomsection
+\label{ch:index}
+\printindex
+%------------------------------
+% END DOCUMENT
+%------------------------------
+\end{document}

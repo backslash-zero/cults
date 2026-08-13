@@ -1,0 +1,95 @@
+%-----------------------------
+% MUST BE CHANGED BY THE USER
+%-----------------------------
+%-----------------------------
+% BOOLEAN FOR DECISION B/M THESIS OR DISSERTATION
+%-----------------------------
+\newboolean{isDiss}
+% Options:
+% true: Dissertation
+% false: Bachelor/Master thesis
+\setboolean{isDiss}{false}
+%-----------------------------
+% BOOLEAN FOR DECISION MASTER OR BACHELOR THESIS
+%-----------------------------
+\newboolean{isMT}
+% Options:
+% true: Master thesis
+% false: Bachelor thesis
+\setboolean{isMT}{true}
+%-----------------------------
+% BOOLEAN FOR DECISION EMBARGO NOTICE
+%-----------------------------
+\newboolean{containsEN}
+% Options:
+% true: Thesis contains embargo notice due to a confidentiality agreement between company and TU Berlin
+% false: Thesis does not contain such a notice
+\setboolean{containsEN}{false}
+\newcommand{\firmenname}{Firmenname (definiert in \path{b_Meta.tex})} % Firma, bei der die Abschlussarbeit verfasst wurde
+%-----------------------------
+% TITLE, AUTHOR, AND DOCUMENT TYPE
+%-----------------------------
+\newcommand{\mytitle}{TODO: Choose a thesis title}
+\newcommand{\autor}{Célestin Meunier}
+\newcommand{\orcid}{XXXX-XXXX-XXXX-XXXX}
+\newcommand{\mydocumenttype}{Dissertation}
+\ifthenelse{\boolean{isDiss}}{%
+    }{\ifthenelse{\boolean{isMT}}{\renewcommand{\mydocumenttype}{Master's Thesis}%
+    }{\renewcommand{\mydocumenttype}{Bachelor's Thesis}}%
+    }%
+%-----------------------------
+% FOR BACHELOR/MASTER THESIS
+%-----------------------------
+\newcommand{\courseofstudy}{Design \& Computation}
+\newcommand{\mymatriculationnumber}{4060246}
+% Template only provides one \mysupervisor + one \myadvisor field; mapped to
+% the two supervisors listed in the top-level README.
+\newcommand{\myadvisor}{Prof.~Dr.~des.~Marc Pfaff}
+%-----------------------------
+% KEYWORDS FOR THE ABSTRACT
+%-----------------------------
+% TODO: revisit/refine
+\newcommand{\germankeywords}{Kulte, Konzeptuelle Räume, Semantik, Ambiguität}
+\newcommand{\englishkeywords}{Cults, Conceptual Spaces, Semantics, Ambiguity}
+%-----------------------------
+% FOR DISSERTATION
+%-----------------------------
+\newcommand{\chairman}{Prof.~Dr.-Ing.~habil.~Martina Superwichtig}
+\newcommand{\firstreviewer}{\mysupervisor}
+\newcommand{\secondreviewer}{Prof.~Dr.-Ing.~Hans-Georg Wichtig}
+\newcommand{\dayofdefense}{\DTMdisplaydate{2020}{1}{1}{-1}}
+%-----------------------------
+% MUST BE CHANGED BY THE USER
+%-----------------------------
+
+
+
+
+%-----------------------------
+% NOT TO BE CHANGED BY THE USER
+%-----------------------------
+\usepackage[
+    a-2b,                   % PDF/A-2b conformity
+    mathxmp,                % for writing metadata from xmpdata file
+]{pdfx}                     % package for PDF/A standard
+% TODO: confirm exact official wording for the joint UdK/TU Berlin program
+\newcommand{\myuniversity}{Universität der Künste Berlin / Technische Universität Berlin}
+\newcommand{\myfaculty}{Joint Master's Program Design \& Computation}
+\newcommand{\myinstitute}{TODO: institute name}
+\newcommand{\mydepartment}{TODO: department/chair name}
+\newcommand{\myplace}{Berlin}
+\newcommand{\mysupervisor}{Prof.~Dr.~Dr.~Daniel~D~Hromada}
+\newboolean{isSG}
+% Options:
+% true: document in styleguide mode
+% false: dissertation or thesis mode
+\setboolean{isSG}{false}
+\newcommand{\version}{3.7.0}
+\ifthenelse{\boolean{isSG}}{\setboolean{isDiss}{true}}{}
+% Subtitle English
+\newcommand{\myengsubtitle}{Thesis in partial fulfillment of the requirements for the degree \\ \ifthenelse{\boolean{isMT}}{Master}{Bachelor} of Science (\ifthenelse{\boolean{isMT}}{M.Sc.}{B.Sc.})}
+% Subtitle German
+\newcommand{\mygersubtitle}{Wissenschaftliche Arbeit zur Erlangung des Grades \\ \ifthenelse{\boolean{isMT}}{Master}{Bachelor} of Science (\ifthenelse{\boolean{isMT}}{M.Sc.}{B.Sc.})}
+%-----------------------------
+% NOT TO BE CHANGED BY THE USER
+%-----------------------------

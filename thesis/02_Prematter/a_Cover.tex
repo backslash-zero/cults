@@ -1,0 +1,165 @@
+\ifthenelse{\boolean{isSG}}{
+	%------------------------------
+	% STYLEGUIDE COVER
+	%------------------------------	
+	\begin{titlepage}
+		\begin{center}
+			%------------------------------
+			% LOGOS
+			%------------------------------
+			\begin{minipage}{0.2\textwidth}
+				\centering
+				\vfill	
+				\includegraphics[trim={2cm 2cm 2cm 2cm}, clip, height=2.1cm]{Logo_tub}
+				\vfill
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.7\textwidth}
+				\centering
+				\vfill
+				\includegraphics[height=2.1cm]{Logo_dbta}
+				\vfill
+			\end{minipage}
+			%------------------------------
+			% TITLE AND AUTHOR INFORMATION
+			%------------------------------
+			\vfill
+			\Huge\textbf{\sffamily{}Styleguide for Dissertations and Theses}\\[1ex]
+			\huge\textsf{Documentation of the \LaTeX\ Template}
+			\vfill
+			\normalsize
+			%------------------------------
+			% DEPARTMENT AND UNIVERSITY
+			%------------------------------
+			Under the scientific supervision of\\
+			\textbf{\mysupervisor}
+			\vfill
+			Version \version\\
+			\myplace, \monthyeardate
+			\vfill
+			\myuniversity\\
+			\myfaculty\\
+			\myinstitute\\
+			\mydepartment\\
+		\end{center}				
+	\end{titlepage}
+	}{%
+	\ifthenelse{\boolean{isDiss}}{
+	%------------------------------
+	% DISSERTATION COVER
+	%------------------------------		
+		\begin{titlepage}
+			\begin{center}
+				%------------------------------
+				% LOGO
+				%------------------------------
+				\begin{minipage}{0.6\textwidth}
+				\end{minipage}
+				\hfill
+				\begin{minipage}{0.3\textwidth}
+					\centering
+					\vfill
+					\includegraphics[trim={2cm 2cm 2cm 2cm}, clip, width=\textwidth]{Logo_tub}
+					\vfill
+				\end{minipage}
+				%------------------------------
+				% TITLE AND AUTHOR INFORMATION
+				%------------------------------
+				\vfill
+				\huge\textbf{\mytitle}
+				\vfill
+				\Large vorgelegt von\\
+				\autor\\
+				ORCID: \orcid
+				%------------------------------
+				% UNIVERSITY
+				%------------------------------
+				\vfill
+				an der \myfaculty \\
+				der Technischen Universität Berlin\\
+				zur Erlangung des akademischen Grades\\
+				\vspace{0.5cm}
+				Doktor der Ingenieurwissenschaften\\
+				- Dr.-Ing. -\\
+				\vspace{0.5cm}
+				genehmigte Dissertation
+			\end{center}
+			\vfill
+			%------------------------------
+			% DOCTORAL BOARD
+			%------------------------------
+			\normalsize
+			Promotionsausschuss:\\[2ex]
+			\begin{tabular}{@{}ll}
+			Vorsitzende: & \chairman \\
+			Gutachter: & \firstreviewer \\
+			Gutachter: & \secondreviewer \\
+			\\[3ex]
+			\multicolumn{2}{@{}l}{Tag der wissenschaftlichen Aussprache: \begin{otherlanguage}{ngerman} \dayofdefense\end{otherlanguage}%
+			}%
+			\end{tabular}
+			%------------------------------
+			% DATES
+			%------------------------------
+			\vfill
+			\centering
+			\myplace\ \the\year		
+		\end{titlepage}
+		}{
+		%------------------------------
+		% THESIS COVER
+		%------------------------------			
+		\begin{titlepage}
+			\begin{center}
+				%------------------------------
+				% LOGOS
+				%------------------------------
+				\begin{minipage}{0.2\textwidth}
+					\centering
+					\vfill	
+					\includegraphics[trim={2cm 2cm 2cm 2cm}, clip, height=2.1cm]{Logo_tub}
+					\vfill
+				\end{minipage}
+				\hfill
+				\begin{minipage}{0.7\textwidth}
+					\centering
+					\vfill
+					\includegraphics[height=2.1cm]{Logo_dbta}
+					\vfill
+				\end{minipage}
+				%------------------------------
+				% TITLE AND AUTHOR INFORMATION
+				%------------------------------
+				\vfill
+				\huge\textbf{\mytitle}\\[1ex]
+				\Large\iflanguage{english}{\myengsubtitle}					{\iflanguage{ngerman}{\mygersubtitle}{}}\\[1ex]
+				\vfill
+				\normalsize
+				\iflanguage{english}{submitted by}		{\iflanguage{ngerman}{vorgelegt von}{}}\\
+				\autor
+				\vfill
+				\iflanguage{english}{Matriculation number}					{\iflanguage{ngerman}{Matrikelnummer}{}}\\
+				\mymatriculationnumber
+				%------------------------------
+				% DEPARTMENT AND UNIVERSITY
+				%------------------------------
+				\vfill	
+				\normalsize
+				\iflanguage{english}{Under the scientific supervision of}{\iflanguage{ngerman}{Unter der wissenschaftlichen Leitung von}{}}\\
+				\textbf{\mysupervisor}
+				\vfill
+				\iflanguage{english}{Under the scientific guidance of}{\iflanguage{ngerman}{Unter der wissenschaftlichen Betreuung von}{}}\\
+				\textbf{\myadvisor}
+				\vfill
+				\myplace, \monthyeardate
+				\vfill
+				\myuniversity\\
+				\myfaculty\\
+				\myinstitute\\
+				\mydepartment\\[2ex]
+				
+				\ifthenelse{\boolean{containsEN}}{\textbf{Achtung, diese Arbeit enthält einen Sperrvermerk aufgrund einer Geheimhaltungsvereinbarung mit der Firma \firmenname}}{}
+			\end{center}				
+		\end{titlepage}
+		}
+	}

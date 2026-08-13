@@ -1,0 +1,182 @@
+%------------------------------
+% DOCUMENT AND ENCODING
+%------------------------------
+\usepackage[
+	english,					% english language	
+	ngerman,					% new german language
+]{babel} 					% language package, second language is DEFAULT
+\usepackage{calc}			% can calculate the length of a string and use it for table colum specifications
+\usepackage[
+	useregional,				% use regional date format
+]{datetime2}					% package for dates
+\usepackage[
+	T1						% font encoding in western european style
+]{fontenc}					% font encoding
+\usepackage{ifthen}			% allows for if-then-else commands
+\usepackage[
+	activate,				% activate expansion and protrusion
+	kerning=true,			% activates extended kerning for the font
+	factor=1100,				% factor by which the characters will be protruded
+	final,					% final document mode
+	spacing=true,			% activates variable space between words
+	stretch=10,				% stretch faktor
+	shrink=10,				% factor for font shrinking
+	tracking=true,			% systematically change the tracking of the fonts	
+]{microtype}					% This package might improve the look of the PDF by minimally stretching or extending fonts, etc. You can uncomment it to see the results
+\usepackage{morewrites}		% allows TeX to write to more than 16 files
+\usepackage{pdfpages}
+\usepackage[
+    automark, 				% mark chapter and section names
+    ilines 					% separation line ragged left ausrichten
+]{scrlayer-scrpage}
+\usepackage{textcomp}		% supports the Text Companion fonts, which provide many text symbols, in the TS1 encoding
+\usepackage[
+	colorinlistoftodos,		% adds a small color square
+	\languagename,			% sets the localization of the package based on babel
+	textsize=footnotesize,	% font size of todos
+]{todonotes}
+\usepackage{xparse}			% define new document level commands
+%------------------------------
+% TABLES
+%------------------------------
+\usepackage{array}			% allows to set styles for specific columns
+\usepackage{booktabs}		% special table properties (\toprule, \midrule, \bottomrule)
+\usepackage{collcell}       	% collected contents of a tabular cell
+\usepackage{longtable} 		% tables over several pages
+\usepackage{multirow}		% columns in several rows
+\usepackage{supertabular}	% table type for acro
+\usepackage{tabularx} 		% better tabulars
+\usepackage[
+	flushleft,				% no hanging indentation on notes
+]{threeparttable}			% tables with footnotes
+\usepackage[
+]{threeparttablex}			% extends the threeparttable package to longtables
+%------------------------------
+% GRAPHICS
+%------------------------------
+\usepackage{asymptote}		% package for using asymptote in latex
+\usepackage{graphicx}		% for including pictures
+\usepackage{overpic}			% overlay to add text to figures
+\usepackage{wrapfig2}		% figures with surrounding text
+%------------------------------
+% FONT, MATH, AND SYMBOLS
+%------------------------------
+\usepackage[
+	intlimits,				% limits of integrals are placed above and below the integral
+]{amsmath} 					% mathematical environments and commands
+\usepackage{amssymb}			% mathematical symbols
+\usepackage{amsthm}			% theorem environment
+\usepackage[
+	makeroom					% extend equation appropriately
+]{cancel}  					% for elimating arrows in equations
+\usepackage{chemfig}			% package for drawing molecules
+\usepackage{chemmacros}		% package for chemistry
+\usepackage{courier}			% courier font for lstlistings
+\usepackage[
+	scaled=0.95,				% Helvetiva is scaled to 95%
+]{helvet}					% contains the Helvetica font
+\usepackage{icomma}			% distance after comma in math environment
+%\usepackage[
+%	osf,						% old style figures for numbers in text
+%	sc,						% with small caps
+%]{mathpazo}    				% contains the Palatino font
+\usepackage{mathtools}		% some additional symbols
+\usepackage{nicefrac}		% makes fractions in lines nicer
+\usepackage[
+	short,					% short formulation as default
+]{optidef}					% define optimization problems
+\usepackage{upgreek}			% upright greek symbols
+%------------------------------
+% TEXT
+%------------------------------
+\usepackage[
+	algochapter,				% counter includes the chapter	
+	ruled,					% rules are added
+]{algorithm2e}				% for displaying algorithms
+\usepackage{blindtext}		% possibility to easily add blindtext
+\usepackage[
+	font={small},			% write caption small and italic
+	labelfont=bf,			% label font bold
+	textformat=period,		% caption ends automatically with full stop
+]{caption}					% caption package
+\usepackage{enumitem}		% modification of lists
+\usepackage{footnote} 		% footnotes in floats
+\usepackage[
+	framemethod=TikZ,		% use TikZ for frames
+]{mdframed} 					% frames, e.g. for environments, MUST BE LOADED AFTER THE AMSTH PACKAGE
+\usepackage[
+	all						% sets widow and orphan penalties for the whole document
+]{nowidow}					% widows and orphans
+\usepackage[
+	above,					% floats may also appear in the section above
+	below,					% floats may also appear in the section below
+]{placeins}					% is used to avoid floating objects after the \FloatBarrier command
+\usepackage[
+	onehalfspacing			% 1.5 distance between lines
+]{setspace} 					% package for line spacing
+\usepackage{subcaption}		% subfigures
+\usepackage{xcolor}			% colors are added
+%------------------------------
+% REFERENCES
+%------------------------------
+\usepackage[
+	backref=true,			% backref to page with citation in references
+	backrefstyle=three,		% shorten the number of displayed pages, see biblax documentation
+	bibencoding=utf8,		% .bib file is utf-8 encoded
+	citestyle=authoryear,	% citation stlye in text
+	defernumbers=true,		% correct numbering for numerical references with multiple lists of references
+	dashed=false,			% do not print dash for repeated authors
+	date=year,				% only print the year in all references
+	doi=true,				% print doi in references
+	giveninits=true,		% abbreviate first names to initials
+	hyperref=true,			% use hyperref
+	isbn=true,				% print isbn in references
+	maxbibnames=99,			% maximum number of authors (to avoid et al./u.a. in references
+	maxcitenames=2,			% maximum number of authors in text
+	sorting=nyt,			% sort in order year-name-title
+	sortlocale=auto,		% sorting of the references automatically using babel
+	style=authoryear-comp,		% style of the references
+	uniquelist=false,		% author list is not unique (Author A, Author B, Author C = Author A et al.)	
+	uniquename=false,		% see biblatex documentation (basically checks if all authors can be identified by their last name)
+	url=true				% print url in the references
+]{biblatex}
+\usepackage[
+	autostyle=true,			% automatic selection of the language specific quotation marks
+	strict=true				% all warning are turned into errors
+]{csquotes}					% quotation marks etc. in references
+%------------------------------
+% LISTS OF SYMBOLS AND ABBREVIATIONS AND INDEX
+%------------------------------
+\usepackage{acro}			% package for list of abbreviations
+\usepackage{imakeidx}		% package for keyword index
+\usepackage[
+	intoc,         			% list of symbols appears in list of content
+	nomentbl,				% use nomentbl version of \nomenclature command
+	noprefix,				% no prefixes in the notation
+]{nomencl}					% package for list of symbols
+%------------------------------
+% CODE
+%------------------------------
+\usepackage{listings}		% for code publication, e.g. in the appendix
+%------------------------------
+% URL
+%------------------------------
+\usepackage{xurl}			% enables linebreak after every symbol
+
+
+%------------------------------
+% OWN PACKAGES
+%------------------------------
+% You can use this area for loading additional packages
+% in this way, it is simpler to pull a new version of the template - you can simply copy this area to the new version
+% make sure that these packages do not require a certain loading order or have dependencies on packages loaded above
+
+
+
+%------------------------------
+% HYPERREF - USUALLY MUST BE LOADED LAST
+%------------------------------
+% hyperref is automatically included in the pdfx package. In order to write the correct metadata into the PDF, this package is loaded in b_Meta.tex
+%------------------------------
+% DO NOT LOAD PACKAGES AFTER HYPERREF/PDFX UNLESS THEIR PACKAGE DOCUMENTATION SAYS SO
+%------------------------------
