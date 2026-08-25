@@ -34,6 +34,76 @@ TABLE_TEX = APPENDIX_DIR / "database_table.tex"
 INTERVIEWER_RE = re.compile(r"^Interviewer\s*:")
 INTERVIEWEE_RE = re.compile(r"^Interviewee\s*:")
 
+# Trailing editorial/methodological blocks stripped from the *published LaTeX*
+# transcript body only (never from cleaned/<id>/transcript.txt itself).
+TRAILING_NOTE_MARKERS = [
+    "TRANSCRIPTION / EDITING NOTES",
+    "TRANSCRIPTION/EDITING NOTES",
+    "Interview Notes:",
+]
+SEPARATOR_LINE_RE = re.compile(r"^-{2,}$")
+LABEL_RE = re.compile(r"^(Interviewer|Interviewee)(\s*):", re.MULTILINE)
+
+
+def dialogue_only(text):
+    """Return just the Interviewer:/Interviewee: turns from a transcript.
+
+    Drops everything before the first turn (source's own ad hoc header/
+    demographics line — replaced by format_header() instead) and any trailing
+    TRANSCRIPTION/EDITING NOTES or Instagram "Interview Notes:" footer, plus a
+    dangling separator line left at the end either way.
+    """
+    lines = text.splitlines()
+    start_idx = 0
+    for i, line in enumerate(lines):
+        if INTERVIEWER_RE.match(line.strip()):
+            start_idx = i
+            break
+    joined = "\n".join(lines[start_idx:])
+
+    cut_idx = len(joined)
+    for marker in TRAILING_NOTE_MARKERS:
+        idx = joined.find(marker)
+        if idx != -1:
+            cut_idx = min(cut_idx, idx)
+    joined = joined[:cut_idx]
+
+    body_lines = joined.splitlines()
+    while body_lines and (
+        body_lines[-1].strip() == "" or SEPARATOR_LINE_RE.match(body_lines[-1].strip())
+    ):
+        body_lines.pop()
+    return "\n".join(body_lines)
+
+
+def format_header(record):
+    """Build a uniform header, generated from the metadata fields rather than
+    copied from each source file's own ad hoc formatting, so batch 1-3 and
+    Instagram interviews read identically."""
+    interviewee = record.get("interviewee", {})
+    age_val = interviewee.get("age", "unknown")
+    age_str = f"{age_val} years old" if isinstance(age_val, int) else f"age {age_val}"
+
+    dt = record["date_time"]
+    if record.get("date_time_precision"):
+        dt = f"{dt} ({record['date_time_precision']})"
+
+    header_line = f"INTERVIEW — {dt} ({record['method']})"
+    demo_line = (
+        f"Interviewee: {age_str}, {interviewee.get('gender', 'unknown')}, "
+        f"main language {interviewee.get('main_language', 'unknown')}, "
+        f"speaking in {interviewee.get('language_spoken', 'unknown')}, "
+        f"lives in {record.get('location', 'unknown')}, "
+        f"nationality {interviewee.get('nationality', 'unknown')}."
+    )
+    return f"{header_line}\n\n{demo_line}"
+
+
+def bold_labels(escaped_text):
+    """Bold Interviewer:/Interviewee: (and the French 'Interviewer :' spacing
+    variant) at the start of each line. Must run on already-escaped text."""
+    return LABEL_RE.sub(lambda m: r"\textbf{%s%s:}" % (m.group(1), m.group(2)), escaped_text)
+
 
 def count_turns(text, is_instagram):
     """Count Interviewer:/Interviewee: turns.
@@ -154,33 +224,53 @@ def escape_latex(s):
     return "".join(LATEX_SPECIAL.get(ch, ch) for ch in str(s))
 
 
+PAREN_SUFFIX_RE = re.compile(r"\s*\([^)]*\)\s*$")
+
+
+def short_field(s):
+    """Strip a trailing parenthetical caveat (e.g. '(see notes — ...)') for the
+    compact table view; the full string is still in the metadata slip/JSON."""
+    return PAREN_SUFFIX_RE.sub("", str(s)).strip()
+
+
 def write_table_tex(records):
     APPENDIX_DIR.mkdir(parents=True, exist_ok=True)
+    header_row = (
+        r"ID & Date/time & Method & Language & Age & Gender & Nationality & "
+        r"Main language & Q & A & Words \\"
+    )
     lines = [
-        r"\begin{longtable}{@{}p{2.6cm}p{2.0cm}p{1.6cm}p{1.6cm}p{0.8cm}p{0.8cm}p{1.2cm}@{}}",
+        r"\begin{landscape}",
+        r"\begin{longtable}{@{}p{2.2cm}p{2.0cm}p{1.6cm}p{1.4cm}p{0.8cm}p{1.3cm}p{2.4cm}p{1.8cm}p{0.6cm}p{0.6cm}p{1.0cm}@{}}",
         r"\caption{Interview corpus metadata}\label{tab:interview_corpus} \\",
         r"\toprule",
-        r"ID & Date/time & Method & Language & Q & A & Words \\",
+        header_row,
         r"\midrule",
         r"\endfirsthead",
         r"\toprule",
-        r"ID & Date/time & Method & Language & Q & A & Words \\",
+        header_row,
         r"\midrule",
         r"\endhead",
         r"\bottomrule",
         r"\endfoot",
     ]
     for r in records:
+        interviewee = r.get("interviewee", {})
         lines.append(" & ".join([
             r"\ref{int:%s}" % r["id"],
             escape_latex(r["date_time"]),
             escape_latex(r["method"]),
             escape_latex(r["language"]),
+            escape_latex(short_field(interviewee.get("age", "unknown"))),
+            escape_latex(short_field(interviewee.get("gender", "unknown"))),
+            escape_latex(short_field(interviewee.get("nationality", "unknown"))),
+            escape_latex(short_field(interviewee.get("main_language", "unknown"))),
             str(r["n_questions"]),
             str(r["n_answers"]),
             str(r["total_word_count"]),
         ]) + r" \\")
     lines.append(r"\end{longtable}")
+    lines.append(r"\end{landscape}")
     TABLE_TEX.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -212,22 +302,25 @@ def write_appendix_tex(records):
         ))
         parts.append(r"  \item \textbf{Questions / Answers}: %d / %d" % (r["n_questions"], r["n_answers"]))
         parts.append(r"  \item \textbf{Total word count}: %d" % r["total_word_count"])
-        parts.append(r"  \item \textbf{Corrections log}: \texttt{%s}" % escape_latex(r["corrections_log"]))
-        if r.get("notes"):
-            parts.append(r"  \item \textbf{Notes}: %s" % escape_latex(r["notes"]))
         parts.append(r"\end{itemize}")
+        # Note: corrections.log path and free-text `notes` are deliberately not
+        # rendered here (kept in database.json/csv and the log files themselves)
+        # — the published appendix stays reading-copy clean.
 
         parts.append(r"\subsubsection*{Transcript}")
         is_french = r.get("language") == "French"
+        transcript_body = format_header(r) + "\n\n" + dialogue_only(r["text"])
         if is_french:
             parts.append(r"\begin{otherlanguage}{french}")
-        parts.append(escape_latex(r["text"]))
+        parts.append(bold_labels(escape_latex(transcript_body)))
         if is_french:
             parts.append(r"\end{otherlanguage}")
 
         if r.get("translation_text"):
             parts.append(r"\subsubsection*{English translation}")
-            parts.append(escape_latex(r["translation_text"]))
+            parts.append(r"\textit{Translation note: produced directly by the assistant compiling this corpus, not a certified translation.}")
+            parts.append("")
+            parts.append(bold_labels(escape_latex(dialogue_only(r["translation_text"]))))
 
         parts.append("")
     APPENDIX_TEX.write_text("\n".join(parts) + "\n", encoding="utf-8")

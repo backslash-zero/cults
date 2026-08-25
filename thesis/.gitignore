@@ -14,6 +14,9 @@
 *.loa
 *.lof
 *.log
+# *.log above is for LaTeX build logs (thesis.log etc.) — these are content
+# deliverables (the Step 0 correction audit trail), not build artifacts.
+!Interviews/Corpus/cleaned/*/corrections.log
 *.lol
 *.lot
 *.mw
