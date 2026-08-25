@@ -1,16 +1,41 @@
 \chapter{Methods}
 
+
+	Note on 'Cult' and 'Sect'. The english translation of 'Secte' french substantive IS 'Cult', so when the Mivildues refers to sectarian drifts, it really 
+	- Find etymology to see where they really split in the english language
+
+
+\subsection{Expectations and Biaises}
+
+- I expect to see that that what people consider as cults seems to have more to do with religion than what scholars make it
+- I expect to see that the MIVILUDES sectarian drift concept transcends the popular understanding of what a "sect" / "cult" is
+
+
+
 \section{Data Collection}
-% - Gather corpus from the 3 epistemologies:
-%   - Selected corpus of cult studies / New Religious Movement (NRM) studies
-%     -- methodology for corpus selection.
-%   - Selected corpus of sectarian drifts (MIVILUDES).
-%   - Prototype gathering (survey / free-listing).
-% - Gather data from dictionaries to test different things:
-%   - Naive, a priori dimensions.
-%   - A dictionary of most common substantives in English.
-%   - Religious studies vocabulary.
-%   - Other semantic datasets worth comparing against.
+- Gather corpus from the 3 epistemologies:
+  - Selected corpus of cult studies / New Religious Movement (NRM) studies
+    -- methodology for corpus selection.
+  - Selected corpus of sectarian drifts (MIVILUDES).
+  - Prototype gathering (survey / free-listing).
+- Gather data from dictionaries to test different things:
+  - Naive, a priori dimensions.
+  - A dictionary of most common substantives in English.
+  - Religious studies vocabulary.
+  - Other semantic datasets worth comparing against.
+\subsection{Prototypes}
+- First I had to create a methodology for my survey \ref{ch:survey_methodology}. 
+- Explain why I chose this methodology and what were the aims.
+- I decided to use the same methodology on instagram, by posting in my story (insert screenshot).
+- I ran the first methodology \ref{ch:survey_methodology} for gathering the exemplars, open ended questions in real life. 
+- The interview gave definition attempts and examplars.
+- I used google record \autocite{} which uses automatic speech recognition to transcribe, then I used an LLM (Claude 5 Opus) to batch process the transcriptions "/Transcripts edited" for the full transcripts fix transcription errors and extract the demographic data. 
+This data is the extracted into a json file with the following:
+	- Demographic data (age, gender, nationality, main language, country of residence)
+	- Cult exemplars in order of mention
+- Then I did a manual pass, listening to the recording and making sure the transcription was accurate and the data was correctly captured, and anonymised.
+
+
 
 \section{Vectorisation}
 
@@ -25,6 +50,50 @@
 % agreed-upon definition to anchor them to.
 
 \subsection{Vectorising Prototypes}
+
+- I realised that the data I had gathered is a mixed bag of answers of different length and depth, mixing multiple examplars "named entities" ('Manson Family), definition attempts (document), free associations (one that came out a lot is the link between cult and religion, which can be either an association - instagram interview 7 - and a named entity in INTERVIEW — Aug 9, 20:48 ).
+- This is a problem because this raises the question of which object I will use in my gemotrical analysis. I have several options:
+Methods that still keep the answers without post-processing:
+- Concatenate the raw answers of the interviewees and use them as is.
+	- 
+	- multi-entities input, for example, multiple cults objects can be mentioned, and multiple dimensions are often given. can result in quite noisy output.
+	- treats cults and dimensions together
+	- doesn't introduce any biaises a posteriori
+	- does keep the biases that the conversational aspect of the survey brings
+- Use interviewer questions as seperators, and vectorise each part seperately
+	- would have the advantages and drawbacks as the previous methods, but give a more granular output
+
+Methods that would post-process in order to get a cleaner output:
+
+- Extract objects from transcripts. 
+- Objects that I can extract: (or with an LLM) all the 'named entities', 'abstract groups' (group of several cults without a specific name, higher-order category), 'cult-dimensions', and finally the 'first association' deemed as prototypical.
+- I have the 
+
+- Introduces a biaise because it eliminates the context and the words around, and also eliminates how a person perceived the group. For example people can mention "the Moonies" without knowing what it is, but remeber they heard about it (INTERVIEW — Aug 13, 18:32).
+---
+Which method did I choose:
+- Extraction Methodology:
+	- Used an LLM: Claude 5 and supervised for, no introduction of biaises with the instruction of no rephrasing or introduction of additional terms.
+	- Extracted the following objects in order of appearance:
+		- 'Named Entities of cults'
+		- 'Cult dimensions'
+		- 'First association'
+	- This poses problems: "Cult of tomatoes" or "design and computation", are quite personal entities that are not know. This was comfirmed by probing the model associate with the used embeddings model. 
+	
+	I probed the model with every single (see appendix). For the case that these groups were unknown, I decided to attach a short context with what this group, as defined by the respondant. 
+	 
+
+
+Make a simplified diagram of the methodology of extraction. 
+
+
+Notes: 
+- I have decided to exclude from my database the "first association" of "INTERVIEW — Aug 6, 19:55" because the answer has been biaised by a talk we previously had and awereness on my research.
+- There was also an answer to the survey that desingated as a 'cult' the very academic program in which this research project is being written. 
+One survey response explicitly labeled the very academic program hosting this research project as a “cult.” In the interest of intellectual honesty, I retained this response under the categories “first association” and “named entities and cult dimensions,” but I removed the associated demographic data and transcript to minimize any risk of identification or harm. This achieved with the respondant's consent.
+
+- See ethics section
+
 % Qualitative survey data is difficult to extract dimensions from manually --
 % problems of arbitrary interpretation (e.g. category assignment) and of
 % matrix growth (every dimension must be accounted for, for every object).
@@ -37,6 +106,7 @@
 % theoretical and methodological assumptions.
 
 \section{Representation}
+Might leave this for the practical project part.
 % Comparing representation/dimensionality-reduction techniques (e.g. t-SNE,
 % UMAP) and which to use; cosine similarity or other distance measures.
 

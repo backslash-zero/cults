@@ -1,0 +1,86 @@
+INTERVIEW — Aug 13, 18:40
+
+Interviewee: 43 years old, male, main language Italian, speaking in English, lives in
+Berlin, Germany, Italian nationality.
+
+NOTE ON METHOD: The raw auto-transcript has no speaker labels. Speaker turns below
+are reconstructed from context — best-effort, not a verified diarization. This is a
+single, complete standalone interview (no other file or segment continues it).
+Light cleanup applied; uncertain spots flagged inline with [?].
+
+---
+
+Interviewer: Okay, no — you lower your volume. [?, see notes]
+
+Interviewer: Well, first of all, it's the demographics question. So, what is your age?
+
+Interviewee: 43.
+
+Interviewer: Your gender?
+
+Interviewee: Male.
+
+Interviewer: The main language that you speak?
+
+Interviewee: Italian.
+
+Interviewer: And the language that we're speaking right now — English — is correct?
+
+Interviewee: Correct.
+
+Interviewer: Which country do you currently live in?
+
+Interviewee: In Berlin, in Germany.
+
+Interviewer: And what is your nationality?
+
+Interviewee: Italian.
+
+Interviewer: Beautiful, okay — first and only question. When you hear the word cult, what comes to your mind?
+
+Interviewee: So, "cult" — if we translate it properly in Italian, should be "la setta" [?, see notes]. So, uh, usually it's related to a collective, a group of people following some sort of belief. [unclear phrase, see notes] And related to religion — I guess it's always connected to religion, right? I guess. But non-conventional religion, so that's why they are, most of the time, concentrated in small groups. And, somehow, when I think about cult, I think about something like dark religious — like...
+
+Interviewee: Like — like praying to the devil, or something like that.
+
+Interviewee: Yeah, I don't know, I guess this is more or less the idea that I have. And, it's — sometimes I had [the impression, see notes] — it's really easy to get kind of convinced to join a cult, yeah, by using some kind of — some sort of false induction, false information — somehow they try to convince people to join the cult, yeah.
+
+Interviewer: Well — do you have specific examples of cults that, like, immediately come to your mind?
+
+Interviewee: I mean, those ones connected to the devil — I'd just say, like, Satanists.
+
+Interviewer: Yes, exactly.
+
+Interviewee: Or maybe Scientology is also a cult, maybe? Not sure about it.
+
+Interviewer: But, yeah — what are the characteristics, you know, the details — that make a group of people, like, set as a cult?
+
+Interviewee: I'm not sure, actually, what is actually the right definition of it, you know. But, yeah, the first thing I think of is, like, Saturn — Saturn is somehow... yeah, when I think about cults, like, in the case of Satanists, uh, like...
+
+Interviewer: Yeah, actually, I think you defined why you would associate them with a cult — like, because you have, like — I mean, in your own words, it's like...
+
+Interviewee: I mean, they always name it this way — like "the cult of Saturn," "the cult of the Archangels," I don't know, stuff like that — so it's easy, you know, to — yeah, relate it to this kind of Satanism, or dark cult. Yeah.
+
+Interviewer: Very good. That's it.
+
+Interviewee: Yeah, perfect. Is this the general idea?
+
+---
+
+TRANSCRIPTION / EDITING NOTES
+- "The setup" in the raw transcript is almost certainly a mishearing of "la setta,"
+  the Italian word for "cult" / "sect" — which fits exactly with the interviewee
+  saying he's about to give the Italian translation of "cult." Flagged rather than
+  silently swapped, since the raw audio wasn't available to confirm, but this is a
+  high-confidence read.
+- "I know you love" (raw transcript) is a garbled phrase that doesn't parse in
+  context — left as an unclear gap rather than guessed at. It likely stood in for a
+  short clause describing what the "group of people" in a cult are following or
+  sharing.
+- The opening line ("Okay, no — you lower your volume") is unclear in speaker and
+  addressee — it may be the interviewer or interviewee addressing a third party or
+  a recording-setup issue just before the interview proper begins. Kept as a
+  flagged best guess (attributed to the interviewer) rather than dropped, since it's
+  present in the raw transcript.
+- "Chords" (raw transcript, in "do you have specific examples of chords that...")
+  is an ASR mishearing of "cults," consistent with the recurring cult/cold/call
+  pattern noted across the project, and was corrected silently.
