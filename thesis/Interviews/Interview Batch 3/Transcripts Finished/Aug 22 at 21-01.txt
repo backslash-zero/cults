@@ -1,0 +1,32 @@
+INTERVIEW — Aug 22, 21:01
+
+Interviewee: 32 years old, female, main language French, speaking in French, lives in France, nationality French.
+
+--- 
+Interviewer : Quand tu entends le mot secte, qu'est-ce qui te vient à l'esprit ?
+
+Interviewee : Qu'est-ce qui me vient à l'esprit... des groupes fermés qui endoctrinent des gens en échange d'argent, la plupart du temps, et qui peuvent conduire à des dérives dangereuses.
+
+Interviewer : Ok, très bien. Et est-ce que tu as des exemples, du coup ?
+
+Interviewee : La Scientologie, le truc de Raël... Non, à part ça, pas d'autres exemples. Ah si! J'ai entendu récemment un truc — un groupe dans le sud de la France. Ouais, merde, comment ça s'appelait déjà ? Qui font, comme  dans la série là, quand on regardait... où ils font des chansons, et c'est un truc genre catho plus plus, droite plus plus,je sais plus comment ça s'appelle. les brigandes?
+
+Interviewer : Tu as d'autres groupes, ou tu as d'autres choses à dire là-dessus ?
+
+Interviewee : C'est pas forcément très bien.
+
+Interviewer : Très bien. Et du coup, pourquoi ce groupe-là en particulier, tu dirais que c'est une secte ?
+
+Interviewee : En tout cas, dans le petit reportage que j'avais vu, ça avait l'air d'être quand même une idéologie martelée très fort, et des histoires d'argent qui circulaient en faveur d'une espèce de gourou — entre guillemets, un personnage — qui était au centre de l'attention et à l'origine de la création du groupe.
+
+Interviewee : A priori, dans la définition même, ça implique un truc négatif.
+
+
+---
+
+TRANSCRIPTION / EDITING NOTES
+- The group the interviewee is trying to name (raw: "Plus plus et droit de plus plus là je sais plus comment s'appelle les briques. Ce film?") is badly garbled and could not be reliably reconstructed word-for-word — left flagged with [?] rather than filled in.
+- That said, the surrounding description — a group in the south of France, seen in a TV series/documentary, associated with singing, with restricted ability to leave — matches the real Twelve Tribes community (also known in France as "Tabitha's Place"), which has a base in Toulouse and has been the subject of French-language documentaries about members' inability to leave and children's treatment. Proposed with moderate confidence as the group being described, based on a web search, but not inserted into the dialogue itself since the interviewee's actual words for the name weren't recoverable.
+- "des rives dangereuses" → "des dérives dangereuses," corrected silently (clear ASR mishearing, "dangerous drifts/excesses").
+- "Première et. Euh sale question." was reconstructed as the interviewer reassuring the interviewee that the (only) study question isn't a difficult/unpleasant one; the exact original wording is uncertain and flagged with [?].
+- "En français?" (raw, for country of residence) → rendered as "En France," corrected silently as an unambiguous ASR slip.

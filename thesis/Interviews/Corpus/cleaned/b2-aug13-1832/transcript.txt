@@ -1,0 +1,58 @@
+INTERVIEW — Aug 13, 18:32
+
+Interviewee: 44 years old, male, main language English, speaking in English, lives in Germany, Canadian nationality.
+
+Interviewer: So that's the first, and only, question — when you hear the word cult, what comes to your mind?
+
+Interviewee: I think it changes depending on what I've been doing in the last days.
+
+Interviewer: Okay, like?
+
+Interviewee: I would say one thing that comes to my mind, because over the last six months I've been quite a lot, um, searching for bicycle parts — secondhand bicycle parts. And it's very often that when there's some kind of old bicycle part, they will call it a "cult" bicycle part.
+
+Interviewer: Okay — like a cult mountain bike or whatever?
+
+Interviewee: Shit, yeah — those are usually the quite expensive things, which I, of course, never buy. Yeah.
+
+Interviewee: And then there are also, like, cult films. So cult films are usually films that were not very economically successful, but they have a small following — very devout fans — towards films, or musicians, or albums, or artists, or whatever. So, in these cases, I think you would use "cult" as an adjective.
+
+Interviewer: Um, yeah, if you were to use it as a noun, then, like — things that are cults — what would be examples of that?
+
+Interviewee: Well, I suppose it's related, whether it's adjective or noun. It's — it's speaking about a certain devotion to something. So, whether it's to a derailleur for a bicycle, or a Korean Christian dude — Mr. Moon — or whether it's... anything, you know?
+
+Interviewer: So one example that you mentioned, a specific bicycle part?
+
+Interviewee: No, I just — it's something I came across quite a lot when looking, and people trying to sell things — they, you know, of course, want to sell it. So they would say a lot of good stuff about it, and, yeah, very often, they'd use this word "cult" to, like, say this is a really cool thing, right?
+
+Interviewer: Okay, ah — so, like, as a positive thing?
+
+Interviewee: Actually, yes.
+
+Interviewer: And, uh, then you were talking about the moon...
+
+Interviewee: Oh, this was just because, uh, of the moon — yesterday there was an eclipse, a solar eclipse, and I had to photograph that. My friend [Name redacted] took a photo of me putting the welding helmet onto my other friend [Name redacted] so she could look at the sun, right?
+
+Interviewee: And then I sent it to her — the text — and then we started talking. She started making jokes about being really ready to fight and die for the moon, and that conversation went on. And then I remembered — oh yeah, there was some kind of cult called the Moonies in the '50s, or '60s, or '70s, or something.
+
+Interviewee: Yeah, but I couldn't remember what it was, so I just looked it up. Oh, that's what it was, right. Okay, I thought — that's why it's on my mind right now, because of the solar eclipse yesterday.
+
+Interviewer: That's interesting. So, like, you remember it — you remember it was called a cult, but you don't really necessarily remember exactly why?
+
+Interviewee: No, I didn't know anything about it. I just remembered that there was this cult called the Moonies... or maybe it still is, I don't know.
+
+---
+
+TRANSCRIPTION / EDITING NOTES
+- "Mr. Mooney" almost certainly refers to Sun Myung Moon, the Korean-born founder of
+  the Unification Church — whose members are popularly nicknamed "the Moonies," a
+  name the interviewee independently brings up a few lines later when describing the
+  cult he half-remembers from the solar-eclipse conversation. Kept as transcribed
+  with a [?] flag rather than silently renamed, since the raw audio isn't available
+  to confirm.
+- "Annie" is a best guess for a name that's unclear in the raw text ("Annie's" —
+  possibly a mis-transcribed name, or a possessive referring to someone else
+  entirely). Flagged rather than assumed.
+- Recurring, unambiguous ASR errors ("a cut" for "a cult") were corrected silently
+  per the pattern established across the earlier batch.
+- One instance of profanity was masked in the original raw transcript ("S***") and
+  has been left as-is rather than guessed at.

@@ -34,6 +34,10 @@ Ideally it should show the latest available version of the thesis as typed in `.
 
 `./thesis` contains the thesis itself. It is based on the template in `./thesis-template`. The thesis is written in LaTeX and compiled with `latexmk`. The main file is `./thesis/main.tex`. The thesis is compiled into a PDF file called `thesis.pdf` in the same directory.
 
+The structured interview corpus (raw transcripts, cleaned/translated text, metadata
+database, generated LaTeX appendix, and a standalone cross-interview analysis) is
+documented in `./thesis/Interviews/README.md`.
+
 # Obsidian Vault
 
 Contains my current note, and the latest plan for the thesis. The file is located at:

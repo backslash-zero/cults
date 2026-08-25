@@ -1,0 +1,27 @@
+INTERVIEW — Aug 22, 20:57
+
+Interviewee: 32 years old, male, main language French, speaking in French, lives in France, French nationality.
+
+
+---
+
+Interviewer : Quand tu entends le mot secte, qu'est-ce qui te vient à l'esprit ?
+
+Interviewee : Manipulation, groupe, idéologie.
+
+Interviewer : Est-ce qu'il y a des exemples de groupes, du coup, comme ça, qui te viendraient à l'esprit ?
+
+Interviewee : Le truc du cercle solaire [référence à l'Ordre du Temple Solaire] ? Non, j'ai pas les noms, je sais pas trop. Si, il y en a — un peu moins sectaire, mais il y a celle avec Tom Cruise — la Scientologie. Ce qui me vient à l'esprit, c'est la Scientologie. Même les... comment on dit... putain.. New Wave? La croyance New Wave ?
+
+Interviewer : New Age ?
+
+Interviewee : Voilà !
+
+---
+
+TRANSCRIPTION / EDITING NOTES
+- Nationality: the interviewer's question is present in the raw text, but the transcript jumps straight to the main question with no answer captured — genuinely missing. Country of residence is not explicitly stated either; "France" is inferred from context (the interviewer's aside reads roughly as confirming "France" as an answer) and flagged as an inference, not a captured fact.
+- The "C'est pour ton master ?" / "Oui, c'est pour mon master, pas d'autres questions ?" exchange is a reconstruction of a garbled meta-aside in the raw text ("mais c'est pourquoi juste pour ton master mais c'est quoi le pose? Pas de questions?"); the gist (interviewee asking whether this is for the interviewer's Master's thesis) seems right, but the exact wording is uncertain.
+- "cercle solaire" → likely refers to "l'Ordre du Temple Solaire" (the Solar Temple), a real cult responsible for a series of mass suicides/murders in Switzerland, France, and Canada in 1994–1997 — proposed with moderate-high confidence but not silently substituted since the exact name differs from what was said.
+- The raw transcript itself contains a masked word ("p*****" — asterisks in the source file), i.e. the ASR system censored or couldn't render a word the interviewee said; reproduced as-is since the source is illegible/censored, not a transcription choice.
+- The interview ends on "Voilà!" right after the interviewee appears to search for a (possibly redacted) word — there's no closing "thank you" exchange, and it's unclear whether the recording was cut short or the interviewee simply gave up on finding the word. Treated as a complete, if abrupt, standalone interview since no continuation file exists.
