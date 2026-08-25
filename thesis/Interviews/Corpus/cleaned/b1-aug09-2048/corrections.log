@@ -1,0 +1,7 @@
+CORRECTIONS LOG — b1-aug09-2048 (Interview Batch 1/Transcripts Finished/Aug 9 at 20-48.txt)
+Status: RESOLVED — reviewed 2026-08-26 (see Decision lines below where applicable)
+
+1. Line 26: `something nasty, something really nasty/` → `something nasty, something really nasty.`
+   Stray "/" character at end of line, evidently a rendering artifact rather than
+   intended punctuation.
+   Decision: APPROVED — applied.

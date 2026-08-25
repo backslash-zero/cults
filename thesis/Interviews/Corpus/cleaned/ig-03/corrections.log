@@ -1,0 +1,14 @@
+CORRECTIONS LOG — ig-03 (Instagram Batch/Transcirpts-Finished/3.txt)
+Status: RESOLVED — reviewed 2026-08-26 (see Decision lines below where applicable)
+
+1. Line 11: `self-crucifiction` → `self-crucifixion`
+   Misspelling of "crucifixion" (extra "c" in place of "x").
+   Decision: APPROVED — applied.
+
+2. UNCERTAIN — flagged, not applied without confirmation:
+   Line 4: `Weird people coming together to do weird things. OR import but underground art`
+   Possible dropped syllable: "import" → "important" ("OR important but underground
+   art" would read more sensibly). Since this is a DM-typed interview, not an ASR
+   transcript, this could equally be the interviewee's own word choice or shorthand
+   — left as-is pending your call.
+   Decision: REJECTED — left unapplied, text stays as originally transcribed.

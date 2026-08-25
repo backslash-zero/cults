@@ -1,0 +1,8 @@
+CORRECTIONS LOG — b1-aug12-1231 (Interview Batch 1/Transcripts Finished/Aug 12 at 12-31.txt)
+Status: RESOLVED — reviewed 2026-08-26 (see Decision lines below where applicable)
+
+1. Line 45: `So in German, if you say "Kult yYou mean something that could also be`
+   → `So in German, if you say "Kult," you mean something that could also be`
+   Garbled fragment (stray duplicated "y", unclosed quotation mark, missing comma) —
+   read as a dropped word boundary between "Kult" and "you".
+   Decision: APPROVED — applied.

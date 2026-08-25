@@ -1,0 +1,16 @@
+CORRECTIONS LOG — ig-04 (Instagram Batch/Transcirpts-Finished/4.txt)
+Status: RESOLVED — reviewed 2026-08-26 (see Decision lines below where applicable)
+
+1. Line 6: `Theres often someone dressed in white` → `There's often someone dressed in white`
+   Missing apostrophe.
+   Decision: APPROVED — applied.
+
+2. Line 12: `so its what I visualized` → `so it's what I visualized`
+   Missing apostrophe.
+   Decision: APPROVED — applied.
+
+3. UNCERTAIN — flagged, not applied without confirmation:
+   Line 6, "usa isr43l have white" — the digit substitution in "isr43l" looks like
+   deliberate stylized spelling (a common practice on Instagram to avoid
+   algorithmic content flags on that word), not a transcription error.
+   Decision: REJECTED — left exactly as typed, not corrected to "israel".

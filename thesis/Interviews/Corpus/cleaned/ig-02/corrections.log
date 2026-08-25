@@ -1,0 +1,11 @@
+CORRECTIONS LOG — ig-02 (Instagram Batch/Transcirpts-Finished/2.txt)
+Status: RESOLVED — reviewed 2026-08-26 (see Decision lines below where applicable)
+
+1. Line 6: `Interviewee:I have memories` → `Interviewee: I have memories`
+   Missing space after speaker-label colon (inconsistent with every other turn in
+   the corpus).
+   Decision: APPROVED — applied.
+
+2. Line 9: `Personal information have been anonymized.s` → `Personal information have been anonymized.`
+   Stray trailing "s" after the closing period.
+   Decision: APPROVED — applied.
