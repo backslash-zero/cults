@@ -11,6 +11,9 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
+	"dependencies": {
+		"@sanity/client": "^6.24.1"
+	},
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "^6.3.3",
 		"@sveltejs/kit": "^2.63.0",
