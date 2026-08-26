@@ -1,0 +1,27 @@
+# Custom terms corpus source — the researcher's own working definitions,
+# distinct from dictionaries_source.yaml (which quotes external sources
+# verbatim). Hand-authored; build_corpus.py reads this to generate
+# custom_terms.json/.csv and the LaTeX glossary table.
+#
+# ID scheme: term-<slug>, e.g. term-semantic-drift
+#
+# Fields:
+#   id             (required) unique term-... ID, see scheme above
+#   term           (required)
+#   definition     (required) the researcher's own definition/working notion
+#   related_terms  list of other corpus IDs this term relates to (lit-/dict-/
+#                  term-/interview IDs) — how it connects to the rest of the
+#                  corpus, e.g. ["dict-thesoz-sekte", "lit-durkheim1912-elementary-forms"]
+#   date_added     ISO 8601 date this entry was added
+#   notes          anything else worth recording
+#
+# Example (remove once real entries exist):
+# custom_terms:
+#   - id: term-semantic-drift
+#     term: "Semantic drift"
+#     definition: "The shift in a word's meaning/connotation over time or across communities of use, as tracked in this thesis's conceptual-space comparison of 'cult'."
+#     related_terms: []
+#     date_added: "2026-08-26"
+#     notes: ""
+
+custom_terms: []

@@ -10,7 +10,7 @@
 
 interviews:
   - id: b1-aug05-1650
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 5 at 16-50.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 5 at 16-50.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-05T16:50"
     method: "in person"
@@ -28,7 +28,7 @@ interviews:
     notes: "Nationality field says '(see notes)' in the source but no notes section exists there — left verbatim, flagged as a data-quality gap."
 
   - id: b1-aug06-1955
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 6 at 19-55.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 6 at 19-55.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-06T19:55"
     method: "in person"
@@ -45,7 +45,7 @@ interviews:
       language_spoken: "English"
 
   - id: b1-aug08-1420
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 8 at 14-20.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 8 at 14-20.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-08T14:20"
     method: "in person"
@@ -62,7 +62,7 @@ interviews:
       language_spoken: "English"
 
   - id: b1-aug08-2128
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 8 at 21-28.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 8 at 21-28.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-08T21:28"
     method: "in person"
@@ -79,7 +79,7 @@ interviews:
       language_spoken: "English"
 
   - id: b1-aug08-2137
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 8 at 21-37.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 8 at 21-37.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-08T21:37"
     method: "in person"
@@ -96,7 +96,7 @@ interviews:
       language_spoken: "English"
 
   - id: b1-aug08-2145
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 8 at 21-45.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 8 at 21-45.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-08T21:45"
     method: "in person"
@@ -113,7 +113,7 @@ interviews:
       language_spoken: "English"
 
   - id: b1-aug09-2048
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 9 at 20-48.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 9 at 20-48.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-09T20:48"
     method: "in person"
@@ -131,7 +131,7 @@ interviews:
     notes: "Contains profanity and explicit content preserved verbatim per instructions (discussion of the Russian Orthodox Church and MK Ultra-adjacent topics)."
 
   - id: b1-aug09-2124
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 9 at 21-24.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 9 at 21-24.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-09T21:24"
     method: "in person"
@@ -149,7 +149,7 @@ interviews:
     notes: "Nationality field says '(see notes)' in the source but no notes section exists there — left verbatim, flagged as a data-quality gap. Interview is short (one topic: bike polo as a 'cult')."
 
   - id: b1-aug11-2011
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 11 at 20-11.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 11 at 20-11.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-11T20:11"
     method: "in person"
@@ -166,7 +166,7 @@ interviews:
       language_spoken: "English"
 
   - id: b1-aug12-1231
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 12 at 12-31.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 12 at 12-31.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-12T12:31"
     method: "in person"
@@ -183,7 +183,7 @@ interviews:
       language_spoken: "English"
 
   - id: b1-aug13-1342
-    source_file: "Interview Batch 1/Transcripts Finished/Aug 13 at 13-42.txt"
+    source_file: "thesis/Interviews/Interview Batch 1/Transcripts Finished/Aug 13 at 13-42.txt"
     batch: "Interview Batch 1"
     date_time: "2026-08-13T13:42"
     method: "in person"
@@ -201,7 +201,7 @@ interviews:
     notes: "Contains profanity preserved verbatim per instructions."
 
   - id: b2-aug13-1832
-    source_file: "Interview Batch 2/Transcripts Finished/Aug 13 at 18-32.txt"
+    source_file: "thesis/Interviews/Interview Batch 2/Transcripts Finished/Aug 13 at 18-32.txt"
     batch: "Interview Batch 2"
     date_time: "2026-08-13T18:32"
     method: "in person"
@@ -219,7 +219,7 @@ interviews:
     notes: "File's own TRANSCRIPTION/EDITING NOTES reference names ('Mr. Mooney', 'Annie') absent from the current dialogue text — likely stale relative to this revision; left as-is, flagged for analysis.md."
 
   - id: b2-aug13-1840
-    source_file: "Interview Batch 2/Transcripts Finished/Aug 13 at 18-40.txt"
+    source_file: "thesis/Interviews/Interview Batch 2/Transcripts Finished/Aug 13 at 18-40.txt"
     batch: "Interview Batch 2"
     date_time: "2026-08-13T18:40"
     method: "in person"
@@ -236,7 +236,7 @@ interviews:
       language_spoken: "English"
 
   - id: b3-aug16-1514
-    source_file: "Interview Batch 3/Transcripts Finished/Aug 16 at 15-14 (1).txt"
+    source_file: "thesis/Interviews/Interview Batch 3/Transcripts Finished/Aug 16 at 15-14 (1).txt"
     batch: "Interview Batch 3"
     date_time: "2026-08-16T15:14"
     method: "in person"
@@ -253,7 +253,7 @@ interviews:
       language_spoken: "English"
 
   - id: b3-aug16-1517
-    source_file: "Interview Batch 3/Transcripts Finished/Aug 16 at 15-17 (1).txt"
+    source_file: "thesis/Interviews/Interview Batch 3/Transcripts Finished/Aug 16 at 15-17 (1).txt"
     batch: "Interview Batch 3"
     date_time: "2026-08-16T15:17"
     method: "in person"
@@ -271,7 +271,7 @@ interviews:
     notes: "Source file has no 'INTERVIEW — date, time' header (unlike other Batch 3 files); date_time above is taken from the filename."
 
   - id: b3-aug18-1645
-    source_file: "Interview Batch 3/Transcripts Finished/Aug 18 at 16-45.txt"
+    source_file: "thesis/Interviews/Interview Batch 3/Transcripts Finished/Aug 18 at 16-45.txt"
     batch: "Interview Batch 3"
     date_time: "2026-08-18T16:45"
     method: "in person"
@@ -289,7 +289,7 @@ interviews:
       language_spoken: "French"
 
   - id: b3-aug21-1932
-    source_file: "Interview Batch 3/Transcripts Finished/Aug 21 at 19-32.txt"
+    source_file: "thesis/Interviews/Interview Batch 3/Transcripts Finished/Aug 21 at 19-32.txt"
     batch: "Interview Batch 3"
     date_time: "2026-08-21T19:32"
     method: "in person"
@@ -307,7 +307,7 @@ interviews:
       language_spoken: "French"
 
   - id: b3-aug22-2057
-    source_file: "Interview Batch 3/Transcripts Finished/Aug 22 at 20-57.txt"
+    source_file: "thesis/Interviews/Interview Batch 3/Transcripts Finished/Aug 22 at 20-57.txt"
     batch: "Interview Batch 3"
     date_time: "2026-08-22T20:57"
     method: "in person"
@@ -326,7 +326,7 @@ interviews:
     notes: "Interview ends abruptly with no closing exchange; treated as complete per the batch's own merging analysis (no continuation file exists)."
 
   - id: b3-aug22-2101
-    source_file: "Interview Batch 3/Transcripts Finished/Aug 22 at 21-01.txt"
+    source_file: "thesis/Interviews/Interview Batch 3/Transcripts Finished/Aug 22 at 21-01.txt"
     batch: "Interview Batch 3"
     date_time: "2026-08-22T21:01"
     method: "in person"
@@ -344,7 +344,7 @@ interviews:
       language_spoken: "French"
 
   - id: b3-aug23-1213
-    source_file: "Interview Batch 3/Transcripts Finished/Aug 23 at 12-13.txt"
+    source_file: "thesis/Interviews/Interview Batch 3/Transcripts Finished/Aug 23 at 12-13.txt"
     batch: "Interview Batch 3"
     date_time: "2026-08-23T12:13"
     method: "in person"
@@ -363,7 +363,7 @@ interviews:
     notes: "Stated age (97) and gender are flagged as unreliable/possibly joking by the batch's own edited-transcripts README; reported here exactly as stated in the source."
 
   - id: ig-02
-    source_file: "Instagram Batch/Transcirpts-Finished/2.txt"
+    source_file: "thesis/Interviews/Instagram Batch/Transcirpts-Finished/2.txt"
     batch: "Instagram Batch"
     date_time: "2026-08-13"
     date_time_precision: "date only — no time of day given in source"
@@ -382,7 +382,7 @@ interviews:
     notes: "Instagram DM interview, gathered after a story post; conducted via direct message per the file's own Interview Notes."
 
   - id: ig-03
-    source_file: "Instagram Batch/Transcirpts-Finished/3.txt"
+    source_file: "thesis/Interviews/Instagram Batch/Transcirpts-Finished/3.txt"
     batch: "Instagram Batch"
     date_time: "2026-08-13"
     date_time_precision: "date only — no time of day given in source"
@@ -401,7 +401,7 @@ interviews:
     notes: "Instagram DM interview. One phrase ('OR import but underground art') is possibly a dropped-syllable typo for 'important' — left uncorrected pending confirmation (see corrections.log)."
 
   - id: ig-04
-    source_file: "Instagram Batch/Transcirpts-Finished/4.txt"
+    source_file: "thesis/Interviews/Instagram Batch/Transcirpts-Finished/4.txt"
     batch: "Instagram Batch"
     date_time: "2026-08-13"
     date_time_precision: "date only — no time of day given in source"
@@ -420,7 +420,7 @@ interviews:
     notes: "Instagram DM interview. Contains deliberate leetspeak stylization ('isr43l') preserved verbatim as the interviewee's own phrasing, not corrected."
 
   - id: ig-05
-    source_file: "Instagram Batch/Transcirpts-Finished/5.txt"
+    source_file: "thesis/Interviews/Instagram Batch/Transcirpts-Finished/5.txt"
     batch: "Instagram Batch"
     date_time: "2026-08-13"
     date_time_precision: "date only — no time of day given in source"
@@ -439,7 +439,7 @@ interviews:
     notes: "Instagram DM interview; shortest in the corpus (single exchange)."
 
   - id: ig-06
-    source_file: "Instagram Batch/Transcirpts-Finished/6.txt"
+    source_file: "thesis/Interviews/Instagram Batch/Transcirpts-Finished/6.txt"
     batch: "Instagram Batch"
     date_time: "2026-08-13"
     date_time_precision: "date only — no time of day given in source"
@@ -458,7 +458,7 @@ interviews:
     notes: "Demographics explicitly redacted by the source per its own ethical note (see thesis/04_Appendix/3_Appendix.tex, Ethical Notice)."
 
   - id: ig-07
-    source_file: "Instagram Batch/Transcirpts-Finished/7.txt"
+    source_file: "thesis/Interviews/Instagram Batch/Transcirpts-Finished/7.txt"
     batch: "Instagram Batch"
     date_time: "2026-08-13"
     date_time_precision: "date only — no time of day given in source"

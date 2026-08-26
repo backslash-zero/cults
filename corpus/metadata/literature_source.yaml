@@ -1,0 +1,38 @@
+# Literature corpus source — core texts on cults/sects/religion (articles,
+# book chapters, reports). Hand-authored; corpus/scripts/build_corpus.py reads
+# this to generate literature.json/.csv and the LaTeX reference list.
+#
+# ID scheme: lit-<firstauthor><year>-<title-slug>, e.g.
+#   lit-durkheim1912-elementary-forms
+# Lowercase, hyphen-only (see corpus/README.md and
+# thesis/04_Appendix/5_Appendix.tex for the full naming-convention rationale).
+#
+# Fields:
+#   id           (required) unique lit-... ID, see scheme above
+#   title        (required)
+#   authors      (required) list of "Lastname, F." strings, in citation order
+#   year         (required) publication year (int), or "n.d." if unknown
+#   type         (required) one of: article, book_chapter, book, report, other
+#   source       journal/publisher/conference, as applicable
+#   language     language the source text is written in
+#   tags         list of short topical tags (freeform, keep consistent over time)
+#   raw_file     path (repo-root-relative) to the collected file under
+#                corpus/literature/raw/, if the actual document was saved there
+#   date_added   ISO 8601 date this entry was added to the corpus
+#   notes        anything else worth recording (edition, translation status, etc.)
+#
+# Example (remove once real entries exist):
+# literature:
+#   - id: lit-durkheim1912-elementary-forms
+#     title: "The Elementary Forms of the Religious Life"
+#     authors: ["Durkheim, É."]
+#     year: 1912
+#     type: book
+#     source: "Free Press (1995 English translation)"
+#     language: "French (English translation used)"
+#     tags: ["religion", "collective effervescence", "classical sociology"]
+#     raw_file: "corpus/literature/raw/durkheim1912-elementary-forms.pdf"
+#     date_added: "2026-08-26"
+#     notes: "Foundational text on religion/collective belief, not cult-specific."
+
+literature: []

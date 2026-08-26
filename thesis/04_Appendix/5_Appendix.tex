@@ -1,0 +1,57 @@
+\chapter{Literature and Terminology Corpus}\label{ch:literature_corpus}
+
+This chapter documents the wider research corpus — collected literature,
+dictionary/thesaurus entries, and custom working terms — kept separate from
+both the interview corpus (\ref{ch:interview_corpus}) and the formal
+bibliography (\texttt{05\_Literature\_and\_Index/Bibliography.bib}). Everything
+here is generated from \texttt{corpus/} at the repo root by
+\texttt{corpus/scripts/build\_corpus.py}; see \texttt{corpus/README.md} for the
+full pipeline and update procedure.
+
+\section{Naming Conventions}
+
+Every item in the corpus (across all four categories, plus the interview
+corpus) gets a lowercase, hyphen-only ID that is also its LaTeX cross-reference
+label, so anything can be cited from anywhere in the thesis and traced back to
+its source file and metadata entry unambiguously.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Type & Scheme & Example \\
+\midrule
+Interview & \texttt{<batch>-<slug>} & \texttt{b1-aug05-1650}, \texttt{ig-02} \\
+Literature & \texttt{lit-<firstauthor><year>-<title-slug>} & \texttt{lit-durkheim1912-elementary-forms} \\
+Dictionary/thesaurus entry & \texttt{dict-<source-slug>-<term-slug>} & \texttt{dict-thesoz-sekte} \\
+Custom term & \texttt{term-<slug>} & \texttt{term-semantic-drift} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two further ID families are reserved for later stages of the pipeline (text
+chunks and named entities extracted from the literature and interview corpora)
+but are not yet generated: \texttt{<parent-id>-chunk-<n>} and
+\texttt{<parent-id>-ent-<n>}.
+
+\section{Literature}
+
+Core texts on cults, sects, and religion collected for this thesis — listed
+here as a traceable reference list, separate from the formal citation apparatus
+in the bibliography. Generated from \texttt{corpus/metadata/literature\_source.yaml}.
+
+\input{04_Appendix/Literature_Corpus/reference_list}
+
+\section{Dictionary and Thesaurus Entries}
+
+Terms drawn from controlled vocabularies and reference works (e.g. SAGE,
+THESOZ), quoted verbatim with a precise citation. Generated from
+\texttt{corpus/metadata/dictionaries\_source.yaml}.
+
+\input{04_Appendix/Literature_Corpus/dictionaries_table}
+
+\section{Custom Terms}
+
+Working definitions authored directly for this thesis. Generated from
+\texttt{corpus/metadata/custom\_terms\_source.yaml}.
+
+\input{04_Appendix/Literature_Corpus/custom_terms_table}

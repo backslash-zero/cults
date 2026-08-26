@@ -1,0 +1,12 @@
+{
+  "name": "corpus",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "sync": "node scripts/sync_sanity.mjs"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.24.1"
+  }
+}

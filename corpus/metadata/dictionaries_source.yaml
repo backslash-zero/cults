@@ -1,0 +1,26 @@
+# Dictionary/thesaurus corpus source — entries from controlled vocabularies
+# and reference works (e.g. SAGE, THESOZ). Hand-authored; build_corpus.py
+# reads this to generate dictionaries.json/.csv and the LaTeX glossary table.
+#
+# ID scheme: dict-<source-slug>-<term-slug>, e.g. dict-thesoz-sekte
+#
+# Fields:
+#   id           (required) unique dict-... ID, see scheme above
+#   source       (required) short name of the thesaurus/dictionary, e.g. "THESOZ", "SAGE Encyclopedia of Social Science Research Methods"
+#   term         (required) the term exactly as it appears in the source
+#   language     language of the term/definition
+#   definition   (required) the definition QUOTED VERBATIM from the source — never paraphrased
+#   citation     full citation for the exact source/edition/page the quote came from
+#   date_added   ISO 8601 date this entry was added
+#
+# Example (remove once real entries exist):
+# dictionaries:
+#   - id: dict-thesoz-sekte
+#     source: "THESOZ"
+#     term: "Sekte"
+#     language: "German"
+#     definition: "[verbatim definition text goes here, quoted exactly]"
+#     citation: "THESOZ Thesaurus for the Social Sciences, GESIS, [edition/access date]"
+#     date_added: "2026-08-26"
+
+dictionaries: []
