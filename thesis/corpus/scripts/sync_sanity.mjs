@@ -9,9 +9,9 @@
  * back to corpus/*_source.yaml and the thesis LaTeX \label{}s).
  *
  * Requires: @sanity/client (see corpus/package.json — run `pnpm install` in
- * corpus/ first) and a SANITY_API_TOKEN with write access.
+ * thesis/corpus/ first) and a SANITY_API_TOKEN with write access.
  *
- * Usage: node corpus/scripts/sync_sanity.mjs
+ * Usage: node thesis/corpus/scripts/sync_sanity.mjs (from the repo root)
  */
 import {createClient} from '@sanity/client'
 import {readFileSync} from 'node:fs'

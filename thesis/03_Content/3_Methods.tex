@@ -1,5 +1,21 @@
 \chapter{Methods}
 
+
+\section{Methodological Precedents}
+
+
+- uncover the semantic structures of what can be concieved as cults
+- Vectorizing our understanding cults in the latent space
+- in order to do so, I gather different kind of 
+- send them into an embeddings model
+- perform geometrical comparisons
+
+This matters because it makes your epistemic claim appropriately modest: your embedding configurations are not transparent “maps of cult meaning itself.” They are model-mediated traces of regularities in particular textual or survey-derived inputs
+
+I treat a model’s embedding space as a semantic representation. I do not assume that a vector coordinate corresponds to an independently identifiable semantic feature. Rather, I test whether relational geometry—local neighborhoods, pairwise similarities, category separation, cluster structure, and, where appropriately validated, displacement along constructed directions—captures systematic differences among competing articulations of “cult.”
+
+
+
 \footnote{
 		The english translation of 'Secte' french substantive IS 'Cult', so when the Mivildues refers to sectarian drifts, it is really talking about cult-like negative consequences. See \ref{sec:defining_cult}
 	}
@@ -7,24 +23,73 @@
 
 
 \subsection{Expectations and Biaises}
-
 - I expect to see that that what people consider as cults seems to have more to do with religion than what scholars make it
 - I expect to see that the MIVILUDES sectarian drift concept transcends the popular understanding of what a "sect" / "cult" is
 
-
-
 \section{Data Collection}
 
-Overall, the goal is to find ways in which the concept of cult can be understood as a collective knowledge. 
-We're looking for associations, definitions, examples, oppositions, limits.
-
-In order to achieve this, different type of epsitemologies are gathered.
+Overall, the goal is to find ways in which the concept of cult can be understood as a collective knowledge. This step constitute the first step of the research project, and is the most important one.
+We're looking for associations, definitions, examples, oppositions, limits. In order to achieve this, different type of epsitemologies are gathered.
 \subsection{A collection of scholar work about cults}
-\subsubsection{Corpus}
-\ref{}
+\subsubsection{Corpus construction protocol}\label{sec:corpus_construction_protocol}
+This section describes a reproducible protocol for assembling a corpus of influential books and articles on cults and new religious movements (NRMs). The procedure is designed to be transparent, bias-aware, and replicable: another researcher could rerun the same queries, filters, and ranking rules to obtain a similar set of works.
+
+\paragraph{Data source.} The primary data source is the OpenAlex \autocite{priemOpenAlexFullyopenIndex2022} bibliographic database, accessed via its public API. OpenAlex provides structured metadata for scholarly works, including document type, publication year, and citation counts to measure influence (\verb+cited_by_count+), as well as a topic classification used below for disciplinary stratification.
+
+\paragraph{Search strategy.} To avoid over-reliance on any single label, the corpus is built from a fixed set of keyword queries that combine direct label terms (\enquote{cult}, \enquote{sect}, \enquote{new religious movements}, see \ref{ch:theory}) with the wider \enquote{extreme beliefs} framing; a standalone query for \enquote{sectarian drifts} is added to bridge into the MIVILUDES epistemology (\ref{sec:defining_cult}). The full, fixed query list is reproduced in \ref{sec:keyword_queries} (Table~\ref{tab:keyword_queries_corpus}); each query supports exact phrases (quoted) and boolean AND/OR/NOT/parenthetical combinations. Because OpenAlex stems even quoted single words, \enquote{sect} also matches \enquote{section}; the \enquote{sect} query therefore adds a \texttt{NOT section} clause to suppress that specific false-positive class. \enquote{NRM} is deliberately not searched as a bare acronym alongside \enquote{new religious movements}: it collides with unrelated senses such as \enquote{Natural Resource Management} and \enquote{National Resistance Movement}, both of which fall under the same allowed fields as genuine hits, so no amount of field/subfield screening (below) can disambiguate it — only the unambiguous full phrase is searched. Direct label-term and framing-term queries are matched against the work's \textbf{title} only, rather than title-and-abstract: an abstract-level match only requires the term to appear anywhere in the abstract, which is satisfied by thousands of works that merely mention the term in passing rather than treating it as their subject (e.g. \enquote{cult} alone matches over 12{,}000 works at the title-and-abstract level restricted to the social sciences, dropping to roughly 1{,}000 when restricted to the title, with markedly higher on-topic precision; \enquote{extreme beliefs} similarly drops from 50 hits, mostly generic voting-behavior or wellbeing-psychology papers, to 43 uniformly on-topic hits). Only \enquote{sectarian drifts} remains at the title-and-abstract level, since this framing term is less likely to appear verbatim in a title.
+
+An earlier version of this search paired each direct label term with a disciplinary anchor word in the title query itself (e.g. \enquote{cult} AND sociology, repeated for anthropology, history, psychology, and religion). This was dropped: requiring the literal discipline word in the title is a poor proxy for disciplinary relevance — many on-topic works never use it — and it is redundant with the field/subfield screening described below, which already relies on OpenAlex's own topic classification rather than on title wording. It also produced queries with zero results (e.g. \enquote{sect} AND anthropology, since no anthropology paper happens to have that literal word in its title), needlessly narrowing coverage of otherwise relevant disciplines.
+
+\subsubsection{Screening criteria}
+All retrieved records are merged into a single dataset and deduplicated in two passes: first by OpenAlex ID or DOI where available, then by normalized title and first-author surname, which catches near-duplicates that do not share a DOI — reprints, translations, or the same work indexed under several DOIs (e.g. a preprint re-deposited under a new DOI on each revision). Each unique record is then screened against the following predefined inclusion criteria:
+
+\textbf{Type inclusions}: scholarly books, book chapters, and journal articles whose primary subject is cults, sects, or new religious movements, or which offer a central theoretical framing relevant to these phenomena.
+
+\textbf{Type exclusions}: journalistic pieces, activist or apologetic texts, and works where the topic appears only incidentally, unless they are heavily cited theoretical anchors.
+
+\textbf{Field exclusions}: works are also dropped when OpenAlex's own topic classification places them outside the fields relevant to this corpus — retained fields are Social Sciences, Arts and Humanities, and Psychology; works classified under e.g. Medicine, Engineering, or Agricultural and Biological Sciences are excluded automatically, since keyword matches within those fields are reliably incidental rather than substantive.
+
+\textbf{Subfield exclusions}: within the retained fields, the History, Archeology, Classics, and Literature and Literary Theory subfields are further excluded, since \enquote{cult}/\enquote{sect} hits there are reliably about ancient ritual practice or artifacts (e.g. \enquote{the cult of Mithras}, votive cult objects) or about fictional/mythological texts (e.g. Isis and Osiris in Plutarch, Jane Austen's novels) rather than cults as a social phenomenon; Classics is by definition the study of ancient Greek and Roman antiquity, and Literature and Literary Theory by definition analyses fictional or mythological material, so the same reasoning applies to both.
+
+\textbf{Topic exclusions}: works are also dropped when OpenAlex's most granular topic classification — one level finer than subfield — is \enquote{Biblical Studies and Interpretation} or \enquote{Folklore, Mythology, and Literature Studies}, for the same ancient/legendary-content reasoning as the subfield exclusions above; these topics can occur under subfields not otherwise excluded (e.g. Religious studies). More generally, any topic whose name contains \enquote{history} or \enquote{antiquity} is excluded, which generalizes the History subfield exclusion to catch cases where the topic itself is historically framed but the surrounding subfield is not — e.g. \enquote{Mao Cult} is topic-classified as \enquote{Chinese history and philosophy} under the Sociology and Political Science subfield, \enquote{Outcasts, Emperorship, and Dragon Cults in \textit{The Tale of the Heike}} as \enquote{Japanese History and Culture} under Cultural Studies, and \enquote{The Rise of the Hero Cult and the New Simonides} as \enquote{Classical Antiquity Studies} under Anthropology — a fixed subfield blacklist would not catch any of these.
+
+\textbf{Title-pattern exclusions}: works whose title matches \enquote{cult of \ldots}, \enquote{personality cult}, or a fandom/pop-culture or marketing variant (\enquote{cult following}, \enquote{cult classic}, \enquote{cult status}, \enquote{cult collectors}, \enquote{cult phenomenon}, \enquote{cult television}/\enquote{tv}/\enquote{film}/\enquote{movie}/\enquote{cinema}, \enquote{fitness cult}, \enquote{culting}) are excluded, since these all signal the fame/devotion metaphor sense of \enquote{cult} (\cultfame{} in \ref{sec:defining_cult}) — political leader-worship, popular-culture fandom, or brand devotion — rather than the religious/sectarian-group sense this corpus targets (e.g. \enquote{Biography of a Chairman Mao Badge: The Creation and Mass Consumption of a Personality Cult}, \enquote{Cult collectors: nostalgia, fandom and collecting popular culture}, \enquote{The sex lives of cult television characters}, \enquote{...international cult phenomenon: The global expansion of SKAM...}, \enquote{The Culting of Brands: When Customers Become True Believers}). Two further patterns, \enquote{cult(ure)} and \enquote{cult and culture}/\enquote{cults and cultures}, catch titles that typographically or lexically pair \enquote{cult} with \enquote{culture} as a pun (e.g. \enquote{The Confidence Cult(ure)}, \enquote{Between Cult and Culture: Bamiyan, Islamic Iconoclasm, and the Museum}) rather than using the word in its target sense. A final pattern, \enquote{academic sect}, excludes \enquote{sect} used metaphorically for an academic or ideological faction rather than a religious group (e.g. \enquote{Academic Sects as Impediments to Understanding and Progress}).
+
+\textbf{Taxonomic-abbreviation exclusion}: titles containing the pattern \enquote{sect.} (a bare abbreviation followed by a capitalized taxon name) are excluded, since this is the standard botanical and zoological abbreviation for the rank \emph{section} (e.g. \enquote{Sophora sect. Edwardsia}) — a false positive the \texttt{NOT section} clause above cannot catch, since \enquote{section} is never spelled out.
+
+\textbf{Acronym exclusion}: titles containing \enquote{SECT} or \enquote{SECTS} in all capitals are excluded, since an all-caps form reliably signals an acronym rather than the English word (e.g. the \enquote{Scale for Effective Communication in Team Sports (SECTS)}).
+
+\textbf{Ancient-civilization exclusion}: titles naming an ancient civilization, historical period, or the specific ancient religious practice of \enquote{hero cult} (e.g. \enquote{ancient}, \enquote{Roman}, \enquote{Greek}, \enquote{Hellenistic}, \enquote{Homeric}, \enquote{hero cult}, \enquote{Mesopotamian}, \enquote{Byzantine}, \enquote{medieval}, \enquote{Bronze Age}, \enquote{Iron Age}, \enquote{Maya}, \enquote{Aztec}, \enquote{Egyptian}) are excluded. This targets the same ancient-ritual sense of \enquote{cult}/\enquote{sect} as the subfield exclusion above, but at the title level: in practice this sense keeps resurfacing under a different, unpredictable subfield each time the search is rerun (Demography, Communication, Anthropology, and Religious studies have each produced an ancient-cult hit that a fixed subfield blacklist would not catch, e.g. \enquote{Patron Gods and Patron Lords: The Semiotics of Classic Maya Community Cults}), so addressing it directly at the title level is more robust than excluding subfields one at a time. The trade-off is an acknowledged risk of false negatives — a rare modern paper that names an ancient civilization in its title (e.g. a comparative study) could be wrongly excluded — and of false negatives running the other way: the marker list is English-only, so a non-English title can still slip through (e.g. \enquote{Cultes et sanctuaires de l'île de Cos}, caught only on manual review and removed from the approved corpus by hand). Both classes of error require manual review to catch.
+
+\textbf{Publication dates}: research on cults and new religious movements has shifted substantially since the late 20th century, with new theoretical frameworks emerging (e.g. NRM studies displacing earlier \enquote{brainwashing} paradigms, see \ref{ch:theory}). Only works published within the 25 years preceding the final search date are included in the primary corpus: for a search completed in 2026, this corresponds to works published from 2001 onward. Limiting to the last 25 years ensures that the corpus reflects current conceptual debates rather than potentially outdated paradigms. In the API query, this is implemented by filtering on the \texttt{publication\_year} field, e.g. \verb+filter=publication_year:2001-2026+ for a search completed in 2026.
+
+Screening decisions are logged, and excluded records are retained in a separate file for transparency: \texttt{corpus/literature/openalex\_search\_results.txt}, generated by the script reproduced in \ref{sec:openalex_script}. This file also lists the final stratified candidates before manual approval (\ref{sec:corpus_construction_protocol}) folds any of them into the approved literature corpus.
+
+\subsubsection{Ranking and stratification}
+After screening, works are separated into two categories: books (including book chapters) and journal articles. Within each category, works are ranked using a mixed influence score that combines:
+
+\begin{itemize}
+	\item \textbf{Citation count}: the \verb+cited_by_count+ field from OpenAlex, normalized within each category.
+	\item \textbf{Cross-channel presence}: an additional weight is assigned to works retrieved by multiple distinct keyword queries, on the assumption that such works are more central to the field.
+\end{itemize}
+
+To ensure disciplinary diversity, the final selection is stratified by disciplinary framing where metadata allows, using OpenAlex's finer-grained topic subfield (e.g. Sociology and Political Science, Anthropology, History, Archeology, Philosophy) rather than its coarser top-level field classification, which is too broad to distinguish these disciplines from one another. For each discipline, the top books and top articles are selected, rather than selecting the top works globally. This reduces the risk that a single disciplinary discourse dominates the corpus while preserving reproducibility.
+
+Within each discipline, only works with some corroborating evidence are eligible for this top selection — either at least one citation, or retrieval by more than one query — unless applying that floor would leave the discipline empty, in which case the unfiltered ranking is used for that discipline only. Without this floor, a discipline with few genuine candidates could otherwise be padded with uncited, single-source records merely to fill the quota (e.g. the same uncited self-published work indexed under several DOIs).
+
+\subsubsection{Final corpus}
+The final corpus consists of:
+\begin{itemize}
+	\item A ranked list of influential books on cults and NRMs.
+	\item A ranked list of influential articles on cults and NRMs.
+	\item An optional subset of \enquote{bridge texts} that are highly cited across multiple disciplinary framings or retrieval channels.
+\end{itemize}
+
+The corpus available for full-text, semantic analysis is a further-conditioned subset of this approved bibliographic list: not every approved record could be obtained as a full-text document — paywalled journal articles and out-of-print books in particular remain out of reach — so the corpus actually analyzed skews toward openly accessible or institutionally reachable works. This access constraint is a source of selection bias distinct from the screening criteria above (\ref{sec:corpus_construction_protocol}), and, like the ancient-civilization marker trade-off described there, is documented for transparency rather than corrected for, given the scope of this thesis.
+
 \subsubsection{Named cults and dimensions}
 From the Corpus gathered about, the goal is to extract named entities of cults. Of course these entities can also be mentioned with doubts, there should also be extract the certainty at which the entity is pointed at as a cult by the literature. 
-Similary we want to do the same with named dimensions of cults, with a certainty ammount. 
+Similarly we want to do the same with named dimensions of cults, with a certainty ammount. 
 
 \subsection{MIVILUDES}
 

@@ -1,0 +1,46 @@
+# Keyword queries — corpus construction protocol
+#
+# Fixed set of OpenAlex search queries used to retrieve the scholarly
+# literature corpus (see thesis/03_Content/3_Methods.tex, "Corpus
+# construction protocol"). One query per non-comment line; each is run
+# independently against the OpenAlex /works endpoint by
+# corpus/scripts/fetch_openalex_corpus.py, then all results are merged and
+# deduplicated. Query syntax follows OpenAlex's search grammar: quotes mark
+# an exact phrase, AND/OR/NOT/parentheses combine terms (unquoted terms are
+# matched stemmed).
+#
+# The label-term and framing-term queries below carry no disciplinary
+# anchor (an earlier version paired each with "AND sociology"/"AND
+# anthropology"/etc., but that just requires the literal discipline word in
+# the title — a poor, overly strict proxy for disciplinary relevance,
+# redundant with the field/subfield screening the script already does via
+# OpenAlex's own topic classification, and it produced queries with zero
+# hits, e.g. "sect" AND anthropology). OpenAlex stems even quoted single
+# words, so "sect" also matches "section" under Porter stemming; the NOT
+# clause suppresses that specific false-positive class.
+#
+# "NRM" is deliberately not searched as a bare acronym — it collides with
+# "Natural Resource Management" and "National Resistance Movement", and
+# both senses fall under the same allowed fields/subfields as genuine "new
+# religious movements" hits, so no amount of field/subfield screening can
+# disambiguate it; only the unambiguous full phrase is searched.
+#
+# "extreme beliefs" is searched in the title only, alongside the direct
+# label terms, rather than title-and-abstract: the abstract-level version
+# matches generic voting-behavior/wellbeing-psychology papers that merely
+# use the phrase in passing (confirmed: 50 hits vs. 43 when restricted to
+# the title, with the title-only set being uniformly on-topic).
+#
+# Only "sectarian drifts" remains a framing term searched at the title-and-
+# abstract level, since it is less likely to appear in a title verbatim.
+#
+# Rerunning the protocol: edit this file, then re-run
+# `OPENALEX_API_KEY=... python3 corpus/scripts/fetch_openalex_corpus.py` —
+# see that script's docstring for the full search/filter/rank/stratify
+# procedure.
+
+"cult"
+"sect" NOT section
+"new religious movements"
+"extreme beliefs"
+"sectarian drifts"

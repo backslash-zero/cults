@@ -15,26 +15,35 @@ This repository contains the code and data for my master thesis in which I compa
 
 # Frontend
 
-`./frontend` contains the frontend code documenting the progress of my thesis.
-Ideally it should show the latest available version of the thesis as typed in `./thesis`
+`./frontend` (SvelteKit) documents the progress of my thesis. The `/cult-spaces`
+section queries `./studio-cults` live (a Sanity client + GROQ) to show research
+progress and stats per corpus type, with content browsing for interviews.
+Ideally it should also show the latest available version of the thesis as
+typed in `./thesis`.
 
 # Studio
 
-`./studio-cults` is the Sanity Studio project that should back the frontend
-(project `dm4p8gdv`, dataset `production`). Schema types are being built out
-alongside `./corpus` — see below.
+`./studio-cults` is the Sanity Studio project that backs the frontend
+(project `dm4p8gdv`, dataset `production`). Its four document types mirror the
+four corpus types in `./thesis/corpus` — see below.
 
 # Corpus
 
-`./corpus` contains the unified research corpus: interviews, literature,
-dictionary/thesaurus entries, and custom terms — file-based JSON/YAML as the
-source of truth, generated into both the thesis LaTeX appendices and (via
-`corpus/scripts/sync_sanity.mjs`) the Sanity project above. Naming conventions,
-the pipeline, and the update procedure are documented in `./corpus/README.md`.
+`./thesis/corpus` contains the unified research corpus: interviews,
+literature, dictionary/thesaurus entries, and custom terms — file-based
+JSON/YAML (plus, for literature, Zotero-exported `.bib` files) as the source
+of truth, generated into both the thesis LaTeX appendices and (via
+`thesis/corpus/scripts/sync_sanity.mjs`) the Sanity project above. It lives
+inside `./thesis` since it exists to feed that document's appendices.
+Naming conventions, the pipeline, and the update procedure are documented in
+`./thesis/corpus/README.md`.
 
-# Papers
+# Meditations
 
-`./papers` contains pre-papers I made to help me conceptually understand what's going on.
+`./Meditations` contains transcripts of voice memos I recorded while thinking
+through the project out loud — informal, unstructured reflections, sometimes
+annotated with follow-up notes on how a point could feed into the thesis. Raw
+thinking material, not corpus content or thesis text.
 
 # Thesis-template
 
@@ -42,12 +51,12 @@ the pipeline, and the update procedure are documented in `./corpus/README.md`.
 
 # Thesis
 
-`./thesis` contains the thesis itself. It is based on the template in `./thesis-template`. The thesis is written in LaTeX and compiled with `latexmk`. The main file is `./thesis/main.tex`. The thesis is compiled into a PDF file called `thesis.pdf` in the same directory.
+`./thesis` contains the thesis itself. It is based on the template in `./thesis-template`. The thesis is written in LaTeX and compiled with `latexmk`. The main file is `./thesis/thesis.tex`. The thesis is compiled into a PDF file called `thesis.pdf` in the same directory.
 
 The raw interview batch material lives in `./thesis/Interviews/`; the processed
 interview corpus (cleaned/translated text, metadata database, generated LaTeX
 appendix, standalone analysis) is now part of the unified corpus at
-`./corpus/interviews/` — see `./corpus/README.md`.
+`./thesis/corpus/interviews/` — see `./thesis/corpus/README.md`.
 
 # Obsidian Vault
 

@@ -4,9 +4,9 @@ This chapter documents the wider research corpus — collected literature,
 dictionary/thesaurus entries, and custom working terms — kept separate from
 both the interview corpus (\ref{ch:interview_corpus}) and the formal
 bibliography (\texttt{05\_Literature\_and\_Index/Bibliography.bib}). Everything
-here is generated from \texttt{corpus/} at the repo root by
-\texttt{corpus/scripts/build\_corpus.py}; see \texttt{corpus/README.md} for the
-full pipeline and update procedure.
+here is generated from \texttt{corpus/} (alongside this LaTeX source, inside
+\texttt{thesis/}) by \texttt{corpus/scripts/build\_corpus.py}; see
+\texttt{corpus/README.md} for the full pipeline and update procedure.
 
 \section{Naming Conventions}
 
@@ -32,6 +32,48 @@ Two further ID families are reserved for later stages of the pipeline (text
 chunks and named entities extracted from the literature and interview corpora)
 but are not yet generated: \texttt{<parent-id>-chunk-<n>} and
 \texttt{<parent-id>-ent-<n>}.
+
+\section{Keyword Queries}\label{sec:keyword_queries}
+
+The fixed set of keyword queries used to retrieve the literature corpus from
+OpenAlex \autocite{priemOpenAlexFullyopenIndex2022}, as described in the
+corpus construction protocol (\ref{sec:corpus_construction_protocol}).
+Generated from \texttt{corpus/literature/keyword-queries.txt}.
+
+\input{04_Appendix/Literature_Corpus/keyword_queries_table}
+
+\section{OpenAlex Retrieval Script}\label{sec:openalex_script}
+
+The script that runs the corpus construction protocol's keyword-query
+retrieval, deduplication, screening, ranking, and disciplinary stratification
+described in \ref{sec:corpus_construction_protocol} — reproduced here in full
+for transparency and reproducibility, rather than summarized, since the exact
+screening rules (title patterns, subfield and topic exclusions, the
+ancient-civilization marker list) are themselves part of the method. It is
+included live from \texttt{corpus/scripts/fetch\_openalex\_corpus.py}, so this
+listing always matches the version of the script actually used to produce
+\texttt{corpus/literature/openalex\_search\_results.txt}.
+
+\lstinputlisting[
+  language=Python,
+  basicstyle=\footnotesize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny,
+  breaklines=true,
+  frame=single,
+  captionpos=b,
+  tabsize=4,
+  extendedchars=true,
+  literate=
+    {—}{{-{}-}}1
+    {ê}{{\^e}}1
+    {î}{{\^i}}1
+    {Α}{{A}}1 {Β}{{B}}1 {Ε}{{E}}1 {Ζ}{{Z}}1 {Η}{{H}}1
+    {Ι}{{I}}1 {Κ}{{K}}1 {Μ}{{M}}1 {Ν}{{N}}1 {Ο}{{O}}1
+    {Ρ}{{P}}1 {Τ}{{T}}1 {Υ}{{Y}}1 {Χ}{{X}}1,
+  caption={\texttt{corpus/scripts/fetch\_openalex\_corpus.py}},
+  label={lst:fetch_openalex_corpus}
+]{corpus/scripts/fetch_openalex_corpus.py}
 
 \section{Literature}\label{sec:literature_bibliography}
 

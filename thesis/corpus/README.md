@@ -55,21 +55,22 @@ documented in the thesis itself, not just here.
    proofreading pipeline (unchanged, see `thesis/Interviews/README.md`).
 2. **Add a metadata entry** to the type's `*_source.yaml` under
    `corpus/metadata/` — see the schema comments at the top of each file.
-3. **Regenerate**: `python3 corpus/scripts/build_corpus.py` (requires PyYAML) —
+3. **Regenerate**: `python3 thesis/corpus/scripts/build_corpus.py` (requires PyYAML) —
    rebuilds every type's `database.json`/`.csv` and the LaTeX appendix content
    in `thesis/04_Appendix/`, from whatever's currently in the `*_source.yaml`
    files and (for interviews) `corpus/interviews/cleaned/`.
 4. **Recompile the thesis** (`latexmk -pdf thesis.tex` from `thesis/`) to check
    the new appendix content typesets cleanly.
 5. **Sync to Sanity** (optional, requires a `SANITY_API_TOKEN` — see below):
-   `node corpus/scripts/sync_sanity.mjs`.
+   `node thesis/corpus/scripts/sync_sanity.mjs`.
 
 ## Update procedure — when you tell me you've added new content
 
-- **Literature**: I read the new raw file(s) in `corpus/literature/raw/`,
-  propose a `literature_source.yaml` entry (bibliographic metadata) for your
-  review before adding it — same "propose, don't silently commit" spirit as
-  the interview corrections step.
+- **Literature**: bibliographic metadata is sourced from Zotero-exported
+  `.bib` files dropped into `corpus/literature/raw/` (e.g. `Books.bib`) —
+  `build_corpus.py` parses them directly, no manual YAML entry needed.
+  `literature_source.yaml` still exists for any entries you'd rather add by
+  hand; on an ID collision the YAML entry wins over the `.bib`-sourced one.
 - **Dictionary entries**: added with the term's definition quoted **verbatim**
   from the source and a precise citation (edition/page) — never paraphrased.
 - **Custom terms**: added with your own definition, as given.
@@ -94,7 +95,7 @@ To actually run it you need a Sanity API token with write access:
    permission is enough).
 2. `export SANITY_API_TOKEN=<your token>` (or put it in a local `.env` —
    **do not commit it**).
-3. `node corpus/scripts/sync_sanity.mjs` from the repo root.
+3. `node thesis/corpus/scripts/sync_sanity.mjs` from the repo root.
 
 No token exists in this repo yet — until one is configured, Sanity stays empty/
 out of sync with the file-based corpus, which remains the authoritative source
@@ -102,7 +103,8 @@ either way.
 
 ## Frontend
 
-Not wired up yet — `frontend/` (SvelteKit) has no Sanity client or data-fetching
-code. Once the frontend design work starts, it should query Sanity the normal
-way (a `@sanity/client` + GROQ), reading the same documents this sync script
-populates — no separate data layer needed.
+Wired up — `frontend/` (SvelteKit) queries Sanity via a `@sanity/client` +
+GROQ under `/cult-spaces`, reading the same documents this sync script
+populates: progress stats per corpus type, plus content browsing for
+interviews. Visual polish and browsing for the other corpus types are still
+outstanding.

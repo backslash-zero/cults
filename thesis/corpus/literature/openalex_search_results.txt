@@ -1,0 +1,3377 @@
+OpenAlex corpus construction — keyword-query results for review
+======================================================================
+Publication window: 2001-2026
+Queries run: 5 (see corpus/literature/keyword-queries.txt)
+Raw pool (union of query hits): 668 hits across queries -> 644 unique records
+Included after screening: 216
+
+NOTE: this is a candidate list awaiting manual approval — no
+record here has been added to the approved literature corpus yet.
+
+----------------------------------------------------------------------
+Query hit counts
+----------------------------------------------------------------------
+  '"cult"': 200
+  '"sect" NOT section': 200
+  '"new religious movements"': 200
+  '"extreme beliefs"': 43
+  '"sectarian drifts"': 25
+
+======================================================================
+BOOKS — stratified by discipline, top 5 each
+======================================================================
+
+-- Anthropology (2) --
+1. Signs of Hero Cult in Homeric Poetry (2012) — Gregory Nagy
+     type=book-chapter  cited_by=56  channels=1  score=0.392
+     channels: "cult"
+     doi: https://doi.org/10.1515/9783110272017.27
+     openalex: https://openalex.org/W2113176594
+2. Pentecostalism, Islam and culture: New religious movements in West Africa (2006) — Brian Larkin, Birgit Meyer
+     type=book-chapter  cited_by=43  channels=1  score=0.301
+     channels: "new religious movements"
+     openalex: https://openalex.org/W2770767534
+
+-- Clinical Psychology (1) --
+1. Decoding Delusions: A Clinician's Guide to Working With Delusions and Other Extreme Beliefs (2023) — Unknown author
+     type=book  cited_by=1  channels=1  score=0.007
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.1176/appi.books.9781615379491
+     openalex: https://openalex.org/W4405058029
+
+-- Cultural Studies (1) --
+1. Les cultes médiatiques (2002) — Jean-Charles Ambroise, Martín Barnier, Christian Le Bart, Tamara Bates et al.
+     type=book  cited_by=71  channels=1  score=0.497
+     channels: "cult"
+     doi: https://doi.org/10.4000/books.pur.24160
+     openalex: https://openalex.org/W1958420953
+
+-- Demography (2) --
+1. Cultes et sanctuaires de l’île de Cos (2013) — Stéphanie Paul
+     type=book  cited_by=63  channels=1  score=0.441
+     channels: "cult"
+     doi: https://doi.org/10.4000/books.pulg.17308
+     openalex: https://openalex.org/W645505531
+2. Charismatic Churches, Revivalism and New Religious Movements (2019) — Annelin Eriksen, Michelle MacCarthy
+     type=book-chapter  cited_by=4  channels=1  score=0.028
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9781315529691-20
+     openalex: https://openalex.org/W2930251426
+
+-- Education (1) --
+1. Teaching New Religious Movements/Learning from New Religious Movements (2007) — David G. Bromley
+     type=book-chapter  cited_by=4  channels=1  score=0.028
+     channels: "new religious movements"
+     doi: https://doi.org/10.1093/acprof:oso/9780195177299.003.0001
+     openalex: https://openalex.org/W2505096899
+
+-- General Social Sciences (1) --
+1. Sects and Social Disorder (2014) — Abdul Raufu Mustapha, Murray Last, Mukhtar U. Bunza, Hannah Hoechner et al.
+     type=book  cited_by=40  channels=1  score=0.280
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1017/9781782044734
+     openalex: https://openalex.org/W4321637891
+
+-- Geography, Planning and Development (4) --
+1. ‘Laïcité,’ ‘Dystopia,’ and the Reaction to New Religious Movements in France (2004) — James A. Beckford
+     type=book-chapter  cited_by=24  channels=1  score=0.168
+     channels: "new religious movements"
+     doi: https://doi.org/10.1007/978-1-4419-9094-5_2
+     openalex: https://openalex.org/W84893200
+2. New religious movements in the Catholic Church (2006) — Michael Hayes
+     type=book  cited_by=13  channels=1  score=0.091
+     channels: "new religious movements"
+     openalex: https://openalex.org/W642959040
+3. The A to Z of New Religious Movements (2006) — George D. Chryssides
+     type=book  cited_by=6  channels=1  score=0.042
+     channels: "new religious movements"
+     openalex: https://openalex.org/W565629775
+4. What are the New Religious Movements Doing in a Secular Society? (2005) — Bryan Wilson, Eileen Barker
+     type=book-chapter  cited_by=4  channels=1  score=0.028
+     channels: "new religious movements"
+     doi: https://doi.org/10.5871/bacad/9780197263143.003.0011
+     openalex: https://openalex.org/W2501469291
+
+-- Health (3) --
+1. Conversion and “Brainwashing” in New Religious Movements (2009) — Dick Anthony, Thomas Robbins
+     type=book-chapter  cited_by=18  channels=1  score=0.126
+     channels: "new religious movements"
+     doi: https://doi.org/10.1093/oxfordhb/9780195369649.003.0012
+     openalex: https://openalex.org/W2115467054
+2. New Religious Movements and mental health (2012) — Massimo Introvigne
+     type=book-chapter  cited_by=11  channels=1  score=0.077
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9780203129166-19
+     openalex: https://openalex.org/W2980282550
+3. Psychology and the New Religious Movements (2009) — John A. Saliba
+     type=book-chapter  cited_by=6  channels=1  score=0.042
+     channels: "new religious movements"
+     doi: https://doi.org/10.1093/oxfordhb/9780195369649.003.0014
+     openalex: https://openalex.org/W2623079660
+
+-- History and Philosophy of Science (1) --
+1. La religion en miettes ou la question des sectes (2001) — Danièle Hervieu‐Léger
+     type=book  cited_by=89  channels=1  score=0.622
+     channels: "sect" NOT section
+     openalex: https://openalex.org/W3158417488
+
+-- Philosophy (5) --
+1. Cults and new religious movements : a reader (2003) — Lorne L. Dawson
+     type=book  cited_by=130  channels=2  score=0.959
+     channels: "cult", "new religious movements"
+     openalex: https://openalex.org/W560294453
+2. The Oxford Handbook of New Religious Movements (2008) — Unknown author
+     type=book  cited_by=93  channels=1  score=0.650
+     channels: "new religious movements"
+     doi: https://doi.org/10.1093/oxfordhb/9780195369649.001.0001
+     openalex: https://openalex.org/W593173468
+3. Definitions of Cult: From Sociological-Technical to Popular-Negative (2018) — James T. Richardson
+     type=book-chapter  cited_by=68  channels=1  score=0.476
+     channels: "cult"
+     doi: https://doi.org/10.4324/9780203794265-3
+     openalex: https://openalex.org/W2316802327
+4. The New Heretics of FranceMinority Religions, la Republique, and the Government-Sponsored ''War on Sects'' (2011) — Susan J. Palmer
+     type=book  cited_by=41  channels=1  score=0.287
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1093/acprof:oso/9780199735211.001.0001
+     openalex: https://openalex.org/W4289804823
+5. New Religious Movements in the Twenty-First Century (2004) — Phillip Charles Lucas, Thomas Robbins
+     type=book  cited_by=41  channels=1  score=0.287
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9780203508329
+     openalex: https://openalex.org/W1480094415
+
+-- Political Science and International Relations (5) --
+1. Encyclopedic Handbook of Cults in America (2014) — J. Gordon Melton
+     type=book  cited_by=79  channels=1  score=0.552
+     channels: "cult"
+     doi: https://doi.org/10.4324/9781315048154
+     openalex: https://openalex.org/W1604090102
+2. The Clapham Sect: How Wilberforce's Circle Transformed Britain (2010) — Stephen Tomkins
+     type=book  cited_by=54  channels=1  score=0.378
+     channels: "sect" NOT section
+     openalex: https://openalex.org/W625201133
+3. The Protestant Sects and the Spirit of Capitalism (2020) — Unknown author
+     type=book-chapter  cited_by=38  channels=1  score=0.266
+     channels: "sect" NOT section
+     doi: https://doi.org/10.2307/j.ctv1416446.16
+     openalex: https://openalex.org/W4251379748
+4. Legal Cases, New Religious Movements, and Minority Faiths (2016) — Unknown author
+     type=book  cited_by=30  channels=1  score=0.210
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9781315591988
+     openalex: https://openalex.org/W2994796134
+5. Female Leaders in New Religious Movements (2017) — Inga Bårdsen Tøllefsen, Christian Giudice
+     type=book  cited_by=5  channels=1  score=0.035
+     channels: "new religious movements"
+     doi: https://doi.org/10.1007/978-3-319-61527-1
+     openalex: https://openalex.org/W2762515947
+
+-- Religious studies (2) --
+1. Encyclopedia of New Religious Movements (2004) — Peter Clarke
+     type=book  cited_by=43  channels=1  score=0.301
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9780203484333
+     openalex: https://openalex.org/W1495660287
+2. Sketch of the Religious Sects of the Hindus (2008) — H. H. Wilson
+     type=book  cited_by=34  channels=1  score=0.238
+     channels: "sect" NOT section
+     openalex: https://openalex.org/W1593474595
+
+-- Social Psychology (1) --
+1. Differentiating Delusional Disorder from the Radicalization of Extreme Beliefs (2024) — Mark D. Cunningham
+     type=book-chapter  cited_by=0  channels=1  score=0.000
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.4324/9781003415206-18
+     openalex: https://openalex.org/W4398143008
+
+-- Sociology and Political Science (5) --
+1. 2 The Cult, the Cultic Milieu and Secularization (2002) — Jeffrey S. Kaplan, Heléne Lööw
+     type=book-chapter  cited_by=143  channels=1  score=1.000
+     channels: "cult"
+     doi: https://doi.org/10.5771/9780759116580-12
+     openalex: https://openalex.org/W4408114689
+2. Misunderstanding Cults (2001) — Benjamin Zablocki, Thomas Robbins
+     type=book  cited_by=133  channels=1  score=0.930
+     channels: "cult"
+     doi: https://doi.org/10.3138/9781442677302
+     openalex: https://openalex.org/W2314384604
+3. Cults, Religion, and Violence (2002) — David G. Bromley, J. Gordon Melton
+     type=book  cited_by=108  channels=1  score=0.755
+     channels: "cult"
+     doi: https://doi.org/10.1017/cbo9780511499326
+     openalex: https://openalex.org/W1130862981
+4. Bounded ChoiceTrue Believers and Charismatic Cults (2004) — Janja Lalich
+     type=book  cited_by=100  channels=1  score=0.699
+     channels: "cult"
+     doi: https://doi.org/10.1525/california/9780520231948.001.0001
+     openalex: https://openalex.org/W2020858275
+5. The Culting of Brands: When Customers Become True Believers (2004) — Douglas Atkin
+     type=book  cited_by=97  channels=1  score=0.678
+     channels: "cult"
+     openalex: https://openalex.org/W616284787
+
+======================================================================
+ARTICLES — stratified by discipline, top 5 each
+======================================================================
+
+-- Anthropology (4) --
+1. Embodying Charisma: Modernity, Locality and the Performance of Emotion in Sufi Cults (2002) — Pnina Werbner, Helene Basu
+     type=article  cited_by=132  channels=1  score=0.571
+     channels: "cult"
+     openalex: https://openalex.org/W576188816
+2. The Rise of the Hero Cult and the New Simonides (2007) — Jan Ν. Bremmer
+     type=article  cited_by=62  channels=1  score=0.268
+     channels: "cult"
+     openalex: https://openalex.org/W2120891183
+3. Foreign Cults in Republican Rome: Rethinking the Pomerial Rule (2002) — Eric M. Orlin
+     type=article  cited_by=62  channels=1  score=0.268
+     channels: "cult"
+     doi: https://doi.org/10.2307/4238789
+     openalex: https://openalex.org/W2800976837
+4. Archaeology and New Religious Movements (2019) — Jeb J. Card
+     type=article  cited_by=7  channels=1  score=0.030
+     channels: "new religious movements"
+     doi: https://doi.org/10.1525/nr.2019.22.4.5
+     openalex: https://openalex.org/W2942584727
+
+-- Clinical Psychology (1) --
+1. Differentiating delusional disorder from the radicalization of extreme beliefs: A 17-factor model. (2018) — Mark D. Cunningham
+     type=article  cited_by=13  channels=1  score=0.056
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.1037/tam0000106
+     openalex: https://openalex.org/W2890416618
+
+-- Demography (1) --
+1. Transformational Leadership, Corporate Cultism and the Spirituality Paradigm: An Unholy Trinity in the Workplace? (2002) — Dennis Tourish, Ashly Pinnington
+     type=article  cited_by=231  channels=1  score=1.000
+     channels: "cult"
+     doi: https://doi.org/10.1177/0018726702055002181
+     openalex: https://openalex.org/W2162931045
+
+-- Education (2) --
+1. Menace of Cultism in Nigerian Tertiary Institutions: The Way Out (2010) — Iyiade Adeseye Ajayi, Haastrup T. Ekundayo, F. M. Osalusi
+     type=article  cited_by=87  channels=1  score=0.377
+     channels: "cult"
+     doi: https://doi.org/10.1080/09720073.2010.11891147
+     openalex: https://openalex.org/W2292831138
+2. EDUCATING THE NEXT GENERATION IN UNIVERSAL VALUES? HINDU-RELATED NEW RELIGIOUS MOVEMENTS AND VALUES EDUCATION IN THE COMMON SCHOOL (2013) — Elisabeth Arweck, Eleanor Nesbitt, Robert Jackson
+     type=article  cited_by=6  channels=1  score=0.026
+     channels: "new religious movements"
+     doi: https://doi.org/10.7833/89-0-1020
+     openalex: https://openalex.org/W2169979791
+
+-- Experimental and Cognitive Psychology (2) --
+1. Do Extreme Beliefs About Internal States Predict Mood Swings in an Analogue Sample? (2010) — Alyson Dodd, Warren Mansell, Richard P. Bentall, Sara Tai
+     type=article  cited_by=16  channels=1  score=0.069
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.1007/s10608-010-9342-y
+     openalex: https://openalex.org/W2061720694
+2. Researching New Religious Movements from the Inside Out and the Outside In (2012) — Ann Gleig
+     type=article  cited_by=8  channels=1  score=0.035
+     channels: "new religious movements"
+     doi: https://doi.org/10.1525/nr.2012.16.1.88
+     openalex: https://openalex.org/W2491170760
+
+-- Gender Studies (1) --
+1. From ‘secret’ online teen drama to international cult phenomenon: The global expansion of SKAM and its public service mission (2019) — Vilde Schanke Sundet
+     type=article  cited_by=72  channels=1  score=0.312
+     channels: "cult"
+     doi: https://doi.org/10.1177/1749602019879856
+     openalex: https://openalex.org/W2986431783
+
+-- Geography, Planning and Development (4) --
+1. Pagan Pilgrimage: New Religious Movements Research on Sacred Travel within Pagan and New Age Communities (2011) — Laurel Zwissler
+     type=article  cited_by=22  channels=1  score=0.095
+     channels: "new religious movements"
+     doi: https://doi.org/10.1111/j.1749-8171.2011.00282.x
+     openalex: https://openalex.org/W1488537658
+2. Enjoying Religion: Pleasure and Fun in Established and New Religious Movements (2019) — Inken Prohl
+     type=article  cited_by=15  channels=1  score=0.065
+     channels: "new religious movements"
+     doi: https://doi.org/10.1080/0048721x.2019.1633614
+     openalex: https://openalex.org/W2964501814
+3. NEW RELIGIOUS MOVEMENTS IN WESTERN EUROPE (2006) — Silvio Ferrari
+     type=article  cited_by=13  channels=1  score=0.056
+     channels: "new religious movements"
+     openalex: https://openalex.org/W2472030703
+4. The Cambridge Companion to New Religious Movements (2013) — David Geall
+     type=article  cited_by=6  channels=1  score=0.026
+     channels: "new religious movements"
+     doi: https://doi.org/10.1108/rr-04-2013-0077
+     openalex: https://openalex.org/W1565608272
+
+-- Health (5) --
+1. Self-chosen involvement in new religious movements (NRMs): well-being and mental health from a longitudinal perspective (2009) — Sussan Namini, Sebastian Murken
+     type=article  cited_by=29  channels=1  score=0.126
+     channels: "new religious movements"
+     doi: https://doi.org/10.1080/13674670902897618
+     openalex: https://openalex.org/W2095258633
+2. Self-concept: Psychosis and attraction of new religious movements (2002) — Dinesh Bhugra
+     type=article  cited_by=24  channels=1  score=0.104
+     channels: "new religious movements"
+     doi: https://doi.org/10.1080/13674670110112703
+     openalex: https://openalex.org/W2001203733
+3. How is Well‐Being Related to Membership in New Religious Movements? An Application of Person–Environment Fit Theory (2009) — Sussan Namini, Claudia Appel, Ralph Jürgensen, Sebastian Murken
+     type=article  cited_by=15  channels=1  score=0.065
+     channels: "new religious movements"
+     doi: https://doi.org/10.1111/j.1464-0597.2009.00377.x
+     openalex: https://openalex.org/W2016406434
+4. Feeling Good, but Lacking Autonomy: Closed-Mindedness on Social and Moral Issues in New Religious Movements (2007) — Coralie Buxant, Vassilis Saroglou
+     type=article  cited_by=15  channels=1  score=0.065
+     channels: "new religious movements"
+     doi: https://doi.org/10.1007/s10943-007-9142-1
+     openalex: https://openalex.org/W2087850303
+5. New religious movements and quasi-religion: Cognitive science of religion at the margins (2020) — Alastair Lockhart
+     type=article  cited_by=13  channels=1  score=0.056
+     channels: "new religious movements"
+     doi: https://doi.org/10.1177/0084672420910809
+     openalex: https://openalex.org/W3011801969
+
+-- Law (1) --
+1. Even New Religious Movements Have Legacies (2020) — Eileen Barker
+     type=article  cited_by=3  channels=1  score=0.013
+     channels: "new religious movements"
+     doi: https://doi.org/10.5507/rh.2020.005
+     openalex: https://openalex.org/W3139399283
+
+-- Philosophy (5) --
+1. Cultes, mythes, et religions. (2003) — Salomon Reinach
+     type=article  cited_by=94  channels=1  score=0.407
+     channels: "cult"
+     openalex: https://openalex.org/W1480619479
+2. The jung cult: origins of a charismatic movement (2002) — Richard Noll
+     type=article  cited_by=77  channels=1  score=0.333
+     channels: "cult"
+     doi: https://doi.org/10.15407/socium2002.01.134
+     openalex: https://openalex.org/W1978695176
+3. Anders Breivik: Extreme Beliefs Mistaken for Psychosis. (2016) — Tahir Rahman, Phillip J. Resnick, Bruce Harry
+     type=article  cited_by=33  channels=1  score=0.143
+     channels: "extreme beliefs"
+     openalex: https://openalex.org/W2295957720
+4. Advocacy, brainwashing theories, and new religious movements (2014) — Massimo Introvigne
+     type=article  cited_by=27  channels=1  score=0.117
+     channels: "new religious movements"
+     doi: https://doi.org/10.1080/0048721x.2014.888021
+     openalex: https://openalex.org/W2048445143
+5. New Religious Movements and the Study of Folklore: The Russian Case (2004) — Alexander Panchenko
+     type=article  cited_by=9  channels=1  score=0.039
+     channels: "new religious movements"
+     doi: https://doi.org/10.7592/fejf2004.28.movement
+     openalex: https://openalex.org/W2171192763
+
+-- Political Science and International Relations (5) --
+1. Mounting Challenges to Governance in China: Surveying Collective Protestors, Religious Sects and Criminal Organizations (2006) — Jae Ho Chung, Hongyi Lai, Ming Xia
+     type=article  cited_by=70  channels=1  score=0.303
+     channels: "sect" NOT section
+     doi: https://doi.org/10.2307/20066184
+     openalex: https://openalex.org/W2062321411
+2. The Protestant Sects and the Spirit of Capitalism 1 (2013) — Max Weber
+     type=article  cited_by=53  channels=1  score=0.229
+     channels: "sect" NOT section
+     doi: https://doi.org/10.4324/9780203452196-18
+     openalex: https://openalex.org/W3001065575
+3. New religious movements and religious liberty in America (2002) — Derek H. Davis, Barry Hankins
+     type=article  cited_by=17  channels=1  score=0.074
+     channels: "new religious movements"
+     openalex: https://openalex.org/W611749327
+4. Using Law to Limit Religious Freedom: The Case of New Religious Movements in France (2023) — Sajjad Adeliyan Tous, James T. Richardson, Alireza Taghipour
+     type=article  cited_by=5  channels=1  score=0.022
+     channels: "new religious movements"
+     doi: https://doi.org/10.3390/rel14070887
+     openalex: https://openalex.org/W4383724638
+5. The Attitude of Belgian Authorities Toward New Religious Movements (2002) — Adelbert Denaux
+     type=article  cited_by=4  channels=1  score=0.017
+     channels: "new religious movements"
+     openalex: https://openalex.org/W294383047
+
+-- Religious studies (2) --
+1. Angels and the Dragon King's Daughter: Gender, Sexuality in Western Buddhist New Religious Movements (2010) — Sally R. Munt, Sharon E. Smith
+     type=article  cited_by=4  channels=1  score=0.017
+     channels: "new religious movements"
+     doi: https://doi.org/10.1558/tse.v16i3.229
+     openalex: https://openalex.org/W1981247965
+2. African Pentecostal Mission and New Religious Movements: A critical scrutiny of threats and opportunities to evangelization in dialogue with Allan Heaton An (2021) — Themba Shingange
+     type=article  cited_by=3  channels=1  score=0.013
+     channels: "new religious movements"
+     doi: https://doi.org/10.7832/49-0-411
+     openalex: https://openalex.org/W3182487392
+
+-- Social Psychology (1) --
+1. Psychopathologies and the Attribution of Charisma: A Critical Introduction to the Psychology of Charisma and the Explanation of Violence in New Religious Movements (2006) — Lorne L. Dawson
+     type=article  cited_by=54  channels=1  score=0.234
+     channels: "new religious movements"
+     doi: https://doi.org/10.1525/nr.2006.10.2.3
+     openalex: https://openalex.org/W2115464528
+
+-- Sociology and Political Science (5) --
+1. New Religious Movements: Challenge and Response (2001) — Irving Hexham, Bryan Wilson, Jamie Cresswell
+     type=article  cited_by=133  channels=1  score=0.576
+     channels: "new religious movements"
+     doi: https://doi.org/10.2307/3341520
+     openalex: https://openalex.org/W628457179
+2. “Brainwashing” Theories in European Parliamentary and Administrative Reports on “Cults” and “Sects” (2001) — James T. Richardson, Massimo Introvigne
+     type=article  cited_by=102  channels=2  score=0.492
+     channels: "cult", "sect" NOT section
+     doi: https://doi.org/10.1111/0021-8294.00046
+     openalex: https://openalex.org/W1972745546
+3. Kung Fu Cult Masters: From Bruce Lee to Crouching Tiger (2006) — Ban Wang
+     type=article  cited_by=108  channels=1  score=0.468
+     channels: "cult"
+     doi: https://doi.org/10.1525/fq.2006.60.2.74
+     openalex: https://openalex.org/W2155560774
+4. The Study of New Religious Movements and the Radicalization of Home-Grown Terrorists: Opening a Dialogue (2009) — Lorne L. Dawson
+     type=article  cited_by=87  channels=1  score=0.377
+     channels: "new religious movements"
+     doi: https://doi.org/10.1080/09546550903409163
+     openalex: https://openalex.org/W2005772018
+5. Inventing Iphigeneia? On Euripides and the Cultic Construction of Brauron (2003) — Gunnel Ekroth
+     type=article  cited_by=65  channels=1  score=0.281
+     channels: "cult"
+     doi: https://doi.org/10.4000/kernos.811
+     openalex: https://openalex.org/W2109346092
+
+======================================================================
+EXCLUDED RECORDS (428) — screening log
+======================================================================
+[type exclusion: OpenAlex type='book-review']
+- The cult of statistical significance: how the standard error costs us jobs, justice, and lives (2008) — Unknown author
+     type=book-review  cited_by=732  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.46-0372
+     openalex: https://openalex.org/W39572901
+
+[field exclusion: primary_topic.field='Business, Management and Accounting']
+- The Cult of the Amateur: How Today's Internet Is Killing Our Culture (2007) — Andrew Keen
+     type=article  cited_by=670  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W1489626318
+
+[title exclusion: contains 'cult of']
+- On the Modern Cult of the Factish Gods (2011) — Unknown author
+     type=article  cited_by=532  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1108/17465681111171037
+     openalex: https://openalex.org/W1501016751
+
+[title exclusion: contains 'cult of']
+- In the Game: Gay Athletes and the Cult of Masculinity (2005) — Eric Anderson
+     type=book  cited_by=392  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1353/book4975
+     openalex: https://openalex.org/W140154228
+
+[subfield exclusion: primary_topic.subfield='History']
+- The Cult of the Nation in France: Inventing Nationalism, 1680-1800 (2002) — Rafe Blaufarb, David A. Bell
+     type=article  cited_by=376  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/3093368
+     openalex: https://openalex.org/W2022898472
+
+[title exclusion: contains 'cult of']
+- Pindar and the Cult of Heroes (2005) — Bruno Currie
+     type=book  cited_by=368  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1093/oso/9780199277247.001.0001
+     openalex: https://openalex.org/W4388392721
+
+[title exclusion: contains 'cult of']
+- The Cult of Macintosh (2005) — Russell W. Belk, Gülnur Tumbat
+     type=article  cited_by=364  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/10253860500160403
+     openalex: https://openalex.org/W2064778451
+
+[field exclusion: primary_topic.field='Computer Science']
+- The Cult of Statistical Significance (2008) — Deirdre N. McCloskey, Steve Ziliak
+     type=book  cited_by=339  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.3998/mpub.186351
+     openalex: https://openalex.org/W331455060
+
+[type exclusion: OpenAlex type='other']
+- Geek Heresy: Rescuing Social Change from the Cult of Technology (2017) — Kentaro Toyama
+     type=other  cited_by=333  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.13021/g8itlcp.9.2017.1853
+     openalex: https://openalex.org/W2624629148
+
+[field exclusion: primary_topic.field='Earth and Planetary Sciences']
+- The role of cult and feasting in the emergence of Neolithic communities. New evidence from Göbekli Tepe, south-eastern Turkey (2012) — Oliver Dietrich, Manfred Heun, Jens Notroff, Klaus Schmidt et al.
+     type=article  cited_by=324  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1017/s0003598x00047840
+     openalex: https://openalex.org/W1962862133
+
+[type exclusion: OpenAlex type='book-review']
+- The cult of statistical significance: how the standard error costs us jobs, justice, and lives (2009) — Chee Kian Leong
+     type=book-review  cited_by=314  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/13501780902943566
+     openalex: https://openalex.org/W2017914535
+
+[title exclusion: contains 'cult of']
+- In Praise of Slow : How a Worldwide Movement Is Challenging the Cult of Speed (2004) — Carl Honoré
+     type=book  cited_by=313  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W1568876708
+
+[field exclusion: primary_topic.field='Computer Science']
+- 'Cargo Cult' science in traditional organization and information systems survey research: A case for using nontraditional methods of data collection, including Mechanical Turk and online panels (2016) — D'Arcy, J, Moody, GD, Bryan Hammer, Lowry, PB
+     type=article  cited_by=306  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.jsis.2016.06.002
+     openalex: https://openalex.org/W2998104786
+
+[title exclusion: contains 'cult(ure)']
+- The Confidence Cult(ure) (2015) — Rosalind Gill, Shani Orgad
+     type=article  cited_by=291  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/08164649.2016.1148001
+     openalex: https://openalex.org/W2292761867
+
+[title exclusion: contains 'cult of']
+- The cult of the amateur: how blogs, MySpace, YouTube and the rest of today's user-generated media are destroying our economy, our culture, and our values (2007) — Andrew Keen
+     type=article  cited_by=282  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W16426102
+
+[type exclusion: OpenAlex type='other']
+- Pilgrims of Love: The Anthropology of a Global Sufi Cult (2003) — Pnina Werbner
+     type=other  cited_by=281  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W1527243016
+
+[title exclusion: contains 'cult of']
+- From the Cult of Waste to the Trash Heap of History: The Politics of Waste in Socialist and Postsocialist Hungary (2007) — Zsuzsa Gille
+     type=article  cited_by=277  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W2067596467
+
+[title exclusion: contains 'cult of']
+- The Cult of the Luxury Brand: Inside Asia's Love Affair with Luxury (2007) — Radha Chadha, Paul Husband
+     type=article  cited_by=239  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W651260160
+
+[type exclusion: OpenAlex type='book-review']
+- Mystery cults of the ancient world (2010) — Unknown author
+     type=book-review  cited_by=232  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.48-2239
+     openalex: https://openalex.org/W590583716
+
+[title exclusion: contains 'cult of']
+- How the ‘cult of femininity’ and violent masculinities support endemic gender based violence in contemporary South Africa (2007) — Pumla Dineo Gqola
+     type=article  cited_by=225  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/14725840701253894
+     openalex: https://openalex.org/W2067992274
+
+[type exclusion: OpenAlex type='book-review']
+- Black sun: Aryan cults, esoteric Nazism, and the politics of identity (2002) — Nicholas Goodrick-Clarke
+     type=book-review  cited_by=221  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.40-0984
+     openalex: https://openalex.org/W1554791615
+
+[field exclusion: primary_topic.field='Business, Management and Accounting']
+- Cargo cult science and the death of politics: A critical review of social and environmental accounting research (2009) — Crawford Spence, Javier Husillos, Carmen Correa Ruiz
+     type=article  cited_by=212  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.cpa.2008.09.008
+     openalex: https://openalex.org/W2065576116
+
+[subfield exclusion: primary_topic.subfield='History']
+- The Cult of Saint Thecla (2001) — Stephen J. Davis
+     type=book  cited_by=208  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1093/oso/9780198270195.001.0001
+     openalex: https://openalex.org/W4388434963
+
+[title exclusion: contains 'cult and culture']
+- Between Cult and Culture: Bamiyan, Islamic Iconoclasm, and the Museum (2002) — Finbarr Barry Flood
+     type=article  cited_by=202  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/3177288
+     openalex: https://openalex.org/W4248855475
+
+[type exclusion: OpenAlex type='reference-entry']
+- The CIA and the Cult of Intelligence (2009) — John Vile, David L. Hudson &amp, David Schultz
+     type=reference-entry  cited_by=188  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.4135/9781604265774.n283
+     openalex: https://openalex.org/W4300627357
+
+[type exclusion: OpenAlex type='book-review']
+- From Impressionism to anime: Japan as fantasy and fan cult in the mind of the West (2008) — Unknown author
+     type=book-review  cited_by=183  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.45-5370
+     openalex: https://openalex.org/W424741174
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- Mao Cult (2011) — Daniel Leese
+     type=book  cited_by=182  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1017/cbo9780511984754
+     openalex: https://openalex.org/W4244457005
+
+[subfield exclusion: primary_topic.subfield='History']
+- Holy rulers and blessed princesses: Dynastic cults in medieval central Europe (2003) — Diana Webb
+     type=article  cited_by=182  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W2492732514
+
+[title exclusion: contains 'cult of']
+- Police Culture and Gender: Revisiting the ‘Cult of Masculinity’ (2016) — Marisa Silvestri
+     type=article  cited_by=177  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1093/police/paw052
+     openalex: https://openalex.org/W2583790905
+
+[type exclusion: OpenAlex type='dissertation']
+- Divine Qualities: Cult and Community in Republican Rome (2007) — Anna J. Clark
+     type=dissertation  cited_by=177  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W563693378
+
+[field exclusion: primary_topic.field='Business, Management and Accounting']
+- Charismatic Leadership and Corporate Cultism at Enron: The Elimination of Dissent, the Promotion of Conformity and Organizational Collapse (2005) — Dennis Tourish, Naheed Vatcha
+     type=article  cited_by=176  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1177/1742715005057671
+     openalex: https://openalex.org/W2166061312
+
+[title exclusion: contains 'cult of']
+- Archilochos Heros: The Cult of Poets in the Greek Polis (2004) — Diskin Clay
+     type=article  cited_by=176  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W613293480
+
+[field exclusion: primary_topic.field='Decision Sciences']
+- The cult of efficiency (2001) — Janice Gross Stein
+     type=book  cited_by=175  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W2798745486
+
+[topic exclusion: primary_topic='Biblical Studies and Interpretation']
+- Greek Nymphs: Myth, Cult, Lore (2001) — Jennifer Larson
+     type=article  cited_by=174  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W604693524
+
+[subfield exclusion: primary_topic.subfield='History']
+- Colonies, Cults and Evolution (2007) — David Amigoni
+     type=book  cited_by=171  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1017/cbo9780511484711
+     openalex: https://openalex.org/W1557147275
+
+[field exclusion: primary_topic.field='Economics, Econometrics and Finance']
+- CULT FICTIONS: CULT MOVIES, SUBCULTURAL CAPITAL AND THE PRODUCTION OF CULTURAL DISTINCTIONS (2002) — Mark Jancovich
+     type=article  cited_by=169  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/09502380110107607
+     openalex: https://openalex.org/W2033146879
+
+[topic exclusion: primary_topic='Biblical Studies and Interpretation']
+- Imperial Cults and the Apocalypse of John (2001) — Steven J. Friesen
+     type=book  cited_by=167  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1093/0195131533.001.0001
+     openalex: https://openalex.org/W2495302863
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Foreign Cults in Rome (2010) — Eric M. Orlin
+     type=book  cited_by=163  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1093/acprof:oso/9780199731558.001.0001
+     openalex: https://openalex.org/W2503115983
+
+[subfield exclusion: primary_topic.subfield='Classics']
+- Debating the Saints’ Cult in the Age of Gregory the Great (2012) — Unknown author
+     type=book  cited_by=162  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1093/acprof:oso/9780199646791.001.0001
+     openalex: https://openalex.org/W1537007560
+
+[ancient-marker exclusion: title contains 'greek']
+- The Cults of the Greek States (2010) — Lewis Richard Farnell
+     type=book  cited_by=155  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1017/cbo9780511710421
+     openalex: https://openalex.org/W2073379204
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Plague and the Athenian Imagination: Drama, History, and the Cult of Asclepius (2008) — Robin Mitchell‐Boyask
+     type=article  cited_by=151  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W587294271
+
+[title exclusion: contains 'fitness cult']
+- CrossFit: Fitness cult or reinventive institution? (2015) — Marcelle C. Dawson
+     type=article  cited_by=150  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1177/1012690215591793
+     openalex: https://openalex.org/W2149711249
+
+[title exclusion: contains 'cult of']
+- Rise and Fall of the Cosmic Race: The Cult of Mestizaje in Latin America (2004) — Marilyn Miller
+     type=article  cited_by=149  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W560485885
+
+[ancient-marker exclusion: title contains 'greek']
+- Greek Hymns: Selected Cult Songs from the Archaic to the Hellenistic Period (2005) — Sarah Iles Johnston, William D. Furley, J.M. Bremer
+     type=article  cited_by=148  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/4352965
+     openalex: https://openalex.org/W590383441
+
+[title exclusion: contains 'cult of']
+- In Praise of Slowness: Challenging the Cult of Speed (2008) — Carl Honoré
+     type=book  cited_by=142  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W2924080635
+
+[title exclusion: contains 'cult of']
+- The cult of empiricism in psychology, and beyond. (2004) — Stephen Toulmin, David E. Leary
+     type=book-chapter  cited_by=141  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1037/10117-041
+     openalex: https://openalex.org/W968850906
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Mythologizing Landscape. Place and Space of Cult and Myth (2001) — Stefan Brink
+     type=book-chapter  cited_by=139  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1515/9783110875973.76
+     openalex: https://openalex.org/W2486437910
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Cult Places and Cultural Change in Republican Italy : A Contextual Approach to Religious Aspects of Rural Society after the Roman Conquest (2009) — Tesse D. Stek
+     type=book  cited_by=137  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.26530/oapen_401765
+     openalex: https://openalex.org/W1855853373
+
+[topic-history exclusion: primary_topic='European history and politics']
+- The Cult of Health and Beauty in Germany: A Social History, 1890-1930 (2003) — Michael Hau
+     type=article  cited_by=137  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W583713625
+
+[field exclusion: primary_topic.field='Health Professions']
+- Pedagogical Work and the 'Cult of the Body': Considering the Role of HPE in the Context of the 'New Public Health' (2002) — Richard Tinning, Trish Glasby
+     type=article  cited_by=136  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/1357332022000018814
+     openalex: https://openalex.org/W2161087479
+
+[title exclusion: contains 'cult collectors']
+- Cult Collectors (2014) — Lincoln Geraghty
+     type=book  cited_by=135  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.4324/9780203130261
+     openalex: https://openalex.org/W4247908715
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Effects of oxidative modification on the functional, conformational and gelling properties of myofibrillar proteins from Culter alburnus (2020) — Zhongli Zhang, Zhouyi Xiong, Sufang Lu, Noman Walayat et al.
+     type=article  cited_by=127  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.ijbiomac.2020.08.052
+     openalex: https://openalex.org/W3047632236
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- Shades of Mao: The Posthumous Cult of the Great Leader (2016) — Geremie Barmé
+     type=book  cited_by=125  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.4324/9781315285771
+     openalex: https://openalex.org/W4236751107
+
+[type exclusion: OpenAlex type='dissertation']
+- Truly Beyond Wonders: Aelius Aristides and the Cult of Asklepios (2010) — Alexia Petsalis-Diomidis
+     type=dissertation  cited_by=125  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W568667978
+
+[title exclusion: contains 'cult of']
+- Roman Religion and the Cult of Diana at Aricia (2006) — C. M. C. Green
+     type=article  cited_by=123  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W1557076561
+
+[topic-history exclusion: primary_topic='Australian History and Society']
+- The Cult of King Charles the Martyr (2003) — Andrew Lacey
+     type=book  cited_by=123  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1515/9781846150609
+     openalex: https://openalex.org/W4391393873
+
+[type exclusion: OpenAlex type='other']
+- The Cult of Saint Thecla: A Tradition of Women's Piety in Late Antiquity (2001) — Stephen J. Davis
+     type=other  cited_by=123  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W1533909770
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- The fertility of the hybrid lineage derived from female Megalobrama amblycephala× male Culter alburnus (2014) — Jun Xiao, Xiaotian Kang, Lihua Xie, Qinbo Qin et al.
+     type=article  cited_by=122  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.anireprosci.2014.09.012
+     openalex: https://openalex.org/W1988111370
+
+[title exclusion: contains 'cult of']
+- The Cult of True Victimhood: From the War on Welfare to the War on Terror (2006) — Alyson Cole
+     type=article  cited_by=121  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1515/9781503626157
+     openalex: https://openalex.org/W620842673
+
+[type exclusion: OpenAlex type='book-review']
+- The terror of natural right: republicanism, the cult of nature, and the French Revolution (2010) — Dan Edelstein
+     type=book-review  cited_by=119  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.47-7092
+     openalex: https://openalex.org/W1569815123
+
+[title exclusion: contains 'cult of']
+- Reputation, Cult of Reputation, and International Conflict (2005) — Shiping Tang
+     type=article  cited_by=117  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/09636410591001474
+     openalex: https://openalex.org/W2016661499
+
+[type exclusion: OpenAlex type='book-review']
+- The cult of the nation in France: inventing nationalism, 1680-1800 (2002) — Unknown author
+     type=book-review  cited_by=117  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.40-1144
+     openalex: https://openalex.org/W2484750529
+
+[subfield exclusion: primary_topic.subfield='History']
+- Paul, the Martyr. The Cult of the Apostle in the Latin West (2012) — Elisabeth Reinhardt
+     type=article  cited_by=116  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W2236025654
+
+[type exclusion: OpenAlex type='book-review']
+- Abydos: Egypt's first pharaohs and the cult of Osiris (2010) — Unknown author
+     type=book-review  cited_by=116  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.47-5183
+     openalex: https://openalex.org/W1572337394
+
+[title exclusion: contains 'cult of']
+- From the Cult of Waste to the Trash Heap of History (2025) — Zsuzsa Gille
+     type=book  cited_by=115  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2979/1756.0
+     openalex: https://openalex.org/W3022100460
+
+[ancient-marker exclusion: title contains 'greek']
+- The Sacrificial Rituals of Greek Hero-Cults in the Archaic to the Early Hellenistic Period (2002) — Gunnel Ekroth
+     type=book  cited_by=114  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.4000/books.pulg.490
+     openalex: https://openalex.org/W2015316101
+
+[title exclusion: contains 'cult of']
+- The Cult of Collaboration in Public Policy (2009) — Janine O’Flynn
+     type=article  cited_by=113  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1111/j.1467-8500.2009.00616.x
+     openalex: https://openalex.org/W2105666838
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- The Cults of Uruk and Babylon (2004) — Marc J.H. Linssen
+     type=book  cited_by=113  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1163/9789047412335
+     openalex: https://openalex.org/W2574278553
+
+[title exclusion: contains 'cult of']
+- Comparing Sexual Harassment Subtypes Among Black and White Women by Military Rank: Double Jeopardy, the Jezebel, and the Cult of True Womanhood (2008) — NiCole T. Buchanan, Isis H. Settles, Krystle C. Woods
+     type=article  cited_by=112  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1111/j.1471-6402.2008.00450.x
+     openalex: https://openalex.org/W2158887233
+
+[type exclusion: OpenAlex type='book-review']
+- The religion of the Mithras cult in the Roman Empire: mysteries of the unconquered sun (2006) — Unknown author
+     type=book-review  cited_by=111  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.44-2063
+     openalex: https://openalex.org/W1528621163
+
+[type exclusion: OpenAlex type='book-review']
+- Saints and Sacred Matter: the Cult of Relics in Byzantium and Beyond (2016) — David Morgan
+     type=book-review  cited_by=110  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/17432200.2016.1237748
+     openalex: https://openalex.org/W2530981413
+
+[field exclusion: primary_topic.field='Earth and Planetary Sciences']
+- Cult in Context: Reconsidering Ritual in Archaeology (2007) — Caroline Malone
+     type=book  cited_by=110  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W2970146967
+
+[topic exclusion: primary_topic='Biblical Studies and Interpretation']
+- Imperial Cults and the Apocalypse of John: Reading Revelation in the Ruins (2002) — Chris Frilingos, Steven J. Friesen
+     type=article  cited_by=110  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/3268175
+     openalex: https://openalex.org/W295183173
+
+[ancient-marker exclusion: title contains 'greek']
+- Greek mysteries : the archaeology and ritual of ancient Greek secret cults (2003) — Michael B. Cosmopoulos
+     type=book  cited_by=109  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W574966802
+
+[type exclusion: OpenAlex type='book-review']
+- The Stalin cult: a study in the alchemy of power (2012) — Unknown author
+     type=book-review  cited_by=107  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.49-6455
+     openalex: https://openalex.org/W4206404116
+
+[field exclusion: primary_topic.field='Earth and Planetary Sciences']
+- Building monuments, creating identity: Cattle cult as a social response to rapid environmental changes in the Holocene Sahara (2006) — Savino di Lernia
+     type=article  cited_by=106  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.quaint.2006.01.014
+     openalex: https://openalex.org/W2060581808
+
+[type exclusion: OpenAlex type='preprint']
+- The subgenomes show asymmetric expression of alleles in hybrid lineages of Megalobrama amblycephala × Culter alburnus (2019) — Ren Li, Wuhui Li, Qinbo Qin, He Dai et al.
+     type=preprint  cited_by=104  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1101/gr.249805.119
+     openalex: https://openalex.org/W2981437536
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- More than Men, Less than Gods. Studies on Royal Cult and Imperial Worship: Proceedings of the International Colloquium Organized by the Belgian School at Athens, 1-2 November 2007 (2011) — Andrzej Chankowski
+     type=book  cited_by=104  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W3043625730
+
+[field exclusion: primary_topic.field='Economics, Econometrics and Finance']
+- Before The Night is Through: True Blood as Cult Tv (2012) — Brigid Cherry
+     type=book-chapter  cited_by=101  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5040/9780755698653.0005
+     openalex: https://openalex.org/W2096151478
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Further thoughts on the cult of Theos Hypsistos (2010) — Stephen Mitchell
+     type=book-chapter  cited_by=100  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1017/cbo9780511730115.010
+     openalex: https://openalex.org/W1590504210
+
+[title exclusion: contains 'cult of']
+- The Modern Cult of Efficiency (2014) — Tina Trujillo
+     type=article  cited_by=98  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1177/0895904813513148
+     openalex: https://openalex.org/W2128124913
+
+[title exclusion: contains 'cult cinema']
+- Cult Cinema (2011) — Ernest Mathijs, Jamie Sexton
+     type=book  cited_by=97  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1002/9781444396447
+     openalex: https://openalex.org/W4250193010
+
+[title exclusion: contains 'cult of']
+- Beyond the Cult of the Replicant: Museums and Historical Digital Objects—Traditional Concerns, New Discourses (2007) — Fiona Cameron
+     type=book-chapter  cited_by=97  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.7551/mitpress/9780262033534.003.0004
+     openalex: https://openalex.org/W112262791
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- The Ezida Temple of Borsippa: Priesthood, Cult, Archives (2010) — Caroline Waerzeggers
+     type=article  cited_by=95  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W2769590894
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Cretan Sanctuaries and Cults (2005) — Mieke Prent
+     type=book  cited_by=95  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1163/9789047406907
+     openalex: https://openalex.org/W625853646
+
+[subfield exclusion: primary_topic.subfield='Literature and Literary Theory']
+- Plutarch on Isis and Osiris: Text, Cult, and Cultural Appropriation (2001) — Daniel S. Richter
+     type=article  cited_by=95  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1353/apa.2001.0017
+     openalex: https://openalex.org/W1977191419
+
+[field exclusion: primary_topic.field='Computer Science']
+- Cargo-cult Statistics and Scientific Crisis (2018) — Philip B. Stark, Andrea Saltelli
+     type=article  cited_by=93  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1111/j.1740-9713.2018.01174.x
+     openalex: https://openalex.org/W2883272601
+
+[ancient-marker exclusion: title contains 'roman']
+- The Religion of the Mithras Cult in the Roman Empire (2007) — Roger Beck
+     type=book  cited_by=93  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1093/acprof:oso/9780199216130.001.0001
+     openalex: https://openalex.org/W2485719099
+
+[topic-history exclusion: primary_topic='Japanese History and Culture']
+- Outcasts, Emperorship, and Dragon Cults in The Tale of the Heike (2002) — David T. Bialock
+     type=article  cited_by=92  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.3406/asie.2002.1185
+     openalex: https://openalex.org/W2091121495
+
+[subfield exclusion: primary_topic.subfield='History']
+- The cult of the saints. Its Rise and Function in Latin Christianity (2015) — Ma Amparo Mateo Donet, Instituto Patristico Augustinianum
+     type=article  cited_by=91  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5840/agstm201555117
+     openalex: https://openalex.org/W2516021106
+
+[title exclusion: contains 'cult of']
+- The Cult of Jagannath and the Regional Tradition of Orissa (2014) — Anncharlott Eschmann, Hermann Kulke, Gaya Charan Tripathi
+     type=article  cited_by=91  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W1570945055
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- Mao Cult: Rhetoric and Ritual in China's Cultural Revolution (2011) — Daniel Leese
+     type=article  cited_by=91  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W405393665
+
+[title exclusion: contains 'cult of']
+- In Praise of Slowness: How a Worldwide Movement Is Challenging the Cult of Speed (2004) — Bernice Groskopf
+     type=article  cited_by=91  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W2898546907
+
+[type exclusion: OpenAlex type='book-review']
+- The Cultic milieu: oppositional subcultures in an age of globalization (2003) — Unknown author
+     type=book-review  cited_by=91  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.40-5745
+     openalex: https://openalex.org/W4252982644
+
+[title exclusion: contains 'cult of']
+- FROM CULT OF MASCULINITY TO SMART MACHO: GENDER PERSPECTIVES ON POLICE OCCUPATIONAL CULTURE (2010) — Jennifer M. Brown
+     type=book-chapter  cited_by=90  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/s1521-6136(07)08008-6
+     openalex: https://openalex.org/W2488020375
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Cryoprotective effect of egg white proteins and xylooligosaccharides mixture on oxidative and structural changes in myofibrillar proteins of Culter alburnus during frozen storage (2020) — Noman Walayat, Zhouyi Xiong, Hanguo Xiong, Helena M. Moreno et al.
+     type=article  cited_by=88  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.ijbiomac.2020.04.093
+     openalex: https://openalex.org/W3022643652
+
+[topic-history exclusion: primary_topic='African history and culture studies']
+- The Political Economy of Elegance: An African Cult of Beauty (2005) — Jonathan Friedman
+     type=article  cited_by=88  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.4324/9780203989487-13
+     openalex: https://openalex.org/W3003068500
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- The effectiveness of egg white protein and β-cyclodextrin during frozen storage: Functional, rheological and structural changes in the myofibrillar proteins of Culter alburnus (2020) — Noman Walayat, Zhouyi Xiong, Hanguo Xiong, Helena M. Moreno et al.
+     type=article  cited_by=85  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.foodhyd.2020.105842
+     openalex: https://openalex.org/W3009091995
+
+[subfield exclusion: primary_topic.subfield='History']
+- From Temple to Church: Destruction and Renewal of Local Cultic Topography in Late Antiquity (2008) — Johannes Hahn, Stephen Emmel, Ulrich Gotter
+     type=article  cited_by=85  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1163/ej.9789004131415.i-381
+     openalex: https://openalex.org/W651369376
+
+[ancient-marker exclusion: title contains 'ancient']
+- Ancient Greek Cults (2007) — Jennifer Larson
+     type=book  cited_by=85  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.4324/9780203356982
+     openalex: https://openalex.org/W4252368280
+
+[subfield exclusion: primary_topic.subfield='History']
+- St David of Wales: Cult, Church and Nation (2007) — Joan Evans, Jonathan M. Wooding, Bernard Tanguy, Daniel Huws et al.
+     type=book  cited_by=84  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1515/9781846155963
+     openalex: https://openalex.org/W631182243
+
+[topic-history exclusion: primary_topic='Soviet and Russian History']
+- A tale of two presidents: personality cult and symbolic nation-building in Turkmenistan (2015) — Abel Polese, Slavomír Horák
+     type=article  cited_by=83  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/00905992.2015.1028913
+     openalex: https://openalex.org/W1555968496
+
+[subfield exclusion: primary_topic.subfield='History']
+- Saints and Church Spaces in the Late Antique Mediterranean: Architecture, Cult, and Community (2009) — Ann Marie Yasin
+     type=article  cited_by=83  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W650385523
+
+[field exclusion: primary_topic.field='Economics, Econometrics and Finance']
+- Cult TV, Hip Hop, Shape-Shifters, and Vampire Slayers (2009) — Robin Redmon Wright, Jennifer A. Sandlin
+     type=article  cited_by=83  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1177/0741713608327368
+     openalex: https://openalex.org/W2167919793
+
+[subfield exclusion: primary_topic.subfield='History']
+- Holy Rulers and Blessed Princesses: Dynastic Cults in Medieval Central Europe (2006) — Jonathan Stone, Gábor Klaniczay, Éva Pálmai
+     type=article  cited_by=82  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/20459295
+     openalex: https://openalex.org/W1487517342
+
+[title exclusion: contains 'cult television']
+- The sex lives of cult television characters (2002) — Share Jones
+     type=article  cited_by=82  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1093/screen/43.1.79
+     openalex: https://openalex.org/W2079437317
+
+[title exclusion: contains 'cult of']
+- From an urban country to urbanCountry: confronting the cult of denial in Australian cities (2018) — Libby Porter
+     type=article  cited_by=81  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/00049182.2018.1456301
+     openalex: https://openalex.org/W2795756906
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Modified human crania from Göbekli Tepe provide evidence for a new form of Neolithic skull cult (2017) — Julia Gresky, Juliane Haelm, Lee Clare
+     type=article  cited_by=81  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1126/sciadv.1700564
+     openalex: https://openalex.org/W2730249853
+
+[field exclusion: primary_topic.field='Earth and Planetary Sciences']
+- Age of a prehistoric “Rodedian” cult site constrained by sediment and rock surface luminescence dating techniques (2015) — Reza Sohbati, Andrew Murray, Naomi Porat, Mayank Jain et al.
+     type=article  cited_by=81  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.quageo.2015.09.002
+     openalex: https://openalex.org/W1851945144
+
+[type exclusion: OpenAlex type='book-review']
+- Foreign cults in Rome: creating a Roman Empire (2011) — Unknown author
+     type=book-review  cited_by=81  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.48-5254
+     openalex: https://openalex.org/W121564125
+
+[topic exclusion: primary_topic='Biblical Studies and Interpretation']
+- The Cult of Asherah in Ancient Israel and Judah: Evidence for a Hebrew Goddess (2002) — Mark S. Smith, Judith M. Hadley
+     type=article  cited_by=81  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/3087663
+     openalex: https://openalex.org/W2171272898
+
+[field exclusion: primary_topic.field='Earth and Planetary Sciences']
+- The Ancient Maya Drought Cult: Late Classic Cave Use in Belize (2009) — Holley Moyes, Jaime J. Awe, George A. Brook, James W. Webster
+     type=article  cited_by=80  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1017/s1045663500002571
+     openalex: https://openalex.org/W69203634
+
+[topic exclusion: primary_topic='Biblical Studies and Interpretation']
+- Cult and Character: Purification Offerings, Day of Atonement, and Theodicy (2005) — Roy E. Gane
+     type=article  cited_by=80  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W25200951
+
+[title exclusion: contains 'cult of']
+- France and the Cult of the Sacred Heart (2019) — Raymond Jonas
+     type=book  cited_by=79  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1525/9780520924017
+     openalex: https://openalex.org/W2251638167
+
+[title exclusion: contains 'personality cult']
+- Putin’s macho personality cult (2016) — Valerie Sperling
+     type=article  cited_by=78  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.postcomstud.2015.12.001
+     openalex: https://openalex.org/W2233811589
+
+[title exclusion: contains 'cult of']
+- Gendering the Cult of the Offensive (2009) — Lauren Wilcox
+     type=article  cited_by=78  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/09636410902900152
+     openalex: https://openalex.org/W2001117306
+
+[title exclusion: contains 'cult of']
+- On the Modern Cult of the Factish Gods (2011) — Isabelle Stengers
+     type=article  cited_by=76  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1215/0961754x-1305418
+     openalex: https://openalex.org/W2314748328
+
+[type exclusion: OpenAlex type='other']
+- Heroes and Hero‐Cults (2007) — Gunnel Ekroth
+     type=other  cited_by=76  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1002/9780470996911.ch7
+     openalex: https://openalex.org/W1580689268
+
+[title exclusion: contains 'cult of']
+- The Cult of Pure Crystal Mountain: Popular Pilgrimage and Visionary Landscape in Southeast Tibet (2002) — H. G., Toni Huber
+     type=article  cited_by=76  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/3087730
+     openalex: https://openalex.org/W1995315283
+
+[subfield exclusion: primary_topic.subfield='Literature and Literary Theory']
+- Aliens, Ghosts, and Cults: Legends We Live (2002) — Elissa R. Henken, Bill Ellis
+     type=article  cited_by=76  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/1500338
+     openalex: https://openalex.org/W565153105
+
+[field exclusion: primary_topic.field='Medicine']
+- Alcoholics Anonymous: Cult or Cure? (2005) — George E. Vaillant
+     type=article  cited_by=74  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/j.1440-1614.2005.01600.x
+     openalex: https://openalex.org/W1995050697
+
+[title exclusion: contains 'cult of']
+- School leadership and the cult of the guru: the neo-Taylorism of Hattie (2017) — Scott Eacott
+     type=article  cited_by=73  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/13632434.2017.1327428
+     openalex: https://openalex.org/W2616721200
+
+[title exclusion: contains 'cult collectors']
+- Cult collectors: nostalgia, fandom and collecting popular culture (2014) — Lincoln Geraghty
+     type=article  cited_by=73  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W1772215880
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- The Cult of the Fox. Power, Gender, and Popular Religion in Late Imperial and Modern China (2007) — Marianne Bujard
+     type=article  cited_by=73  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1163/008254307x211313
+     openalex: https://openalex.org/W1985264063
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Blackberry cult ivation in the world (2014) — John R. Clark, Chad E. Finn
+     type=article  cited_by=72  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1590/0100-2945-445/13
+     openalex: https://openalex.org/W2065596316
+
+[field exclusion: primary_topic.field='Business, Management and Accounting']
+- The cult of customer responsiveness: is design innovation the price of a client‐focused construction industry? (2005) — Chris Ivory
+     type=article  cited_by=72  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/01446190500204648
+     openalex: https://openalex.org/W2047485185
+
+[field exclusion: primary_topic.field='Environmental Science']
+- Physical and chemical stabilization of soil organic carbon along a 500-year cultived soil chronosequence originating from estuarine wetlands: Temporal patterns and land use effects (2014) — Jun Cui, Zhenxing Li, Zongtang Liu, Baoming Ge et al.
+     type=article  cited_by=71  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.agee.2014.06.013
+     openalex: https://openalex.org/W2089015639
+
+[subfield exclusion: primary_topic.subfield='History']
+- Priestesses of the Imperial Cult in the Latin West: Titles and Function (2005) — Emily A. Hemelrijk
+     type=article  cited_by=71  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.3406/antiq.2005.2568
+     openalex: https://openalex.org/W1988306237
+
+[topic-history exclusion: primary_topic='Japanese History and Culture']
+- Biography of a Chairman Mao Badge: The Creation and Mass Consumption of a Personality Cult (2002) — Jennifer Hubbert
+     type=article  cited_by=71  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1525/ae.2002.29.2.444
+     openalex: https://openalex.org/W1967577036
+
+[ancient-marker exclusion: title contains 'maya']
+- Patron Gods and Patron Lords: The Semiotics of Classic Maya Community Cults (2016) — Joanne P. Baron
+     type=book  cited_by=70  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5876/9781607325185
+     openalex: https://openalex.org/W2548534601
+
+[title exclusion: contains 'cult of']
+- Through the looking glass: illusions of transparency and the cult of information (2007) — Susan J. Drucker, Gary Gumpert
+     type=article  cited_by=70  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1108/02621710710748329
+     openalex: https://openalex.org/W2084140844
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- The Culture Cult. Designer Tribalism and Other Essays (2003) — Bernd Baldus, Roger Sandall
+     type=article  cited_by=70  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/3341470
+     openalex: https://openalex.org/W1548037707
+
+[topic-history exclusion: primary_topic='Music History and Culture']
+- Counterknowledge, racial paranoia, and the cultic milieu: Decoding hip hop conspiracy theory (2011) — Travis L. Gosa
+     type=article  cited_by=69  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.poetic.2011.03.003
+     openalex: https://openalex.org/W2110742324
+
+[type exclusion: OpenAlex type='dissertation']
+- Iudaea-Palaestina: The Pagan Cults in Roman Palestine (Second to Fourth Century) (2001) — Nicole Belayche
+     type=dissertation  cited_by=69  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W367295495
+
+[title exclusion: contains 'cult of']
+- The Cult of Ivan the Terrible in Stalin’s Russia (2001) — Maureen Perrie
+     type=book  cited_by=69  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1057/9781403919694
+     openalex: https://openalex.org/W4300124850
+
+[ancient-marker exclusion: title contains 'ancient']
+- Cults and Rites in Ancient Greece (2014) — Michael H. Jameson, Allaire B. Stallsmith, Paul Cartledge, Fritz Graf
+     type=book  cited_by=68  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1017/cbo9781139023702
+     openalex: https://openalex.org/W637957024
+
+[field exclusion: primary_topic.field='Environmental Science']
+- Cattle Cults of the Arabian Neolithic and Early Territorial Societies (2012) — Joy McCorriston, Michael J. Harrower, Louise Martin, Eric A. Oches
+     type=article  cited_by=68  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1111/j.1548-1433.2011.01396.x
+     openalex: https://openalex.org/W2151772534
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Cults and New Religions: A Brief History (2007) — Douglas E. Cowan, David G. Bromley
+     type=article  cited_by=68  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W1481434647
+
+[type exclusion: OpenAlex type='dissertation']
+- Aphrodite and Eros: The Development of Erotic Mythology in Early Greek Poetry and Cult (2007) — Barbara Breitenberger
+     type=dissertation  cited_by=68  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W1556112087
+
+[ancient-marker exclusion: title contains 'hellenistic']
+- Priests and Cult Personnel in Three Hellenistic Families (2013) — Jan‐Mathieu Carbon, Vinciane Pirenne‐Delforge
+     type=book-chapter  cited_by=67  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1515/9783110318487.65
+     openalex: https://openalex.org/W357932643
+
+[type exclusion: OpenAlex type='book-review']
+- Worshipping Aphrodite: art and cult in classical Athens (2005) — Unknown author
+     type=book-review  cited_by=66  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.42-4435
+     openalex: https://openalex.org/W651559242
+
+[topic-history exclusion: primary_topic='South African History and Culture']
+- The Cult of Rhodes: Remembering an Imperialist in Africa (2005) — Paul Maylam
+     type=book  cited_by=66  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W620812895
+
+[type exclusion: OpenAlex type='book-review']
+- Stepan Bandera: The Life and Afterlife of a Ukrainian Nationalist: Fascism, Genocide, and Cult (2015) — Simon Geissbühler
+     type=book-review  cited_by=65  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/23739770.2015.1110888
+     openalex: https://openalex.org/W2344229536
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Religious Practices and Cult Objects during the Iron Age IIA at Tel Rehov and their Implications regarding Religion in Northern Israel (2015) — Amihai Mazar
+     type=article  cited_by=65  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1628/219222715x14343676549142
+     openalex: https://openalex.org/W2916890661
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Archaeology, Anthropology and Cult: The Sanctuary at Gilat, Israel (2007) — Augustin F. C. Holl
+     type=article  cited_by=65  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1525/aa.2007.109.2.396
+     openalex: https://openalex.org/W2171586647
+
+[type exclusion: OpenAlex type='book-review']
+- Movie crazy: fans, stars, and the cult of celebrity (2002) — Unknown author
+     type=book-review  cited_by=65  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.40-0803
+     openalex: https://openalex.org/W1527722162
+
+[field exclusion: primary_topic.field='Economics, Econometrics and Finance']
+- Towards the ‘cult of the equity’? Insurance companies and the interwar capital market (2002) — Peter Scott
+     type=article  cited_by=65  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1111/1468-0289.00215
+     openalex: https://openalex.org/W1985951541
+
+[type exclusion: OpenAlex type='book-review']
+- Aliens, ghosts, and cults: legends we live (2002) — Unknown author
+     type=book-review  cited_by=65  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.39-3453
+     openalex: https://openalex.org/W4302606239
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- The altar of Augustus and the municipal cult of Tarraco (2021) — Duncan Fishwick
+     type=article  cited_by=64  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.34780/fbbd-x21b
+     openalex: https://openalex.org/W20469491
+
+[subfield exclusion: primary_topic.subfield='Literature and Literary Theory']
+- Jane Austen's Cults and Cultures (2012) — Claudia L. Johnson
+     type=book  cited_by=64  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.7208/chicago/9780226402055.001.0001
+     openalex: https://openalex.org/W4299166364
+
+[subfield exclusion: primary_topic.subfield='History']
+- The Cult of St Eric, King and Martyr, in Medieval Sweden (2008) — Tracey R. Sands
+     type=book-chapter  cited_by=64  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.3138/9781442689060-008
+     openalex: https://openalex.org/W3134002864
+
+[ancient-marker exclusion: title contains 'ancient']
+- Ancient Greek Cults: A Guide (2007) — Jennifer Larson
+     type=article  cited_by=64  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W411619339
+
+[title exclusion: contains 'cult of']
+- Genetic Fundamentalism or the Cult of the Gene (2004) — David Le Breton
+     type=article  cited_by=64  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1177/1357034x04047853
+     openalex: https://openalex.org/W2119711328
+
+[title exclusion: contains 'cult of']
+- What About the Baby? The New Cult of Domesticity and Media Images of Pregnancy (2011) — Katie Gentile
+     type=article  cited_by=63  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1080/15240657.2011.536056
+     openalex: https://openalex.org/W2021432858
+
+[ancient-marker exclusion: title contains 'egyptian']
+- Octavian and Egyptian Cults: Redrawing the Boundaries of Romanness (2008) — Eric M. Orlin
+     type=article  cited_by=63  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1353/ajp.0.0007
+     openalex: https://openalex.org/W2017428999
+
+[field exclusion: primary_topic.field='Computer Science']
+- iWoz: Computer Geek to Cult Icon - How I Invented the Personal Computer, Co-Founded Apple, and Had Fun Doing It (2006) — Steve Wozniak, Gina Smith
+     type=article  cited_by=63  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W585030072
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Rethinking ‘Cattle Cults’ in Early Egypt: Towards a Prehistoric Perspective on the Narmer Palette (2001) — David Wengrow
+     type=article  cited_by=63  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1017/s0959774301000051
+     openalex: https://openalex.org/W2171230682
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- The Beginnings of the Cult of Relics (2018) — Robert W. Wisniewski
+     type=book  cited_by=62  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1093/oso/9780199675562.001.0001
+     openalex: https://openalex.org/W2917309444
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- ACCOUNTING AND REDISTRIBUTION: THE PALACE AND MORTUARY CULT IN THE MIDDLE KINGDOM, ANCIENT EGYPT (2002) — Mahmoud Ezzamel
+     type=article  cited_by=62  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2308/0148-4184.29.1.61
+     openalex: https://openalex.org/W1900384961
+
+[type exclusion: OpenAlex type='book-review']
+- The mysteries of Artemis of Ephesos: cult, polis, and change in the Graeco-Roman world (2013) — Unknown author
+     type=book-review  cited_by=60  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.51-1030
+     openalex: https://openalex.org/W658378705
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- The Cult of Emptiness. the Western Discovery of Buddhist Thought and the Invention of Oriental Philosophy (2012) — Urs App
+     type=book  cited_by=60  channels=1
+     channels: "cult"
+     openalex: https://openalex.org/W282516988
+
+[title exclusion: contains 'cult of']
+- Putin, Putiniana and the Question of a Post-Soviet Cult of Personality (2010) — Julie A. Cassiday, Emily D. Johnson
+     type=article  cited_by=60  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1353/see.2010.0059
+     openalex: https://openalex.org/W2516217643
+
+[type exclusion: OpenAlex type='book-review']
+- Cargo, cult, and culture critique (2005) — Holger Jebens
+     type=book-review  cited_by=60  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.42-4718
+     openalex: https://openalex.org/W577211041
+
+[type exclusion: OpenAlex type='book-review']
+- Rome and religion: a cross-disciplinary dialogue on the imperial cult (2012) — Unknown author
+     type=book-review  cited_by=59  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.49-6838
+     openalex: https://openalex.org/W643412265
+
+[topic-history exclusion: primary_topic='Soviet and Russian History']
+- “Against the Cult of Things”: On Soviet Productivism, Storage Economy, and Commodities with No Destination (2014) — Serguei Alex. Oushakine
+     type=article  cited_by=58  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1111/russ.10727
+     openalex: https://openalex.org/W1975696328
+
+[type exclusion: OpenAlex type='book-review']
+- Cult cinema: an introduction (2011) — Unknown author
+     type=book-review  cited_by=58  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.49-0168
+     openalex: https://openalex.org/W30575488
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Belief and Cult in Fourth-Century Papyri (2006) — Malcolm Choat
+     type=book  cited_by=58  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1484/m.saa-eb.5.106238
+     openalex: https://openalex.org/W2534247501
+
+[type exclusion: OpenAlex type='book-review']
+- The culture cult: designer tribalism and other essays (2001) — Unknown author
+     type=book-review  cited_by=58  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.5860/choice.38-5099
+     openalex: https://openalex.org/W4213336778
+
+[title exclusion: contains 'cult of']
+- Turkey’s Twitter public diplomacy: Towards a “new” cult of personality (2019) — Nur Uysal, Jared Schroeder
+     type=article  cited_by=57  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1016/j.pubrev.2019.101837
+     openalex: https://openalex.org/W2972933221
+
+[subfield exclusion: primary_topic.subfield='History']
+- Proclus of Constantinople and the Cult of the Virgin in Late Antiquity (2003) — Nicholas Constas
+     type=book  cited_by=57  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1163/9789047404309
+     openalex: https://openalex.org/W2202696235
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- The Light of the Gods: The Role of Light in Archaic and Classical Greek Cult (2002) — Susan E. Alcock, Eve Parisinou
+     type=article  cited_by=57  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/25549956
+     openalex: https://openalex.org/W3139698288
+
+[subfield exclusion: primary_topic.subfield='History']
+- Celtic Hagiography and Saints' Cults (2022) — Unknown author
+     type=book  cited_by=56  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.2307/jj.14491652
+     openalex: https://openalex.org/W288459895
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Organization and Variation Analysis of 5S rDNA in Different Ploidy-level Hybrids of Red Crucian Carp × Topmouth Culter (2012) — Weiguo He, Qinbo Qin, Shaojun Liu, Tangluo Li et al.
+     type=article  cited_by=56  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1371/journal.pone.0038976
+     openalex: https://openalex.org/W2004696190
+
+[topic exclusion: primary_topic='Biblical Studies and Interpretation']
+- Hezekiah's Alleged Cultic Centralization* (2008) — Diana Edelman
+     type=article  cited_by=56  channels=1
+     channels: "cult"
+     doi: https://doi.org/10.1177/0309089208092138
+     openalex: https://openalex.org/W2051152301
+
+[title exclusion: contains 'academic sect']
+- Why “isms” Are Evil: Theory, Epistemology, and Academic Sects as Impediments to Understanding and Progress1 (2011) — David A. Lake
+     type=article  cited_by=384  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1468-2478.2011.00661.x
+     openalex: https://openalex.org/W2121180565
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Phylogenetic analyses of Begonia sect. Coelocentrum and allied limestone species of China shed light on the evolution of Sino-Vietnamese karst flora (2014) — Kuo‐Fang Chung, Wai-Chao Leong, Rosario Rivera Rubite, Rimi Repin et al.
+     type=article  cited_by=277  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1186/1999-3110-55-1
+     openalex: https://openalex.org/W2132009237
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Reclassification of landrace populations of cultivated potatoes (Solanum sect. Petota) (2002) — Z. Huamán, David M. Spooner
+     type=article  cited_by=243  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.89.6.947
+     openalex: https://openalex.org/W2158461760
+
+[field exclusion: primary_topic.field='Medicine']
+- On the relationships of Paecilomyces sect. Isarioidea species (2005) — Janet Jennifer Luangsa-ard, Nigel L. Hywel‐Jones, Leka Manoch, Robert A. Samson
+     type=article  cited_by=234  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1017/s0953756205002741
+     openalex: https://openalex.org/W2127252465
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Taxonomy of wild tomatoes and their relatives (Solanum sect. Lycopersicoides, sect. Juglandifolia, sect. Lycopersicon; Solanaceae) (2008) — Iris E. Peralta, David M. Spooner, Sandra Knapp
+     type=book  cited_by=223  channels=1
+     channels: "sect" NOT section
+     openalex: https://openalex.org/W225377554
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- MOLECULAR PHYLOGEOGRAPHY, RETICULATION, AND LINEAGE SORTING IN MEDITERRANEAN SENECIO SECT. SENECIO (ASTERACEAE) (2001) — Hans Peter Comes, Richard J. Abbott
+     type=article  cited_by=198  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.0014-3820.2001.tb01312.x
+     openalex: https://openalex.org/W2125346568
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- A revision of Verticillium sect. Prostrata. III. Generic classification (2001) — W. Gams, Rasoul Zare
+     type=article  cited_by=163  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1127/nova.hedwigia/72/2001/329
+     openalex: https://openalex.org/W147668410
+
+[field exclusion: primary_topic.field='Medicine']
+- Medicinal plants used for treatment of diabetes by the marakh sect of the Garo tribe living in Mymensingh district, Bangladesh (2012) — Mohammed Rahmatullah, Md. Nur Kabidul Azam, Zehedina Khatun, Syeda Seraj et al.
+     type=article  cited_by=162  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.4314/ajtcam.v9i3.12
+     openalex: https://openalex.org/W2096215319
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- A revision of Verticillium sect. Prostrata. II. Phylogenetic analyses of SSU and LSU nuclear rDNA sequences from anamorphs and teleomorphs of the Clavicipitaceae (2001) — Gi‐Ho Sung, Joseph W. Spatafora, Rasoul Zare, Kathie T. Hodge et al.
+     type=article  cited_by=144  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1127/nova.hedwigia/72/2001/311
+     openalex: https://openalex.org/W2101373512
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- ECOLOGICAL AND EVOLUTIONARY GENOMICS IN THE WILD TOMATOES (SOLANUM SECT. LYCOPERSICON) (2008) — Leonie C. Moyle
+     type=article  cited_by=116  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1558-5646.2008.00487.x
+     openalex: https://openalex.org/W2069111701
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Comparative Analysis of the Complete Chloroplast Genome Sequences of Three Closely Related East-Asian Wild Roses (Rosa sect. Synstylae; Rosaceae) (2019) — Ji‐Hyeon Jeon, Seung‐Chul Kim
+     type=article  cited_by=113  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3390/genes10010023
+     openalex: https://openalex.org/W2907922721
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Tackling speciose genera: species composition and phylogenetic position of Senecio sect. Jacobaea (Asteraceae) based onplastid and nrDNA sequences (2002) — Pieter B. Pelser, Barbara Gravendeel, R. van der Meijden
+     type=article  cited_by=109  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.89.6.929
+     openalex: https://openalex.org/W2049010086
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- CYTOGENETIC STUDIES IN SOLANUM, SECT. TUBERARIUM (2010) — Robert Lamm
+     type=article  cited_by=104  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1601-5223.1945.tb02750.x
+     openalex: https://openalex.org/W2011113288
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Microsatellite DNA marker inheritance indicates preferential pairing between two highly homologous genomes in polyploid and hemisexual dog-roses, Rosa L. Sect. Caninae DC. (2003) — Hilde Nybom, G. Esselink, G. Werlemark, B. Vosman
+     type=article  cited_by=103  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1038/sj.hdy.6800332
+     openalex: https://openalex.org/W2158766837
+
+[acronym exclusion: all-caps 'SECT(S)' (reliably an acronym, not the word 'sect')]
+- The Preliminary Development of the Scale for Effective Communication in Team Sports (SECTS) (2003) — Philipm Sullivan, Deborah L. Feltz
+     type=article  cited_by=103  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1559-1816.2003.tb01970.x
+     openalex: https://openalex.org/W2137670084
+
+[field exclusion: primary_topic.field='Environmental Science']
+- Morphological and anatomical determinants of mesophyll conductance in wild relatives of tomato ( S olanumsect. L ycopersicon, sect. L ycopersicoides; S olanaceae) (2013) — Christopher D. Muir, Roger P. Hangarter, Leonie C. Moyle, Phillip A. Davis
+     type=article  cited_by=101  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/pce.12245
+     openalex: https://openalex.org/W1846943706
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Population structure and Aflatoxin production by Aspergillus Sect. Flavi from maize in Nigeria and Ghana (2014) — Giancarlo Perrone, Miriam Haidukowski, Gaetano Stea, Filomena Epifani et al.
+     type=article  cited_by=87  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.fm.2013.12.005
+     openalex: https://openalex.org/W2085781977
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- Popular Religious Movements and Heterodox Sects in Chinese History (2003) — Hubert Seiwert
+     type=book  cited_by=87  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1163/9789047402343
+     openalex: https://openalex.org/W560674166
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Illumina-based analysis of endophytic bacterial diversity of tree peony ( Paeonia Sect. Moutan ) roots and leaves (2017) — Ruixian Yang, Ping Liu, Wenyu Ye
+     type=article  cited_by=85  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.bjm.2017.02.009
+     openalex: https://openalex.org/W2620650263
+
+[field exclusion: primary_topic.field='Medicine']
+- Flavonoid and Organic Acid Content in Rose Hips (Rosa L., Sect. Caninae Dc. Em. Christ.) (2012) — Artur Adamczak, Waldemar Buchwald, Jerzy Zieliński, Sebastian Mielcarek
+     type=article  cited_by=82  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.2478/v10182-012-0012-0
+     openalex: https://openalex.org/W2005245122
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- New evidence for the Darwinian hypothesis of heterostyly: breeding systems and pollinators in Narcissus sect. Apodanthi (2006) — Rocío Pérez‐Barrales, Pablo Vargas, Juan Arroyo
+     type=article  cited_by=82  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1469-8137.2006.01819.x
+     openalex: https://openalex.org/W2147956544
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Addressing the “hardest puzzle in American pomology:” Phylogeny of Prunus sect. Prunocerasus (Rosaceae) based on seven noncoding chloroplast DNA regions (2004) — Joey Shaw, Randall L. Small
+     type=article  cited_by=81  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.91.6.985
+     openalex: https://openalex.org/W2134033948
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Nutritional composition, antioxidant activity and phenolic compounds of wild Taraxacum sect. Ruderalia (2014) — María Inês Días, Lillian Barros, Rita C. Alves, M. Beatriz P.P. Oliveira et al.
+     type=article  cited_by=77  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.foodres.2014.01.003
+     openalex: https://openalex.org/W2098351400
+
+[field exclusion: primary_topic.field='Environmental Science']
+- A taxonomic revision of Lemna sect. Uninerves (Lemnaceae) (2020) — Manuela Bog, K. Sowjanya Sree, Jörg Fuchs, Hoang Thi Nhu Phuong et al.
+     type=article  cited_by=75  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/tax.12188
+     openalex: https://openalex.org/W3012018961
+
+[type exclusion: OpenAlex type='conference-paper']
+- On using IEEE P1500 SECT for test plug-n-play (2002) — Erik Jan Marinissen, R. Kapur, Y. Zorian
+     type=conference-paper  cited_by=74  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1109/test.2000.894273
+     openalex: https://openalex.org/W2152763367
+
+[field exclusion: primary_topic.field='Materials Science']
+- Exegesis of the Introduction and Sect. I from “Fundamentals of the Mechanics of Continua”** by E. Hellinger (2016) — Simon R. Eugster, Francesco dell’Isola
+     type=article  cited_by=73  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/zamm.201600108
+     openalex: https://openalex.org/W2549325192
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Taxonomy and Genetic Differentiation among Wild and Cultivated Germplasm of Solanum sect. Petota (2015) — Michael A. Hardigan, John Bamberg, C. Robin Buell, David S. Douches
+     type=article  cited_by=73  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3835/plantgenome2014.06.0025
+     openalex: https://openalex.org/W2086794181
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Historical Isolation versus Recent Long-Distance Connections between Europe and Africa in Bifid Toadflaxes (Linaria sect. Versicolores) (2011) — Mario Fernández‐Mazuecos, Pablo Vargas
+     type=article  cited_by=73  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1371/journal.pone.0022234
+     openalex: https://openalex.org/W2045753365
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Differential Genome Size and Repetitive DNA Evolution in Diploid Species of Melampodium sect. Melampodium (Asteraceae) (2020) — Jamie McCann, Jir̆ı́ Macas, Petr Novák, Tod F. Stuessy et al.
+     type=article  cited_by=71  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3389/fpls.2020.00362
+     openalex: https://openalex.org/W3014902725
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Ecogeography of ploidy variation in cultivated potato (Solanum sect. Petota) (2010) — David M. Spooner, Т. А. Гавриленко, Shelley Jansky, A. B. Ovchinnikova et al.
+     type=article  cited_by=71  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.1000277
+     openalex: https://openalex.org/W2168647819
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Actinocephalus (Körn.) Sano ( Paepalanthus sect. Actinocephalus ), a new genus of Eriocaulaceae, and other taxonomic and nomenclatural changes involving Paepalanthus Mart. (2004) — Paulo Takeo Sano
+     type=article  cited_by=71  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.2307/4135493
+     openalex: https://openalex.org/W190074227
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Genetic evidence for hybridization in red oaks (Quercus sect. Lobatae, Fagaceae) (2011) — Emily Moran, John H. Willis, James S. Clark
+     type=article  cited_by=70  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.1100023
+     openalex: https://openalex.org/W2128424319
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Unique genomic configuration revealed by microsatellite DNA in polyploid dogroses, Rosa sect. Caninae (2005) — Hilde Nybom, G. Esselink, G. Werlemark, Leen Leus et al.
+     type=article  cited_by=70  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1420-9101.2005.01010.x
+     openalex: https://openalex.org/W2027206751
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Cohaerins A and B, azaphilones from the fungus Hypoxylon cohaerens, and comparison of HPLC-based metabolite profiles in Hypoxylon sect. Annulata (2005) — Đặng Ngọc Quang, Toshihiro Hashimoto, Yoko Nomura, H. Wollweber et al.
+     type=article  cited_by=70  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.phytochem.2005.02.006
+     openalex: https://openalex.org/W2121541085
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Revision of Miconia sect. Chaenopleura (Miconieae, Melastomataceae) in the Greater Antilles (2007) — Walter S. Judd
+     type=book  cited_by=69  channels=1
+     channels: "sect" NOT section
+     openalex: https://openalex.org/W321416163
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Patterns of genetic and phenotypic variation in Iris haynei and I. atrofusca ( Iris sect. Oncocyclus = the royal irises) along an ecogeographical gradient in Israel and the West Bank (2002) — Rami Arafeh, Yuval Sapir, Avi Shmida, Naim M. Iraki et al.
+     type=article  cited_by=69  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1046/j.0962-1083.2001.01417.x
+     openalex: https://openalex.org/W2134704491
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Comparative chloroplast genomes of Paris Sect. Marmorata: insights into repeat regions and evolutionary implications (2018) — Xiaoyang Gao, Xuan Zhang, Hong‐Hu Meng, Jing Li et al.
+     type=article  cited_by=68  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1186/s12864-018-5281-x
+     openalex: https://openalex.org/W2907116065
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- The Complete Plastome Sequences of Seven Species in Gentiana sect. Kudoa (Gentianaceae): Insights Into Plastid Gene Loss and Molecular Evolution (2018) — Shan‐Shan Sun, Peng‐Cheng Fu, Xiaojun Zhou, Yanwei Cheng et al.
+     type=article  cited_by=66  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3389/fpls.2018.00493
+     openalex: https://openalex.org/W2800963361
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Molecular phylogeny and biogeography of Gentiana sect. Cruciata (Gentianaceae) based on four chloroplast DNA datasets (2009) — Xiaolan Zhang, Yujin Wang, Xue‐Jun Ge, Yong–Ming Yuan et al.
+     type=article  cited_by=66  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/tax.583014
+     openalex: https://openalex.org/W2488053449
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Investigation of the essential oil from eight species of Baccharis belonging to sect. Caulopterae (Asteraceae, Astereae): a taxonomic approach (2005) — Cláudia A. Simões‐Pires, Sílvia Debenedetti, Etile Dolores Spegazzini, Lilian Auler Mentz et al.
+     type=article  cited_by=64  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00606-005-0296-6
+     openalex: https://openalex.org/W2042033539
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Molecular phylogenetics and evolutionary history of sect. Quinquefoliae (Pinus): Implications for Northern Hemisphere biogeography (2015) — Zhen-Zhen Hao, Yanyan Liu, Mare Nazaire, Xiao‐Xin Wei et al.
+     type=article  cited_by=63  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.ympev.2015.03.013
+     openalex: https://openalex.org/W2023668923
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Phylogenetic Analysis and Evolutionary Diversification of Heliotropium Sect. Cochranea (Heliotropiaceae) in the Atacama Desert (2008) — Federico Luebert, Jun Wen
+     type=article  cited_by=63  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1600/036364408784571635
+     openalex: https://openalex.org/W2156672758
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Utilizing RADseq data for phylogenetic analysis of challenging taxonomic groups: A case study in Carex sect. Racemosae (2016) — Rob Massatti, Anton A. Reznicek, L. Lacey Knowles
+     type=article  cited_by=62  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.1500315
+     openalex: https://openalex.org/W2285665240
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Chloroplast and nuclear DNA exchanges among Begonia sect. Baryandra species (Begoniaceae) from Palawan Island, Philippines, and descriptions of five new species (2018) — Mark Hughes, Ching‐I Peng, Che Lin, Rosario Rivera Rubite et al.
+     type=article  cited_by=61  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1371/journal.pone.0194877
+     openalex: https://openalex.org/W2800559519
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Geographical speciation related to Pleistocene range shifts in the western Mediterranean mountains ( Reseda sect. Glaucoreseda , Resedaceae) (2010) — Santiago Martín‐Bravo, Virginia Valcárcel, Pablo Vargas, Modesto Luceño
+     type=article  cited_by=61  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/tax.592012
+     openalex: https://openalex.org/W238817767
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Phylogeny and taxonomy of powdery mildew fungi of Erysiphe sect. Uncinula on Carpinus species (2006) — Uwe Braun, Susumu Takamatsu, V.P. Heluta, Saranya Limkaisang et al.
+     type=article  cited_by=61  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s11557-006-0509-6
+     openalex: https://openalex.org/W2052626592
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Evaluating methodologies for species delimitation: the mismatch between phenotypes and genotypes in lichenized fungi (Bryoria sect. Implexae, Parmeliaceae) (2018) — Carlos G. Boluda, Víctor J. Rico, Pradeep K. Divakar, Olga Nadyeina et al.
+     type=article  cited_by=60  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3767/persoonia.2019.42.04
+     openalex: https://openalex.org/W2888629562
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- The First High-Density Genetic Map Construction in Tree Peony (Paeonia Sect. Moutan) using Genotyping by Specific-Locus Amplified Fragment Sequencing (2015) — Changfu Cai, Fangyun Cheng, Jing Wu, Yuan Zhong et al.
+     type=article  cited_by=60  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1371/journal.pone.0128584
+     openalex: https://openalex.org/W412776309
+
+[field exclusion: primary_topic.field='Medicine']
+- Porcini mushrooms (Boletus sect. Boletus) from China (2015) — Yangyang Cui, Bang Feng, Gang Wu, Jianping Xu et al.
+     type=article  cited_by=60  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s13225-015-0336-7
+     openalex: https://openalex.org/W2469934575
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Classification of Primula sect. Auricula (Primulaceae) based on two molecular data sets (ITS, AFLPs), morphology and geographical distribution (2004) — Li‐Bing Zhang, Joachim W. Kadereit
+     type=article  cited_by=60  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1095-8339.2004.00301.x
+     openalex: https://openalex.org/W2007242089
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Occurrence of tetraploid and hexaploid cytotypes between and within populations in Dianthus sect. Plumaria (Caryophyllaceae) (2002) — Hanna Weiss, Christoph Dobeś, Gerald M. Schneeweiss, Josef Greimler
+     type=article  cited_by=60  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1046/j.1469-8137.2002.00500.x
+     openalex: https://openalex.org/W1989843166
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Blue pigment in Hypocrea caerulescens sp. nov. and two additional new species in sect. Trichoderma (2012) — Walter M. Jaklitsch, Marc Stadler, Hermann Voglmayr
+     type=article  cited_by=59  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3852/11-327
+     openalex: https://openalex.org/W2131595906
+
+[topic exclusion: primary_topic='Biblical Studies and Interpretation']
+- Was the Dead Sea Sect a Penitential Movement? (2011) — David A. Lambert
+     type=book-chapter  cited_by=59  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1093/oxfordhb/9780199207237.003.0022
+     openalex: https://openalex.org/W2621826678
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Evolution in Carex L. sect. Spirostachyae (Cyperaceae): A molecular and cytogenetic approach (2007) — Marcial Escudero, Virginia Valcárcel, Pablo Vargas, Modesto Luceño
+     type=article  cited_by=59  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.ode.2006.08.006
+     openalex: https://openalex.org/W2067015943
+
+[field exclusion: primary_topic.field='Earth and Planetary Sciences']
+- Fossils of Quercus sect. Heterobalanus can help explain the uplift of the Himalayas (2007) — Zhe‐Kun Zhou, Qingsong Yang, Ke Xia
+     type=article  cited_by=59  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s11434-007-0005-7
+     openalex: https://openalex.org/W2058295302
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Phylogeny and biogeography of the hyper–diverse genus Eugenia (Myrtaceae: Myrteae), with emphasis on E . sect. Umbellatae , the most unmanageable clade (2018) — Fiorella Fernanda Mazine, Jair Eustáquio Quintino Faria, Augusto Giaretta, Thaís Vasconcelos et al.
+     type=article  cited_by=57  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.12705/674.5
+     openalex: https://openalex.org/W2889508558
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Corolla morphology influences diversification rates in bifid toadflaxes (Linaria sect. Versicolores) (2013) — Mario Fernández‐Mazuecos, José Luis Blanco‐Pastor, José M. Gómez, Pablo Vargas
+     type=article  cited_by=57  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1093/aob/mct214
+     openalex: https://openalex.org/W2124555068
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- A taxonomic revision of Plagiochila sect. - Hylacoetes, sect. Adiantoideae and sect. - Fuscoluteae in the Neotropics with a preliminary - subdivision of Neotropical Plagiochilaceae into nine - lineages (2002) — Jochen Heinrichs
+     type=article  cited_by=57  channels=1
+     channels: "sect" NOT section
+     openalex: https://openalex.org/W2916298921
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Induction of direct somatic embryogenesis and shoot organogenesis and histological study in tree peony (Paeonia sect. Moutan) (2020) — Yiming Du, Fangyun Cheng, Yuan Zhong
+     type=article  cited_by=56  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s11240-020-01815-4
+     openalex: https://openalex.org/W3017403073
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Nitrate Reductase Phylogeny of Potato (Solanum sect. Petota) Genomes with Emphasis on the Origins of the Polyploid Species (2009) — Flor Rodríguez, David M. Spooner
+     type=article  cited_by=56  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1600/036364409787602195
+     openalex: https://openalex.org/W2175425651
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Hypomiltin, a novel azaphilone from Hypoxylon hypomiltum, and chemotypes in Hypoxylon sect. Hypoxylon as inferred from analytical HPLC profiling (2005) — Veronika Hellwig, Yu‐Ming Ju, Jack D. Rogers, Jacques Fournier et al.
+     type=article  cited_by=56  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s11557-006-0108-6
+     openalex: https://openalex.org/W2083625710
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Solanum sect. Lycopersicon (2011) — Silvana Grandillo, Roger T. Chetelat, Sandra Knapp, David M. Spooner et al.
+     type=book-chapter  cited_by=55  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/978-3-642-20450-0_9
+     openalex: https://openalex.org/W72561308
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Paraphyly of organelle DNAs in Cycas Sect. Asiorientales due to ancient ancestral polymorphisms (2009) — Yu-Chung Chiang, Kuo-Hsiang Hung, Shann-Jye Moore, Xue-Jun Ge et al.
+     type=article  cited_by=55  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1186/1471-2148-9-161
+     openalex: https://openalex.org/W2028493897
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Dating the Species Network: Allopolyploidy and Repetitive DNA Evolution in American Daisies (Melampodium sect. Melampodium, Asteraceae) (2018) — Jamie McCann, Tae‐Soo Jang, Jir̆ı́ Macas, Gerald M. Schneeweiss et al.
+     type=article  cited_by=54  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1093/sysbio/syy024
+     openalex: https://openalex.org/W2897288927
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Molecular evolution of 5S rDNA of Solanum species (sect. Petota): application for molecular phylogeny and breeding (2001) — Р. А. Волков, C. Zanke, І. І. Панчук, Vera Hemleben
+     type=article  cited_by=54  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s001220100670
+     openalex: https://openalex.org/W2016023348
+
+[field exclusion: primary_topic.field='Chemistry']
+- Development of Molecular Markers for Determining Continental Origin of Wood from White Oaks (Quercus L. sect. Quercus) (2016) — Hilke Schroeder, Richard Cronn, Yulai Yanbaev, Tara Jennings et al.
+     type=article  cited_by=53  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1371/journal.pone.0158221
+     openalex: https://openalex.org/W2469666045
+
+[field exclusion: primary_topic.field='Environmental Science']
+- New Insights into Interspecific Hybridization in Lemna L. Sect. Lemna (Lemnaceae Martinov) (2021) — Luca Braglia, Diego Breviario, Silvia Gianı̀, Floriana Gavazzi et al.
+     type=article  cited_by=52  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3390/plants10122767
+     openalex: https://openalex.org/W4200478187
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Micropropagation of tree peony (Paeonia sect. Moutan): A review (2019) — Shu-Sheng Wen, Lan Chen, Runan Tian
+     type=article  cited_by=52  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s11240-019-01747-8
+     openalex: https://openalex.org/W2992694986
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- THE PROMISCUOUS AND THE CHASTE: FREQUENT ALLOPOLYPLOID SPECIATION AND ITS GENOMIC CONSEQUENCES IN AMERICAN DAISIES (MELAMPODIUM SECT. MELAMPODIUM; ASTERACEAE) (2011) — Hanna Weiss‐Schneeweiss, Cordula Blöch, Barbara Turner, José Luís Villaseñor et al.
+     type=article  cited_by=52  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1558-5646.2011.01424.x
+     openalex: https://openalex.org/W1860564672
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Taxonomy of North and Central American diploid wild potato (Solanum sect. Petota) species: AFLP data (2004) — Sabina I. Lara-Cabrera, David M. Spooner
+     type=article  cited_by=52  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00606-004-0185-4
+     openalex: https://openalex.org/W2026227750
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Delineation and phylogeny of Centaurea sect. Acrocentron based on DNA sequences: a restoration of the genus Crocodylircm and indirect evidence of introgression. (2002) — M. Font, Teresa Garnatje, Núria Garcia‐Jacas, Alfonso Susanna
+     type=article  cited_by=52  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00606-002-0203-3
+     openalex: https://openalex.org/W1526164174
+
+[field exclusion: primary_topic.field='Materials Science']
+- Exegesis of Sect. II and III.A from “Fundamentals of the Mechanics of Continua” by E. Hellinger (2017) — Simon R. Eugster, Francesco dell’Isola
+     type=article  cited_by=51  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/zamm.201600293
+     openalex: https://openalex.org/W2736829154
+
+[acronym exclusion: all-caps 'SECT(S)' (reliably an acronym, not the word 'sect')]
+- Further Operationalization of Intra-Team Communication in Sports: An Updated Version of the Scale of Effective Communication in Team Sports (SECTS-2) (2011) — Philip Sullivan, Sandra E. Short
+     type=article  cited_by=51  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1559-1816.2010.00722.x
+     openalex: https://openalex.org/W1526676631
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Induced expression of CYP51 associated with difenoconazole resistance in the pathogenic Alternaria sect. on potato in China (2019) — Yue Zhang, Qian Zhou, Peiyu Tian, Yuan Li et al.
+     type=article  cited_by=50  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/ps.5699
+     openalex: https://openalex.org/W2990864023
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Phylogeny and biogeography of Primula sect. Armerina: implications for plant evolution under climate change and the uplift of the Qinghai-Tibet Plateau (2015) — Guangpeng Ren, Elena Conti, Nicolas Salamin
+     type=article  cited_by=50  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1186/s12862-015-0445-7
+     openalex: https://openalex.org/W1797667500
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Systematics and Taxonomy of Carex sect. Ceratocystis (Cyperaceae) in Europe: A Molecular and Cytogenetic Approach (2012) — Pedro Jiménez‐Mejías
+     type=article  cited_by=50  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1600/036364412x635449
+     openalex: https://openalex.org/W2133328319
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Molecular phylogeny of Euphorbia subg. Esula sect. Aphyllis (Euphorbiaceae) inferred from nrDNA and cpDNA markers with biogeographic insights (2011) — Laia Barres, Roser Vilatersana, Julià Molero, Alfonso Susanna et al.
+     type=article  cited_by=50  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/tax.603007
+     openalex: https://openalex.org/W311027172
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Cortinarius sect. Brunnei (Basidiomycota, Agaricales) in North Europe (2008) — Tuula Niskanen, Ilkka Kytövuori, Kare Liimatainen
+     type=article  cited_by=50  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.mycres.2008.10.006
+     openalex: https://openalex.org/W2032714506
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Chromosomal criteria and their phylogenetic implications in the genus Onobrychis Mill. sect. Lophobrychis (Leguminosae), with special reference to Egyptian species (2002) — Maged Abou-El-Enain
+     type=article  cited_by=50  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1046/j.1095-8339.2002.00075.x
+     openalex: https://openalex.org/W2154443983
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Pollen morphology of Astragalus L. sect. Onobrychoidei DC. (Fabaceae) in Turkey (2009) — Münevver Pinar, MURAT EKİCİ, Zekí Aytaç, Haşan Akan et al.
+     type=article  cited_by=49  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3906/bot-0808-8
+     openalex: https://openalex.org/W2116634903
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- The use of floral characters in Capparis sect. Capparis to determine the botanical and geographical origin of capers (2002) — Cristina Inocencio, Francisco Alcaraz, Francisca Calderón, Concepción Obón et al.
+     type=article  cited_by=49  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00217-001-0465-y
+     openalex: https://openalex.org/W2017359474
+
+[subfield exclusion: primary_topic.subfield='History']
+- sectes protestantes et l'esprit du capitalisme (2002) — Max Weber
+     type=book  cited_by=49  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1522/cla.wem.sec
+     openalex: https://openalex.org/W2482810976
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- The new hyphomycete genera Brachyalara and Infundichalara, the similar Exochalara and species of ‘Phialophora sect. Catenulatae’ (Leotiomycetes) (2011) — Martina Réblová, W. Gams, Václav Štěpánek
+     type=article  cited_by=48  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s13225-010-0077-6
+     openalex: https://openalex.org/W2089137847
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Variation Among and Within Dogrose Taxa ( Rosa sect. caninae ) in Fruit Weight, Percentages of Fruit Flesh and Dry Matter, and Vitamin C Content (2003) — M. Uggla, Xinyan Gao, G. Werlemark
+     type=article  cited_by=48  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1080/09064710310011746
+     openalex: https://openalex.org/W2088514951
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Reticulate evolution in the apogamous Dryopteris varia complex (Dryopteridaceae, subg. Erythrovariae, sect. Variae) and its related sexual species in Japan (2014) — Kiyotaka Hori, Akitaka Tono, Kazuto Fujimoto, Juntaro Kato et al.
+     type=article  cited_by=47  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s10265-014-0652-0
+     openalex: https://openalex.org/W2058129726
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Seed surface morphology in some representatives of the Genus Rhodiola sect. Rhodiola (Crassulaceae) in the Russian Far East (2008) — Svetlana B. Gontcharova, Andrey A. Gontcharov, V. V. Yakubov, Katsuhiko Kondo
+     type=article  cited_by=47  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.flora.2008.01.009
+     openalex: https://openalex.org/W2040903820
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- FLORAL BIOLOGY OF NORTH AMERICAN OENOTHERA SECT. LAVAUXIA (ONAGRACEAE): ADVERTISEMENTS, REWARDS, AND EXTREME VARIATION IN FLORAL DEPTH1,2 (2007) — Robert A. Raguso, Almut Kelber, Michael Pfaff, Rachel A. Levin et al.
+     type=article  cited_by=47  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3417/0026-6493(2007)94[236:fbonao]2.0.co;2
+     openalex: https://openalex.org/W1964510383
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Numerical taxonomy study of Salvia sect. Salvia (Labiatae) (2004) — Antonio Reales, Diego Rivera, José Antonio Palazón, Concepción Obón
+     type=article  cited_by=47  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1095-8339.2004.00295.x
+     openalex: https://openalex.org/W2162292661
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Phylogeny of Hibiscus sect. Muenchhusia (Malvaceae) Based on Chloroplast rpL16 and ndhF, and Nuclear ITS and GBSSI Sequences (2004) — Lawrence F. Small
+     type=article  cited_by=47  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1600/036364404774195575
+     openalex: https://openalex.org/W2174413218
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Contribution to the cytotaxonomical knowledge ofGageaSalisb. (Liliaceae) sect. Foliatae A. Terracc. and synthesis of karyological data (2003) — Lorenzo Peruzzi
+     type=article  cited_by=47  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1080/00087114.2003.10589314
+     openalex: https://openalex.org/W2037820229
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- A phylogenetic revision of Penicillium sect. Exilicaulis, including nine new species from fynbos in South Africa (2016) — Cobus M. Visagie, Keith A. Seifert, Jos Houbraken, Robert A. Samson et al.
+     type=article  cited_by=46  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.5598/imafungus.2016.07.01.06
+     openalex: https://openalex.org/W2479019411
+
+[subfield exclusion: primary_topic.subfield='Classics']
+- Sect and Utopia in shifting empires: Plethon, Elissaios, Bedreddin (2012) — Niketas Siniossoglou
+     type=article  cited_by=46  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1179/030701312x13238617305617
+     openalex: https://openalex.org/W2060006875
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Taxonomic delimitation and drivers of speciation in the Ibero‐North African Carex sect. Phacocystis river‐shore group (Cyperaceae) (2011) — Pedro Jiménez‐Mejías, Marcial Escudero, Samuel Guerra‐Cárdenas, Kåre Arnstein Lye et al.
+     type=article  cited_by=46  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.1100120
+     openalex: https://openalex.org/W2149380813
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Systematics and evolution of Carex sects. Spirostachyae and Elatae (Cyperaceae) (2009) — Marcial Escudero, Modesto Luceño
+     type=article  cited_by=46  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00606-009-0156-x
+     openalex: https://openalex.org/W2056923410
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Sinopse de Bauhinia sect. Pauletia (Cav.) DC. (Leguminosae: Caesalpinioideae: Cercideae) no Brasil (2005) — Angela M.S.F. Vaz, Ana Maria G.A. Tozzi
+     type=article  cited_by=46  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1590/s0100-84042005000300006
+     openalex: https://openalex.org/W2069577835
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Evolution of ITS Ribosomal RNA Secondary Structures in Fungal and Algal Symbionts of Selected Species of Cladonia sect. Cladonia (Cladoniaceae, Ascomycotina) (2007) — Sara Beiggi, Michele D. Piercey‐Normore
+     type=article  cited_by=45  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00239-006-0115-x
+     openalex: https://openalex.org/W2018383844
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Molecular evolution of rDNA external transcribed spacer and phylogeny of sect. Petota (genus Solanum) (2003) — Р. А. Волков, Nataliya Y. Komarova, І. І. Панчук, Vera Hemleben
+     type=article  cited_by=45  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/s1055-7903(03)00092-7
+     openalex: https://openalex.org/W1982301096
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- A taxonomic revision of Helichrysum sect. Stoechadina (Asteraceae, Gnaphalieae) (2006) — Mercè Galbany‐Casals, Llorenç Sáez, Carles Benedí
+     type=article  cited_by=44  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1139/b06-082
+     openalex: https://openalex.org/W2121439210
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- Healing Sects and Anti-Cult Campaigns (2003) — Nancy N. Chen
+     type=article  cited_by=44  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1017/s0009443903000305
+     openalex: https://openalex.org/W2136655328
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Systematics of Festuca L. sects. Eskia Willk., Pseudatropis Kriv., Amphigenes (Janka) Tzvel., Pseudoscariosa Kriv. and Scariosae Hack. based on analysis of morphological characters and DNA sequences (2003) — Pedro Torrecilla, J. A. L�pez Rodr�guez, Daniel Stančík, Pilar Catal�n
+     type=article  cited_by=44  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00606-002-0265-2
+     openalex: https://openalex.org/W2171875035
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Cytotype variation, cryptic diversity and hybridization in Ranunculus sect. Batrachium revealed by flow cytometry and chromosome numbers (2018) — Jan Prančl, Petr Koutecký, Pavel Trávníček, Vlasta Jarolímová et al.
+     type=article  cited_by=43  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.23855/preslia.2018.195
+     openalex: https://openalex.org/W2891586201
+
+[field exclusion: primary_topic.field='Engineering']
+- Exegesis of Sect. III.B from “Fundamentals of the Mechanics of Continua” by E. Hellinger (2017) — Simon R. Eugster, Francesco dell’Isola
+     type=article  cited_by=43  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/zamm.201700112
+     openalex: https://openalex.org/W4211232826
+
+[field exclusion: primary_topic.field='Medicine']
+- Morphological, chemical, and molecular analyses of Turkish Papaver accessions (Sect. Oxytona) (2011) — İskender Parmaksız, Sebahattin Özcan
+     type=article  cited_by=43  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3906/bot-1003-39
+     openalex: https://openalex.org/W1853453797
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Complete chloroplast genomes of 13 species of sect. Tuberculata Chang (Camellia L.): genomic features, comparative analysis, and phylogenetic relationships (2024) — Zhaohui Ran, Zhi Li, Xu Xiao, Mingtai An et al.
+     type=article  cited_by=42  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1186/s12864-024-09982-w
+     openalex: https://openalex.org/W4391175544
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Geographical isolation caused the diversification of the Mediterranean thorny cushion-like Astragalus L. sect. Tragacantha DC. (Fabaceae) (2016) — Laurent Hardion, Pierre-Jean Dumas, Farah Abdel-Samad, Magda Bou Dagher Kharrat et al.
+     type=article  cited_by=42  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.ympev.2016.01.006
+     openalex: https://openalex.org/W2284782377
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Significance of ecological vicariance and long‐distance dispersal in the diversification of Carex sect. Spirostachyae (Cyperaceae) (2009) — Marcial Escudero, Virginia Valcárcel, Pablo Vargas, Modesto Luceño
+     type=article  cited_by=42  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.0900134
+     openalex: https://openalex.org/W2105130642
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- The asymmetric meiosis in pentaploid dogroses (Rosa sect. Caninae) is associated with a skewed distribution of rRNA gene families in the gametes (2008) — A Kovarik, G. Werlemark, Andrew R. Leitch, Kamila Součková et al.
+     type=article  cited_by=42  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1038/hdy.2008.63
+     openalex: https://openalex.org/W2069092678
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Exudate flavonoid aglycones in the alpine species of Achillea sect. Ptarmica: Chemosystematics of A. moschata and related species (Compositae–Anthemideae) (2001) — Karin M. Valant‐Vetschera, Eckhard Wollenweber
+     type=article  cited_by=42  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/s0305-1978(00)00033-8
+     openalex: https://openalex.org/W1992573583
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Unravelling soil and plant metal relationships in Albanian nickel hyperaccumulators in the genus Odontarrhena (syn. Alyssum sect. Odontarrhena, Brassicaceae) (2019) — Isabella Bettarini, Ilaria Colzi, Andrea Coppi, Sara Falsini et al.
+     type=article  cited_by=41  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s11104-019-04077-y
+     openalex: https://openalex.org/W2940434426
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Construction of a genetic linkage map in tree peony ( Paeonia Sect. Moutan ) using simple sequence repeat (SSR) markers (2017) — Qi Guo, Lili Guo, Lin Zhang, Lixia Zhang et al.
+     type=article  cited_by=41  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.scienta.2017.03.017
+     openalex: https://openalex.org/W2602850872
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- DNA barcoding in closely related species: A case study of Primula L. sect. Proliferae Pax (Primulaceae) in China (2011) — Hai‐Fei Yan, Gang Hao, Chi‐Ming Hu, Xue‐Jun Ge
+     type=article  cited_by=41  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1759-6831.2011.00115.x
+     openalex: https://openalex.org/W2040678440
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Chemical Composition of Essential Oil and Leaf Anatomy of Salvia bertolonii Vis. and Salvia pratensis L. (Sect. Plethiosphace, Lamiaceae) (2008) — Goran Anačkov, Biljana Božin, Lana Zorić, Dragana Vukov et al.
+     type=article  cited_by=41  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3390/molecules14010001
+     openalex: https://openalex.org/W2018015958
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- The Genus Machaerium (Leguminosae) is More Closely Related to Aeschynomene Sect. Ochopodium than to Dalbergia: Inferences From Combined Sequence Data (2007) — Renata Acácio Ribeiro, Matt Lavin, José Pires de Lemos-Filho, Carlos Victor Mendonça Filho et al.
+     type=article  cited_by=41  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1600/036364407783390700
+     openalex: https://openalex.org/W2175537914
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Botanical names in Southern Hemisphere Veronica ( Plantaginaceae ): sect. Detzneria , sect. Hebe , and sect. Labiatoides (2007) — P. J. Garnock‐Jones, Dirk C. Albach, Barbara G. Briggs
+     type=article  cited_by=41  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/tax.562028
+     openalex: https://openalex.org/W2486569555
+
+[field exclusion: primary_topic.field='Medicine']
+- Reticulate evolution and phylogeography in Asarum sect. Asiasarum (Aristolochiaceae) documented in internal transcribed spacer sequences (ITS) of nuclear ribosomal DNA (2007) — Hiroki Yamaji, Tatsuya Fukuda, Jun Yokoyama, Jae‐Hong Pak et al.
+     type=article  cited_by=41  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.ympev.2007.01.011
+     openalex: https://openalex.org/W2168213596
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Phylogeny of Podosphaera sect. Sphaerotheca subsect. Magnicellulatae (Sphaerotheca fuliginea auct. s.lat.) inferred from rDNA ITS sequences: a taxonomic interpretation (2001) — Uwe Braun, Nina Shishkoff, Susumu Takamatsu
+     type=article  cited_by=41  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.25673/90024
+     openalex: https://openalex.org/W1543397022
+
+[field exclusion: primary_topic.field='Engineering']
+- Image Quality and Dose Comparison of Single-Energy CT (SECT) and Dual-Energy CT (DECT) (2020) — Ramin Ghasemi Shayan, Maryam Oladghaffari, Fakhrosadat Sajjadian, Mona Fazel Ghaziyani
+     type=article  cited_by=40  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1155/2020/1403957
+     openalex: https://openalex.org/W3020052864
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Two new species of Miconia sect. Sagraea (Melastomataceae) from the Macaya Biosphere Reserve, Haiti, and twelve relevant new species combinations (2012) — Gretchen M. Ionta, Walter S. Judd, James D. Skean, Conley K. McMullen
+     type=article  cited_by=40  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s12228-011-9214-0
+     openalex: https://openalex.org/W2070614830
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- TAXONOMY OF LANTANA SECT. LANTANA (VERBENACEAE): I. CORRECT APPLICATION OF LANTANA CAMARA AND ASSOCIATED NAMES (2006) — Roger W. Sanders
+     type=article  cited_by=40  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.5281/zenodo.16203733
+     openalex: https://openalex.org/W2762018419
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Four new bioluminescent taxa of Mycena sect. Calodontes from Peninsular Malaysia (2014) — Audrey L.C. Chew, Yee Shin Tan, Dennis E. Desjardin, Md Yusoff Musa et al.
+     type=article  cited_by=39  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3852/13-274
+     openalex: https://openalex.org/W2068790031
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Comparative Morphological, Anatomical, and Palynological Studies on the Genus Stachys L. sect. Ambleia Bentham (Lamiaceae) Species in Turkey (2008) — Muhittin Dınç, Meryem Öztürk
+     type=article  cited_by=39  channels=1
+     channels: "sect" NOT section
+     openalex: https://openalex.org/W1852921772
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Species limits of Solanum berthaultii Hawkes and S. tarijense Hawkes and the implications for species boundaries in Solanum sect. Petota (2007) — David M. Spooner, Diego Fajardo, Glenn J. Bryan
+     type=article  cited_by=39  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.2307/25065899
+     openalex: https://openalex.org/W2324964212
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Self‐incompatibility and floral parameters in Hypochaeris sect. Hypochaeris (Asteraceae) (2006) — María Ángeles Ortiz Herrera, Salvador Talavera, Juan Luis García‐Castaño, Karin Tremetsberger et al.
+     type=article  cited_by=39  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.93.2.234
+     openalex: https://openalex.org/W2082179135
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Morphological variation in Bromus sect. Ceratochloa germplasm of Patagonia (2004) — Alicia N. Massa, Kevin B. Jensen, Steve Larson, David Hole
+     type=article  cited_by=39  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1139/b03-133
+     openalex: https://openalex.org/W2029804052
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Molecular phylogenetic systematics in the Dendrobiinae (Orchidaceae), with emphasis on Dendrobium sect. Pedilonum (2003) — Mark A. Clements
+     type=article  cited_by=39  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.7751/telopea20035619
+     openalex: https://openalex.org/W4214734687
+
+[taxonomic-abbreviation exclusion: 'sect.' (botanical/zoological section, not the word 'sect')]
+- Sophora sect. Edwardsia (Fabaceae): further evidence from nrDNA sequence data of a recent and rapid radiation around the Southern Oceans (2002) — Andrew Mitchell, Peter B. Heenan
+     type=article  cited_by=39  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1046/j.1095-8339.2002.00101.x
+     openalex: https://openalex.org/W2093349102
+
+[ancient-marker exclusion: title contains 'medieval']
+- History, Scripture and Controversy in a Medieval Jain Sect (2018) — Paul Dundas
+     type=book  cited_by=38  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.4324/9780203966754
+     openalex: https://openalex.org/W413360275
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Sequence capture using RAD probes clarifies phylogenetic relationships and species boundaries in Primula sect. Auricula (2016) — Florian C. Boucher, Gabriele Casazza, Péter Szövényi, Elena Conti
+     type=article  cited_by=38  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.ympev.2016.08.003
+     openalex: https://openalex.org/W2488889573
+
+[field exclusion: primary_topic.field='Nursing']
+- Natural history, distribution, phylogenetic relationships, and conservation of Central American black walnuts (Juglans sect. Rhysocaryon)1 (2009) — Donald E. Stone, Sang‐Hun Oh, Erin A. Tripp, Luis E. Ríos G et al.
+     type=article  cited_by=38  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3159/08-ra-036r.1
+     openalex: https://openalex.org/W2109927747
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- New names in Old World Clinopodium —the transfer of the species of Micromeria sect. Pseudomelissa to Clinopodium (2006) — Christian Bräuchler, Harald Meimberg, Günther Heubl
+     type=article  cited_by=38  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.2307/25065692
+     openalex: https://openalex.org/W2329066304
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- The relationship of Sophora sect. Edwardsia (Fabaceae) to Sophora tomentosa, the type species of the genus Sophora, observed from DNA sequence data and morphological characters (2004) — Peter B. Heenan, Murray I. Dawson, Steven J. Wagstaff
+     type=article  cited_by=38  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1095-8339.2004.00348.x
+     openalex: https://openalex.org/W2055326863
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- A new species of Centaurea (Asteraceae: sect. Psephelloideae) from Turkey (2003) — İ̇smail Türkoğlu, Haşan Akan, Şemsettin Civelek
+     type=article  cited_by=38  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1046/j.1095-8339.2003.00205.x
+     openalex: https://openalex.org/W1974744410
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Clarifying the butter Boletes: a new genus, Butyriboletus , is established to accommodate Boletus sect. Appendiculati , and six new species are described (2014) — David Arora, Jonathan L. Frank
+     type=article  cited_by=37  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3852/13-052
+     openalex: https://openalex.org/W2013662048
+
+[topic-history exclusion: primary_topic='Asian Studies and History']
+- ‘They are not Muslims’: A critical discourse analysis of the Ahmadiyya sect issue in Indonesia (2017) — Andi Muhammad Irawan
+     type=article  cited_by=36  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1177/0957926516685462
+     openalex: https://openalex.org/W2585809788
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Marginal Likelihood Estimate Comparisons to Obtain Optimal Species Delimitations in Silene sect. Cryptoneurae (Caryophyllaceae) (2014) — Zeynep Aydin, Thomas Marcussen, Alaattin Selçuk Ertekin, Bengt Oxelman
+     type=article  cited_by=36  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1371/journal.pone.0106990
+     openalex: https://openalex.org/W2022477341
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Genomic in situ hybridization reveals both auto- and allopolyploid origins of different North and Central American hexaploid potato (Solanum sect. Petota) species (2012) — Г. И. Пендинен, David M. Spooner, Jiming Jiang, Т. А. Гавриленко
+     type=article  cited_by=36  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1139/g2012-027
+     openalex: https://openalex.org/W2328617204
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Sorting through the chaff, nDNA gene trees for phylogenetic inference and hybrid identification of annual sunflowers (Helianthus sect. Helianthus) (2012) — Michael L. Moody, Loren H. Rieseberg
+     type=article  cited_by=36  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.ympev.2012.03.012
+     openalex: https://openalex.org/W1995610774
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Molecular assessment of fungi in “black spots” that deface murals in the Takamatsuzuka and Kitora Tumuli in Japan: Acremonium sect. Gliomastix including Acremonium tumulicola sp. nov. and Acremonium felinum comb. nov (2010) — Tomohiko Kiyuna, Kwang-Deuk An, Rika Kigawa, Chie Sano et al.
+     type=article  cited_by=36  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s10267-010-0063-6
+     openalex: https://openalex.org/W2019559676
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Cytogenetic variability and new chromosome number reports in Silene L. species (Sect. Lasiostemones, Caryophyllaceae) (2008) — Masoud Sheidai, Mehrnoosh Nikoo, Abbas Gholipour
+     type=article  cited_by=36  channels=1
+     channels: "sect" NOT section
+     openalex: https://openalex.org/W2339802188
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- The Systematic Value of Morphological Characters in Senecio sect. Jacobaea (Asteraceae) as Compared to DNA Sequences (2004) — Pieter B. Pelser, Kevin van den Hof, Barbara Gravendeel, R. van der Meijden
+     type=article  cited_by=36  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1600/0363644041744482
+     openalex: https://openalex.org/W2180051794
+
+[field exclusion: primary_topic.field='Medicine']
+- Disrupting tumor onset and growth via selective cell tagging (SeCT) therapy (2021) — Kenward Vong, Tsuyoshi Tahara, Sayaka Urano, Igor Nasibullin et al.
+     type=article  cited_by=35  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1126/sciadv.abg4038
+     openalex: https://openalex.org/W3153206655
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Three new species of Talaromyces sect. Talaromyces discovered from soil in China (2018) — Xianzhi Jiang, Zhongdong Yu, Yongming Ruan, Long Wang
+     type=article  cited_by=35  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1038/s41598-018-23370-x
+     openalex: https://openalex.org/W2806222660
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- A new species of Lavandula sect. Lavandula (Lamiaceae) and review of species boundaries in Lavandula angustifolia (2017) — Nicodemo G. Passalacqua, Rosa Tundis, Tim Upson
+     type=article  cited_by=35  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.11646/phytotaxa.292.2.3
+     openalex: https://openalex.org/W2580176188
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Four new morel (Morchella) species in the elata subclade (M. sect. Distantes) from Turkey (2016) — Hatıra Taşkın, Hasan Hüseyi̇n Doğan, Saadet Büyükalaca, Philippe Clowez et al.
+     type=article  cited_by=35  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.5248/131.467
+     openalex: https://openalex.org/W2513978229
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Baccharis sect. Caulopterae (Asteraceae, Astereae) no Rio Grande do Sul, Brasil (2009) — Gustavo Heiden, João Ricardo Vieira Iganci, Leila Macias
+     type=article  cited_by=35  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1590/2175-7860200960411
+     openalex: https://openalex.org/W2743376372
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Revised treatment of Memecylon sect. Afzeliana (Melastomataceae: Olisbeoideae), including three new species from Cameroon (2008) — Robert Douglas Stone, Jean‐Paul Ghogue, Martin Cheek
+     type=article  cited_by=35  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s12225-008-9033-y
+     openalex: https://openalex.org/W2018495798
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Distribution and synonymy of Plagiochila punctata (Taylor) Taylor, with hypotheses on the evolutionary history of Plagiochila sect. Arrectae (Plagiochilaceae, Hepaticae) (2004) — Jochen Heinrichs, Melanie Lindner, Henk Groth, Carsten Renker
+     type=article  cited_by=35  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00606-004-0220-5
+     openalex: https://openalex.org/W2154955294
+
+[field exclusion: primary_topic.field='Neuroscience']
+- SECT: A Method of Shifted EEG Channel Transformer for Emotion Recognition (2023) — Zhongli Bai, Fazheng Hou, Kaixuan Sun, Qingzhou Wu et al.
+     type=article  cited_by=34  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1109/jbhi.2023.3301993
+     openalex: https://openalex.org/W4385574794
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Taxonomic studies in the Miconieae (Melastomataceae). XI. A revision of Miconia sect. Calycopteris on Hispaniola (2014) — Walter S. Judd, Eldis R. Bécquer, Lucas C. Majure
+     type=article  cited_by=34  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s12228-014-9326-4
+     openalex: https://openalex.org/W1973740093
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- A phylogenetic evaluation of Panicum sects. Agrostoidea , Megista , Prionitia and Tenera (Panicoideae, Poaceae): Two new genera, Stephostachys and Sorengia (2010) — Fernando O. Zuloaga, M. Amalia Scataglini, Osvaldo Morrone
+     type=article  cited_by=34  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/tax.595017
+     openalex: https://openalex.org/W2304042182
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- On the phylogenetic position and taxonomic value of Gagea trinervia (Viv.) Greuter and Gagea sect. Anthericoides A. Terracc. (Liliaceae) (2008) — Lorenzo Peruzzi, Jean‐Marc Tison, Angela Peterson, Jens Peterson
+     type=article  cited_by=34  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1002/tax.574013
+     openalex: https://openalex.org/W2465697564
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- The royal irises ( Iris subg. Iris sect. Oncocyclus ): Plastid and low‐copy nuclea data contribute to an understanding of their phylogenetic relationships (2016) — Carol Wilson, Justin Padiernos, Yuval Sapir
+     type=article  cited_by=33  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.12705/651.3
+     openalex: https://openalex.org/W2334109833
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Reticulate evolution of the critical Mediterranean Gagea sect. Didymobulbos (Liliaceae) and its taxonomic implications (2012) — Jean‐Marc Tison, Angela Peterson, Dörte Harpke, Lorenzo Peruzzi
+     type=article  cited_by=33  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00606-012-0731-4
+     openalex: https://openalex.org/W2015505259
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Revisão taxonômica de Microlicia sect. Chaetostomoides (Melastomataceae) (2003) — Rosana Romero
+     type=article  cited_by=33  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1590/s0100-84042003000400001
+     openalex: https://openalex.org/W2053225575
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Figuring out the figs: the Ficus obliqua - Ficus rubiginosa Complex (Moraceae: Urostigma sect. Malvanthera ) (2001) — Dale Dixon, Betsy R. Jackes, L. M. Bielig
+     type=article  cited_by=33  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1071/sb99029
+     openalex: https://openalex.org/W1996186184
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Carex sect. Rhynchocystis (Cyperaceae): a Miocene subtropical relict in the Western Palaearctic showing a dispersal‐derived Rand Flora pattern (2017) — Mónica Míguez, Berit Gehrke, Enrique Maguilla, Pedro Jiménez‐Mejías et al.
+     type=article  cited_by=32  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/jbi.13027
+     openalex: https://openalex.org/W2618958314
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Micromphale sect. Perforantia (Agaricales, Basidiomycetes); Expansion and phylogenetic placement (2016) — Ronald H. Petersen, Karen W. Hughes
+     type=article  cited_by=32  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3897/mycokeys.18.10007
+     openalex: https://openalex.org/W2562742589
+
+[field exclusion: primary_topic.field='Medicine']
+- Realizing the Potential of Health-Promoting Rosehips from Dogroses (Rosa sect. Caninae) (2016) — Hilde Nybom, G. Werlemark
+     type=article  cited_by=32  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.2174/1573407212666160607090635
+     openalex: https://openalex.org/W2443526864
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Long-distance dispersal and speciation of Australasian and American species of Cortinarius sect. Cortinarius (2015) — Emma Harrower, Neale L. Bougher, Terry W. Henkel, Egon Horak et al.
+     type=article  cited_by=32  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3852/14-182
+     openalex: https://openalex.org/W2104484381
+
+[type exclusion: OpenAlex type='other']
+- Contemporary Islamic sects & groups in northern Nigeria (2014) — Abdul Raufu Mustapha, Mukhtar U. Bunza
+     type=other  cited_by=32  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1017/9781782044734.005
+     openalex: https://openalex.org/W4321637954
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Molecular evidence for reticulate speciation in Astragalus (Fabaceae) as revealed by a case study from sect. Dissitiflori (2013) — László Bartha, Nicolae Dragoş, Attila Molnár V., Gábor Sramkó
+     type=article  cited_by=32  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1139/cjb-2013-0036
+     openalex: https://openalex.org/W2011187423
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Revisão taxonômica de Croton sect. Lamprocroton (Müll. Arg.) Pax (Euphorbiaceae s.s.) (2008) — Letícia Ribes de Lima, José Rubens Pirani
+     type=article  cited_by=32  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1590/s1676-06032008000200018
+     openalex: https://openalex.org/W2160892563
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Phylogeny of Dioscorea sect. Stenophora based on chloroplast matK, rbcL and trnL-F sequences (2008) — Xing Gao, Yu‐Ping Zhu, Baocheng Wu, Yamei Zhao et al.
+     type=article  cited_by=32  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3724/sp.j.1002.2008.08007
+     openalex: https://openalex.org/W1539494822
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Biosystematics of Chamaecrista sect. Absus subsect. Baseophyllum (Leguminosae-Caesalpinioideae) based on allozyme and morphometric analyses (2007) — Adilva de Souza Conceição, Luciano Paganucci de Queiroz, Sabrina Mota Lambert, A. C. S. Pereira et al.
+     type=article  cited_by=32  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00606-007-0604-4
+     openalex: https://openalex.org/W2082546259
+
+[field exclusion: primary_topic.field='Medicine']
+- Chemometrics and innovative multidimensional data analysis (MDA) based on multi-element screening to protect the Italian porcino (Boletus sect. Boletus) from fraud (2019) — Antonio Francesco Mottese, Maria Rita Fede, F. Caridi, Giuseppe Sabatino et al.
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1016/j.foodcont.2019.107004
+     openalex: https://openalex.org/W2988799528
+
+[field exclusion: primary_topic.field='Engineering']
+- The Meat Grinder With SECT Circuit (2017) — Xinjie Yu, Rui Ban, Xukun Liu, Zhen Li
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1109/tps.2017.2705663
+     openalex: https://openalex.org/W2621999127
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- A study of the morphoanatomical characters of the leaves of Chamaecrista (L.) Moench sect. Apoucouita (Leguminosae-Caesalpinioideae) (2016) — Ítalo Antônio Cotta Coutinho, Juliana Gastaldello Rando, Adilva de Souza Conceição, Renata Maria Strozi Alves Meira
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1590/0102-33062016abb0035
+     openalex: https://openalex.org/W2313467017
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- The Miocene to Pleistocene colonization of the Philippine archipelago by Begonia sect. Baryandra (Begoniaceae) (2015) — Mark Hughes, Rosario Rivera Rubite, Patrick Blanc, Kuo‐Fang Chung et al.
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3732/ajb.1400428
+     openalex: https://openalex.org/W2206023448
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Taxonomy of Erythranthe sect. Simiola (Phrymaceae) in the USA and Mexico (2012) — Guy L Nesom
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     openalex: https://openalex.org/W2619065614
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Molecular identification of species in Prunus sect. Persica (Rosaceae), with emphasis on evaluation of candidate barcodes for plants (2011) — Quan Xu, Shiliang Zhou
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1759-6831.2010.00112.x
+     openalex: https://openalex.org/W2083981212
+
+[field exclusion: primary_topic.field='Environmental Science']
+- Ontogenetic differentiation between Mediterranean and Eurasian pines (sect. Pinus) at the seedling stage (2010) — José Climent, R. San Martín, María Regina Chambel, Sven Mutke
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00468-010-0496-8
+     openalex: https://openalex.org/W2015657858
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Marasmioid and gymnopoid fungi of the Republic of Korea. 2. Marasmius sect. Globulares (2010) — Vladimír Antonín, Rhim Ryoo, Hyeon‐Dong Shin
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3767/003158510x496107
+     openalex: https://openalex.org/W2064667531
+
+[subfield exclusion: primary_topic.subfield='Archeology']
+- Exile And Self-Identity In The Qumran Sect And In Hellenistic Judaism (2010) — Noah Hacham
+     type=book-chapter  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1163/ej.9789004183070.i-257.6
+     openalex: https://openalex.org/W758941171
+
+[field exclusion: primary_topic.field='Medicine']
+- Notes on taxonomy of Paeonia sect. Moutan DC. (Paeoniaceae) (2005) — Hong De‐Yuan
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1360/aps040065
+     openalex: https://openalex.org/W1978769485
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Evolution of Polyscias sect. Tieghemopanax (Araliaceae) based on nuclear and chloroplast DNA sequence data (2001) — Jonathan M. Eibl, Gregory M. Plunkett, Porter P. Lowry
+     type=article  cited_by=31  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.5281/zenodo.5180097
+     openalex: https://openalex.org/W2512208849
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Inducing triploids and tetraploids with high temperatures in Populus sect. Tacamahaca (2016) — Liqin Guo, Wenting Xu, Yan Zhang, Jinfeng Zhang et al.
+     type=article  cited_by=30  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00299-016-2081-0
+     openalex: https://openalex.org/W2554758348
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Phylogeny and speciation in Saxifraga sect. Ciliatae (Saxifragaceae): Evidence from psbA‐trnH , trnL‐F and ITS sequences (2015) — Qingbo Gao, Yinhu Li, R. J. Gornall, Zhuoxin Zhang et al.
+     type=article  cited_by=30  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.12705/644.3
+     openalex: https://openalex.org/W2412383743
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- An overview on cytogenetics of the genus Onobrychis (Fabaceae) with special reference to O. sect. Hymenobrychis from Iran (2012) — Massoud Ranjbar, Fatemeh Hajmoradi, Roya Karamian
+     type=article  cited_by=30  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1080/00087114.2012.735887
+     openalex: https://openalex.org/W2002754660
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Cortinarius sect. Armillati in northern Europe (2011) — Tuula Niskanen, Ilkka Kytövuori, Kare Liimatainen
+     type=article  cited_by=30  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3852/10-350
+     openalex: https://openalex.org/W2119052249
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Taxonomy and nomenclature of Bromus sect. Genea (2010) — Fátima Sales
+     type=article  cited_by=30  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1017/s0960428600000627
+     openalex: https://openalex.org/W2100935825
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Notes on Onobrychis sect. Heliobrychis (Fabaceae) in Iran (2004) — Massoud Ranjbar, Hassan Amirabadizadeh, Roya Karamian, Mohammad Ali Ghahremani
+     type=article  cited_by=30  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.3372/wi.34.34116
+     openalex: https://openalex.org/W2045896821
+
+[field exclusion: primary_topic.field='Earth and Planetary Sciences']
+- Evidence for both long‐distance dispersal and isolation in the Southern Oceans: molecular phylogeny of Sophora sect Edwardsia (Fabaceae) (2017) — Lara D. Shepherd, Peter B. Heenan
+     type=article  cited_by=29  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1080/0028825x.2017.1353527
+     openalex: https://openalex.org/W2741791098
+
+[field exclusion: primary_topic.field='Biochemistry, Genetics and Molecular Biology']
+- Three new species of Begonia sect. Baryandra from Panay Island, Philippines (2017) — Ching‐I Peng, Rosario Rivera Rubite, Che Lin, Mark Hughes et al.
+     type=article  cited_by=29  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1186/s40529-017-0182-x
+     openalex: https://openalex.org/W2732610727
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Multivariate morphometric analysis of the Stipa turkestanica group (Poaceae: Stipa sect. Stipa) (2015) — Marcin Nobis, Ewelina Klichowska, Arkadiusz Nowak, Polina D. Gudkova et al.
+     type=article  cited_by=29  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1007/s00606-015-1243-9
+     openalex: https://openalex.org/W2107629636
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Encalypta sect. Rhabdotheca in Russia (2012) — Vladimir E. Fedosov
+     type=article  cited_by=29  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.15298/arctoa.21.10
+     openalex: https://openalex.org/W2321675185
+
+[field exclusion: primary_topic.field='Energy']
+- DESCRIPTION OF TWO NEW MONOECIOUS SPECIES OF VOLVOX SECT. VOLVOX (VOLVOCACEAE, CHLOROPHYCEAE), BASED ON COMPARATIVE MORPHOLOGY AND MOLECULAR PHYLOGENY OF CULTURED MATERIAL1 (2012) — Nanako Isaka, Hiroko Kawai‐Toyooka, Ryo Matsuzaki, Takashi Nakada et al.
+     type=article  cited_by=29  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1111/j.1529-8817.2012.01142.x
+     openalex: https://openalex.org/W1525645603
+
+[field exclusion: primary_topic.field='Agricultural and Biological Sciences']
+- Bromus L. sect. Bromus: taxonomy and relationship of some species with small spikelets (2010) — P. M. Smith, Fátima Sales
+     type=article  cited_by=29  channels=1
+     channels: "sect" NOT section
+     doi: https://doi.org/10.1017/s0960428600002535
+     openalex: https://openalex.org/W2062743906
+
+[topic-history exclusion: primary_topic='Cambodian History and Society']
+- History, Buddhism, and New Religious Movements in Cambodia (2017) — John Marston
+     type=book  cited_by=78  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1515/9780824844349
+     openalex: https://openalex.org/W1512977560
+
+[type exclusion: OpenAlex type='reference-entry']
+- New Religious Movements (2015) — Eileen Barker
+     type=reference-entry  cited_by=66  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1016/b978-0-08-097086-8.84024-6
+     openalex: https://openalex.org/W1543437667
+
+[type exclusion: OpenAlex type='book-review']
+- New age, neopagan, and new religious movements: alternative spirituality in contemporary America (2016) — Unknown author
+     type=book-review  cited_by=50  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.5860/choice.196276
+     openalex: https://openalex.org/W2954224449
+
+[type exclusion: OpenAlex type='book-review']
+- Encyclopedia of new religious movements (2006) — Unknown author
+     type=book-review  cited_by=37  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.5860/choice.43-5000
+     openalex: https://openalex.org/W3083646026
+
+[field exclusion: primary_topic.field='Health Professions']
+- Mars, G. 55 testing of researcher in 125–6; value Mason, J. 63 of work in 124–6 Maynard, M. 32, 101 Meerabeau, L. 100 Oakley, A. 15, 94, 97 methodologies: autobiography 21; Okely, J. 94, 96; and Callaway, H. 96 collective memory 21; covert Opie, A. 101 17–18, 46–7, 56, 164, 169–70, Owens, D. 100 198–9; desk work/fieldwork balance 57; disengagement 122; Parker, C. 134, 135, 138 formal interviews 170; in-depth Patrick, J. 58 interviews 117; interest in 92–3; Payne, G. et al. 92 non-participant 117; participant Pearson, G. 35, 64 observation 21, 34–6, 39, 137–40, Peritore, N.P. 28 142–4, 170–1; physical danger 3, 8–9, 43, 61–2, 132, qualitative/quantitative 13, 14, 21, 147, 203; in communities under 23, 61–2, 87, 115, 117, 129–30, threat 11; experience of 74–81; and 147, 149; reflexive 12, 16, 56–7, extremism 156, 163; gender 89, 114, 116, 143, 144; symbolic 20 dynamics of 12; and health 11–12; Milgram, S. 17 intimidation/destabilisation 137; Morgan, D. 18, 38, 57 negotiation of 67–8; and Morris, S. 45 participant-observer role 137–40; Mungham, G. 50 participant/researcher sharing of Mykhalovskiy, E. 108 12–13; personal 11–12; preparation for/anticipation of 69–70, 72; National Front 56 reduction in 62–3; at religious New Religious Movements (NRMs) festival 137–42; on the streets 148, 150, 153, 154, 162, 163 10–11; threat of 68; vs psychological New Reproductive Technologies 184–6; and vulnerability of (NRTs) 92 researcher 63–4 nursing home 114–15; as policing 26–7, 40–1; and bouncers 48, alien/unsettling 118; 49, 51; and cult of masculinity 31; contamination/escape from 126–7; danger 26, 27–9, 32; and danger emotional strains in 123–4; initial from above 37–9; enduring emotional responses to 118–23; fieldwork in 29–32; and fear 32, membership issues 119–23; negative 33–7; and gender identity 26, 27, feelings for 126–7; punishment 28, 33–4, 40; and group solidarity strategies 121–2; researcher/staff 27; insider/outsider relationship interaction 119–20; setting of 117; 27–8, 35, 38, 40; and local staff/patient interaction 119, population 34–6; and protectiveness 121–2, 125; structure of 118; and 28–9, 36; research sites 27; seeing (2002) — Unknown author
+     type=book-chapter  cited_by=25  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9780203136119-40
+     openalex: https://openalex.org/W4239070543
+
+[type exclusion: OpenAlex type='book-review']
+- A Reader in new religious movements (2007) — Unknown author
+     type=book-review  cited_by=24  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.5860/choice.44-4415
+     openalex: https://openalex.org/W597179432
+
+[type exclusion: OpenAlex type='book-review']
+- Book Review: Managing Religion and Religious Changes in Iran: A Socio-Legal Analysis Sajjad AdeliyanTousRichardsonJames T., Managing Religion and Religious Changes in Iran: A Socio-Legal Analysis. Cambridge Elements. New Religious Movements. Cambridge: Cambridge University Press, 2022. ISBN 9781009460101, pp. + 80, hbk $20.00 USD. (2025) — Bryan S. Turner
+     type=book-review  cited_by=20  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1177/20503032251314475
+     openalex: https://openalex.org/W4407229106
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- Handbook of East Asian New Religious Movements (2018) — Unknown author
+     type=book  cited_by=20  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1163/9789004362970
+     openalex: https://openalex.org/W3202590614
+
+[subfield exclusion: primary_topic.subfield='History']
+- Tradition as Legitimation in New Religious Movements (2005) — Titus Hjelm
+     type=book-chapter  cited_by=18  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1515/9783110901405.109
+     openalex: https://openalex.org/W98167041
+
+[topic exclusion: primary_topic='Biblical Studies and Interpretation']
+- Early Christianity in Light of New Religious Movements (2016) — Eyal Regev
+     type=article  cited_by=15  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1163/15685276-12341435
+     openalex: https://openalex.org/W2561541002
+
+[type exclusion: OpenAlex type='book-review']
+- The Bloomsbury companion to new religious movements (2014) — Unknown author
+     type=book-review  cited_by=14  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.5860/choice.52-0781
+     openalex: https://openalex.org/W2947076197
+
+[topic-history exclusion: primary_topic='African history and culture analysis']
+- Countering Rupture: Young Nuer in New Religious Movements (2008) — Christiane Falge
+     type=article  cited_by=14  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.3790/soc.58.2.169
+     openalex: https://openalex.org/W1997127651
+
+[type exclusion: OpenAlex type='book-review']
+- New religions: a guide: new religious movements, sects and alternative spiritualities (2004) — Unknown author
+     type=book-review  cited_by=14  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.5860/choice.42-1285
+     openalex: https://openalex.org/W586574351
+
+[type exclusion: OpenAlex type='book-review']
+- Historical dictionary of new religious movements (2012) — George D. Chryssides
+     type=book-review  cited_by=12  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.5860/choice.49-5400
+     openalex: https://openalex.org/W1530932442
+
+[topic-history exclusion: primary_topic='Japanese History and Culture']
+- Perspective Chronologies, Commonalities and Alternative Status in Japanese New Religious Movements Defining NRMs outside the Western Cul-de-sac (2005) — Ian Reader
+     type=article  cited_by=11  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1525/nr.2005.9.2.084
+     openalex: https://openalex.org/W2086491500
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- China and New Religious Movements (2001) — Scott Lowe
+     type=article  cited_by=11  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1525/nr.2001.4.2.213
+     openalex: https://openalex.org/W2053721726
+
+[type exclusion: OpenAlex type='dataset']
+- New Religious Movements (2014) — Candy Gunther Brown, Johannes Lähnemann, Allan Heaton Anderson
+     type=dataset  cited_by=10  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1163/1877-5888_rpp_com_024072
+     openalex: https://openalex.org/W2216651103
+
+[type exclusion: OpenAlex type='book-review']
+- Prophets and protons: new religious movements and science in late twentieth-century America (2010) — Unknown author
+     type=book-review  cited_by=10  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.5860/choice.48-1423
+     openalex: https://openalex.org/W2497244667
+
+[type exclusion: OpenAlex type='reference-entry']
+- Charisma and Authority in New Religious Movements (2016) — Erin Prophet
+     type=reference-entry  cited_by=7  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1093/oxfordhb/9780190466176.013.3
+     openalex: https://openalex.org/W2509445354
+
+[topic-history exclusion: primary_topic='Japanese History and Culture']
+- Media and New Religious Movements in Japan (2012) — Nobutaka Inoue
+     type=article  cited_by=6  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1163/221183412x645308
+     openalex: https://openalex.org/W2058809452
+
+[type exclusion: OpenAlex type='reference-entry']
+- New Religious Movements (2006) — Susan Raine, Stephan A. Kent
+     type=reference-entry  cited_by=6  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1016/b0-08-044854-2/00765-3
+     openalex: https://openalex.org/W49626882
+
+[type exclusion: OpenAlex type='book-review']
+- Handbook of East Asian new religious movements (2019) — David W. Kim
+     type=book-review  cited_by=5  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1080/10357823.2019.1624251
+     openalex: https://openalex.org/W2961710595
+
+[topic-history exclusion: primary_topic='Japanese History and Culture']
+- 2 Japanese New Religious Movements: An Introduction (2018) — Franz Winter
+     type=book-chapter  cited_by=5  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1163/9789004362970_003
+     openalex: https://openalex.org/W2920537892
+
+[type exclusion: OpenAlex type='paratext']
+- Bibliography of Japanese New Religious Movements (2013) — Peter B. Clarke
+     type=paratext  cited_by=5  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9781315073484
+     openalex: https://openalex.org/W2913393479
+
+[topic-history exclusion: primary_topic='Vietnamese History and Culture Studies']
+- New Religious Movements in Vietnamese Media Discourse since 1986: A Critical Approach (2013) — Chung Van Hoang
+     type=article  cited_by=5  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1558/arsr.v25i3.293
+     openalex: https://openalex.org/W2169248145
+
+[topic-history exclusion: primary_topic='Japanese History and Culture']
+- Japanese New Religious Movements in Brazil: from ethnic to ‘universal’ religions (2012) — George D. Chryssides
+     type=book-chapter  cited_by=5  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9780203129166-27
+     openalex: https://openalex.org/W3011499462
+
+[field exclusion: primary_topic.field='Health Professions']
+- New religious movements among Roma Gypsies and Travellers: placing Romani Pentecostalism in historical and social context (2009) — Thomas Acton
+     type=book-chapter  cited_by=5  channels=1
+     channels: "new religious movements"
+     openalex: https://openalex.org/W2101365912
+
+[topic-history exclusion: primary_topic='Japanese History and Culture']
+- Japanese New Religious Movements (2006) — Ian Reader
+     type=book  cited_by=5  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1093/oxfordhb/9780195137989.003.0015
+     openalex: https://openalex.org/W2728467968
+
+[type exclusion: OpenAlex type='conference-paper']
+- From Jesus Christ to Jedi Knight – validity and viability of new religious movements in late modernity (2006) — Debra Joan McCormick
+     type=conference-paper  cited_by=5  channels=1
+     channels: "new religious movements"
+     openalex: https://openalex.org/W1602167442
+
+[subfield exclusion: primary_topic.subfield='History']
+- New religious movements (2005) — Judith Fox
+     type=book-chapter  cited_by=5  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9780203412695-25
+     openalex: https://openalex.org/W2894778489
+
+[type exclusion: OpenAlex type='book-review']
+- A Historical Introduction to the Study of New Religious Movements (2019) — Morgan Shipley
+     type=book-review  cited_by=4  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1080/13537903.2019.1585057
+     openalex: https://openalex.org/W2942006644
+
+[type exclusion: OpenAlex type='other']
+- African New Religious Movements (2014) — Afe Adogame
+     type=other  cited_by=4  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.5040/9781472594518.ch-022
+     openalex: https://openalex.org/W4243753866
+
+[topic-history exclusion: primary_topic='Japanese History and Culture']
+- New Religious Movements as Transnational Providers of Social Support: The Case of Sukyo Mahikari (2013) — Frank T. Y. Wang, Chin-ju Lin
+     type=book-chapter  cited_by=4  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.4324/9780203139417-10
+     openalex: https://openalex.org/W2912045260
+
+[type exclusion: OpenAlex type='dissertation']
+- Identity transitions and the project of the self: a symbolic interactionist exploration of life histories of former members of new religious movements (2012) — Dominiek Coates
+     type=dissertation  cited_by=4  channels=1
+     channels: "new religious movements"
+     openalex: https://openalex.org/W2227593024
+
+[subfield exclusion: primary_topic.subfield='History']
+- Sex and Conflict in New Religious Movements: A Comparison of the Oneida Community under John Humphrey Noyes and the Early Mormons under Joseph Smith and his Would-Be Successors (2010) — Lawrence Foster
+     type=article  cited_by=4  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1525/nr.2010.13.3.34
+     openalex: https://openalex.org/W2033302871
+
+[type exclusion: OpenAlex type='other']
+- New Religious Movements and Reform (2009) — Maureen C. Miller
+     type=other  cited_by=4  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1002/9781444324198.ch10
+     openalex: https://openalex.org/W1524091559
+
+[type exclusion: OpenAlex type='book-review']
+- Historical dictionary of new religious movements (2002) — Unknown author
+     type=book-review  cited_by=4  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.5860/choice.39-3693
+     openalex: https://openalex.org/W4298011598
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- The Millenarian Myth Ethnocentrized: The Case of East Asian New Religious Movements (2020) — Lukáš Pokorný
+     type=book-chapter  cited_by=3  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1163/9789004435025_017
+     openalex: https://openalex.org/W4205528828
+
+[topic-history exclusion: primary_topic='Chinese history and philosophy']
+- 1 East Asian New Religious Movements: Introductory Remarks (2018) — Lukáš Pokorný, Franz Winter
+     type=book-chapter  cited_by=3  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1163/9789004362970_002
+     openalex: https://openalex.org/W2966236078
+
+[type exclusion: OpenAlex type='other']
+- New Religious Movements in Primal Societies (2017) — Harold W. Turner
+     type=other  cited_by=3  channels=1
+     channels: "new religious movements"
+     doi: https://doi.org/10.1002/9781405166614.ch14
+     openalex: https://openalex.org/W3022451342
+
+[type exclusion: OpenAlex type='letter']
+- Extreme Beliefs Mistaken for Psychosis. (2016) — James R. Merikangas
+     type=letter  cited_by=4  channels=1
+     channels: "extreme beliefs"
+     openalex: https://openalex.org/W2528115809
+
+[type exclusion: OpenAlex type='dissertation']
+- Extreme Beliefs in a Digital Age (2025) — Anieldath Missier
+     type=dissertation  cited_by=1  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.5463/thesis.1186
+     openalex: https://openalex.org/W4408934415
+
+[type exclusion: OpenAlex type='dissertation']
+- From extreme beliefs to actual violence (2024) — Fabienne Thijs
+     type=dissertation  cited_by=1  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.5463/thesis.449
+     openalex: https://openalex.org/W4390765690
+
+[field exclusion: primary_topic.field='Neuroscience']
+- Explaining Extreme Belief and Behavior: Methodological, Ethical, and Practical Challenges (2026) — Unknown author
+     type=book  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     openalex: https://openalex.org/W7159555682
+
+[type exclusion: OpenAlex type='editorial']
+- Extreme Belief and Extreme Behavior Reconsidered: A Response to Clark McCauley and Sophia Moskalenko (2025) — Rik Peels
+     type=editorial  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.1080/09546553.2025.2580990
+     openalex: https://openalex.org/W4417476214
+
+[type exclusion: OpenAlex type='editorial']
+- Extreme Belief and Extreme Behavior in Context: A Response to James Khalil (2025) — Rik Peels
+     type=editorial  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.1080/09546553.2025.2580987
+     openalex: https://openalex.org/W7116116504
+
+[field exclusion: primary_topic.field='Neuroscience']
+- Extreme Beliefs as Unshakable Identity Beliefs (2025) — Lisa Bortolotti
+     type=book-chapter  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.1093/9780197760222.003.0002
+     openalex: https://openalex.org/W4411452768
+
+[type exclusion: OpenAlex type='conference-abstract']
+- Extreme Beliefs Do Respond to Evidence (2022) — Melanie R. Swiderek, Barbara Koslowski
+     type=conference-abstract  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.4324/9781315782416-287
+     openalex: https://openalex.org/W4229455631
+
+[type exclusion: OpenAlex type='conference-paper']
+- How Social Networks Give Rise to Extreme Beliefs (2022) — Jason W. Burton, Momme von Sydow, Christoph Merdes, Ulrike Hahn
+     type=conference-paper  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     openalex: https://openalex.org/W4412229346
+
+[type exclusion: OpenAlex type='other']
+- Life Stressors and Extreme Beliefs (2022) — Unknown author
+     type=other  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.5040/9781978740501.ch-13
+     openalex: https://openalex.org/W4417375512
+
+[type exclusion: OpenAlex type='other']
+- Does PTSD Mediate between Life Stressors and Extreme Beliefs? (2022) — Unknown author
+     type=other  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.5040/9781978740501.ch-15
+     openalex: https://openalex.org/W4417375535
+
+[type exclusion: OpenAlex type='other']
+- Demographics and Extreme Beliefs (2022) — Unknown author
+     type=other  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.5040/9781978740501.ch-11
+     openalex: https://openalex.org/W4417375547
+
+[type exclusion: OpenAlex type='preprint']
+- A Brownian Motion Model and Extreme Belief Machine for Modeling Sensor Data Measurements (2017) — Robert A. Murphy
+     type=preprint  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.48550/arxiv.1704.00207
+     openalex: https://openalex.org/W2609372886
+
+[type exclusion: OpenAlex type='conference-paper']
+- Do extreme beliefs about internal states predict mood swings in undergraduate samples (2012) — Alyson Dodd
+     type=conference-paper  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     openalex: https://openalex.org/W2765441568
+
+[type exclusion: OpenAlex type='conference-paper']
+- Do extreme beliefs about internal states predict mood swings in undergraduate samples?:Invited symposium presentation (2012) — Alyson Dodd
+     type=conference-paper  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     openalex: https://openalex.org/W1261842278
+
+[type exclusion: OpenAlex type='other']
+- Unusual or “Extreme” Beliefs About the Past, Community Identity, and Dealing With The Fringe (2007) — Larry J. Zimmerman
+     type=other  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.5040/9798216418009.ch-003
+     openalex: https://openalex.org/W4416475317
+
+[type exclusion: OpenAlex type='dataset']
+- Using social vigilantism to predict individuals' reactions to the extreme beliefs of others (2004) — Donald A. Saucier
+     type=dataset  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     doi: https://doi.org/10.1037/e633912013-430
+     openalex: https://openalex.org/W4234723095
+
+[type exclusion: OpenAlex type='dissertation']
+- Personality and electrocortical correlates of extreme belief regarding ESP (2004) — Lonnie A. Nelson
+     type=dissertation  cited_by=0  channels=1
+     channels: "extreme beliefs"
+     openalex: https://openalex.org/W764732355
+
+[type exclusion: OpenAlex type='letter']
+- Jehovah's Witnesses and blood transfusion refusal: what next? (2014) — Olivier Garraud
+     type=letter  cited_by=8  channels=1
+     channels: "sectarian drifts"
+     doi: https://doi.org/10.2450/2013.0216-12
+     openalex: https://openalex.org/W1556526420
+
+[field exclusion: primary_topic.field='Medicine']
+- RETRACTED: What the “FakeMed”? or “fake medicines” according to a collective of French doctors (2025) — Fabrice Berna, Jean‐Arthur Micoulaud‐Franchi, François Paillé, Julien Nizard et al.
+     type=article  cited_by=1  channels=1
+     channels: "sectarian drifts"
+     doi: https://doi.org/10.1016/j.douler.2024.10.010
+     openalex: https://openalex.org/W4406148854
+
+[field exclusion: primary_topic.field='Medicine']
+- What the “FakeMed”? Or “fake medicines” according to a collective of French doctors. Corrected and republished article (2026) — F Berna, Jean‐Arthur Micoulaud‐Franchi, François Paillé, Julien Nizard et al.
+     type=article  cited_by=0  channels=1
+     channels: "sectarian drifts"
+     doi: https://doi.org/10.1016/j.douler.2026.06.001
+     openalex: https://openalex.org/W7169772617
+
+[type exclusion: OpenAlex type='preprint']
+- How to Fight Against Therapeutic and Sectarian Drifts in Complementary and Alternative Medicine? (2025) — Mathieu Repiquet
+     type=preprint  cited_by=0  channels=1
+     channels: "sectarian drifts"
+     openalex: https://openalex.org/W7112308137
+
+[type exclusion: OpenAlex type='dissertation']
+- La sorcellerie à l’ère numérique. Une ethnographie des sorcières contemporaines en France au XXIe siècle (2024) — Marlies Hoffmann
+     type=dissertation  cited_by=0  channels=1
+     channels: "sectarian drifts"
+     openalex: https://openalex.org/W7116591502
+
+[type exclusion: OpenAlex type='dissertation']
+- Cults in Nigeria: Unravelling the Distinct Security Challenges and Contrasts with the West (2023) — Eléonore Philippine Marie-Elisabeth Thierry d'Argenlieu
+     type=dissertation  cited_by=0  channels=1
+     channels: "sectarian drifts"
+     openalex: https://openalex.org/W7135603327
+
+[field exclusion: primary_topic.field='Medicine']
+- Medically Clear (2022) — Dustin W. Ballard
+     type=article  cited_by=0  channels=1
+     channels: "sectarian drifts"
+     doi: https://doi.org/10.1097/01.eem.0000827664.97576.03
+     openalex: https://openalex.org/W4386584343
+
+[type exclusion: OpenAlex type='other']
+- Epilogue (2016) — Luigino Bruni, Stefano Zamagni
+     type=other  cited_by=0  channels=1
+     channels: "sectarian drifts"
+     doi: https://doi.org/10.1017/9781911116028.011
+     openalex: https://openalex.org/W4385657766
+
+[type exclusion: OpenAlex type='dissertation']
+- L'Union européenne et le fait religieux : état des lieux et perspectives (2011) — Aurore Bayle
+     type=dissertation  cited_by=0  channels=1
+     channels: "sectarian drifts"
+     openalex: https://openalex.org/W4092933
+

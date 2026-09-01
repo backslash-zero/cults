@@ -6,7 +6,9 @@ thesaurus entries, and custom terms. Each type reads a hand-authored YAML
 source file, computes any derived fields, and writes a JSON database, a flat
 CSV export, and generated LaTeX for the thesis appendix.
 
-Requires PyYAML. Run with: python3 build_corpus.py
+Requires PyYAML. Run with: python3 thesis/corpus/scripts/build_corpus.py
+(from the repo root) — corpus/ lives inside thesis/, alongside the LaTeX
+source it generates appendices into.
 """
 import csv
 import json
@@ -17,8 +19,8 @@ import yaml
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 CORPUS_DIR = SCRIPT_DIR.parent
-REPO_ROOT = CORPUS_DIR.parent
-THESIS_DIR = REPO_ROOT / "thesis"
+THESIS_DIR = CORPUS_DIR.parent
+REPO_ROOT = THESIS_DIR.parent
 APPENDIX_ROOT = THESIS_DIR / "04_Appendix"
 
 # --- Interviews (migrated from thesis/Interviews/Corpus/) -------------------
@@ -47,6 +49,9 @@ LITERATURE_APPENDIX_DIR = APPENDIX_ROOT / "Literature_Corpus"
 LITERATURE_LIST_TEX = LITERATURE_APPENDIX_DIR / "reference_list.tex"
 DICTIONARIES_TABLE_TEX = LITERATURE_APPENDIX_DIR / "dictionaries_table.tex"
 CUSTOM_TERMS_TABLE_TEX = LITERATURE_APPENDIX_DIR / "custom_terms_table.tex"
+LITERATURE_RAW_DIR = CORPUS_DIR / "literature" / "raw"
+KEYWORD_QUERIES_TXT = CORPUS_DIR / "literature" / "keyword-queries.txt"
+KEYWORD_QUERIES_TABLE_TEX = LITERATURE_APPENDIX_DIR / "keyword_queries_table.tex"
 
 LATEX_SPECIAL = {
     "&": r"\&", "%": r"\%", "$": r"\$", "#": r"\#", "_": r"\_",
@@ -374,15 +379,135 @@ def build_interviews():
 # =============================================================================
 
 LITERATURE_CSV_FIELDS = [
-    "id", "title", "authors", "year", "type", "source", "language", "tags",
-    "raw_file", "date_added", "notes",
+    "id", "title", "authors", "year", "type", "source", "doi", "isbn",
+    "language", "tags", "raw_file", "date_added", "abstract", "notes",
 ]
 
 
-def build_literature_records():
+# --- Minimal hand-rolled BibTeX parser --------------------------------------
+# No third-party dependency; handles the standard Zotero-export shape (brace-
+# or quote-delimited field values, nested braces for case-protected titles).
+
+def _parse_bib_fields(body):
+    """body is the entry content after 'key,' -- returns {field: raw_value}."""
+    fields = {}
+    i, n = 0, len(body)
+    while i < n:
+        while i < n and body[i] in " \t\n\r,":
+            i += 1
+        if i >= n:
+            break
+        eq = body.find("=", i)
+        if eq == -1:
+            break
+        name = body[i:eq].strip().lower()
+        i = eq + 1
+        while i < n and body[i] in " \t\n\r":
+            i += 1
+        if i < n and body[i] == "{":
+            depth, i = 1, i + 1
+            start = i
+            while i < n and depth > 0:
+                if body[i] == "{":
+                    depth += 1
+                elif body[i] == "}":
+                    depth -= 1
+                i += 1
+            value = body[start:i - 1]
+        elif i < n and body[i] == '"':
+            i += 1
+            start = i
+            while i < n and body[i] != '"':
+                i += 1
+            value = body[start:i]
+            i += 1
+        else:
+            start = i
+            while i < n and body[i] not in ",\n":
+                i += 1
+            value = body[start:i]
+        # strip nested protective braces (e.g. "{{Oxford}}" -> "Oxford") and
+        # collapse whitespace from multi-line values
+        fields[name] = re.sub(r"\s+", " ", value.replace("{", "").replace("}", "")).strip()
+        i += 1
+    return fields
+
+
+def parse_bib_file(path):
+    text = path.read_text(encoding="utf-8")
+    entries = []
+    i, n = 0, len(text)
+    while True:
+        at = text.find("@", i)
+        if at == -1:
+            break
+        brace = text.find("{", at)
+        if brace == -1:
+            break
+        entry_type = text[at + 1:brace].strip().lower()
+        depth, j = 1, brace + 1
+        while j < n and depth > 0:
+            if text[j] == "{":
+                depth += 1
+            elif text[j] == "}":
+                depth -= 1
+            j += 1
+        body = text[brace + 1:j - 1]
+        i = j
+        comma = body.find(",")
+        if comma == -1:
+            continue
+        key = body[:comma].strip()
+        fields = _parse_bib_fields(body[comma + 1:])
+        entries.append({"type": entry_type, "key": key, "fields": fields})
+    return entries
+
+
+BIB_TYPE_MAP = {"book": "book", "incollection": "book_chapter", "article": "article",
+                "inproceedings": "report", "report": "report", "phdthesis": "other"}
+
+
+def bib_entry_to_record(entry):
+    f = entry["fields"]
+    authors_raw = f.get("author") or f.get("editor") or ""
+    authors = [a.strip() for a in authors_raw.split(" and ") if a.strip()]
+    is_editor = "author" not in f and "editor" in f
+    return {
+        "id": entry["key"],
+        "title": f.get("title", entry["key"]),
+        "authors": [f"{a} (ed.)" for a in authors] if is_editor and authors else authors,
+        "year": f.get("date", f.get("year", ""))[:4] if f.get("date") or f.get("year") else "",
+        "type": BIB_TYPE_MAP.get(entry["type"], "other"),
+        "source": ", ".join(x for x in (f.get("publisher"), f.get("location")) if x),
+        "doi": f.get("doi", ""),
+        "isbn": f.get("isbn", ""),
+        "language": f.get("langid", f.get("language", "")),
+        "tags": [],
+        "raw_file": "",
+        "date_added": "",
+        "abstract": f.get("abstract", ""),
+        "notes": "",
+    }
+
+
+def load_bib_records():
     records = []
-    for entry in load_yaml_list(LITERATURE_SOURCE_YAML, "literature"):
-        records.append(dict(entry))
+    if not LITERATURE_RAW_DIR.exists():
+        return records
+    for path in sorted(LITERATURE_RAW_DIR.glob("*.bib")):
+        for entry in parse_bib_file(path):
+            records.append(bib_entry_to_record(entry))
+    return records
+
+
+def build_literature_records():
+    records = [dict(entry) for entry in load_yaml_list(LITERATURE_SOURCE_YAML, "literature")]
+    seen_ids = {r["id"] for r in records}
+    for rec in load_bib_records():
+        if rec["id"] in seen_ids:
+            continue  # a hand-authored YAML entry with the same id takes precedence
+        records.append(rec)
+        seen_ids.add(rec["id"])
     return records
 
 
@@ -396,10 +521,13 @@ def write_literature_csv(records):
             "year": r.get("year", ""),
             "type": r.get("type", ""),
             "source": r.get("source", ""),
+            "doi": r.get("doi", ""),
+            "isbn": r.get("isbn", ""),
             "language": r.get("language", ""),
             "tags": "; ".join(r.get("tags", []) or []),
             "raw_file": r.get("raw_file", ""),
             "date_added": r.get("date_added", ""),
+            "abstract": r.get("abstract", ""),
             "notes": r.get("notes", ""),
         })
     write_csv(LITERATURE_CSV, LITERATURE_CSV_FIELDS, rows)
@@ -407,28 +535,38 @@ def write_literature_csv(records):
 
 def write_literature_list_tex(records):
     LITERATURE_APPENDIX_DIR.mkdir(parents=True, exist_ok=True)
-    lines = [r"\begin{description}"]
     if not records:
-        lines.append(r"\item[] \textit{No literature entries collected yet.}")
+        LITERATURE_LIST_TEX.write_text(
+            r"\textit{No literature entries collected yet.}" + "\n", encoding="utf-8")
+        return
+    parts = []
     for r in records:
         rid = r["id"]
-        authors = ", ".join(r.get("authors", []) or []) or "unknown author"
-        year = r.get("year", "n.d.")
+        authors = ", ".join(r.get("authors", []) or []) or "Unknown author"
+        year = r.get("year") or "n.d."
         title = r.get("title", "untitled")
-        kind = r.get("type", "")
-        source = r.get("source", "")
-        tags = ", ".join(r.get("tags", []) or [])
-        lines.append(r"\item[\texttt{%s}]\label{lit:%s}" % (escape_latex(rid), rid))
-        entry_line = f"{authors} ({year}). \\textit{{{escape_latex(title)}}}."
-        if kind:
-            entry_line += f" [{escape_latex(kind)}]"
-        if source:
-            entry_line += f" {escape_latex(source)}."
-        if tags:
-            entry_line += f" Tags: {escape_latex(tags)}."
-        lines.append(entry_line)
-    lines.append(r"\end{description}")
-    LITERATURE_LIST_TEX.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        parts.append(r"\subsection{%s}\label{lit:%s}" % (escape_latex(title), escape_latex(rid)))
+        parts.append(r"\subsubsection*{Metadata}")
+        parts.append(r"\begin{itemize}")
+        parts.append(r"  \item \textbf{Citation key}: \texttt{%s}" % escape_latex(rid))
+        parts.append(r"  \item \textbf{Authors/Editors}: %s" % escape_latex(authors))
+        parts.append(r"  \item \textbf{Year}: %s" % escape_latex(year))
+        if r.get("type"):
+            parts.append(r"  \item \textbf{Type}: %s" % escape_latex(r["type"]))
+        if r.get("source"):
+            parts.append(r"  \item \textbf{Publisher}: %s" % escape_latex(r["source"]))
+        if r.get("isbn"):
+            parts.append(r"  \item \textbf{ISBN}: %s" % escape_latex(r["isbn"]))
+        if r.get("doi"):
+            parts.append(r"  \item \textbf{DOI}: %s" % escape_latex(r["doi"]))
+        if r.get("tags"):
+            parts.append(r"  \item \textbf{Tags}: %s" % escape_latex(", ".join(r["tags"])))
+        parts.append(r"\end{itemize}")
+        if r.get("abstract"):
+            parts.append(r"\subsubsection*{Abstract}")
+            parts.append(escape_latex(r["abstract"]))
+        parts.append("")
+    LITERATURE_LIST_TEX.write_text("\n".join(parts) + "\n", encoding="utf-8")
 
 
 def build_literature():
@@ -437,6 +575,55 @@ def build_literature():
     write_literature_csv(records)
     write_literature_list_tex(records)
     return records
+
+
+# =============================================================================
+# Keyword queries (corpus construction protocol)
+# =============================================================================
+
+def load_keyword_queries():
+    """Parse corpus/literature/keyword-queries.txt: one query per non-blank,
+    non-comment line. `#` starts a comment (whole-line only, since queries
+    never contain '#')."""
+    if not KEYWORD_QUERIES_TXT.exists():
+        return []
+    queries = []
+    for line in KEYWORD_QUERIES_TXT.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        queries.append(stripped)
+    return queries
+
+
+def write_keyword_queries_table_tex(queries):
+    LITERATURE_APPENDIX_DIR.mkdir(parents=True, exist_ok=True)
+    lines = [
+        r"\begin{longtable}{@{}p{10cm}@{}}",
+        r"\caption{Keyword queries used for corpus retrieval}\label{tab:keyword_queries_corpus} \\",
+        r"\toprule",
+        r"Query \\",
+        r"\midrule",
+        r"\endfirsthead",
+        r"\toprule",
+        r"Query \\",
+        r"\midrule",
+        r"\endhead",
+        r"\bottomrule",
+        r"\endfoot",
+    ]
+    if not queries:
+        lines.append(r"\textit{No queries collected yet.} \\")
+    for q in queries:
+        lines.append(r"\texttt{%s} \\" % escape_latex(q))
+    lines.append(r"\end{longtable}")
+    KEYWORD_QUERIES_TABLE_TEX.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def build_keyword_queries():
+    queries = load_keyword_queries()
+    write_keyword_queries_table_tex(queries)
+    return queries
 
 
 # =============================================================================
@@ -556,14 +743,17 @@ def main():
     literature = build_literature()
     dictionaries = build_dictionaries()
     custom_terms = build_custom_terms()
+    keyword_queries = build_keyword_queries()
     print(f"Built {len(interviews)} interviews, {len(literature)} literature "
           f"entries, {len(dictionaries)} dictionary entries, "
-          f"{len(custom_terms)} custom terms.")
+          f"{len(custom_terms)} custom terms, {len(keyword_queries)} "
+          f"keyword queries.")
     for p in (INTERVIEWS_DATABASE_JSON, INTERVIEWS_DATABASE_CSV,
               INTERVIEWS_TABLE_TEX, INTERVIEWS_APPENDIX_TEX,
               LITERATURE_JSON, LITERATURE_CSV, LITERATURE_LIST_TEX,
               DICTIONARIES_JSON, DICTIONARIES_CSV, DICTIONARIES_TABLE_TEX,
-              CUSTOM_TERMS_JSON, CUSTOM_TERMS_CSV, CUSTOM_TERMS_TABLE_TEX):
+              CUSTOM_TERMS_JSON, CUSTOM_TERMS_CSV, CUSTOM_TERMS_TABLE_TEX,
+              KEYWORD_QUERIES_TABLE_TEX):
         print(f"  {p.relative_to(REPO_ROOT)}")
 
 

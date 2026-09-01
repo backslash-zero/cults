@@ -1,2 +1,13 @@
 .DS_Store
 thesis-template/
+
+# Python (corpus/scripts/*.py)
+__pycache__/
+*.pyc
+
+# Node (corpus/, frontend/, studio-cults/ each also have their own)
+node_modules/
+
+# Local secrets — never commit these
+.env
+.env.local

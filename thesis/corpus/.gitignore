@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.local
+__pycache__/
+*.pyc
+.DS_Store
+
+# Literature full texts — copyrighted book/article content, not meant for git
+litterature with pdfs/
+processed/documents/**/extracted.md
+processed/documents/**/extracted.txt
+processed/documents/**/pages.jsonl
