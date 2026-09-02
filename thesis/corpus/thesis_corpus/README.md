@@ -72,8 +72,25 @@ document into ~300-700 word / 2-5 paragraph pieces (page provenance kept as
 `page_range`), sends every chunk to a locally-running Ollama for structured
 annotation of cult/sect-criterion expressions, embeds every accepted item
 and every unique entity anchor, and writes one consolidated
-`criterion_expressions.jsonl`. Single pass — no separate chapter-selection,
-entity-extraction, or embedding pass.
+`criterion_expressions.jsonl`. One pipeline — no separate chapter-selection
+or entity-extraction curation pass.
+
+Internally it's split into two **checkpointed** phases so an embedding
+failure never costs a re-run of the (slow, expensive) LLM annotation:
+
+1. **annotate**: chunks + annotates with the LLM, writing each accepted item
+   immediately to `processed/pending_annotations.jsonl` — no embedding calls
+   happen in this phase at all. A document is marked done in
+   `processed/annotated_documents.txt` once every one of its chunks has been
+   annotated (even if it produced zero items).
+2. **embed**: reads `pending_annotations.jsonl`, batch-embeds each
+   not-yet-embedded document's items and entity anchors, and appends the
+   final records to `criterion_expressions.jsonl`.
+
+`--stage all` (the default) runs both, one full pass then the other. Since
+annotation is durable on disk before any embedding call is attempted, a
+failed or timed-out embed batch only costs re-running the embed phase for
+that one document — the LLM is never called again for it.
 
 This stage does **not** touch the source PDFs, and does not need Docling or
 PyMuPDF — only Stage 1's already-extracted `pages.jsonl` files.
@@ -100,42 +117,62 @@ install that file here; it pulls in a much larger dependency tree
 
 ```
 cd thesis/corpus
-python -m thesis_corpus.extract_and_embed --limit 5      # smoke test, first 5 not-yet-done documents
-python -m thesis_corpus.extract_and_embed                # full batch
-python -m thesis_corpus.extract_and_embed --document-id <id>   # reprocess one document
+python -m thesis_corpus.extract_and_embed --limit 5      # smoke test, first 5 not-yet-done documents (both stages)
+python -m thesis_corpus.extract_and_embed                # full batch, both stages
+python -m thesis_corpus.extract_and_embed --stage annotate   # annotation only (safe to leave running unattended)
+python -m thesis_corpus.extract_and_embed --stage embed      # embedding only, from pending_annotations.jsonl
+python -m thesis_corpus.extract_and_embed --document-id <id>   # one document, both stages -> separate file
 python -m thesis_corpus.extract_and_embed --force         # reprocess everything, overwrite
 ```
 
+Running `--stage annotate` and `--stage embed` as separate invocations (back
+to back, or with the embed one re-run later) is equivalent to `--stage all`
+but lets you, e.g., let the slow annotation phase run overnight unattended
+and only deal with embedding afterwards, or re-run just the embed phase on
+its own after a failure without touching the LLM again.
+
 ### Restart / `--document-id` semantics
 
-- **Default (no flags)**: appends to `criterion_expressions.jsonl`, skipping
-  any `document_id` already present in it — safe to re-run after a crash or
-  to extend the corpus later.
-- **`--force`**: reprocesses every document and overwrites
-  `criterion_expressions.jsonl` from scratch.
-- **`--document-id <id>`**: processes only that one document and writes to a
-  **separate** file, `criterion_expressions_<id>.jsonl` — it never modifies
-  the main file. This is deliberate: merging a single document's corrected
-  rows back into a large JSONL by rewriting lines is exactly the kind of
-  operation that's easy to get subtly wrong, so it's left as a manual step.
-  After inspecting `criterion_expressions_<id>.jsonl`, decide by hand whether
-  to append it into the main file, use it to replace that document's
-  existing rows there, or discard it.
+- **Default (no flags)**: each phase appends to its own file
+  (`pending_annotations.jsonl` for annotate, `criterion_expressions.jsonl`
+  for embed), independently skipping any document already marked done for
+  that phase — safe to re-run after a crash, an Ollama restart, or to extend
+  the corpus later. A document that produced zero relevant chunks is still
+  marked "annotated" (so it isn't retried forever) even though it never
+  appears in `pending_annotations.jsonl`.
+- **`--force`**: reprocesses everything for whichever phase(s) are running,
+  overwriting that phase's checkpoint file(s) from scratch. `--force --stage
+  embed` re-embeds every item in `pending_annotations.jsonl` without
+  touching the LLM; `--force --stage all` redoes everything.
+- **`--document-id <id>`**: processes only that one document, both phases,
+  end to end, writing to a **separate** file, `criterion_expressions_<id>.jsonl`
+  — it never touches the main `pending_annotations.jsonl` or
+  `criterion_expressions.jsonl`. This is deliberate: merging a single
+  document's corrected rows back into a large JSONL by rewriting lines is
+  exactly the kind of operation that's easy to get subtly wrong, so it's
+  left as a manual step. After inspecting `criterion_expressions_<id>.jsonl`,
+  decide by hand whether to append it into the main file, use it to replace
+  that document's existing rows there, or discard it.
 
 ### Outputs
 
 ```
 thesis/corpus/processed/
-  criterion_expressions.jsonl   # one JSON object per accepted item (main output)
+  pending_annotations.jsonl      # raw annotated items, no embeddings yet (annotate phase checkpoint)
+  annotated_documents.txt        # one document_id per line, marks annotation done
+  criterion_expressions.jsonl    # one JSON object per accepted item, with embeddings (main output)
   criterion_expressions_<id>.jsonl  # only from --document-id runs; see above
   extraction_summary.json        # documents/chunks/items/embeddings/errors counts
   logs/extraction.log             # every error and warning from this stage
 ```
 
-If an embedding call fails for a document, that document writes zero items
-for the run (its annotation results are discarded rather than stored without
-vectors) and is retried in full on the next default run, since it's absent
-from `criterion_expressions.jsonl`.
+If an embedding batch fails for a document, that document writes zero items
+to `criterion_expressions.jsonl` this run and is retried on the next `embed`
+run — but its annotation is already safe in `pending_annotations.jsonl`, so
+retrying never re-calls the LLM. `pending_annotations.jsonl` and
+`criterion_expressions*.jsonl` both contain full verbatim excerpts
+(`context_window`/`source_quote`) from the copyrighted literature corpus, so
+they're gitignored the same way `pages.jsonl`/`extracted.txt` are.
 
 ### Running this on Windows
 

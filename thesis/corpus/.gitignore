@@ -10,3 +10,5 @@ litterature with pdfs/
 processed/documents/**/extracted.md
 processed/documents/**/extracted.txt
 processed/documents/**/pages.jsonl
+processed/pending_annotations.jsonl
+processed/criterion_expressions*.jsonl
