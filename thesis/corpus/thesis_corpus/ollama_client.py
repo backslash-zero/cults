@@ -153,16 +153,11 @@ def annotate_chunk(
     raise AnnotationError(f"Model did not return valid/schema-conforming JSON: {last_error}")
 
 
-def embed_texts(
-    host: str, model: str, texts: list[str], timeout: float | None = None, retries: int = 2,
-) -> list[list[float]]:
-    if not texts:
-        return []
-    # A large document can produce a large batch of accepted items in one
-    # call; scale the timeout with batch size rather than using one fixed
-    # value that's fine for a handful of items but too tight for hundreds
-    # (observed failure: a 120s flat timeout silently discarded an entire
-    # document's worth of already-completed, expensive LLM annotation work).
+EMBED_BATCH_SIZE = 64
+
+
+def _embed_batch(host: str, model: str, texts: list[str], timeout: float | None, retries: int) -> list[list[float]]:
+    """Embeds a single batch (already <= EMBED_BATCH_SIZE) in one request."""
     if timeout is None:
         timeout = max(180.0, 2.0 * len(texts))
 
@@ -174,7 +169,10 @@ def embed_texts(
                 json={"model": model, "input": texts},
                 timeout=timeout,
             )
-            resp.raise_for_status()
+            if resp.status_code >= 400:
+                raise EmbeddingError(
+                    f"Ollama embed request failed: HTTP {resp.status_code}: {resp.text[:500]}"
+                )
             embeddings = resp.json()["embeddings"]
             if len(embeddings) != len(texts):
                 raise EmbeddingError(f"Expected {len(texts)} embeddings, got {len(embeddings)}")
@@ -183,5 +181,32 @@ def embed_texts(
             last_error = EmbeddingError(f"Ollama embed request failed: {e}")
         except (KeyError, TypeError) as e:
             last_error = EmbeddingError(f"Unexpected embed response shape: {e}")
+        except EmbeddingError as e:
+            last_error = e
 
     raise last_error
+
+
+def embed_texts(
+    host: str, model: str, texts: list[str], timeout: float | None = None, retries: int = 2,
+    batch_size: int = EMBED_BATCH_SIZE,
+) -> list[list[float]]:
+    """Embeds texts in fixed-size sub-batches rather than one request per
+    call site, however many texts that site has. A single document's worth
+    of accepted items can run into the thousands (a 3,602-item document was
+    observed to fail its embed call outright when sent as one request,
+    despite a generous timeout -- consistent with Ollama rejecting or
+    choking on an oversized single request, not merely being slow). Batching
+    keeps every request a fixed, known-good size and limits the blast radius
+    of a failure to one batch's timeout/retries rather than the whole
+    document's.
+    """
+    if not texts:
+        return []
+    if len(texts) <= batch_size:
+        return _embed_batch(host, model, texts, timeout, retries)
+
+    results: list[list[float]] = []
+    for i in range(0, len(texts), batch_size):
+        results.extend(_embed_batch(host, model, texts[i:i + batch_size], timeout, retries))
+    return results
