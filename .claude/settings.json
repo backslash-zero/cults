@@ -2,7 +2,6 @@
   "permissions": {
     "allow": [
       "Bash(pdfinfo thesis.pdf)",
-      "Bash(git commit -m ' *)",
       "Bash(echo \"pass1 exit=$?\")",
       "Bash(echo \"biber exit=$?\")",
       "Bash(latexmk -C thesis.tex)",
@@ -11,10 +10,7 @@
       "Bash(latexmk -pdf -f -interaction=nonstopmode thesis.tex)",
       "Bash(latexmk -pdf -f -g -interaction=nonstopmode thesis.tex)",
       "Bash(pdftotext -f 1 -l 20 thesis.pdf -)",
-      "Bash(grep -iA3 \"contents\")",
-      "Bash(python3 -c ' *)",
-      "Bash(find /opt/homebrew -iname \"*.cls\" 2>/dev/null | xargs grep -l \"newcommand{\\\\\\\\\\\\\\\\quote}\\\\|renewenvironment{quote}\\\\|newenvironment{quote}\" 2>/dev/null *)",
-      "Read(//opt/homebrew/**)"
+      "Bash(grep -iA3 \"contents\")"
     ]
   }
 }
