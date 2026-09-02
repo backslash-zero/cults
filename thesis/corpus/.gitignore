@@ -12,3 +12,6 @@ processed/documents/**/extracted.txt
 processed/documents/**/pages.jsonl
 processed/pending_annotations.jsonl
 processed/criterion_expressions*.jsonl
+
+# MIVILUDES source PDFs — same reasoning as litterature with pdfs/ above
+MIVILUDES/**/*.pdf
