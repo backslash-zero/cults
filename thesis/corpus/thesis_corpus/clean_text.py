@@ -39,13 +39,14 @@ SOURCE_DIR = CORPUS_DIR / "litterature with pdfs" / "Generated Corpus" / "files"
 OUTPUT_DIR = CORPUS_DIR / "processed"
 DOCUMENTS_DIR = OUTPUT_DIR / "documents"
 MANIFEST_PATH = OUTPUT_DIR / "corpus_manifest.csv"
-LOG_PATH = OUTPUT_DIR / "pipeline.log"
+LOG_DIR = OUTPUT_DIR / "logs"
+LOG_PATH = LOG_DIR / "pipeline.log"
 
 logger = logging.getLogger("thesis_corpus.clean_text")
 
 
 def setup_logging() -> None:
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s",

@@ -12,7 +12,7 @@ Deliberately out of scope at this stage: chapter selection, Zotero
 integration, entity extraction, LLM processing, embeddings, semantic search,
 reference removal, or any other text analysis.
 
-## Setup
+### Setup
 
 ```
 brew install tesseract-lang   # adds fra/deu language data (eng already ships
@@ -28,7 +28,7 @@ separate from Stage 2's (`requirements-extract_and_embed.txt`) — the two
 stages typically run on different machines and neither needs the other's
 dependencies.
 
-## Usage
+### Usage
 
 ```
 cd thesis/corpus
@@ -36,14 +36,14 @@ python -m thesis_corpus.clean_text --limit 5   # test on the first 5 PDFs
 python -m thesis_corpus.clean_text             # full batch
 ```
 
-## OCR languages
+### OCR languages
 
 Configured in one place: `OCR_LANGUAGES` in `extraction.py`, currently
 `["eng", "fra", "deu"]`. Tesseract needs the matching `tessdata` language
 files installed for these to actually work — check with `tesseract
 --list-langs`.
 
-## Outputs
+### Outputs
 
 ```
 thesis/corpus/processed/
@@ -53,14 +53,14 @@ thesis/corpus/processed/
     pages.jsonl         # one record per PDF page
     metadata.json        # per-document processing outcome
   corpus_manifest.csv    # one row per discovered PDF
-  pipeline.log            # append-only log of the whole run
+  logs/pipeline.log       # append-only log of the whole run
 ```
 
 `document_id` is derived deterministically from the PDF's own filename
 (normalized), disambiguated with the source Zotero-storage-key folder name
 on collision (real filename collisions exist in this corpus).
 
-## Status values
+### Status values
 
 `processed`, `processed_with_ocr`, `unreadable` (couldn't even be opened —
 corrupted or password-protected), `failed` (opened, but extraction raised).
@@ -162,8 +162,8 @@ thesis/corpus/processed/
   annotated_documents.txt        # one document_id per line, marks annotation done
   criterion_expressions.jsonl    # one JSON object per accepted item, with embeddings (main output)
   criterion_expressions_<id>.jsonl  # only from --document-id runs; see above
-  extraction_summary.json        # documents/chunks/items/embeddings/errors counts
-  logs/extraction.log             # every error and warning from this stage
+  extract_and_embed_summary.json  # documents/chunks/items/embeddings/errors counts
+  logs/extract_and_embed.log      # every error and warning from this stage
 ```
 
 If an embedding batch fails for a document, that document writes zero items

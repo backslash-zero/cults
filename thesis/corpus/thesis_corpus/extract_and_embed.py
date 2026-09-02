@@ -5,7 +5,7 @@ document, sends every chunk to a locally-running Ollama (qwen3:4b by
 default) for structured annotation of cult/sect-criterion expressions, then
 embeds every accepted item's embedding_text and every unique entity anchor
 with bge-m3 (also via Ollama), writing one consolidated
-criterion_expressions.jsonl plus an extraction_summary.json.
+criterion_expressions.jsonl plus an extract_and_embed_summary.json.
 
 Split into two stages with independent, disk-backed checkpoints:
   - annotate: chunk + LLM-annotate, writing each accepted item immediately
@@ -61,9 +61,9 @@ DOCUMENTS_DIR = OUTPUT_DIR / "documents"
 OUTPUT_PATH = OUTPUT_DIR / "criterion_expressions.jsonl"
 PENDING_PATH = OUTPUT_DIR / "pending_annotations.jsonl"
 ANNOTATED_LOG_PATH = OUTPUT_DIR / "annotated_documents.txt"
-SUMMARY_PATH = OUTPUT_DIR / "extraction_summary.json"
+SUMMARY_PATH = OUTPUT_DIR / "extract_and_embed_summary.json"
 LOG_DIR = OUTPUT_DIR / "logs"
-LOG_PATH = LOG_DIR / "extraction.log"
+LOG_PATH = LOG_DIR / "extract_and_embed.log"
 
 DEFAULT_OLLAMA_HOST = "http://127.0.0.1:11434"
 DEFAULT_LLM_MODEL = "qwen3:4b"

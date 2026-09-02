@@ -90,13 +90,20 @@ the literature corpus's actual PDF full texts once they've been obtained:
 2. **`thesis_corpus.extract_and_embed`** — chunks that clean text, annotates
    each chunk for cult/sect-criterion expressions with a local LLM
    (`qwen3:4b` via Ollama), and embeds accepted items with `bge-m3` ->
-   `processed/criterion_expressions.jsonl`.
+   `processed/criterion_expressions.jsonl` (the full archive).
+3. **`thesis_corpus.reduce_embeddings`** — drops the archive's large fields
+   and, by default, downsamples via clustering (PCA + MiniBatchKMeans) into
+   a much smaller working file for analysis/visualization ->
+   `processed/criterion_expressions_reduced.jsonl`. No Ollama needed, so it
+   can run on any machine that has the archive.
 
-Both stages, their setup, and their exact CLI commands are documented in
-`thesis_corpus/README.md`. `processed/documents/**/{pages.jsonl,extracted.md,
-extracted.txt}` are gitignored (copyrighted full-text content); only
-`metadata.json` per document and the corpus-level manifest/JSONL outputs are
-tracked here.
+All three stages, their setup, and their exact CLI commands are documented
+in `thesis_corpus/README.md`. `processed/documents/**/{pages.jsonl,
+extracted.md,extracted.txt}`, `processed/pending_annotations.jsonl`, and
+`processed/criterion_expressions*.jsonl` are all gitignored (copyrighted
+full-text content, or excerpts/embeddings derived from it); only
+`metadata.json` per document, the corpus-level manifest, and run summaries
+are tracked here.
 
 ## Sanity sync
 
