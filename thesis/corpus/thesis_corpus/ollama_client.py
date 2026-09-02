@@ -153,22 +153,35 @@ def annotate_chunk(
     raise AnnotationError(f"Model did not return valid/schema-conforming JSON: {last_error}")
 
 
-def embed_texts(host: str, model: str, texts: list[str], timeout: float = 120.0) -> list[list[float]]:
+def embed_texts(
+    host: str, model: str, texts: list[str], timeout: float | None = None, retries: int = 2,
+) -> list[list[float]]:
     if not texts:
         return []
-    try:
-        resp = httpx.post(
-            f"{host}/api/embed",
-            json={"model": model, "input": texts},
-            timeout=timeout,
-        )
-        resp.raise_for_status()
-        embeddings = resp.json()["embeddings"]
-    except httpx.HTTPError as e:
-        raise EmbeddingError(f"Ollama embed request failed: {e}") from e
-    except (KeyError, TypeError) as e:
-        raise EmbeddingError(f"Unexpected embed response shape: {e}") from e
+    # A large document can produce a large batch of accepted items in one
+    # call; scale the timeout with batch size rather than using one fixed
+    # value that's fine for a handful of items but too tight for hundreds
+    # (observed failure: a 120s flat timeout silently discarded an entire
+    # document's worth of already-completed, expensive LLM annotation work).
+    if timeout is None:
+        timeout = max(180.0, 2.0 * len(texts))
 
-    if len(embeddings) != len(texts):
-        raise EmbeddingError(f"Expected {len(texts)} embeddings, got {len(embeddings)}")
-    return embeddings
+    last_error: Exception | None = None
+    for attempt in range(retries + 1):
+        try:
+            resp = httpx.post(
+                f"{host}/api/embed",
+                json={"model": model, "input": texts},
+                timeout=timeout,
+            )
+            resp.raise_for_status()
+            embeddings = resp.json()["embeddings"]
+            if len(embeddings) != len(texts):
+                raise EmbeddingError(f"Expected {len(texts)} embeddings, got {len(embeddings)}")
+            return embeddings
+        except httpx.HTTPError as e:
+            last_error = EmbeddingError(f"Ollama embed request failed: {e}")
+        except (KeyError, TypeError) as e:
+            last_error = EmbeddingError(f"Unexpected embed response shape: {e}")
+
+    raise last_error
