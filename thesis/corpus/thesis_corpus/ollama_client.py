@@ -106,7 +106,7 @@ def _user_message(document_id: str, page_range: list[int], chunk_index: int, tex
     )
 
 
-def _call_chat(host: str, model: str, user_content: str, timeout: float) -> str:
+def _call_chat(host: str, model: str, user_content: str, timeout: float, think: bool) -> str:
     resp = httpx.post(
         f"{host}/api/chat",
         json={
@@ -117,6 +117,7 @@ def _call_chat(host: str, model: str, user_content: str, timeout: float) -> str:
             ],
             "format": "json",
             "stream": False,
+            "think": think,
             "options": {"temperature": 0, "num_ctx": 4096},
         },
         timeout=timeout,
@@ -133,13 +134,14 @@ def annotate_chunk(
     chunk_index: int,
     text: str,
     timeout: float = 120.0,
+    think: bool = False,
 ) -> ChunkAnnotation:
     user_content = _user_message(document_id, page_range, chunk_index, text)
 
     last_error: Exception | None = None
     for attempt_content in (user_content, user_content + _JSON_REMINDER):
         try:
-            raw = _call_chat(host, model, attempt_content, timeout)
+            raw = _call_chat(host, model, attempt_content, timeout, think)
             parsed = json.loads(_strip_code_fence(raw))
             return ChunkAnnotation.model_validate(parsed)
         except httpx.HTTPError as e:

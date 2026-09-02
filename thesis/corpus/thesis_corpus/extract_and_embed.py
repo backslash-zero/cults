@@ -144,6 +144,7 @@ def process_document(
     embed_model: str,
     anchor_cache: dict[str, list[float]],
     counters: dict,
+    think: bool = False,
 ) -> list[dict]:
     document_id = doc_dir.name
     pages = read_pages(doc_dir)
@@ -158,6 +159,7 @@ def process_document(
         try:
             annotation = annotate_chunk(
                 host, llm_model, document_id, chunk.page_range, chunk.chunk_index, chunk.text,
+                think=think,
             )
         except AnnotationError as e:
             logger.error("[%s] chunk %d annotation failed: %s", document_id, chunk.chunk_index, e)
@@ -245,6 +247,8 @@ def main() -> None:
     parser.add_argument("--ollama-host", default=DEFAULT_OLLAMA_HOST)
     parser.add_argument("--llm-model", default=DEFAULT_LLM_MODEL)
     parser.add_argument("--embed-model", default=DEFAULT_EMBED_MODEL)
+    parser.add_argument("--think", action="store_true",
+                         help="Let the model use its chain-of-thought mode (much slower; off by default).")
     args = parser.parse_args()
 
     setup_logging()
@@ -295,6 +299,7 @@ def main() -> None:
             try:
                 items = process_document(
                     doc_dir, args.ollama_host, args.llm_model, args.embed_model, anchor_cache, counters,
+                    think=args.think,
                 )
             except Exception as e:
                 logger.error("[%s] document processing failed: %s", document_id, e)
