@@ -18,12 +18,15 @@ reference removal, or any other text analysis.
 brew install tesseract-lang   # adds fra/deu language data (eng already ships
                                # with the base `tesseract` formula)
 cd thesis/corpus
-pip install -r thesis_corpus/requirements.txt
+pip install -r thesis_corpus/requirements-clean_text.txt
 ```
 
 Docling pulls in a moderately large model/dependency footprint on first run
 (CPU-only layout-model download — not a tiny install, but not GPU-only
-either).
+either). This stage's dependencies (`requirements-clean_text.txt`) are kept
+separate from Stage 2's (`requirements-extract_and_embed.txt`) — the two
+stages typically run on different machines and neither needs the other's
+dependencies.
 
 ## Usage
 
@@ -85,8 +88,13 @@ ever contacted.
 ollama pull qwen3:4b
 ollama pull bge-m3
 ollama serve            # if not already running
-pip install -r thesis_corpus/requirements.txt
+pip install -r thesis_corpus/requirements-extract_and_embed.txt
 ```
+
+Only `httpx`, `tqdm`, and `pydantic` — this stage does not need Docling or
+PyMuPDF (Stage 1's dependencies, in `requirements-clean_text.txt`), so don't
+install that file here; it pulls in a much larger dependency tree
+(transformers/torch and friends) for nothing.
 
 ### Usage
 
