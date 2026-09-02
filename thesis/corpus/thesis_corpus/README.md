@@ -188,3 +188,43 @@ here. To actually run it there:
 - **Watch out**: `processed/documents/**/{extracted.md,extracted.txt,pages.jsonl}`
   are gitignored, so a `git pull` on Windows will **not** bring them across —
   copy them by hand (external drive, sync tool, etc.) first.
+
+## Stage 3: reduced/downsampled JSONL for analysis (`reduce_embeddings`)
+
+`criterion_expressions.jsonl` (Stage 2's output) is a durable archive with
+every field, including two large ones (`context_window`, the whole chunk
+text; `entity_anchor_vectors`, one 1024-float vector per anchor) — useful
+for provenance, too heavy for interactive analysis/visualization (a 7-
+document test file is already 251MB; the full corpus is projected at
+1.5-2GB). This stage produces a smaller sibling file with only the fields
+needed for embedding-based analysis, optionally downsampled by clustering
+so it stays a manageable size while preserving diversity rather than just
+truncating. It needs no Ollama and no network access — only `numpy` and
+`scikit-learn` — so it can run on any machine that has the archive file,
+including this Mac.
+
+```
+pip install -r thesis_corpus/requirements-reduce_embeddings.txt
+python -m thesis_corpus.reduce_embeddings                 # full corpus, downsampled
+python -m thesis_corpus.reduce_embeddings --no-downsample  # field reduction only, every item kept
+python -m thesis_corpus.reduce_embeddings --input <path> --output <path> --source-type miviludes
+```
+
+Downsampling: PCA to `--pca-dim` (default 100), `MiniBatchKMeans` into
+`--n-clusters` (default 1000), then up to `--samples-per-cluster` (default
+5) items randomly sampled per cluster — deterministic given `--seed`
+(default 42). The archive's original full-precision `embedding_vector` is
+always what's written out; a `float32` copy is used only internally for the
+clustering math. Output rows are sorted back into original file order, not
+grouped by cluster, so row positions stay traceable to the archive.
+
+Never touches the source archive — always reads `--input`, writes
+`--output`. `criterion_expressions_reduced.jsonl` is gitignored by the same
+`criterion_expressions*.jsonl` pattern as the full archive (it still
+carries `embedding_text`, effectively a paraphrase/quote of the source, and
+full embedding vectors).
+
+Reusable for other corpora (MIVILUDES, interviews, once those get their own
+`extract_and_embed`-style pipeline) via `--input`/`--output`/`--source-type`
+— no code changes needed, just different paths and a different
+`--source-type` value.
