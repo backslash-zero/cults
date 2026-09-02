@@ -1,2 +1,7 @@
 docling
 pymupdf
+
+# extract_and_embed (local LLM/embedding stage, Ollama)
+httpx
+tqdm
+pydantic

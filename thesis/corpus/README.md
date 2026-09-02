@@ -79,6 +79,25 @@ documented in the thesis itself, not just here.
 - **Every time, regardless of type**: re-run `build_corpus.py`, recompile the
   thesis, and re-run `sync_sanity.mjs` if a Sanity token is configured.
 
+## Full-text extraction and embedding pipeline
+
+This README covers the *bibliographic* corpus pipeline above (metadata,
+appendices, Sanity sync). A separate pipeline in `thesis_corpus/` works on
+the literature corpus's actual PDF full texts once they've been obtained:
+
+1. **`thesis_corpus.clean_text`** — PDF -> clean text (Docling, native +
+   OCR fallback, page provenance) -> `processed/documents/<id>/`.
+2. **`thesis_corpus.extract_and_embed`** — chunks that clean text, annotates
+   each chunk for cult/sect-criterion expressions with a local LLM
+   (`qwen3:4b` via Ollama), and embeds accepted items with `bge-m3` ->
+   `processed/criterion_expressions.jsonl`.
+
+Both stages, their setup, and their exact CLI commands are documented in
+`thesis_corpus/README.md`. `processed/documents/**/{pages.jsonl,extracted.md,
+extracted.txt}` are gitignored (copyrighted full-text content); only
+`metadata.json` per document and the corpus-level manifest/JSONL outputs are
+tracked here.
+
 ## Sanity sync
 
 `studio-cults/` is a real, provisioned Sanity project (see its
