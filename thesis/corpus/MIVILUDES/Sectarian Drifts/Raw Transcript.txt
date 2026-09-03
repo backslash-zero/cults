@@ -1,4 +1,5 @@
-Comment identifier une dérive sectaire ?
+
+# Comment identifier une dérive sectaire ?
 La Miviludes a identifié plusieurs critères pour caractériser une dérive sectaire.
 
 La lutte contre les dérives sectaires ne consiste pas, en France, à lutter contre des groupes, des mouvements, des croyances ou des doctrines, mais contre des comportements qui sont à l'origine de très graves dommages subis par des personnes, des familles et par la société.
@@ -12,7 +13,7 @@ Une dérive sectaire peut être définie comme la mise en œuvre, par un groupe 
 
 Il s’agit d’un comportement abusif, permettant de placer une personne sous emprise mentale, et qui est à l’origine d’atteintes aux personnes, d’atteintes aux biens ou d’atteintes à la cohésion sociale.
 
-Critères
+## Critères
 Suite à plusieurs rapports parlementaires, la Miviludes a identifié plusieurs critères pour caractériser une dérive sectaire. Il s’agit d’une liste indicative et qui n’est pas limitative.
 
 Il s’agit notamment des critères suivants  :
@@ -35,6 +36,8 @@ Il s’agit notamment des critères suivants  :
 - Le changement inquiétant des habitudes alimentaires ;
 - La violation des principes fondateurs de la République.
 
+
+## 
 La principale clé de compréhension du phénomène sectaire réside dans la notion d’emprise mentale ou d’emprise, qui peut se définir comme un état de contrainte morale par lequel une personne ou un groupe exerce un ascendant psychologique sur une autre personne, au point de la placer, souvent de manière insidieuse, dans un état de sujétion, c’est-à-dire d’assujettissement voire d’asservissement.
 
 Même si les termes qui la désignent ne sont pas strictement équivalents d’une langue à une autre, l’emprise constitue une notion largement popularisée, y compris désormais dans les relations de couple, et les techniques utilisées pour placer une personne dans cet état sont désormais mieux connues.
