@@ -1,0 +1,157 @@
+{
+  "miviludes_criteria": [
+    {
+      "id": "crit-mental-destabilization",
+      "criterion_fr": "La déstabilisation mentale et la sujétion psychologique ou physique conduisant à des actions ou abstentions gravement préjudiciables aux personnes et plus généralement à la perte d'esprit critique et d'autonomie",
+      "criterion_en": "Mental destabilization and psychological or physical subjugation leading to actions or omissions gravely detrimental to individuals, and more generally to the loss of critical thinking and autonomy",
+      "order": 1,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-rupture-origin-environment",
+      "criterion_fr": "La rupture avec l'environnement d'origine (proches, famille)",
+      "criterion_en": "Rupture with the person's environment of origin (close relations, family)",
+      "order": 2,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-radical-behavior-change",
+      "criterion_fr": "Le changement radical de comportement",
+      "criterion_en": "Radical change in behavior",
+      "order": 3,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-rejection-of-outside-world",
+      "criterion_fr": "Le refus de l'autre et le dénigrement du monde extérieur : l'absence totale d'accès aux médias ou moyens de communication",
+      "criterion_en": "Rejection of others and denigration of the outside world: total absence of access to media or means of communication",
+      "order": 4,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-harsh-living-conditions",
+      "criterion_fr": "Les conditions de vie particulièrement éprouvantes ou déstabilisantes",
+      "criterion_en": "Particularly harsh or destabilizing living conditions",
+      "order": 5,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-deceptive-recruitment",
+      "criterion_fr": "Les méthodes de recrutement trompeuses",
+      "criterion_en": "Deceptive recruitment methods",
+      "order": 6,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-indoctrination-of-children",
+      "criterion_fr": "L'embrigadement des enfants",
+      "criterion_en": "The indoctrination of children",
+      "order": 7,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-authoritarian-opaque-group",
+      "criterion_fr": "L'existence d'un groupe organisé sur un mode autoritaire, opaque et cloisonné, avec présence d'un dirigeant de type leader charismatique ou praticien référent exclusif",
+      "criterion_en": "The existence of a group organized in an authoritarian, opaque, and compartmentalized manner, with a charismatic-leader-type figure or an exclusive referent practitioner at its head",
+      "order": 8,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-difficulty-leaving-group",
+      "criterion_fr": "De grandes difficultés voire une impossibilité pour un membre de quitter ledit groupe",
+      "criterion_en": "Great difficulty, or even the impossibility, for a member to leave the group",
+      "order": 9,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-physical-integrity-harm",
+      "criterion_fr": "Les atteintes à l'intégrité physique des personnes en état de faiblesse et d'ignorance, et plus généralement la commission d'actes criminels ou délictueux sur des individus, majeurs ou mineurs",
+      "criterion_en": "Harm to the physical integrity of people in a state of weakness or ignorance, and more generally the commission of criminal or other unlawful acts against individuals, whether adults or minors",
+      "order": 10,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-public-order-contestation",
+      "criterion_fr": "La contestation des institutions et les troubles à l'ordre public ; la menace d'atteinte à l'ordre public",
+      "criterion_en": "Contesting institutions and disturbances to public order; the threat of a breach of public order",
+      "order": 11,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-legal-disputes",
+      "criterion_fr": "L'importance des démêlés judiciaires",
+      "criterion_en": "The extent of the group's legal entanglements",
+      "order": 12,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-financial-demands-opacity",
+      "criterion_fr": "Le caractère exorbitant des exigences financières ; la violation des règlements ou de la loi (travail illégal, formation professionnelle déviante…) et/ou l'opacité de la gestion financière",
+      "criterion_en": "The exorbitant nature of financial demands; violation of regulations or the law (illegal labor, deviant vocational training, etc.) and/or opacity in financial management",
+      "order": 13,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-infiltration-public-authorities",
+      "criterion_fr": "Les tentatives d'infiltration des pouvoirs publics",
+      "criterion_en": "Attempts to infiltrate public authorities",
+      "order": 14,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-dubious-care-exclusive",
+      "criterion_fr": "L'offre de soins et de médicaments douteux et exclusive du recours à des pratiques conventionnelles",
+      "criterion_en": "The offer of dubious care and medication, to the exclusion of recourse to conventional practices",
+      "order": 15,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-alarming-dietary-change",
+      "criterion_fr": "Le changement inquiétant des habitudes alimentaires",
+      "criterion_en": "Alarming changes in dietary habits",
+      "order": 16,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    },
+    {
+      "id": "crit-violation-republic-principles",
+      "criterion_fr": "La violation des principes fondateurs de la République",
+      "criterion_en": "The violation of the founding principles of the Republic",
+      "order": 17,
+      "source": "Comment identifier une dérive sectaire ? | Miviludes",
+      "citation": "CommentIdentifierDerive",
+      "date_added": "2026-09-03"
+    }
+  ]
+}
