@@ -48,7 +48,32 @@ Return a JSON object with this exact shape:
     }
   ]
 }
+attribution must be exactly one of those six literal values -- never any other
+word. In an interview transcript, the person being interviewed is "participant"
+(not "interviewee"); the person asking questions is "unspecified" unless they
+are themselves citing someone else (not "interviewer").
 If nothing is relevant, return {"chunk_relevance": "not_relevant", "items": []}."""
+
+# The model (especially a small local one) sometimes echoes a transcript's own
+# literal speaker labels here instead of following the enum -- normalize known
+# synonyms before validation rather than relying on the prompt alone.
+_ATTRIBUTION_SYNONYMS = {
+    "interviewee": "participant",
+    "respondent": "participant",
+    "subject": "participant",
+    "interviewer": "unspecified",
+    "researcher": "unspecified",
+}
+
+
+def _normalize_attribution(parsed: dict) -> dict:
+    for item in parsed.get("items", []):
+        if not isinstance(item, dict):
+            continue
+        value = item.get("attribution")
+        if isinstance(value, str):
+            item["attribution"] = _ATTRIBUTION_SYNONYMS.get(value.strip().lower(), value)
+    return parsed
 
 
 class AnnotationItem(BaseModel):
@@ -142,7 +167,7 @@ def annotate_chunk(
     for attempt_content in (user_content, user_content + _JSON_REMINDER):
         try:
             raw = _call_chat(host, model, attempt_content, timeout, think)
-            parsed = json.loads(_strip_code_fence(raw))
+            parsed = _normalize_attribution(json.loads(_strip_code_fence(raw)))
             return ChunkAnnotation.model_validate(parsed)
         except httpx.HTTPError as e:
             raise AnnotationError(f"Ollama chat request failed: {e}") from e
