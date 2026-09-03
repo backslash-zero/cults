@@ -276,11 +276,31 @@ sub-path is always derived from it the same way, so there's nothing else to
 configure per-corpus.
 
 **Interviews specifically**: unlike literature/MIVILUDES, interview
-transcripts aren't PDFs (they live under `thesis/corpus/interviews/cleaned/`
-already as plain text) — Stage 1 (built around Docling) doesn't apply.
-Interviews need a small adapter that converts existing transcripts into the
-same `pages.jsonl` shape Stage 2 expects; once that exists, Stages 2-3 work
-unmodified via the same `--output-dir`/`--source-type` pattern.
+transcripts aren't PDFs (they live under `thesis/corpus/interviews/cleaned/
+<id>/transcript.txt` already as plain text) — Stage 1 (built around Docling)
+doesn't apply. `thesis_corpus.prepare_interviews` is the Stage 1 equivalent:
+it treats each interview as a single page (no natural page structure like a
+PDF has) and uses each interview's **original-language** transcript, not
+`translation_en.txt` even where one exists — mixing original and translated
+text would be an inconsistent basis for comparison, and `bge-m3`'s
+multilingual embeddings (already proven on MIVILUDES' French) are exactly
+why each interview can stay in its own language. There's no
+`corpus_manifest.csv` for this one (no meaningful native/OCR/failed
+distinction for already-transcribed text — `build_registry` reports
+`stage1_status: n/a` for these documents instead):
+
+```bash
+python -m thesis_corpus.prepare_interviews \
+  --output-dir "thesis/corpus/processed/interviews"
+
+python -m thesis_corpus.extract_and_embed \
+  --output-dir "thesis/corpus/processed/interviews"
+
+python -m thesis_corpus.reduce_embeddings \
+  --input thesis/corpus/processed/interviews/criterion_expressions.jsonl \
+  --output thesis/corpus/processed/interviews/criterion_expressions_reduced.jsonl \
+  --source-type interviews
+```
 
 ## Stage 4: cross-corpus registry (`build_registry`)
 
