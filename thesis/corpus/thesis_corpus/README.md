@@ -22,8 +22,11 @@ its defaults are what every command below shows unless noted.
 ## Stage 1: PDF-to-clean-text pipeline (first version)
 
 Finds PDFs recursively under `thesis/corpus/litterature with pdfs/Generated
-Corpus/files/`, checks whether each can be opened, extracts text (native
-first, falling back to OCR when the native pass looks implausible),
+Corpus/files/` (the misspelling is the actual folder name on disk and
+`clean_text.py`'s default `--source-dir` — a known, long-standing naming
+quirk, left as-is since renaming it now touches a working default path for
+zero functional benefit), checks whether each can be opened, extracts text
+(native first, falling back to OCR when the native pass looks implausible),
 preserves page provenance, and logs what succeeded and failed. It never
 modifies, moves, renames, or overwrites the source PDFs.
 
@@ -387,9 +390,100 @@ disambiguation), `source`, `centrality_score` (node degree).
 
 ### Embedding the backbone
 
-Same `bge-m3` embedding path as
-[`embed_miviludes_criteria.py`](thesis_corpus/embed_miviludes_criteria.py)
-(`thesis_corpus.ollama_client.embed_texts`, same Ollama prerequisite): embed
-`concept_en` alone, or `concept_en` + `gloss_en` concatenated for better
-sense disambiguation, and use the resulting vectors as fixed anchor points
-when structuring/visualizing the corpus embedding space.
+`thesis_corpus.embed_concept_backbone` embeds each concept as
+`"<concept_en>: <gloss_en>"` (not the bare word alone, for the same
+sense-disambiguation reason `gloss_en` is kept in the CSV) with `bge-m3`,
+same `ollama_client.embed_texts` path and Ollama prerequisite as
+[`embed_miviludes_criteria.py`](thesis_corpus/embed_miviludes_criteria.py):
+
+```
+python -m thesis_corpus.embed_concept_backbone
+```
+
+Writes `thesis/corpus/dictionaries/concept_backbone_embedded.jsonl` (one
+record per concept: the original CSV fields plus `embedding_text`,
+`embedding_model`, `embedding_vector`). Gitignored, same reasoning as every
+other large embedding output in this repo.
+
+**This list's role is now operationalized, not just a static reference
+sitting next to the corpora**: `thesis_corpus.build_shared_space` (below)
+uses these 3,000 vectors as active participants in fitting the one shared
+space every corpus and the MIVILUDES criteria get projected into — the
+concept backbone isn't compared *against* that space after the fact, it
+helps *define* it.
+
+## Shared cross-corpus space (`build_shared_space`)
+
+Every embedding step above (the three `extract_and_embed` corpora,
+`embed_miviludes_criteria`, `embed_concept_backbone`) produces vectors in
+the same raw 1024-d `bge-m3` space, but `reduce_embeddings.py`'s
+downsampling (Stage 3) fits an **independent** PCA per corpus — literature
+gets its own 100-d space, MIVILUDES its own, interviews its own. Those are
+three unrelated coordinate systems: a point's position in one says nothing
+about a point's position in another. **This is the space any cross-corpus
+geometric comparison or visualization should actually be built on instead**
+— not any single corpus's `reduce_embeddings.py` output.
+
+`build_shared_space.py` instead pools every vector from every dataset,
+standardizes, and fits **one** PCA on the pooled matrix, so every item from
+every dataset ends up in the same shared coordinate system:
+
+- Each corpus item (literature/miviludes/interviews) contributes **one**
+  point (`embedding_vector`).
+- Each MIVILUDES criterion contributes **two** points, not one — its
+  `embedding_vector_fr` and `embedding_vector_en` separately (both are
+  legitimate embedded representations of the same content; their distance
+  from each other in the shared space is itself a sanity check on the
+  multilingual embedding).
+- Each concept-backbone entry contributes **one** point (`embedding_vector`).
+- Expected total, asserted at runtime: 39,236 + 914 + 231 + 34 + 3,000 =
+  **43,415** points.
+
+**Standardization**: `StandardScaler` (zero mean, unit variance per
+dimension) runs before PCA. Every vector already comes from the same
+embedding model, but the five datasets differ a lot in register (academic
+prose, government French, casual interview speech, bare word+gloss
+dictionary entries) and could plausibly carry different per-dimension
+distributions — standardizing is a defensive measure against any one
+dataset dominating the fit purely due to scale, not a claim that such an
+imbalance is known to exist.
+
+**Dimensionality is not a fixed constant**: PCA is first fit at full rank
+to get the complete explained-variance curve — written to
+`processed/shared_space_variance_curve.{csv,json,png}` so the choice is
+inspectable rather than asserted — and the smallest `k` reaching 95%
+cumulative variance is picked from that curve. On the actual pooled data:
+`k=390` for 95.0% (curve is fairly gradual, not a sharp knee — e.g. 61% at
+k=100, 90% at k=300 — so this is a real but not dramatic compression;
+worth knowing when interpreting distances in the shared space).
+
+```
+python -m thesis_corpus.build_shared_space
+```
+
+No Ollama needed — pure `numpy`/`scikit-learn`/`matplotlib` on data that's
+already local (same `requirements-reduce_embeddings.txt`, now with
+`matplotlib` added). Never modifies any of the five source files, only
+writes new ones under `processed/`.
+
+### Output
+
+```
+thesis/corpus/processed/
+  shared_embedding_space.jsonl        # one row per pooled point: source_dataset, key, label, shared_space_vector
+  shared_space_variance_curve.csv     # n_components, cumulative_variance -- the full curve
+  shared_space_variance_curve.json    # {curve, chosen_k, variance_at_k, threshold}
+  shared_space_variance_curve.png     # plot of the above
+```
+
+`shared_embedding_space.jsonl` is gitignored (large — 358MB at 43,415
+points × 390 dims — and, like every other embedding output, derived from
+copyrighted/participant text). The variance-curve files are small and
+tracked.
+
+After writing the output, the script prints two diagnostic (not pass/fail)
+sanity checks: mean vector norm by `source_dataset` (flags any one dataset
+being pushed to the periphery or center relative to the others), and each
+MIVILUDES criterion's FR vs EN point norms side by side (expected to be
+close, confirming the multilingual embedding + shared PCA are behaving
+sensibly).
