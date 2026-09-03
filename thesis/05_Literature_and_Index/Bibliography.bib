@@ -2311,3 +2311,109 @@
   abstract = {In this paper, we delve deeply into the intricacies of linear algebra, with a focus on the progression from finite to infinite-dimensional vector spaces. Starting with the foundational concepts, we define vectors, vector spaces, linear combinations, and basis. The importance of infinite-dimensional vector spaces is emphasized, particularly their role in better understanding and modeling complex mathematical phenomena. Through well-illustrated examples, we guide the reader on how to validate if a given set can be classified as a vector space. Additionally, the methodology to identify bases for these vast spaces is discussed in detail. Reduction methods also play an important role in determining bases for infinite-dimensional spaces. In our conclusion, we reflect on the evolution from basic vector concepts to the more nuanced understanding of infinite dimensions. This progression not only deepens our understanding of vectors but also sets the stage for advanced investigations into linear relationships and transformations. By bridging the gap between elementary vector knowledge and advanced infinite-dimensional spaces, this paper makes a notable contribution to the ever-evolving field of linear algebra, serving as a valuable resource for both students and practitioners.},
   file = {/Users/celestinmeunier/Zotero/storage/IGTXHJYA/Zhu - 2024 - Beyond the finite An exploration of infinite-dimensional vector spaces.pdf}
 }
+
+@online{chenBgeM3embeddingMultilingual2024,
+  title = {{{BGE M3-Embedding}}: {{Multi-Lingual}}, {{Multi-Functionality}}, {{Multi-Granularity Text Embeddings Through Self-Knowledge Distillation}}},
+  shorttitle = {{{BGE M3-Embedding}}},
+  author = {Chen, Jianlv and Xiao, Shitao and Zhang, Peitian and Luo, Kun and Lian, Defu and Liu, Zheng},
+  date = {2024-02-05},
+  eprint = {2402.03216},
+  eprinttype = {arXiv},
+  doi = {10.48550/arXiv.2402.03216},
+  url = {https://arxiv.org/abs/2402.03216},
+  urldate = {2026-09-04},
+  note = {Embedding model (\texttt{bge-m3}) used throughout this thesis's vectorisation pipeline}
+}
+
+@online{qwenteamQwen3TechnicalReport2025,
+  title = {{{Qwen3 Technical Report}}},
+  author = {{Qwen Team}},
+  date = {2025-05-14},
+  eprint = {2505.09388},
+  eprinttype = {arXiv},
+  doi = {10.48550/arXiv.2505.09388},
+  url = {https://arxiv.org/abs/2505.09388},
+  urldate = {2026-09-04},
+  note = {Language model (\texttt{qwen3:4b}) used for LLM annotation throughout this thesis's vectorisation pipeline}
+}
+
+@online{auerDoclingTechnicalReport2024,
+  title = {{{Docling Technical Report}}},
+  author = {Auer, Christoph and others},
+  date = {2024-08-19},
+  eprint = {2408.09869},
+  eprinttype = {arXiv},
+  doi = {10.48550/arXiv.2408.09869},
+  url = {https://arxiv.org/abs/2408.09869},
+  urldate = {2026-09-04},
+  note = {PDF-to-structured-text library used for full-text extraction (\ref{sec:pdf_extraction})}
+}
+
+@inproceedings{smithOverviewTesseractOCR2007,
+  title = {An {{Overview}} of the {{Tesseract OCR Engine}}},
+  author = {Smith, Ray},
+  date = {2007},
+  booktitle = {Ninth {{International Conference}} on {{Document Analysis}} and {{Recognition}} ({{ICDAR}} 2007)},
+  volume = {2},
+  pages = {629--633},
+  publisher = {IEEE Computer Society},
+  doi = {10.1109/ICDAR.2007.4376991},
+  note = {OCR fallback engine used for scanned/image-only pages (\ref{sec:pdf_extraction})}
+}
+
+@article{pedregosaScikitlearnMachineLearning2011,
+  title = {Scikit-Learn: {{Machine Learning}} in {{Python}}},
+  shorttitle = {Scikit-Learn},
+  author = {Pedregosa, F. and Varoquaux, G. and Gramfort, A. and Michel, V. and Thirion, B. and Grisel, O. and Blondel, M. and Prettenhofer, P. and Weiss, R. and Dubourg, V. and Vanderplas, J. and Passos, A. and Cournapeau, D. and Brucher, M. and Perrot, M. and Duchesnay, E.},
+  date = {2011},
+  journaltitle = {Journal of Machine Learning Research},
+  volume = {12},
+  pages = {2825--2830},
+  url = {https://jmlr.org/papers/v12/pedregosa11a.html},
+  note = {PCA and StandardScaler implementations used for the shared cross-corpus space (\ref{sec:shared_space}) and per-corpus downsampling}
+}
+
+@inproceedings{sculleyWebscaleKmeansClustering2010,
+  title = {Web-Scale K-Means Clustering},
+  author = {Sculley, D.},
+  date = {2010},
+  booktitle = {Proceedings of the 19th {{International Conference}} on {{World Wide Web}} ({{WWW}} 2010)},
+  pages = {1177--1178},
+  publisher = {ACM},
+  doi = {10.1145/1772690.1772862},
+  note = {MiniBatchKMeans, used for cluster-based downsampling of the literature/MIVILUDES/interview archives}
+}
+
+@inproceedings{mccraeEnglishWordNetOpensource2019,
+  title = {{{English WordNet}} 2019 -- {{An Open-Source WordNet}} for {{English}}},
+  author = {McCrae, John P. and Rademaker, Alexandre and Bond, Francis and Rudnicka, Ewa and Fellbaum, Christiane},
+  date = {2019},
+  booktitle = {Proceedings of the 10th {{Global WordNet Conference}}},
+  location = {Wroclaw, Poland},
+  url = {https://aclanthology.org/2019.gwc-1.31/},
+  note = {Foundational paper for the Open English WordNet (\texttt{oewn:2024}) underlying the concept backbone (\ref{sec:concept_backbone})}
+}
+
+@inproceedings{goodmanIntrinsicallyInterlingualWn2021,
+  title = {Intrinsically {{Interlingual}}: {{The Wn Python Library}} for {{Wordnets}}},
+  shorttitle = {Intrinsically {{Interlingual}}},
+  author = {Goodman, Michael Wayne and Bond, Francis},
+  date = {2021},
+  booktitle = {Proceedings of the 11th {{Global WordNet Conference}}},
+  pages = {100--107},
+  location = {University of South Africa (UNISA)},
+  url = {https://aclanthology.org/2021.gwc-1.12/},
+  note = {\texttt{wn} Python library used to access Open English WordNet for the concept backbone (\ref{sec:concept_backbone})}
+}
+
+@inproceedings{speerConceptnet55OpenMultilingual2017,
+  title = {{{ConceptNet}} 5.5: {{An Open Multilingual Graph}} of {{General Knowledge}}},
+  shorttitle = {{{ConceptNet}} 5.5},
+  author = {Speer, Robyn and Chin, Joshua and Havasi, Catherine},
+  date = {2017},
+  booktitle = {Proceedings of the {{Thirty-First AAAI Conference}} on {{Artificial Intelligence}}},
+  pages = {4444--4451},
+  publisher = {AAAI Press},
+  url = {https://ojs.aaai.org/index.php/AAAI/article/view/11164},
+  note = {Considered and rejected as the concept-backbone resource (\ref{sec:concept_backbone}); superseded by Open English WordNet}
+}
