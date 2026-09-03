@@ -321,3 +321,75 @@ python -m thesis_corpus.build_registry
 Writes `thesis/corpus/processed/registry.csv`. A corpus with no
 `corpus_manifest.csv` (e.g. a future non-PDF corpus fed some other way)
 simply shows `stage1_status: n/a` for its documents rather than erroring.
+
+## Concept backbone (`build_concept_backbone_en`)
+
+A generic, low-bias list of abstract English concepts, meant to serve as
+neutral anchor points that structure the shared embedding space across
+every corpus above -- deliberately **not** derived from any cult/sect-
+related seed list.
+
+**Resource**: [Open English WordNet](https://en-word.net/) `oewn:2024`, via
+the [`wn`](https://pypi.org/project/wn/) library. ConceptNet was the
+originally planned resource, but its live API is currently down (persistent
+502) and its bulk dump does not give clean cross-lingual/abstractness
+signal for this without heuristics; OMW's WordNet gives both directly.
+
+**Filtering/ranking** (fully structural -- no topical seeds anywhere):
+
+1. Candidate pool: every noun synset in `oewn:2024` (84,956 total).
+2. Abstractness: kept only if its hypernym chain leads to the WordNet root
+   synset `abstraction.n.06` ("abstraction, abstract entity"), as opposed
+   to `physical_entity.n.01` or other roots -- WordNet's own top-level
+   entity/abstraction split.
+3. Named-entity exclusion: dropped if the synset is an `instance_hyponym`
+   of something (WordNet's mechanism for individuals, e.g. "Paris"), or its
+   primary lemma is capitalized.
+4. Taxonomy exclusion: dropped if the synset's lexicographer file is
+   `noun.animal` or `noun.plant` -- biological classification terms (e.g.
+   "bird genus", "asterid dicot genus") pass the abstraction test
+   structurally (a genus is a hyponym of `group`) but have very high
+   hyponym counts purely from enumerating species, which dominated
+   degree-based ranking before this exclusion was added.
+5. Centrality: node degree -- the total count of all WordNet relations
+   (hypernym, hyponym, meronym, holonym, attribute, similar_to, ...)
+   touching the synset.
+6. Top `--target-size` synsets by degree, descending.
+
+Of 84,956 noun synsets: 41,351 passed the abstractness filter, 9,151 of
+those were excluded as named entities, 875 more as biological taxonomy,
+leaving 31,325 candidates. The default run keeps the top 3,000 by degree --
+now general concepts like "law", "chemistry", "biology", "mathematics",
+"quality", "time period".
+
+### Setup
+
+```
+cd thesis/corpus
+pip install -r thesis_corpus/requirements-build_concept_backbone_en.txt
+python -c "import wn; wn.download('oewn:2024')"   # one-time, ~13MB
+```
+
+### Usage
+
+```
+python -m thesis_corpus.build_concept_backbone_en                    # default target size 3000
+python -m thesis_corpus.build_concept_backbone_en --target-size 5000
+```
+
+### Output
+
+`thesis/corpus/dictionaries/concept_backbone_omw_en.csv`, columns:
+`concept_id` (WordNet interlingual index ID), `concept_en` (primary
+lemma), `gloss_en` (WordNet definition -- included because bare polysemous
+words like "state" or "matter" are poor embedding anchors without sense
+disambiguation), `source`, `centrality_score` (node degree).
+
+### Embedding the backbone
+
+Same `bge-m3` embedding path as
+[`embed_miviludes_criteria.py`](thesis_corpus/embed_miviludes_criteria.py)
+(`thesis_corpus.ollama_client.embed_texts`, same Ollama prerequisite): embed
+`concept_en` alone, or `concept_en` + `gloss_en` concatenated for better
+sense disambiguation, and use the resulting vectors as fixed anchor points
+when structuring/visualizing the corpus embedding space.
