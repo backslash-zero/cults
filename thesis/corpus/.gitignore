@@ -5,13 +5,15 @@ __pycache__/
 *.pyc
 .DS_Store
 
-# Literature full texts — copyrighted book/article content, not meant for git
+# Full texts / excerpts — copyrighted book/article content, not meant for git.
+# processed/<corpus>/... so this applies uniformly to every corpus
+# (literature, miviludes, interviews, ...) under the unified processed/ root.
 litterature with pdfs/
-processed/documents/**/extracted.md
-processed/documents/**/extracted.txt
-processed/documents/**/pages.jsonl
-processed/pending_annotations.jsonl
-processed/criterion_expressions*.jsonl
+processed/*/documents/**/extracted.md
+processed/*/documents/**/extracted.txt
+processed/*/documents/**/pages.jsonl
+processed/*/pending_annotations.jsonl
+processed/*/criterion_expressions*.jsonl
 
 # MIVILUDES source PDFs — same reasoning as litterature with pdfs/ above
 MIVILUDES/**/*.pdf

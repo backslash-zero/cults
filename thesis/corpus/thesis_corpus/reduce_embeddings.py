@@ -25,8 +25,8 @@ from sklearn.cluster import MiniBatchKMeans
 from sklearn.decomposition import PCA
 
 CORPUS_DIR = Path(__file__).resolve().parent.parent
-DEFAULT_INPUT = CORPUS_DIR / "processed" / "criterion_expressions.jsonl"
-DEFAULT_OUTPUT = CORPUS_DIR / "processed" / "criterion_expressions_reduced.jsonl"
+DEFAULT_INPUT = CORPUS_DIR / "processed" / "literature" / "criterion_expressions.jsonl"
+DEFAULT_OUTPUT = CORPUS_DIR / "processed" / "literature" / "criterion_expressions_reduced.jsonl"
 
 EMBEDDING_DIM = 1024
 KEEP_FIELDS = [

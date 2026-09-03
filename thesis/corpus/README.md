@@ -82,28 +82,39 @@ documented in the thesis itself, not just here.
 ## Full-text extraction and embedding pipeline
 
 This README covers the *bibliographic* corpus pipeline above (metadata,
-appendices, Sanity sync). A separate pipeline in `thesis_corpus/` works on
-the literature corpus's actual PDF full texts once they've been obtained:
+appendices, Sanity sync). A separate, multi-corpus pipeline in
+`thesis_corpus/` works on full texts once they've been obtained, with every
+corpus's output as a sibling under `processed/`:
+`processed/<corpus>/{documents/, corpus_manifest.csv,
+pending_annotations.jsonl, criterion_expressions.jsonl,
+annotated_documents.txt, logs/}` — literature is simply the first corpus
+processed this way, not special-cased.
 
 1. **`thesis_corpus.clean_text`** — PDF -> clean text (Docling, native +
-   OCR fallback, page provenance) -> `processed/documents/<id>/`.
+   OCR fallback, page provenance) -> `processed/<corpus>/documents/<id>/`.
 2. **`thesis_corpus.extract_and_embed`** — chunks that clean text, annotates
    each chunk for cult/sect-criterion expressions with a local LLM
    (`qwen3:4b` via Ollama), and embeds accepted items with `bge-m3` ->
-   `processed/criterion_expressions.jsonl` (the full archive).
+   `processed/<corpus>/criterion_expressions.jsonl` (the full archive).
 3. **`thesis_corpus.reduce_embeddings`** — drops the archive's large fields
    and, by default, downsamples via clustering (PCA + MiniBatchKMeans) into
    a much smaller working file for analysis/visualization ->
-   `processed/criterion_expressions_reduced.jsonl`. No Ollama needed, so it
-   can run on any machine that has the archive.
+   `processed/<corpus>/criterion_expressions_reduced.jsonl`. No Ollama
+   needed, so it can run on any machine that has the archive.
+4. **`thesis_corpus.build_registry`** — scans every `processed/<corpus>/`
+   folder's own manifests and derives one cross-corpus index,
+   `processed/registry.csv` (one row per document: corpus, stage 1/2
+   status, item count) — generated output, re-run after any pipeline run,
+   never hand-edited.
 
-All three stages, their setup, and their exact CLI commands are documented
-in `thesis_corpus/README.md`. `processed/documents/**/{pages.jsonl,
-extracted.md,extracted.txt}`, `processed/pending_annotations.jsonl`, and
-`processed/criterion_expressions*.jsonl` are all gitignored (copyrighted
+All four stages, their setup, and their exact CLI commands (including how
+to point Stages 1-2 at a different corpus) are documented in
+`thesis_corpus/README.md`. `processed/*/documents/**/{pages.jsonl,
+extracted.md,extracted.txt}`, `processed/*/pending_annotations.jsonl`, and
+`processed/*/criterion_expressions*.jsonl` are all gitignored (copyrighted
 full-text content, or excerpts/embeddings derived from it); only
-`metadata.json` per document, the corpus-level manifest, and run summaries
-are tracked here.
+`metadata.json` per document, each corpus's manifest, run summaries, and
+`registry.csv` are tracked here.
 
 ## Sanity sync
 

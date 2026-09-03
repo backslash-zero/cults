@@ -56,7 +56,10 @@ from thesis_corpus.ollama_client import (
 )
 
 CORPUS_DIR = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = CORPUS_DIR / "processed"
+# Defaults -- the literature corpus. --output-dir overrides all of these at
+# once for other corpora (e.g. MIVILUDES); every sub-path is always derived
+# from output_dir the same way, just rooted differently.
+OUTPUT_DIR = CORPUS_DIR / "processed" / "literature"
 DOCUMENTS_DIR = OUTPUT_DIR / "documents"
 OUTPUT_PATH = OUTPUT_DIR / "criterion_expressions.jsonl"
 PENDING_PATH = OUTPUT_DIR / "pending_annotations.jsonl"
@@ -74,20 +77,20 @@ SUMMARY_PRINT_INTERVAL = 100
 logger = logging.getLogger("thesis_corpus.extract_and_embed")
 
 
-def setup_logging() -> None:
-    LOG_DIR.mkdir(parents=True, exist_ok=True)
+def setup_logging(log_dir: Path, log_path: Path) -> None:
+    log_dir.mkdir(parents=True, exist_ok=True)
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s",
-        handlers=[logging.FileHandler(LOG_PATH, mode="a", encoding="utf-8")],
+        handlers=[logging.FileHandler(log_path, mode="a", encoding="utf-8")],
     )
 
 
-def discover_documents() -> list[Path]:
-    if not DOCUMENTS_DIR.exists():
-        raise SystemExit(f"Documents directory not found: {DOCUMENTS_DIR}")
+def discover_documents(documents_dir: Path) -> list[Path]:
+    if not documents_dir.exists():
+        raise SystemExit(f"Documents directory not found: {documents_dir}")
     dirs = []
-    for d in sorted(DOCUMENTS_DIR.iterdir()):
+    for d in sorted(documents_dir.iterdir()):
         if not d.is_dir():
             continue
         if (d / "pages.jsonl").exists():
@@ -124,23 +127,23 @@ def load_done_ids(path: Path) -> set[str]:
     return done
 
 
-def load_annotated_ids() -> set[str]:
-    if not ANNOTATED_LOG_PATH.exists():
+def load_annotated_ids(annotated_log_path: Path) -> set[str]:
+    if not annotated_log_path.exists():
         return set()
-    return {line.strip() for line in ANNOTATED_LOG_PATH.read_text(encoding="utf-8").splitlines() if line.strip()}
+    return {line.strip() for line in annotated_log_path.read_text(encoding="utf-8").splitlines() if line.strip()}
 
 
-def mark_annotated(document_id: str) -> None:
-    with open(ANNOTATED_LOG_PATH, "a", encoding="utf-8") as f:
+def mark_annotated(document_id: str, annotated_log_path: Path) -> None:
+    with open(annotated_log_path, "a", encoding="utf-8") as f:
         f.write(document_id + "\n")
 
 
-def load_pending_by_document() -> dict[str, list[dict]]:
+def load_pending_by_document(pending_path: Path) -> dict[str, list[dict]]:
     """Raw (un-embedded) annotated items from pending_annotations.jsonl, grouped by document_id."""
     by_doc: dict[str, list[dict]] = {}
-    if not PENDING_PATH.exists():
+    if not pending_path.exists():
         return by_doc
-    with open(PENDING_PATH, encoding="utf-8") as f:
+    with open(pending_path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line:
@@ -251,7 +254,7 @@ def annotate_document(
 
 def embed_document_items(
     document_id: str, raw_items: list[dict], host: str, embed_model: str,
-    anchor_cache: dict[str, list[float]], counters: dict,
+    anchor_cache: dict[str, list[float]], counters: dict, pending_path: Path,
 ) -> list[dict]:
     """Batch-embeds one document's already-annotated items. Returns the
     final records (with vectors) -- empty list if embedding failed."""
@@ -263,7 +266,7 @@ def embed_document_items(
     except EmbeddingError as e:
         logger.error(
             "[embed] [%s] embedding batch failed (annotation is safe in %s, will retry on next run): %s",
-            document_id, PENDING_PATH.name, e,
+            document_id, pending_path.name, e,
         )
         counters["errors"] += 1
         return []
@@ -295,25 +298,25 @@ def embed_document_items(
 
 def run_annotate_stage(
     documents: list[Path], host: str, llm_model: str, think: bool, force: bool, limit: int | None,
-    counters: dict,
+    counters: dict, pending_path: Path, annotated_log_path: Path, output_path: Path,
 ) -> None:
     # A document already fully embedded (present in the main output from a
     # run predating this checkpoint file) never needs re-annotating either,
     # regardless of what annotated_documents.txt says.
-    annotated_ids = set() if force else (load_annotated_ids() | load_done_ids(OUTPUT_PATH))
+    annotated_ids = set() if force else (load_annotated_ids(annotated_log_path) | load_done_ids(output_path))
     todo = [d for d in documents if d.name not in annotated_ids]
     if limit is not None:
         todo = todo[:limit]
 
     logger.info("[annotate] %d documents to process", len(todo))
-    print(f"[annotate] {len(todo)} documents -> {PENDING_PATH}")
+    print(f"[annotate] {len(todo)} documents -> {pending_path}")
 
     mode = "w" if force else "a"
-    PENDING_PATH.parent.mkdir(parents=True, exist_ok=True)
-    if force and ANNOTATED_LOG_PATH.exists():
-        ANNOTATED_LOG_PATH.unlink()
+    pending_path.parent.mkdir(parents=True, exist_ok=True)
+    if force and annotated_log_path.exists():
+        annotated_log_path.unlink()
 
-    with open(PENDING_PATH, mode, encoding="utf-8") as pending_out:
+    with open(pending_path, mode, encoding="utf-8") as pending_out:
         for doc_dir in tqdm(todo, desc="annotate", unit="doc"):
             document_id = doc_dir.name
             try:
@@ -322,28 +325,33 @@ def run_annotate_stage(
                 logger.error("[annotate] [%s] document failed: %s", document_id, e)
                 counters["errors"] += 1
                 continue
-            mark_annotated(document_id)
+            mark_annotated(document_id, annotated_log_path)
 
 
-def run_embed_stage(host: str, embed_model: str, force: bool, limit: int | None, counters: dict) -> None:
-    pending_by_doc = load_pending_by_document()
-    done_ids = set() if force else load_done_ids(OUTPUT_PATH)
+def run_embed_stage(
+    host: str, embed_model: str, force: bool, limit: int | None, counters: dict,
+    pending_path: Path, output_path: Path,
+) -> None:
+    pending_by_doc = load_pending_by_document(pending_path)
+    done_ids = set() if force else load_done_ids(output_path)
     todo_ids = sorted(d for d in pending_by_doc if d not in done_ids)
     if limit is not None:
         todo_ids = todo_ids[:limit]
 
     logger.info("[embed] %d documents to process", len(todo_ids))
-    print(f"[embed] {len(todo_ids)} documents -> {OUTPUT_PATH}")
+    print(f"[embed] {len(todo_ids)} documents -> {output_path}")
 
     mode = "w" if force else "a"
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     anchor_cache: dict[str, list[float]] = {}
 
-    with open(OUTPUT_PATH, mode, encoding="utf-8") as output_file:
+    with open(output_path, mode, encoding="utf-8") as output_file:
         for document_id in tqdm(todo_ids, desc="embed", unit="doc"):
             raw_items = pending_by_doc[document_id]
             tqdm.write(f"[embed] [{document_id}] {len(raw_items)} items")
-            final_items = embed_document_items(document_id, raw_items, host, embed_model, anchor_cache, counters)
+            final_items = embed_document_items(
+                document_id, raw_items, host, embed_model, anchor_cache, counters, pending_path,
+            )
             for item in final_items:
                 output_file.write(json.dumps(item, ensure_ascii=False) + "\n")
             output_file.flush()
@@ -365,9 +373,22 @@ def main() -> None:
     parser.add_argument("--embed-model", default=DEFAULT_EMBED_MODEL)
     parser.add_argument("--think", action="store_true",
                          help="Let the model use its chain-of-thought mode (much slower; off by default).")
+    parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR,
+                         help="Root directory for documents/, pending_annotations.jsonl, "
+                              "criterion_expressions.jsonl, and logs/ (default: the literature corpus's processed/).")
     args = parser.parse_args()
 
-    setup_logging()
+    output_dir = args.output_dir
+    documents_dir = output_dir / "documents"
+    output_path = output_dir / "criterion_expressions.jsonl"
+    pending_path = output_dir / "pending_annotations.jsonl"
+    annotated_log_path = output_dir / "annotated_documents.txt"
+    summary_path = output_dir / "extract_and_embed_summary.json"
+    log_dir = output_dir / "logs"
+    log_path = log_dir / "extract_and_embed.log"
+
+    setup_logging(log_dir, log_path)
+    logger.info("Output dir resolved to: %s", output_dir)
 
     try:
         check_available(args.ollama_host)
@@ -381,22 +402,24 @@ def main() -> None:
     }
 
     if args.document_id:
-        documents = [d for d in discover_documents() if d.name == args.document_id]
+        documents = [d for d in discover_documents(documents_dir) if d.name == args.document_id]
         if not documents:
             raise SystemExit(f"Document not found: {args.document_id}")
-        target_path = OUTPUT_DIR / f"criterion_expressions_{args.document_id}.jsonl"
+        target_path = output_dir / f"criterion_expressions_{args.document_id}.jsonl"
         print(f"Processing document {args.document_id} -> {target_path}")
 
         # A throwaway scratch file for annotate_document's immediate per-item
         # writes -- target_path itself only ever receives the final, embedded
         # records, written once at the end.
-        scratch_path = OUTPUT_DIR / f".pending_{args.document_id}.jsonl"
+        scratch_path = output_dir / f".pending_{args.document_id}.jsonl"
         with open(scratch_path, "w", encoding="utf-8") as scratch_out:
             raw_items = annotate_document(documents[0], args.ollama_host, args.llm_model, args.think, scratch_out, counters)
         scratch_path.unlink()
 
         anchor_cache: dict[str, list[float]] = {}
-        final_items = embed_document_items(args.document_id, raw_items, args.ollama_host, args.embed_model, anchor_cache, counters)
+        final_items = embed_document_items(
+            args.document_id, raw_items, args.ollama_host, args.embed_model, anchor_cache, counters, pending_path,
+        )
         with open(target_path, "w", encoding="utf-8") as f:
             for item in final_items:
                 f.write(json.dumps(item, ensure_ascii=False) + "\n")
@@ -406,13 +429,18 @@ def main() -> None:
               "merge, replace, or discard it by hand after inspecting it.")
         return
 
-    documents = discover_documents()
+    documents = discover_documents(documents_dir)
 
     if args.stage in ("all", "annotate"):
-        run_annotate_stage(documents, args.ollama_host, args.llm_model, args.think, args.force, args.limit, counters)
+        run_annotate_stage(
+            documents, args.ollama_host, args.llm_model, args.think, args.force, args.limit, counters,
+            pending_path, annotated_log_path, output_path,
+        )
 
     if args.stage in ("all", "embed"):
-        run_embed_stage(args.ollama_host, args.embed_model, args.force, args.limit, counters)
+        run_embed_stage(
+            args.ollama_host, args.embed_model, args.force, args.limit, counters, pending_path, output_path,
+        )
 
     summary = {
         "stage": args.stage,
@@ -427,7 +455,7 @@ def main() -> None:
         "started_at": counters["start_time"].isoformat(),
         "finished_at": datetime.now(timezone.utc).isoformat(),
     }
-    SUMMARY_PATH.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 
     final_line = (
         f"Done ({args.stage}). {summary['chunks_processed']} chunks, "
@@ -436,9 +464,9 @@ def main() -> None:
     )
     logger.info(final_line)
     print(f"\n{final_line}")
-    print(f"Pending annotations: {PENDING_PATH}")
-    print(f"Output: {OUTPUT_PATH}")
-    print(f"Summary: {SUMMARY_PATH}")
+    print(f"Pending annotations: {pending_path}")
+    print(f"Output: {output_path}")
+    print(f"Summary: {summary_path}")
 
 
 if __name__ == "__main__":

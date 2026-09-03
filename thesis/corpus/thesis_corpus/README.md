@@ -1,5 +1,24 @@
 # thesis_corpus
 
+A three-stage pipeline (clean text → LLM-annotate + embed → reduce for
+analysis), designed to run over more than one corpus. Every corpus's output
+lives as a sibling under one root:
+
+```
+thesis/corpus/processed/
+  literature/    <- the scholarly literature corpus (this README's default examples)
+    documents/, corpus_manifest.csv, pending_annotations.jsonl,
+    criterion_expressions.jsonl, annotated_documents.txt, logs/, ...
+  miviludes/     <- same structure, once processed (see "Running on a different corpus")
+  interviews/    <- same structure, once it has a Stage 1 (see caveat there)
+  registry.csv   <- cross-corpus index, one row per document; see Stage 4
+```
+
+Each corpus subdirectory has the identical internal shape — Stage 1/2/3 just
+get pointed at a different `--output-dir` (and, for Stage 1, a different
+`--source-dir`). The literature corpus is simply the first one, not special;
+its defaults are what every command below shows unless noted.
+
 ## Stage 1: PDF-to-clean-text pipeline (first version)
 
 Finds PDFs recursively under `thesis/corpus/litterature with pdfs/Generated
@@ -46,7 +65,7 @@ files installed for these to actually work — check with `tesseract
 ### Outputs
 
 ```
-thesis/corpus/processed/
+thesis/corpus/processed/literature/
   documents/<document_id>/
     extracted.md      # Docling markdown export, page markers preserved
     extracted.txt      # plain text, whitespace collapsed, page markers kept
@@ -67,7 +86,7 @@ corrupted or password-protected), `failed` (opened, but extraction raised).
 
 ## Stage 2: extraction + embedding (qwen3:4b + bge-m3 via Ollama)
 
-Reads Stage 1's `processed/documents/<document_id>/pages.jsonl`, chunks each
+Reads Stage 1's `processed/literature/documents/<document_id>/pages.jsonl`, chunks each
 document into ~300-700 word / 2-5 paragraph pieces (page provenance kept as
 `page_range`), sends every chunk to a locally-running Ollama for structured
 annotation of cult/sect-criterion expressions, embeds every accepted item
@@ -79,10 +98,10 @@ Internally it's split into two **checkpointed** phases so an embedding
 failure never costs a re-run of the (slow, expensive) LLM annotation:
 
 1. **annotate**: chunks + annotates with the LLM, writing each accepted item
-   immediately to `processed/pending_annotations.jsonl` — no embedding calls
-   happen in this phase at all. A document is marked done in
-   `processed/annotated_documents.txt` once every one of its chunks has been
-   annotated (even if it produced zero items).
+   immediately to `processed/literature/pending_annotations.jsonl` — no
+   embedding calls happen in this phase at all. A document is marked done in
+   `processed/literature/annotated_documents.txt` once every one of its
+   chunks has been annotated (even if it produced zero items).
 2. **embed**: reads `pending_annotations.jsonl`, batch-embeds each
    not-yet-embedded document's items and entity anchors, and appends the
    final records to `criterion_expressions.jsonl`.
@@ -157,7 +176,7 @@ its own after a failure without touching the LLM again.
 ### Outputs
 
 ```
-thesis/corpus/processed/
+thesis/corpus/processed/literature/
   pending_annotations.jsonl      # raw annotated items, no embeddings yet (annotate phase checkpoint)
   annotated_documents.txt        # one document_id per line, marks annotation done
   criterion_expressions.jsonl    # one JSON object per accepted item, with embeddings (main output)
@@ -181,11 +200,11 @@ without Ollama available, since Ollama runs on your Windows GPU machine, not
 here. To actually run it there:
 
 - **Copy over**: the whole `thesis/corpus/thesis_corpus/` package, and
-  `thesis/corpus/processed/documents/` + `corpus_manifest.csv` (Stage 1's
-  output — the only input Stage 2 reads).
+  `thesis/corpus/processed/literature/documents/` + `corpus_manifest.csv`
+  (Stage 1's output — the only input Stage 2 reads).
 - **Don't need**: `thesis/corpus/litterature with pdfs/` (source PDFs —
   Stage 2 never reads them), Docling, or PyMuPDF.
-- **Watch out**: `processed/documents/**/{extracted.md,extracted.txt,pages.jsonl}`
+- **Watch out**: `processed/*/documents/**/{extracted.md,extracted.txt,pages.jsonl}`
   are gitignored, so a `git pull` on Windows will **not** bring them across —
   copy them by hand (external drive, sync tool, etc.) first.
 
@@ -224,7 +243,61 @@ Never touches the source archive — always reads `--input`, writes
 carries `embedding_text`, effectively a paraphrase/quote of the source, and
 full embedding vectors).
 
-Reusable for other corpora (MIVILUDES, interviews, once those get their own
-`extract_and_embed`-style pipeline) via `--input`/`--output`/`--source-type`
-— no code changes needed, just different paths and a different
-`--source-type` value.
+Reusable for other corpora via `--input`/`--output`/`--source-type` — no
+code changes needed, just different paths and a different `--source-type`
+value (see "Running on a different corpus" below).
+
+## Running on a different corpus
+
+Stages 1-2 accept a configurable root instead of the literature-corpus
+defaults shown above. Both default to today's literature paths when the
+flags are omitted, so nothing above changes unless you pass them:
+
+```bash
+# Stage 1: clean text for a non-default corpus
+python -m thesis_corpus.clean_text \
+  --source-dir "thesis/corpus/MIVILUDES/Latest Report/Latest Report" \
+  --output-dir "thesis/corpus/processed/miviludes"
+
+# Stage 2: extract + embed for that corpus
+python -m thesis_corpus.extract_and_embed \
+  --output-dir "thesis/corpus/processed/miviludes"
+
+# Stage 3: reduce + downsample
+python -m thesis_corpus.reduce_embeddings \
+  --input thesis/corpus/processed/miviludes/criterion_expressions.jsonl \
+  --output thesis/corpus/processed/miviludes/criterion_expressions_reduced.jsonl \
+  --source-type miviludes
+```
+
+`--output-dir` on both Stage 1 and Stage 2 relocates that corpus's entire
+output tree (`documents/`, checkpoint files, `logs/`) at once — every
+sub-path is always derived from it the same way, so there's nothing else to
+configure per-corpus.
+
+**Interviews specifically**: unlike literature/MIVILUDES, interview
+transcripts aren't PDFs (they live under `thesis/corpus/interviews/cleaned/`
+already as plain text) — Stage 1 (built around Docling) doesn't apply.
+Interviews need a small adapter that converts existing transcripts into the
+same `pages.jsonl` shape Stage 2 expects; once that exists, Stages 2-3 work
+unmodified via the same `--output-dir`/`--source-type` pattern.
+
+## Stage 4: cross-corpus registry (`build_registry`)
+
+With more than one corpus under `processed/`, `registry.csv` is a single
+place to see every document's status across all of them — one row per
+document: `corpus`, `document_id`, `stage1_status`, `stage2_status`,
+`item_count`, `output_dir`. It's **generated**, not hand-maintained: it
+scans each `processed/<corpus>/` folder's own existing manifests
+(`corpus_manifest.csv` for Stage 1, `annotated_documents.txt` +
+`criterion_expressions.jsonl` for Stage 2) and derives everything from
+them, so it can never drift out of sync with the files it summarizes — just
+re-run it after any pipeline run:
+
+```
+python -m thesis_corpus.build_registry
+```
+
+Writes `thesis/corpus/processed/registry.csv`. A corpus with no
+`corpus_manifest.csv` (e.g. a future non-PDF corpus fed some other way)
+simply shows `stage1_status: n/a` for its documents rather than erroring.

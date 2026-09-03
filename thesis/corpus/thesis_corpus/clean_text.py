@@ -35,8 +35,11 @@ from thesis_corpus.ids import make_document_id
 from thesis_corpus.writer import DocumentResult, ManifestWriter, PageRecord, write_document_outputs
 
 CORPUS_DIR = Path(__file__).resolve().parent.parent
+# Defaults -- the literature corpus. --source-dir/--output-dir override both
+# for other corpora (e.g. MIVILUDES); every sub-path below is always derived
+# the same way, just rooted at whichever output_dir is in effect.
 SOURCE_DIR = CORPUS_DIR / "litterature with pdfs" / "Generated Corpus" / "files"
-OUTPUT_DIR = CORPUS_DIR / "processed"
+OUTPUT_DIR = CORPUS_DIR / "processed" / "literature"
 DOCUMENTS_DIR = OUTPUT_DIR / "documents"
 MANIFEST_PATH = OUTPUT_DIR / "corpus_manifest.csv"
 LOG_DIR = OUTPUT_DIR / "logs"
@@ -45,13 +48,13 @@ LOG_PATH = LOG_DIR / "pipeline.log"
 logger = logging.getLogger("thesis_corpus.clean_text")
 
 
-def setup_logging() -> None:
-    LOG_DIR.mkdir(parents=True, exist_ok=True)
+def setup_logging(log_dir: Path, log_path: Path) -> None:
+    log_dir.mkdir(parents=True, exist_ok=True)
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s",
         handlers=[
-            logging.FileHandler(LOG_PATH, mode="a", encoding="utf-8"),
+            logging.FileHandler(log_path, mode="a", encoding="utf-8"),
             logging.StreamHandler(),
         ],
     )
@@ -61,8 +64,8 @@ def discover_pdfs(source_dir: Path) -> list[Path]:
     return sorted(source_dir.rglob("*.pdf"))
 
 
-def process_one(pdf_path: Path, document_id: str) -> DocumentResult:
-    source_relative_path = str(pdf_path.relative_to(SOURCE_DIR))
+def process_one(pdf_path: Path, document_id: str, source_dir: Path) -> DocumentResult:
+    source_relative_path = str(pdf_path.relative_to(source_dir))
     base = dict(
         document_id=document_id,
         source_relative_path=source_relative_path,
@@ -131,38 +134,52 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--limit", type=int, default=None,
                          help="Process only the first N discovered PDFs (for testing).")
+    parser.add_argument("--source-dir", type=Path, default=SOURCE_DIR,
+                         help="Directory to search recursively for PDFs (default: the literature corpus).")
+    parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR,
+                         help="Directory to write documents/, corpus_manifest.csv, and logs/ under "
+                              "(default: the literature corpus's processed/).")
     args = parser.parse_args()
 
-    setup_logging()
+    source_dir = args.source_dir
+    output_dir = args.output_dir
+    documents_dir = output_dir / "documents"
+    manifest_path = output_dir / "corpus_manifest.csv"
+    log_dir = output_dir / "logs"
+    log_path = log_dir / "pipeline.log"
 
-    if not SOURCE_DIR.exists():
-        raise SystemExit(f"Source directory not found: {SOURCE_DIR}")
+    setup_logging(log_dir, log_path)
+    logger.info("Source dir resolved to: %s", source_dir)
+    logger.info("Output dir resolved to: %s", output_dir)
 
-    pdfs = discover_pdfs(SOURCE_DIR)
-    logger.info("Discovered %d PDFs under %s", len(pdfs), SOURCE_DIR)
+    if not source_dir.exists():
+        raise SystemExit(f"Source directory not found: {source_dir}")
+
+    pdfs = discover_pdfs(source_dir)
+    logger.info("Discovered %d PDFs under %s", len(pdfs), source_dir)
     if args.limit is not None:
         pdfs = pdfs[:args.limit]
         logger.info("Limiting to first %d PDFs", len(pdfs))
 
     used_ids: set[str] = set()
-    manifest = ManifestWriter(MANIFEST_PATH)
+    manifest = ManifestWriter(manifest_path)
     counts = {"processed": 0, "processed_with_ocr": 0, "unreadable": 0, "failed": 0}
 
     try:
         for i, pdf_path in enumerate(pdfs, 1):
-            document_id = make_document_id(pdf_path, SOURCE_DIR, used_ids)
+            document_id = make_document_id(pdf_path, source_dir, used_ids)
             logger.info("[%d/%d] %s -> %s", i, len(pdfs), pdf_path.name, document_id)
-            result = process_one(pdf_path, document_id)
-            doc_dir = DOCUMENTS_DIR / document_id
+            result = process_one(pdf_path, document_id, source_dir)
+            doc_dir = documents_dir / document_id
             write_document_outputs(result, doc_dir)
-            manifest.add(result, str(doc_dir.relative_to(OUTPUT_DIR)))
+            manifest.add(result, str(doc_dir.relative_to(output_dir)))
             counts[result.processing_status] += 1
     finally:
         manifest.close()
 
     logger.info("Done. %s", counts)
     print(f"\nProcessed {len(pdfs)} PDFs: {counts}")
-    print(f"Manifest: {MANIFEST_PATH}")
+    print(f"Manifest: {manifest_path}")
 
 
 if __name__ == "__main__":
