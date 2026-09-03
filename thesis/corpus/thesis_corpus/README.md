@@ -450,7 +450,7 @@ imbalance is known to exist.
 
 **Dimensionality is not a fixed constant**: PCA is first fit at full rank
 to get the complete explained-variance curve — written to
-`processed/shared_space_variance_curve.{csv,json,png}` so the choice is
+`processed/shared_space/variance_curve.{csv,json,png}` so the choice is
 inspectable rather than asserted — and the smallest `k` reaching 95%
 cumulative variance is picked from that curve. On the actual pooled data:
 `k=390` for 95.0% (curve is fairly gradual, not a sharp knee — e.g. 61% at
@@ -464,22 +464,36 @@ python -m thesis_corpus.build_shared_space
 No Ollama needed — pure `numpy`/`scikit-learn`/`matplotlib` on data that's
 already local (same `requirements-reduce_embeddings.txt`, now with
 `matplotlib` added). Never modifies any of the five source files, only
-writes new ones under `processed/`.
+writes new ones under `processed/shared_space/`.
 
 ### Output
 
 ```
 thesis/corpus/processed/
-  shared_embedding_space.jsonl        # one row per pooled point: source_dataset, key, label, shared_space_vector
-  shared_space_variance_curve.csv     # n_components, cumulative_variance -- the full curve
-  shared_space_variance_curve.json    # {curve, chosen_k, variance_at_k, threshold}
-  shared_space_variance_curve.png     # plot of the above
+  shared_space/
+    embedding_space.jsonl   # one row per pooled point: source_dataset, key, label, shared_space_vector
+    variance_curve.csv      # n_components, cumulative_variance -- the full curve
+    variance_curve.json     # {curve, chosen_k, variance_at_k, threshold}
+    variance_curve.png      # plot of the above
 ```
 
-`shared_embedding_space.jsonl` is gitignored (large — 358MB at 43,415
-points × 390 dims — and, like every other embedding output, derived from
+All cross-corpus output lives under `processed/shared_space/` — a sibling
+of `processed/<corpus>/`, kept structurally distinct from any single
+corpus's own pipeline output (which is what `processed/<corpus>/` holds).
+This is also the natural home for anything built **on top of** this space
+later — e.g. a further 2D/3D projection for visualization (TouchDesigner or
+otherwise): that kind of step would read `embedding_space.jsonl` and write
+its own file alongside it here, rather than a fixed-dimension shared space
+and a later visualization-specific reduction living in different places.
+
+`embedding_space.jsonl` is gitignored (large — 358MB at 43,415 points ×
+390 dims — and, like every other embedding output, derived from
 copyrighted/participant text). The variance-curve files are small and
-tracked.
+tracked. `key` (`document_id:chunk_index` for corpus items, `id` for
+MIVILUDES criteria, `concept_id` for concept-backbone entries) is what any
+later reduction should carry through unchanged, so a point can always be
+traced back to this file, and from there back to the original corpus
+archive it came from.
 
 After writing the output, the script prints two diagnostic (not pass/fail)
 sanity checks: mean vector norm by `source_dataset` (flags any one dataset

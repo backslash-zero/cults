@@ -180,6 +180,26 @@ This data is the extracted into a json file with the following:
 
 \section{Vectorisation}
 
+\subsection{Overview of Gathered Data}\label{sec:vectorisation_data_overview}
+The table below summarises every dataset this stage of the thesis operates on, before the following subsections describe how each is actually processed. Three are corpora of expressions extracted from full text (\ref{sec:vectorising_scholarly_work}); two are small, curated reference lists (\ref{sec:vectorising_miviludes}, \ref{sec:concept_backbone}) rather than extracted from anything; the last is derived from all five of the others combined (\ref{sec:shared_space}). All embeddings, throughout, are produced by the same local model (\texttt{bge-m3}, 1024-dimensional, multilingual, served via Ollama) — no dataset uses a different embedding model from any other.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lXX@{}}
+\toprule
+Dataset & Size & Storage \\
+\midrule
+Scholarly literature corpus & 57 documents, 39{,}236 extracted expressions & \texttt{processed/literature/criterion\_expressions.jsonl} \\
+MIVILUDES corpus & 2 documents (the 2024 activity report; the \enquote{Comment identifier} reference text), 914 extracted expressions & \texttt{processed/miviludes/criterion\_expressions.jsonl} \\
+Interview corpus & 26 transcripts, 231 extracted expressions & \texttt{processed/interviews/criterion\_expressions.jsonl} \\
+MIVILUDES official criteria & 17 criteria, French and English (34 embedded points) & \texttt{metadata/miviludes\_criteria\_embedded.jsonl} \\
+Generic concept backbone & 3{,}000 WordNet concepts & \texttt{dictionaries/concept\_backbone\_embedded.jsonl} \\
+Shared cross-corpus space & 43{,}415 points pooled from all five datasets above, reduced to 390 dimensions & \texttt{processed/shared\_space/embedding\_space.jsonl} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Every corpus above shares the same per-expression schema: a verbatim source quote, a short self-contained embedding text, named entity/dimension anchors, and three descriptors of how the expression makes its claim (claim mode, epistemic status, attribution) — detailed in full in \ref{sec:vectorising_scholarly_work}. A separate, machine-generated index (\texttt{processed/registry.csv}) tracks, for every document across all three corpora, whether it has been extracted and embedded yet — not itself analytical data, but the bookkeeping that keeps the other three corpora's processing state auditable as they grow.
+
 \subsection{Vectorising the MIVILUDES Framework}\label{sec:vectorising_miviludes}
 Unlike the scholarly corpus, the MIVILUDES framework supplies its own dimensions directly: the Miviludes has published a fixed list of seventeen criteria for identifying a \enquote{dérive sectaire} (\textit{Comment identifier une dérive sectaire?}). Each criterion is embedded with the same local model as every other corpus (\texttt{bge-m3}), and — since the source text exists in both French and English — its French and English versions are embedded and kept as two separate points rather than one being discarded or the two being averaged together: both are legitimate embedded representations of the same official statement, and their distance from each other in the resulting space is itself a usable check on whether the multilingual embedding is behaving sensibly (see \ref{sec:shared_space}, where this check is actually run).
 

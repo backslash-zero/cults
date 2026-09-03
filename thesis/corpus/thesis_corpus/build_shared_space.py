@@ -61,6 +61,13 @@ from sklearn.preprocessing import StandardScaler
 
 CORPUS_DIR = Path(__file__).resolve().parent.parent
 PROCESSED_DIR = CORPUS_DIR / "processed"
+# All cross-corpus (not per-corpus) outputs live under their own
+# processed/shared_space/ subdirectory, as a sibling of processed/<corpus>/
+# -- keeps "one corpus's own pipeline output" and "output that spans every
+# corpus" visually and structurally distinct, and gives any later step
+# (e.g. a further 2D/3D reduction for visualization) an obvious home next
+# to the space it would be reducing.
+SHARED_SPACE_DIR = PROCESSED_DIR / "shared_space"
 
 CORPUS_ARCHIVES = {
     "literature": PROCESSED_DIR / "literature" / "criterion_expressions.jsonl",
@@ -70,10 +77,10 @@ CORPUS_ARCHIVES = {
 MIVILUDES_CRITERIA_PATH = CORPUS_DIR / "metadata" / "miviludes_criteria_embedded.jsonl"
 CONCEPT_BACKBONE_PATH = CORPUS_DIR / "dictionaries" / "concept_backbone_embedded.jsonl"
 
-OUTPUT_PATH = PROCESSED_DIR / "shared_embedding_space.jsonl"
-VARIANCE_CSV_PATH = PROCESSED_DIR / "shared_space_variance_curve.csv"
-VARIANCE_PLOT_PATH = PROCESSED_DIR / "shared_space_variance_curve.png"
-VARIANCE_JSON_PATH = PROCESSED_DIR / "shared_space_variance_curve.json"
+OUTPUT_PATH = SHARED_SPACE_DIR / "embedding_space.jsonl"
+VARIANCE_CSV_PATH = SHARED_SPACE_DIR / "variance_curve.csv"
+VARIANCE_PLOT_PATH = SHARED_SPACE_DIR / "variance_curve.png"
+VARIANCE_JSON_PATH = SHARED_SPACE_DIR / "variance_curve.json"
 
 VARIANCE_THRESHOLD = 0.95
 EMBEDDING_DIM = 1024
@@ -218,7 +225,7 @@ def main() -> None:
     variance_at_k = float(cumulative_variance[k - 1])
     logger.info("%.1f%% cumulative variance at k=%d (threshold: %.0f%%)", variance_at_k * 100, k, args.variance_threshold * 100)
 
-    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    SHARED_SPACE_DIR.mkdir(parents=True, exist_ok=True)
     with open(VARIANCE_CSV_PATH, "w", encoding="utf-8") as f:
         f.write("n_components,cumulative_variance\n")
         for i, v in enumerate(cumulative_variance, 1):
