@@ -501,3 +501,47 @@ being pushed to the periphery or center relative to the others), and each
 MIVILUDES criterion's FR vs EN point norms side by side (expected to be
 close, confirming the multilingual embedding + shared PCA are behaving
 sensibly).
+
+## 3-D visualization projections (`visualize_3d`)
+
+`embedding_space.jsonl`'s 390 dimensions can't be plotted directly. This
+script reads it once and writes three separate 3-D projections, one per
+method, so the shared space can actually be visualized:
+
+- **PCA**: `shared_space_vector`'s columns are already full-rank PCA output
+  from `build_shared_space.py` — ordered by descending explained variance
+  and mutually uncorrelated. The first 3 principal components are therefore
+  exactly the first 3 columns of `shared_space_vector`; this is a slice, not
+  a refit.
+- **UMAP** (`n_neighbors=20`, `min_dist=0.2`, euclidean metric): a nonlinear
+  projection that tends to preserve local neighborhood structure.
+- **t-SNE** (`perplexity=30`, euclidean metric, PCA-initialized): a
+  nonlinear projection tuned for cluster structure, at the cost of global
+  distances being less meaningful than UMAP's or PCA's.
+
+All three are fit directly on the 390-d shared-space vectors (already
+standardized + PCA'd upstream in `build_shared_space.py`; no further scaling
+applied here).
+
+```
+python -m thesis_corpus.visualize_3d
+```
+
+Needs `umap-learn` in addition to `numpy`/`scikit-learn`
+(`requirements-visualize_3d.txt`). Never modifies `embedding_space.jsonl`,
+only writes new files under `processed/shared_space/`.
+
+### Output
+
+```
+thesis/corpus/processed/
+  shared_space/
+    visualization_pca_3d.jsonl    # source_dataset, key, label, pca_3d_vector
+    visualization_umap_3d.jsonl   # source_dataset, key, label, umap_3d_vector
+    visualization_tsne_3d.jsonl   # source_dataset, key, label, tsne_3d_vector
+```
+
+Each file has one row per point in `embedding_space.jsonl` (43,415), keeping
+`source_dataset`/`key`/`label` unchanged and carrying only its own 3-d
+vector. Unlike `embedding_space.jsonl`, these are small (43,415 × 3 floats
+each) and tracked in git, same as `variance_curve.*`.
