@@ -1,0 +1,14 @@
+{
+  "stage": "all",
+  "chunks_processed": 115,
+  "chunk_relevance_counts": {
+    "relevant": 108,
+    "not_relevant": 3
+  },
+  "items_annotated": 823,
+  "items_embedded": 823,
+  "embeddings_generated": 1227,
+  "errors": 4,
+  "started_at": "2026-09-03T12:54:57.588646+00:00",
+  "finished_at": "2026-09-03T13:16:31.482347+00:00"
+}
