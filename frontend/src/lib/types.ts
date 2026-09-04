@@ -42,6 +42,7 @@ export interface CorpusOverview {
 	literatureCount: number;
 	dictionaryCount: number;
 	customTermCount: number;
+	miviludesCriteriaCount: number;
 	interviewStats: InterviewAggregates;
 }
 
@@ -52,8 +53,14 @@ export interface LiteratureItem {
 	year?: string;
 	type?: 'article' | 'book_chapter' | 'book' | 'report' | 'other';
 	source?: string;
+	doi?: string;
+	isbn?: string;
 	language?: string;
 	tags?: string[];
+	rawFile?: string;
+	dateAdded?: string;
+	abstract?: string;
+	notes?: string;
 }
 
 export interface DictionaryEntry {
@@ -69,4 +76,50 @@ export interface CustomTerm {
 	term: string;
 	definition?: string;
 	relatedTerms?: string[];
+}
+
+export interface MiviludesCriterion {
+	corpusId: string;
+	criterionFr: string;
+	criterionEn: string;
+	order?: number;
+	source?: string;
+	citation?: string;
+}
+
+export type SourceDataset =
+	| 'literature'
+	| 'miviludes'
+	| 'interviews'
+	| 'miviludes_criteria_fr'
+	| 'miviludes_criteria_en'
+	| 'concept_backbone';
+
+export type ProjectionMethod = 'pca' | 'umap' | 'tsne';
+
+export interface PointMeta {
+	source_dataset: SourceDataset;
+	key: string;
+	label: string;
+}
+
+export interface SharedSpaceStats {
+	totalPoints: number;
+	countsBySourceDataset: Record<string, number>;
+	registry: {
+		totalDocuments: number;
+		byCorpus: Record<
+			string,
+			{
+				documents: number;
+				itemsEmbedded: number;
+				byStage2Status: Record<string, number>;
+			}
+		>;
+	};
+	sharedSpace: {
+		chosenDimensions: number;
+		varianceAtK: number;
+		varianceThreshold: number;
+	};
 }

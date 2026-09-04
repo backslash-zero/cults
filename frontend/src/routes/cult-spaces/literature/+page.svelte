@@ -8,15 +8,20 @@
 <h1 class="text-2xl font-terminal-grotesque">Literature</h1>
 
 {#if data.items.length === 0}
-	<EmptyState message="Not started yet — the literature corpus hasn't been migrated into this pipeline." />
+	<EmptyState message="No literature synced yet — run the Sanity sync." />
 {:else}
 	<ul class="flex flex-col gap-2">
 		{#each data.items as item (item.corpusId)}
-			<li class="rounded-lg border border-gray-200 dark:border-gray-700 p-3">
-				<p class="font-terminal-grotesque">{item.title}</p>
-				<p class="text-gray-500 dark:text-gray-400 text-sm">
-					{item.authors?.join(', ')} · {item.year} · {item.type}
-				</p>
+			<li>
+				<a
+					href={`/cult-spaces/literature/${item.corpusId}`}
+					class="block rounded-lg border border-gray-200 dark:border-gray-700 p-3 hover:border-gray-400 dark:hover:border-gray-500"
+				>
+					<p class="font-terminal-grotesque">{item.title}</p>
+					<p class="text-gray-500 dark:text-gray-400 text-sm">
+						{item.authors?.join(', ')} · {item.year} · {item.type}
+					</p>
+				</a>
 			</li>
 		{/each}
 	</ul>

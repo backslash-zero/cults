@@ -100,10 +100,13 @@ function mapLiterature(r) {
     year: r.year != null ? String(r.year) : '',
     type: r.type || '',
     source: r.source || '',
+    doi: r.doi || '',
+    isbn: r.isbn || '',
     language: r.language || '',
     tags: r.tags || [],
     rawFile: r.raw_file || '',
     dateAdded: r.date_added || undefined,
+    abstract: r.abstract || '',
     notes: r.notes || '',
   }
 }
@@ -129,6 +132,17 @@ function mapCustomTerm(r) {
   }
 }
 
+function mapMiviludesCriterion(r) {
+  return {
+    criterionFr: r.criterion_fr,
+    criterionEn: r.criterion_en,
+    order: r.order,
+    source: r.source || '',
+    citation: r.citation || '',
+    dateAdded: r.date_added || undefined,
+  }
+}
+
 const SOURCES = [
   // interviews' database.json lives under corpus/interviews/metadata/, not
   // the shared corpus/metadata/ used by the three newer types.
@@ -140,6 +154,8 @@ const SOURCES = [
    key: 'dictionaries', sanityType: 'dictionaryEntry', map: mapDictionary},
   {path: path.join(METADATA_DIR, 'custom_terms.json'),
    key: 'custom_terms', sanityType: 'customTerm', map: mapCustomTerm},
+  {path: path.join(METADATA_DIR, 'miviludes_criteria.json'),
+   key: 'miviludes_criteria', sanityType: 'miviludesCriterion', map: mapMiviludesCriterion},
 ]
 
 async function main() {

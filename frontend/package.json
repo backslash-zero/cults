@@ -9,10 +9,12 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"sync-data": "node scripts/sync-corpus-data.mjs"
 	},
 	"dependencies": {
-		"@sanity/client": "^6.24.1"
+		"@sanity/client": "^6.24.1",
+		"three": "^0.185.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "^6.3.3",
@@ -25,6 +27,7 @@
 		"svelte-check": "^4.6.0",
 		"tailwindcss": "^4.3.0",
 		"typescript": "^6.0.3",
+		"@types/three": "^0.185.0",
 		"vite": "^8.0.16"
 	}
 }

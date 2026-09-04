@@ -8,7 +8,9 @@
 		{ href: '/cult-spaces/interviews', label: 'Interviews' },
 		{ href: '/cult-spaces/literature', label: 'Literature' },
 		{ href: '/cult-spaces/dictionaries', label: 'Dictionaries' },
-		{ href: '/cult-spaces/custom-terms', label: 'Custom terms' }
+		{ href: '/cult-spaces/custom-terms', label: 'Custom terms' },
+		{ href: '/cult-spaces/miviludes-criteria', label: 'MIVILUDES criteria' },
+		{ href: '/cult-spaces/explore', label: 'Explore' }
 	];
 </script>
 

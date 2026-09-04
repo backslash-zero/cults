@@ -38,6 +38,8 @@ export const literatureItem = defineType({
       },
     }),
     defineField({name: 'source', title: 'Source (journal/publisher)', type: 'string'}),
+    defineField({name: 'doi', title: 'DOI', type: 'string'}),
+    defineField({name: 'isbn', title: 'ISBN', type: 'string'}),
     defineField({name: 'language', title: 'Language', type: 'string'}),
     defineField({
       name: 'tags',
@@ -47,6 +49,7 @@ export const literatureItem = defineType({
     }),
     defineField({name: 'rawFile', title: 'Raw file path', type: 'string'}),
     defineField({name: 'dateAdded', title: 'Date added', type: 'date'}),
+    defineField({name: 'abstract', title: 'Abstract', type: 'text'}),
     defineField({name: 'notes', title: 'Notes', type: 'text'}),
   ],
   preview: {

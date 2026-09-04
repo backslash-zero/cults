@@ -5,6 +5,7 @@ export const overviewQuery = groq`{
 	"literatureCount": count(*[_type == "literatureItem"]),
 	"dictionaryCount": count(*[_type == "dictionaryEntry"]),
 	"customTermCount": count(*[_type == "customTerm"]),
+	"miviludesCriteriaCount": count(*[_type == "miviludesCriterion"]),
 	"interviews": *[_type == "interview"]{
 		batch, language, method, translated, totalWordCount
 	}
@@ -30,4 +31,13 @@ export const interviewDetailQuery = groq`*[_type == "interview" && corpusId == $
 	corpusId, batch, dateTime, dateTimePrecision, method, language, translated,
 	translationLanguage, location, age, gender, nationality, mainLanguage,
 	languageSpoken, nQuestions, nAnswers, totalWordCount, text, translationText
+}`;
+
+export const literatureDetailQuery = groq`*[_type == "literatureItem" && corpusId == $corpusId][0]{
+	corpusId, title, authors, year, type, source, doi, isbn, language, tags,
+	rawFile, dateAdded, abstract, notes
+}`;
+
+export const miviludesCriteriaListQuery = groq`*[_type == "miviludesCriterion"] | order(order asc){
+	corpusId, criterionFr, criterionEn, order, source, citation
 }`;

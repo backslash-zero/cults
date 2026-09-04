@@ -4,7 +4,7 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-	let { overview } = $derived(data);
+	let { overview, stats } = $derived(data);
 </script>
 
 <p class="text-2xl text-gray-700 dark:text-gray-300 font-terminal-grotesque prose">
@@ -13,7 +13,7 @@
 	asking whether AI psychosis could be understood as a form of sectarian drift.
 </p>
 
-<section class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<section class="grid grid-cols-2 sm:grid-cols-3 gap-4">
 	<CorpusSummaryCard title="Interviews" count={overview.interviewCount} href="/cult-spaces/interviews" />
 	<CorpusSummaryCard title="Literature" count={overview.literatureCount} href="/cult-spaces/literature" />
 	<CorpusSummaryCard
@@ -25,6 +25,11 @@
 		title="Custom terms"
 		count={overview.customTermCount}
 		href="/cult-spaces/custom-terms"
+	/>
+	<CorpusSummaryCard
+		title="MIVILUDES criteria"
+		count={overview.miviludesCriteriaCount}
+		href="/cult-spaces/miviludes-criteria"
 	/>
 </section>
 
@@ -66,3 +71,32 @@
 		</div>
 	</section>
 {/if}
+
+<section class="flex flex-col gap-4">
+	<h2 class="text-xl font-terminal-grotesque">Full-text extraction &amp; embedding pipeline</h2>
+	<p class="text-gray-700 dark:text-gray-300">
+		Separate from the bibliographic corpus above: {stats.registry.totalDocuments} source documents have
+		been run through extraction, annotation, and embedding, producing {stats.totalPoints.toLocaleString()}
+		embedded chunks and concepts, pooled into one {stats.sharedSpace.chosenDimensions}-d shared space
+		capturing {(stats.sharedSpace.varianceAtK * 100).toFixed(1)}% of variance.
+	</p>
+	<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+		<StatCard value={stats.registry.totalDocuments} label="Documents processed" />
+		<StatCard value={stats.totalPoints.toLocaleString()} label="Embedded points" />
+		<StatCard value={(stats.countsBySourceDataset.concept_backbone ?? 0).toLocaleString()} label="Concept backbone" />
+		<StatCard value={`${stats.sharedSpace.chosenDimensions}-d`} label="Shared space (95% variance)" />
+	</div>
+	<div class="grid sm:grid-cols-3 gap-6 text-gray-700 dark:text-gray-300">
+		<div>
+			<h3 class="font-terminal-grotesque mb-1">Chunks embedded by corpus</h3>
+			<ul>
+				{#each Object.entries(stats.registry.byCorpus) as [corpus, info] (corpus)}
+					<li>{corpus}: {info.itemsEmbedded.toLocaleString()} ({info.documents} docs)</li>
+				{/each}
+			</ul>
+		</div>
+	</div>
+	<a href="/cult-spaces/explore" class="font-terminal-grotesque hover:underline">
+		Explore the shared embedding space ({stats.totalPoints.toLocaleString()} points) →
+	</a>
+</section>
