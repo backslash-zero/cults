@@ -459,7 +459,8 @@ keeps only tokens that:
    a concept, attribute, or role, not an action.
 3. Aren't a **named-entity instance** (WordNet's `instance_hyponym`
    mechanism, the same check `build_concept_backbone_en.py` uses) — catches
-   further proper-noun leakage a plain WordNet-membership check wouldn't.
+   further proper-noun leakage a plain WordNet-membership check wouldn't,
+   though not all of it (see below).
 
 A word is counted once per *expression* containing it (not once per raw
 occurrence), so one repetitive sentence can't inflate a count. A small
@@ -468,13 +469,40 @@ wrong for how the corpora use them (e.g. "religious" picking the noun
 "monk" sense instead of the adjective) are hand-corrected via a
 `GLOSS_OVERRIDES` dict; a handful of proper-noun leaks and wrong-sense
 matches the domain filter didn't catch were spot-checked and excluded via
-`EXCLUDE_WORDS`. Neither list is exhaustive — a 600-concept automatically
-ranked list will have residual noise beyond what a spot-check catches; this
-is documented rather than claimed fully clean, in the same spirit as the
-two known-but-deferred extraction issues already noted in Methods.tex.
+`EXCLUDE_WORDS`.
 
-On the current corpus: 33,113 unique post-stopword tokens tokenized, 600
-kept after WordNet/domain filtering (the target size), ranked by
+Extending the target size from an initial 600 to the current 1,500 surfaced
+a systematic gap rather than one-off noise: OEWN's `instance_hyponym`
+marking is incomplete for minor historical figures, so common words
+coinciding with their WordNet entries leaked through as "structural
+concepts" ("smith", "land", "king", "richardson", ...) — including two
+on-topic-but-wrong leaks that would have undermined the whole point of this
+dataset: "hubbard" (matches L. Ron Hubbard's WordNet bio entry) and
+"iskcon" (a specific named sect, the Hare Krishnas) are exactly the kind of
+named-person/named-group contamination this filter exists to keep out —
+structural concepts describe roles and dynamics, not specific people or
+groups (that's `emergent_entities`' job). A systematic regex sweep for
+biographical-looking glosses (`United States \w+`, a birth year, a
+`(YYYY-YYYY)` span) caught 53 of these at once; a few more (acronym
+collisions like "LET" = Lashkar-e-Taiba, "SHAPE" = NATO's Supreme
+Headquarters; demonyms; wrong senses) were spot-checked and excluded or
+overridden by hand. Verified zero biographical-pattern matches remain in
+the final 1,500 — but neither list is exhaustive, and a pool this size will
+have residual noise beyond what any spot-check catches; this is documented
+rather than claimed fully clean, in the same spirit as the two
+known-but-deferred extraction issues already noted in Methods.tex.
+
+**Target size**: not picked in advance. 7,053 candidates survive WordNet
+and domain filtering out of 33,113 unique post-stopword tokens; mentions
+per term fall off gradually (70 at rank 600, 40 at rank 1,000, 24 at rank
+1,500), with proper-noun leakage and per-term mention counts both degrading
+noticeably past that point — checked directly (`total_mentions.most_common()`
+against the full qualifying pool) before settling on 1,500 as the practical
+ceiling, rather than assuming 600 (an earlier, arbitrary middle-of-range
+choice) was the natural stopping point.
+
+On the current corpus: 33,113 unique post-stopword tokens tokenized, 1,500
+kept after WordNet/domain filtering (the chosen target size), ranked by
 expression-frequency. Top by mentions: "religious" (2,688), "movement"
 (1,512), "church" (1,250), "cult" (1,229), "group" (1,129), "religion"
 (1,066) — genuinely structural/relational vocabulary, unlike entity_anchors'
@@ -605,9 +633,9 @@ every dataset ends up in the same shared coordinate system:
 - Total pooled points is logged at runtime, not asserted against a
   hardcoded constant (it will keep changing as the corpus grows, the
   emergent-entity threshold is adjusted, or the structural-concepts target
-  size changes): **47,248** points on the current corpus (39,236 literature
+  size changes): **48,148** points on the current corpus (39,236 literature
   + 914 MIVILUDES + 230 interviews + 17 MIVILUDES criteria + 3,000 concept
-  backbone + 600 structural concepts + 3,251 emergent entities).
+  backbone + 1,500 structural concepts + 3,251 emergent entities).
 
 **Standardization**: `StandardScaler` (zero mean, unit variance per
 dimension) runs before PCA. Every vector already comes from the same
@@ -768,7 +796,7 @@ thesis/corpus/processed/
     visualization_tsne_3d.jsonl   # ...same fields, tsne_3d_vector
 ```
 
-Each file has one row per point in `embedding_space.jsonl` (47,248), keeping
+Each file has one row per point in `embedding_space.jsonl` (48,148), keeping
 every field but the vector unchanged and carrying only its own 3-d vector.
-Unlike `embedding_space.jsonl`, these are small (47,248 × 3 floats each) and
+Unlike `embedding_space.jsonl`, these are small (48,148 × 3 floats each) and
 tracked in git, same as `variance_curve.*`.

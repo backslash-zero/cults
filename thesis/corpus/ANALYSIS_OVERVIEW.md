@@ -2,7 +2,7 @@
 
 A reference snapshot of the shared cross-corpus embedding space, for planning
 the geometrical analysis. Reflects the pipeline as of the `build_shared_space`
-run that produced `processed/shared_space/embedding_space.jsonl` (47,248
+run that produced `processed/shared_space/embedding_space.jsonl` (48,148
 points, k=395). Regenerate the numbers below after any pipeline rerun — they
 are not guaranteed to stay in sync automatically.
 
@@ -45,7 +45,7 @@ What the analysis is meant to establish:
 ## Datasets in the Shared Space
 
 One shared 395-dimensional PCA space (95.0% cumulative variance), pooled from
-seven sources, 47,248 points total:
+seven sources, 48,148 points total:
 
 | `source_dataset` | Points | Key format | Label semantics |
 |---|---|---|---|
@@ -54,7 +54,7 @@ seven sources, 47,248 points total:
 | `interviews` | 230 | `document_id:chunk_index` | Same, from 26 interview transcripts |
 | `miviludes_criteria` | 17 | `crit-<slug>` | French criterion text (`label`); English translation as `label_en`, display-only — not a separate point |
 | `concept_backbone` | 3,000 | WordNet ILI id (e.g. `i71809`) | The concept's primary English lemma |
-| `structural_concepts` | 600 | `sc_<0001..0600>` | The term itself (e.g. "control", "authority") |
+| `structural_concepts` | 1,500 | `sc_<0001..1500>` | The term itself (e.g. "control", "authority") |
 | `emergent_entities` | 3,251 | normalized anchor text | The anchor text itself (e.g. "scientology") |
 
 ## Point Roles
@@ -86,26 +86,40 @@ keeping only tokens that are valid Open English WordNet lemmas in an
 in-domain lexicographer file (social/relational/cognitive/group-dynamics,
 excluding concrete/physical domains; verbs excluded entirely) and not a
 named-entity instance — this both filters out proper nouns/non-English
-tokens and supplies a free English gloss per survivor. 600 concepts
-survived out of 33,113 unique tokens found in the expression text, ranked by
-how many distinct expressions contain each (not raw occurrence count, so
-one repetitive sentence can't inflate a word's rank). Top by mentions:
-"religious" (2,688), "movement" (1,512), "church" (1,250), "cult" (1,229),
-"group" (1,129), "religion" (1,066) — genuinely structural/relational,
-unlike `emergent_entities`' own top mentions (named groups). A handful of
-wrong WordNet senses (e.g. "religious" defaulting to a noun sense meaning a
-monk) were hand-corrected and a few proper-noun leaks excluded; neither is
-exhaustive at this scale — residual noise should be expected, not assumed
-absent.
+tokens and supplies a free English gloss per survivor. 7,053 candidates
+survived out of 33,113 unique tokens found in the expression text; the top
+1,500 by expression-frequency are kept, chosen empirically rather than
+picked in advance — mentions per term fall off gradually (70 at rank 600,
+40 at rank 1,000, 24 at rank 1,500), and both proper-noun leakage and
+per-term mention counts degrade noticeably past that point, putting 1,500
+at the practical ceiling before quality drops. Top by mentions: "religious"
+(2,688), "movement" (1,512), "church" (1,250), "cult" (1,229), "group"
+(1,129), "religion" (1,066) — genuinely structural/relational, unlike
+`emergent_entities`' own top mentions (named groups). A handful of wrong
+WordNet senses (e.g. "religious" defaulting to a noun sense meaning a monk)
+were hand-corrected. Extending from an initial 600 to 1,500 surfaced a
+systematic gap, not just one-off noise: Open English WordNet's
+`instance_hyponym` marking is incomplete for minor historical figures, so
+common words coinciding with their entries leaked through ("smith", "land",
+"king", ...) — including two on-topic-but-wrong leaks that would have
+undermined the dataset's own purpose: "hubbard" (L. Ron Hubbard) and
+"iskcon" (a specific named sect, the Hare Krishnas) are exactly the kind of
+named-person/named-group contamination this filter exists to keep out. A
+systematic sweep for biographical-looking glosses ("United States ...", a
+birth year, a year range) caught 53 of these at once; verified zero such
+matches remain in the final 1,500. Neither correction is exhaustive —
+residual noise should be expected at this scale, not assumed absent.
 
-**Verified after embedding and rerunning**: `structural_concepts`' nearest
-expression-point distance (mean 32.97, sampled) now sits essentially at the
-expression-to-expression baseline (33.19) — it reads as embedded *within*
-the expression cloud, not as a separate cluster. `concept_backbone` remains
-farther out (34.63), consistent with staying topic-neutral rather than
-corpus-proximate. Centroid distance to the expression centroid also
-improved: 15.9 (`structural_concepts`) vs. 16.7 (`concept_backbone`), both
-against `emergent_entities`' 12.5.
+**Verified after embedding and rerunning** (both at 600 and again at the
+final 1,500): `structural_concepts`' nearest expression-point distance
+(mean 33.37, sampled) sits close to the expression-to-expression baseline
+(33.21) — essentially embedded within the expression cloud, not a separate
+cluster. `concept_backbone` remains farther out (34.66), consistent with
+staying topic-neutral rather than corpus-proximate. Centroid distance to
+the expression centroid also improved: 16.1 (`structural_concepts`) vs.
+16.6 (`concept_backbone`), both against `emergent_entities`' 12.6. (At 600
+concepts the numbers were marginally tighter — 32.97/15.9 — the larger,
+lower-frequency tail pulls the average out slightly, but the effect holds.)
 
 ## Categorical Facets Available for Analysis
 
