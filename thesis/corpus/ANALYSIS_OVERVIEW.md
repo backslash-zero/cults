@@ -6,6 +6,18 @@ run that produced `processed/shared_space/embedding_space.jsonl` (46,648
 points, k=396). Regenerate the numbers below after any pipeline rerun — they
 are not guaranteed to stay in sync automatically.
 
+**Pending as of this snapshot**: a 7th dataset, `structural_concepts`, has
+been designed and its candidate list extracted (600 concepts, real numbers
+below) but not yet embedded or pooled — that step needs Ollama, which runs
+on a separate machine. `build_shared_space.py` already requires and will
+pool it once `dictionaries/structural_concepts_embedded.jsonl` exists (see
+`python -m thesis_corpus.embed_concept_backbone --input
+dictionaries/structural_concepts_candidates.csv --output
+dictionaries/structural_concepts_embedded.jsonl` in `thesis_corpus/README.md`).
+Everything below marked *(pending)* will change on the next rerun; the
+46,648/k=396 figures above are the *last actually verified* run, without
+`structural_concepts`.
+
 ## Project Goals & Hypothesis
 
 This research investigates the criteria through which particular objects,
@@ -54,18 +66,49 @@ six sources, 46,648 points total:
 | `interviews` | 230 | `document_id:chunk_index` | Same, from 26 interview transcripts |
 | `miviludes_criteria` | 17 | `crit-<slug>` | French criterion text (`label`); English translation as `label_en`, display-only — not a separate point |
 | `concept_backbone` | 3,000 | WordNet ILI id (e.g. `i71809`) | The concept's primary English lemma |
+| `structural_concepts` *(pending)* | 600 candidates extracted, not yet embedded/pooled | `sc_<0001..0600>` | The term itself (e.g. "control", "authority") |
 | `emergent_entities` | 3,251 | normalized anchor text | The anchor text itself (e.g. "scientology") |
 
 ## Point Roles
 
 Every point also carries a `point_role`, cutting across `source_dataset` to
-group the six datasets into three kinds of thing:
+group the (soon seven) datasets into three kinds of thing:
 
 | `point_role` | Datasets | What it is |
 |---|---|---|
 | `expression` | `literature`, `miviludes`, `interviews`, `miviludes_criteria` | A criterion expression extracted from a text, or the MIVILUDES's own criterion text — something a source actually said |
-| `reference` | `concept_backbone` | An external, generic WordNet vocabulary entry, included as a fixed, topic-neutral yardstick — not derived from any corpus |
+| `reference` | `concept_backbone`, `structural_concepts` *(pending)* | A backdrop vocabulary point, not itself a claim any source makes. Two subsets: `concept_backbone` is topic-neutral (WordNet, not derived from any corpus — an independent yardstick); `structural_concepts` is corpus-derived (extracted from the corpora's own expression text, geometrically closer to the data by construction, but not topic-neutral — see "Why two reference subsets" below) |
 | `emergent` | `emergent_entities` | A named entity/group/concept mentioned *by* the corpora themselves — corpus-derived like an expression, but a recurring reference object rather than a claim |
+
+### Why two reference subsets
+
+The original `concept_backbone` is deliberately topic-neutral, which is
+exactly what makes it a valid independent yardstick — but measured in the
+shared space, it sits notably farther from the corpus-expression centroid
+than emergent entities do (16.7 vs. 12.5 shared-space units, against a
+~33-unit expression-to-expression baseline): a real, if moderate, "distant
+neutral island" effect. Mining `entity_anchors` for a closer, generic
+vocabulary (the same field `emergent_entities` uses) was tried and
+abandoned first: even summed across the whole corpus with no threshold,
+words like "control" (4 mentions), "authority" (12), "manipulation" (3),
+"harm" (0) barely register as tagged anchors — that field captures concrete
+named things, not abstract social-structure vocabulary, at any scale.
+`structural_concepts` instead tokenizes the actual expression prose,
+keeping only tokens that are valid Open English WordNet lemmas in an
+in-domain lexicographer file (social/relational/cognitive/group-dynamics,
+excluding concrete/physical domains; verbs excluded entirely) and not a
+named-entity instance — this both filters out proper nouns/non-English
+tokens and supplies a free English gloss per survivor. 600 concepts
+survived out of 33,113 unique tokens found in the expression text, ranked by
+how many distinct expressions contain each (not raw occurrence count, so
+one repetitive sentence can't inflate a word's rank). Top by mentions:
+"religious" (2,688), "movement" (1,512), "church" (1,250), "cult" (1,229),
+"group" (1,129), "religion" (1,066) — genuinely structural/relational,
+unlike `emergent_entities`' own top mentions (named groups). A handful of
+wrong WordNet senses (e.g. "religious" defaulting to a noun sense meaning a
+monk) were hand-corrected and a few proper-noun leaks excluded; neither is
+exhaustive at this scale — residual noise should be expected, not assumed
+absent.
 
 ## Categorical Facets Available for Analysis
 
@@ -73,7 +116,8 @@ All fields below live directly in `embedding_space.jsonl` and every
 `visualization_{pca,umap,tsne}_3d.jsonl` file — no extra join needed for
 these. `null`/absent where not applicable, never a fabricated default.
 
-- **`source_dataset`** (6 values, table above) — the coarsest split.
+- **`source_dataset`** (6 values now, 7 once `structural_concepts` is
+  pooled — table above) — the coarsest split.
 - **`point_role`** (3 values, table above) — `expression`/`reference`/
   `emergent`; the coarser split when the question is about the *kind* of
   point rather than which specific dataset it came from (e.g. "compare
@@ -110,11 +154,13 @@ these. `null`/absent where not applicable, never a fabricated default.
   religious movements (529), cult (426), new age (387), new religions
   (332), Unification Church (273), Jehovah's Witnesses (233), sect (205),
   brainwashing (204).
-- **`mention_distribution`** — emergent-entity points only; `null`
-  elsewhere. A per-corpus mention count, e.g.
+- **`mention_distribution`** — emergent-entity and structural-concept
+  points only (once the latter is pooled); `null` elsewhere (including
+  `concept_backbone`, which has no corpus-mention notion at all). A
+  per-corpus mention count, e.g.
   `{"literature": 3683, "miviludes": 130, "interviews": 54}` for
   "scientology" — provenance metadata, not used in the PCA fit (still one
-  point per anchor either way). Lets an anchor mentioned near-exclusively in
+  point per term either way). Lets a term mentioned near-exclusively in
   one epistemology (e.g. "NRMs", "Heaven's Gate", "Unification Church" — all
   literature-only) be told apart from one that recurs across all three (e.g.
   "scientology", "cults") — useful for checking whether the vocabulary that
@@ -144,6 +190,9 @@ these. `null`/absent where not applicable, never a fabricated default.
 
 ## What's NOT Yet Done
 
+- `structural_concepts` (600 candidates) needs embedding on the
+  Ollama-serving machine, then `build_shared_space.py` and `visualize_3d.py`
+  need rerunning — see "Pending as of this snapshot" at the top.
 - No clustering or distance analysis has been run on the shared space.
 - No criterion-centred nearest-neighbour inspection (e.g. which corpus
   expressions sit closest to each of the 17 MIVILUDES criteria).

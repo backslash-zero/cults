@@ -16,6 +16,7 @@ processed/*/pending_annotations.jsonl
 processed/*/criterion_expressions*.jsonl
 metadata/miviludes_criteria_embedded.jsonl
 dictionaries/concept_backbone_embedded.jsonl
+dictionaries/structural_concepts_embedded.jsonl
 processed/shared_space/embedding_space.jsonl
 
 # MIVILUDES source PDFs — same reasoning as litterature with pdfs/ above

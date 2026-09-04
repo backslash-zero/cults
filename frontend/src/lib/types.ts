@@ -99,6 +99,7 @@ export type SourceDataset =
 	| 'interviews'
 	| 'miviludes_criteria'
 	| 'concept_backbone'
+	| 'structural_concepts'
 	| 'emergent_entities';
 
 // Cuts across SourceDataset to group the six datasets into three kinds of

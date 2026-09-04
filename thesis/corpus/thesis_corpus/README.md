@@ -412,6 +412,104 @@ space every corpus and the MIVILUDES criteria get projected into — the
 concept backbone isn't compared *against* that space after the fact, it
 helps *define* it.
 
+## Structural concepts, a second reference subset (`extract_structural_concepts`)
+
+The WordNet concept backbone above is deliberately **topic-neutral** — its
+whole value as a yardstick depends on not being derived from the corpora it
+interprets. That neutrality has a cost: measured in the shared space, the
+concept backbone's centroid sits notably farther from the corpus-expression
+centroid than emergent entities do (16.7 vs. 12.5 shared-space units, against
+a ~33-unit expression-to-expression baseline) — a real, if moderate, "distant
+neutral island" effect, register mismatch between formal WordNet glosses and
+corpus prose being the likely cause.
+
+**`structural_concepts`** is a second `point_role="reference"` subset,
+built the opposite way on purpose: extracted *from* the corpora's own
+expression text, so it's geometrically closer to the data by construction —
+useful for labeling where corpus clusters actually sit, at the cost of no
+longer being topic-neutral (it exists because the corpora use this
+vocabulary). Use whichever fits the question: `concept_backbone` when
+independence from the corpus matters, `structural_concepts` when
+interpretive proximity matters more.
+
+**Why not mine `entity_anchors`** (the same field `emergent_entities`
+pools): checked first, and it doesn't work. `entity_anchors` captures
+concrete named things ("Scientology", "charismatic leader"), not abstract
+social-structure vocabulary — even summed across the *entire* corpus with no
+threshold, words like "control" (4 mentions), "authority" (12),
+"manipulation" (3), "harm" (0) barely register as tagged anchors, at any
+frequency threshold. `extract_structural_concepts.py` instead tokenizes the
+actual expression prose (`embedding_text`) across all three corpora and
+keeps only tokens that:
+
+1. Are valid **Open English WordNet** (`oewn:2024`) lemmas — the same
+   lexicon `build_concept_backbone_en.py` uses, no new dependency. This
+   discards proper nouns, typos, and non-English tokens (MIVILUDES is
+   mostly French) essentially for free, since none of those are WordNet
+   entries, and supplies a ready-made English gloss for each survivor.
+2. Fall in an **in-domain lexicographer file** (`adj.all`, `adj.pert`,
+   `noun.person`, `noun.cognition`, `noun.act`, `noun.communication`,
+   `noun.group`, `noun.attribute`, `noun.state`, `noun.relation`,
+   `noun.possession`, `noun.motive`, `noun.feeling`, `noun.phenomenon`,
+   `noun.process`, `noun.Tops`) — restricting to social/relational/
+   psychological/group-dynamics domains and excluding concrete/physical
+   ones (places, objects, body parts, substances, dates, quantities) that
+   pass plain WordNet-membership but aren't structural concepts in the
+   relevant sense. Verbs are excluded entirely: the target vocabulary names
+   a concept, attribute, or role, not an action.
+3. Aren't a **named-entity instance** (WordNet's `instance_hyponym`
+   mechanism, the same check `build_concept_backbone_en.py` uses) — catches
+   further proper-noun leakage a plain WordNet-membership check wouldn't.
+
+A word is counted once per *expression* containing it (not once per raw
+occurrence), so one repetitive sentence can't inflate a count. A small
+number of high-frequency words whose top-ranked WordNet sense is clearly
+wrong for how the corpora use them (e.g. "religious" picking the noun
+"monk" sense instead of the adjective) are hand-corrected via a
+`GLOSS_OVERRIDES` dict; a handful of proper-noun leaks and wrong-sense
+matches the domain filter didn't catch were spot-checked and excluded via
+`EXCLUDE_WORDS`. Neither list is exhaustive — a 600-concept automatically
+ranked list will have residual noise beyond what a spot-check catches; this
+is documented rather than claimed fully clean, in the same spirit as the
+two known-but-deferred extraction issues already noted in Methods.tex.
+
+On the current corpus: 33,113 unique post-stopword tokens tokenized, 600
+kept after WordNet/domain filtering (the target size), ranked by
+expression-frequency. Top by mentions: "religious" (2,688), "movement"
+(1,512), "church" (1,250), "cult" (1,229), "group" (1,129), "religion"
+(1,066) — genuinely structural/relational vocabulary, unlike entity_anchors'
+top mentions (named groups).
+
+```
+python -m thesis_corpus.extract_structural_concepts
+```
+
+Output: `dictionaries/structural_concepts_candidates.csv` — `concept_id`
+(`sc_0001`, ...), `concept_en`, `gloss_en`, `total_mentions`,
+`literature_mentions`, `miviludes_mentions`, `interviews_mentions`,
+`n_corpora`, `is_generic` (always `"true"` here — the domain/lexfile filter
+already does the curation the column name implies; kept for schema
+continuity and as a place to hand-flip an outlier to `false` later without
+a code change).
+
+**Embedding**: no new script needed — `embed_concept_backbone.py` is
+already fully generic over its `--input`/`--output` CSV (reads any
+`concept_en`/`gloss_en` pair, embeds `"<concept_en>: <gloss_en>"`, preserves
+every other input column into the output JSONL). Run on the Ollama-serving
+machine (see "Running this on Windows" above):
+
+```
+python -m thesis_corpus.embed_concept_backbone \
+  --input dictionaries/structural_concepts_candidates.csv \
+  --output dictionaries/structural_concepts_embedded.jsonl
+```
+
+`build_shared_space.py` requires this file to exist (fails with a clear
+message naming the exact command above if it doesn't) and pools it via
+`load_structural_concepts_points()`, reconstructing `mention_distribution`
+from the CSV's per-corpus mention columns — the same provenance-metadata
+role it plays on `emergent_entities` points.
+
 ## Emergent entities as their own point-set (`build_shared_space`)
 
 Every extracted expression (Stage 2, above) is tagged with `entity_anchors`
@@ -460,12 +558,12 @@ genuinely recurs across all three.
 ## Point roles
 
 Every point in the shared space carries a `point_role`, cutting across
-`source_dataset` to group the six datasets into three kinds of thing:
+`source_dataset` to group the seven datasets into three kinds of thing:
 
 | `point_role` | Datasets | What it is |
 |---|---|---|
 | `expression` | `literature`, `miviludes`, `interviews`, `miviludes_criteria` | A criterion expression extracted from a text, or the MIVILUDES's own criterion text — something a source actually said |
-| `reference` | `concept_backbone` | An external, generic vocabulary entry, included as a fixed, topic-neutral yardstick — not derived from any corpus |
+| `reference` | `concept_backbone`, `structural_concepts` | A backdrop vocabulary point, not itself a claim any source makes. Two subsets, kept distinct: `concept_backbone` is topic-neutral (WordNet, not derived from any corpus, an independent yardstick); `structural_concepts` is corpus-derived (extracted from the corpora's own expression text, geometrically closer to the data, but not topic-neutral) |
 | `emergent` | `emergent_entities` | A named entity/group/concept mentioned *by* the corpora themselves — corpus-derived like an expression, but a recurring reference object rather than a claim |
 
 ## Shared cross-corpus space (`build_shared_space`)
@@ -496,14 +594,23 @@ every dataset ends up in the same shared coordinate system:
   sanity check the old two-points-per-criterion approach gave, without
   spending a second near-duplicate point in the analytical space to get it.
 - Each concept-backbone entry contributes **one** point (`embedding_vector`).
+- Each structural-concept entry contributes **one** point (`embedding_vector`,
+  plus `mention_distribution`) — see "Structural concepts, a second
+  reference subset" above. Requires `structural_concepts_embedded.jsonl` to
+  exist; the script fails with a clear message (naming the exact embed
+  command) if it doesn't.
 - Each emergent entity mentioned at least 3 times across all corpora
   contributes **one** point (see "Emergent entities as their own point-set"
   above).
 - Total pooled points is logged at runtime, not asserted against a
-  hardcoded constant (it will keep changing as the corpus grows or the
-  emergent-entity threshold is adjusted): **46,648** points on the current
-  corpus (39,236 literature + 914 MIVILUDES + 230 interviews + 17 MIVILUDES
-  criteria + 3,000 concept backbone + 3,251 emergent entities).
+  hardcoded constant (it will keep changing as the corpus grows, the
+  emergent-entity threshold is adjusted, or the structural-concepts target
+  size changes): **46,648** points as of the last run before
+  `structural_concepts` was added (39,236 literature + 914 MIVILUDES + 230
+  interviews + 17 MIVILUDES criteria + 3,000 concept backbone + 3,251
+  emergent entities) — adding ~600 structural concepts is expected to bring
+  this to roughly 47,200 once embedded and rerun; update this figure from
+  the actual run's log line rather than trusting this estimate.
 
 **Standardization**: `StandardScaler` (zero mean, unit variance per
 dimension) runs before PCA. Every vector already comes from the same
@@ -607,11 +714,13 @@ fabricated default:
   1-indexed position of the item within its own interview document, in the
   order the archive already lists them — not filtered to the interviewee's
   turns only, so an interviewer's question can also carry a rank.
-- `mention_distribution`: emergent-entity points only (`null` elsewhere). A
-  per-corpus mention count (e.g. `{"literature": 3683, "miviludes": 130,
-  "interviews": 54}` for "scientology") — provenance metadata, not used in
-  the PCA fit, that tells apart an entity mentioned almost exclusively in
-  one corpus from one that recurs across all three.
+- `mention_distribution`: emergent-entity and structural-concept points only
+  (`null` elsewhere, including `concept_backbone`, which has no
+  corpus-mention notion). A per-corpus mention count (e.g.
+  `{"literature": 3683, "miviludes": 130, "interviews": 54}` for
+  "scientology") — provenance metadata, not used in the PCA fit, that tells
+  apart a term mentioned almost exclusively in one corpus from one that
+  recurs across all three.
 
 After writing the output, the script prints diagnostic (not pass/fail)
 sanity checks: MIVILUDES criteria FR/EN raw-embedding cosine similarity

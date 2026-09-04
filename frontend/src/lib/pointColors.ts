@@ -18,10 +18,15 @@ export const SOURCE_DATASET_COLORS: Record<SourceDataset, { light: string; dark:
 	interviews: { light: '#1baf7a', dark: '#199e70' },
 	miviludes: { light: '#eda100', dark: '#c98500' },
 	miviludes_criteria: { light: '#e87ba4', dark: '#d55181' },
+	// point_role: 'reference', like concept_backbone above -- but
+	// corpus-derived rather than topic-neutral (extracted from the
+	// corpora's own expression text, not WordNet). See
+	// SOURCE_DATASET_ROLES below for the shared point_role grouping.
+	structural_concepts: { light: '#4a3aa7', dark: '#9085e9' },
 	// point_role: 'emergent' -- named entities/concepts mentioned BY the
-	// corpora themselves, as distinct from concept_backbone's reference
-	// vocabulary above (both render at a fixed size/opacity per point_role
-	// in EmbeddingExplorer.svelte, not by source_dataset).
+	// corpora themselves, as distinct from both reference subsets above
+	// (all render at a fixed size/opacity per point_role in
+	// EmbeddingExplorer.svelte, not by source_dataset).
 	emergent_entities: { light: '#008300', dark: '#008300' }
 };
 
@@ -31,6 +36,7 @@ export const SOURCE_DATASET_LABELS: Record<SourceDataset, string> = {
 	interviews: 'Interviews',
 	miviludes: 'MIVILUDES',
 	miviludes_criteria: 'MIVILUDES criteria',
+	structural_concepts: 'Structural concepts',
 	emergent_entities: 'Emergent entities'
 };
 
@@ -44,6 +50,7 @@ export const SOURCE_DATASET_ROLES: Record<SourceDataset, PointRole> = {
 	interviews: 'expression',
 	miviludes_criteria: 'expression',
 	concept_backbone: 'reference',
+	structural_concepts: 'reference',
 	emergent_entities: 'emergent'
 };
 

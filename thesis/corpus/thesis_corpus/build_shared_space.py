@@ -20,17 +20,25 @@ of thing this space pools together (see Methods.tex, "A Shared Cross-Corpus
 Space"):
   - `"expression"`: a criterion expression extracted from a text (the three
     corpora) or a MIVILUDES criterion -- something a source actually said.
-  - `"reference"`: an external, generic vocabulary entry (the concept
-    backbone) -- not derived from any corpus, included as a fixed,
-    topic-neutral yardstick.
+  - `"reference"`: a backdrop vocabulary point, not itself a claim any
+    source makes. Two distinct subsets share this role, deliberately kept
+    separate rather than merged into one, since they buy different things:
+    `concept_backbone` (WordNet, topic-neutral -- not derived from any
+    corpus, a fixed independent yardstick) and `structural_concepts`
+    (corpus-derived generic/structural vocabulary -- extracted from the
+    corpora's own expression text, geometrically closer to the data by
+    construction, but not topic-neutral: it exists *because* the corpora
+    use this vocabulary). Use `concept_backbone` when independence from the
+    corpus matters; use `structural_concepts` when proximity/interpretive
+    relevance matters more than neutrality.
   - `"emergent"`: a named entity/group/concept mentioned BY the corpora
     themselves (emergent entities, below) -- corpus-derived like an
     expression point, but a recurring reference object rather than a claim
     about one.
 
-Pooling (six source_dataset values; total point count is logged at runtime,
-not asserted against a hardcoded constant -- it changes whenever the corpus
-grows or the emergent-entity threshold below is adjusted):
+Pooling (seven source_dataset values; total point count is logged at
+runtime, not asserted against a hardcoded constant -- it changes whenever
+the corpus grows or the emergent-entity threshold below is adjusted):
   - Each corpus item (literature/miviludes/interviews) contributes ONE
     point (`point_role="expression"`): its embedding_vector, plus its
     claim_mode/epistemic_status/attribution tags carried through unchanged
@@ -48,7 +56,14 @@ grows or the emergent-entity threshold below is adjusted):
     embeddings (see `check_miviludes_translation_fidelity`), rather than by
     spending a second near-duplicate point in the shared analytical space.
   - Each concept-backbone entry contributes ONE point
-    (`point_role="reference"`): its embedding_vector.
+    (`point_role="reference"`, `source_dataset="concept_backbone"`): its
+    embedding_vector.
+  - Each structural-concept entry (see extract_structural_concepts.py)
+    contributes ONE point (`point_role="reference"`,
+    `source_dataset="structural_concepts"`): its embedding_vector, plus
+    `mention_distribution` (per-corpus mention counts, same provenance
+    role as on emergent-entity points) reconstructed from the CSV's
+    mention-count columns.
   - Each emergent entity mentioned at least `--entity-anchor-min-mentions`
     times across all three corpora contributes ONE point
     (`point_role="emergent"`): a per-unique (normalized) entity-anchor
@@ -113,6 +128,12 @@ CORPUS_ARCHIVES = {
 }
 MIVILUDES_CRITERIA_PATH = CORPUS_DIR / "metadata" / "miviludes_criteria_embedded.jsonl"
 CONCEPT_BACKBONE_PATH = CORPUS_DIR / "dictionaries" / "concept_backbone_embedded.jsonl"
+# Produced by extract_structural_concepts.py + embedding on the Windows/Ollama
+# machine (see thesis_corpus/README.md) -- python -m thesis_corpus.embed_concept_backbone
+# --input dictionaries/structural_concepts_candidates.csv --output <this path>
+# (the existing embed_concept_backbone.py is fully generic over its
+# --input/--output CSV, no separate embed script needed).
+STRUCTURAL_CONCEPTS_PATH = CORPUS_DIR / "dictionaries" / "structural_concepts_embedded.jsonl"
 
 OUTPUT_PATH = SHARED_SPACE_DIR / "embedding_space.jsonl"
 VARIANCE_CSV_PATH = SHARED_SPACE_DIR / "variance_curve.csv"
@@ -235,6 +256,35 @@ def load_concept_backbone_points(path: Path) -> list[dict]:
     return points
 
 
+def load_structural_concepts_points(path: Path) -> list[dict]:
+    """Reads structural_concepts_embedded.jsonl (extract_structural_concepts.py's
+    candidates CSV, embedded via the existing embed_concept_backbone.py --
+    same "<term>: <gloss>" format, just a different input/output path). Also
+    a `point_role="reference"` point-set, but corpus-derived rather than
+    topic-neutral -- see the module docstring's "reference" bullet for the
+    distinction from `concept_backbone`."""
+    points = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            item = json.loads(line)
+            points.append({
+                "source_dataset": "structural_concepts",
+                "point_role": "reference",
+                "key": item["concept_id"],
+                "label": item["concept_en"],
+                "mention_distribution": {
+                    "literature": int(item.get("literature_mentions", 0)),
+                    "miviludes": int(item.get("miviludes_mentions", 0)),
+                    "interviews": int(item.get("interviews_mentions", 0)),
+                },
+                "vector": item["embedding_vector"],
+            })
+    return points
+
+
 def load_emergent_entities(archive_paths: dict[str, Path], min_mentions: int) -> list[dict]:
     """Pools one point per unique (normalized) entity anchor mentioned at
     least `min_mentions` times across all three corpus archives, using the
@@ -339,6 +389,18 @@ def main() -> None:
     concept_points = load_concept_backbone_points(CONCEPT_BACKBONE_PATH)
     counts["concept_backbone"] = len(concept_points)
     points.extend(concept_points)
+
+    if not STRUCTURAL_CONCEPTS_PATH.exists():
+        raise SystemExit(
+            f"Missing: {STRUCTURAL_CONCEPTS_PATH} -- run "
+            "extract_structural_concepts.py, then embed it (on the Ollama "
+            "machine) via embed_concept_backbone.py --input "
+            "dictionaries/structural_concepts_candidates.csv --output "
+            f"{STRUCTURAL_CONCEPTS_PATH}"
+        )
+    structural_concept_points = load_structural_concepts_points(STRUCTURAL_CONCEPTS_PATH)
+    counts["structural_concepts"] = len(structural_concept_points)
+    points.extend(structural_concept_points)
 
     emergent_entity_points = load_emergent_entities(CORPUS_ARCHIVES, args.entity_anchor_min_mentions)
     counts["emergent_entities"] = len(emergent_entity_points)
