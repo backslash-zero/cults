@@ -41,7 +41,8 @@ grows or the entity-anchor threshold below is adjusted):
     (`entity_anchor_vectors`), never before pooled into any space. Gives
     named entities/dimensions (e.g. "Scientology", "charismatic leader")
     an actual position relative to corpus expressions and the concept
-    backbone.
+    backbone. Carries `mention_distribution` (per-corpus mention counts) as
+    provenance metadata, not used in the PCA fit.
 
 Preprocessing: StandardScaler (zero mean, unit variance per dimension)
 before PCA. Every vector already comes from the same embedding model, but
@@ -223,11 +224,17 @@ def load_entity_anchor_points(archive_paths: dict[str, Path], min_mentions: int)
     never before pooled into any space. First-seen vector per normalized
     anchor is kept (the embedding is a function of the literal anchor text
     alone, so occurrences of the same normalized string carry equivalent
-    vectors modulo casing/whitespace, already normalized away here)."""
-    vector_by_anchor: dict[str, list[float]] = {}
-    mentions: Counter[str] = Counter()
+    vectors modulo casing/whitespace, already normalized away here).
 
-    for path in archive_paths.values():
+    Each point also carries `mention_distribution`: a per-corpus mention
+    count (e.g. {"literature": 820, "miviludes": 15, "interviews": 12}) --
+    provenance metadata only, not used in the PCA fit, so an anchor
+    overwhelmingly mentioned in one corpus can be told apart from one
+    mentioned evenly across all three."""
+    vector_by_anchor: dict[str, list[float]] = {}
+    mentions_by_corpus: dict[str, Counter[str]] = defaultdict(Counter)
+
+    for corpus_name, path in archive_paths.items():
         with open(path, encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
@@ -239,22 +246,30 @@ def load_entity_anchor_points(archive_paths: dict[str, Path], min_mentions: int)
                     key = normalize_anchor(raw_anchor)
                     if not key:
                         continue
-                    mentions[key] += 1
+                    mentions_by_corpus[corpus_name][key] += 1
                     vector_by_anchor.setdefault(key, vector)
 
-    print(f"\nEntity anchors: {len(mentions)} unique (normalized) across all corpora; "
+    total_mentions: Counter[str] = Counter()
+    for corpus_counts in mentions_by_corpus.values():
+        total_mentions.update(corpus_counts)
+
+    def distribution_for(anchor: str) -> dict[str, int]:
+        return {corpus_name: mentions_by_corpus[corpus_name].get(anchor, 0) for corpus_name in archive_paths}
+
+    print(f"\nEntity anchors: {len(total_mentions)} unique (normalized) across all corpora; "
           f"top 20 by mention count:")
-    for anchor, count in mentions.most_common(20):
-        print(f"  {count:>5}  {anchor}")
+    for anchor, count in total_mentions.most_common(20):
+        print(f"  {anchor}: {count} total mentions -- {distribution_for(anchor)}")
 
     points = []
-    for anchor, count in mentions.items():
+    for anchor, count in total_mentions.items():
         if count < min_mentions:
             continue
         points.append({
             "source_dataset": "entity_anchors",
             "key": anchor,
             "label": anchor,
+            "mention_distribution": distribution_for(anchor),
             "vector": vector_by_anchor[anchor],
         })
     return points
@@ -370,6 +385,7 @@ def main() -> None:
                 "claim_mode": p.get("claim_mode"),
                 "epistemic_status": p.get("epistemic_status"),
                 "response_rank": p.get("response_rank"),
+                "mention_distribution": p.get("mention_distribution"),
                 "shared_space_vector": coord.tolist(),
             }
             f.write(json.dumps(out, ensure_ascii=False) + "\n")

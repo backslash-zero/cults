@@ -76,6 +76,7 @@ def load_shared_space(path: Path) -> tuple[list[dict], np.ndarray]:
                 "claim_mode": item.get("claim_mode"),
                 "epistemic_status": item.get("epistemic_status"),
                 "response_rank": item.get("response_rank"),
+                "mention_distribution": item.get("mention_distribution"),
             })
             vectors.append(item["shared_space_vector"])
     return points, np.array(vectors, dtype=np.float64)

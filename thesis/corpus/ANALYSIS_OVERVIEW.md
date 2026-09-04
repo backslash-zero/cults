@@ -93,6 +93,16 @@ these. `null`/absent where not applicable, never a fabricated default.
   cults (688), Heaven's Gate (577), new religious movements (529), cult
   (426), new age (387), new religions (332), Unification Church (273),
   Jehovah's Witnesses (233), sect (205), brainwashing (204).
+- **`mention_distribution`** — entity-anchor points only; `null` elsewhere.
+  A per-corpus mention count, e.g.
+  `{"literature": 3683, "miviludes": 130, "interviews": 54}` for
+  "scientology" — provenance metadata, not used in the PCA fit (still one
+  point per anchor either way). Lets an anchor mentioned near-exclusively in
+  one epistemology (e.g. "NRMs", "Heaven's Gate", "Unification Church" — all
+  literature-only) be told apart from one that recurs across all three (e.g.
+  "scientology", "cults") — useful for checking whether the vocabulary that
+  actually structures the space is epistemology-specific or genuinely
+  shared.
 - **`miviludes_criteria`** (17 points) — joinable to the official MIVILUDES
   17-criteria list via `key` (`crit-<slug>`). FR/EN translation fidelity
   (raw-embedding cosine, not a shared-space property): mean 0.87, min 0.50
