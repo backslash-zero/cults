@@ -56,546 +56,1446 @@ sc_0054,study,a detailed critical inspection,314,314,0,0,1,true
 sc_0055,media,a means or instrumentality for storing or communicating information,313,313,0,0,1,true
 sc_0056,research,systematic investigation to establish facts,309,309,0,0,1,true
 sc_0057,modern,a contemporary person,308,307,1,0,2,true
-sc_0058,american,a native or inhabitant of the United States,304,303,0,1,2,true
-sc_0059,found,food and lodging provided in addition to money,304,303,1,0,2,true
-sc_0060,experience,the accumulation of knowledge or skill that results from direct participation in events or activities,301,300,1,0,2,true
-sc_0061,important,of great significance or value,298,297,1,0,2,true
-sc_0062,form,the phonological or orthographic sound or appearance of a word that can be used to describe or identify something,294,292,2,0,2,true
-sc_0063,established,brought about or set up or accepted; especially long established,290,288,1,1,3,true
-sc_0064,less,(comparative of ‘little’ usually used with mass nouns) a quantifier meaning not as great in amount or degree,286,286,0,0,1,true
-sc_0065,western,a film about life in the western United States during the period of exploration and development,284,284,0,0,1,true
-sc_0066,law,the collection of rules imposed by authority,284,283,1,0,2,true
-sc_0067,ritual,any customary observance or practice,281,281,0,0,1,true
-sc_0068,early,at or near the beginning of a period of time or course of events or before the usual or expected time,277,277,0,0,1,true
-sc_0069,case,a special set of circumstances,276,276,0,0,1,true
-sc_0070,change,a relational difference between states; especially between states before and after some event,275,272,2,1,3,true
-sc_0071,sexual,of or relating to or characterized by sexuality,273,271,2,0,2,true
-sc_0072,culture,a particular society at a particular time and place,273,271,2,0,2,true
-sc_0073,sense,a general conscious awareness,272,272,0,0,1,true
-sc_0074,information,a message received and understood,271,267,4,0,2,true
-sc_0075,science,a particular branch of scientific knowledge,270,268,2,0,2,true
-sc_0076,government,the organization that is the governing authority of a political unit,268,268,0,0,1,true
-sc_0077,thought,the content of cognition; the main thing you are thinking about,266,265,0,1,2,true
-sc_0078,terms,status with respect to the relations between people or groups,264,264,0,0,1,true
-sc_0079,alternative,one of a number of things from which only one can be chosen,261,257,3,1,3,true
-sc_0080,level,a position on a scale of intensity or amount or quality,260,259,0,1,2,true
-sc_0081,mind,"that which is responsible for one's thoughts, feelings, and conscious brain functions; the seat of the faculty of reason",259,245,0,14,2,true
-sc_0082,freedom,the condition of being free; the power to act or speak or think without externally imposed restraints,258,255,0,3,2,true
-sc_0083,psychological,of or relating to or determined by psychology,255,252,3,0,2,true
-sc_0084,example,an item of information that is typical of a class or group,255,254,0,1,2,true
-sc_0085,identity,the distinct personality of an individual regarded as a persisting entity,253,253,0,0,1,true
-sc_0086,set,evil Egyptian god with the head of a beast that has high square ears and a long snout; brother and murderer of Osiris,252,251,0,1,2,true
-sc_0087,history,a record or narrative description of past events,250,249,1,0,2,true
-sc_0088,status,the relative position or standing of things or especially persons in a society,247,246,0,1,2,true
-sc_0089,great,a person who has achieved distinction and honor in some field,245,244,0,1,2,true
-sc_0090,influence,a power to affect persons or events especially power based on prestige etc,245,242,2,1,3,true
-sc_0091,place,an abstract mental location,244,235,8,1,3,true
-sc_0092,sect,a subdivision of a larger religious group,243,233,2,8,3,true
-sc_0093,high,a lofty level or position or degree,242,241,0,1,2,true
-sc_0094,conversion,a change in the units or form of an expression:,241,241,0,0,1,true
-sc_0095,developed,being changed over time so as to be e.g. stronger or more complete or more useful,240,240,0,0,1,true
-sc_0096,faith,a strong belief in a supernatural power or powers that control human destiny,240,240,0,0,1,true
-sc_0097,means,to have the ability to produce a particular effect or achieve an end,239,238,0,1,2,true
-sc_0098,legal,established by or founded upon law or official or accepted rules,238,238,0,0,1,true
-sc_0099,present,something presented as a gift,236,235,1,0,2,true
-sc_0100,true,proper alignment; the property possessed by something that is in correct or proper alignment,235,235,0,0,1,true
-sc_0101,general,the head of a religious order or congregation,235,235,0,0,1,true
-sc_0102,tradition,an inherited pattern of thought or action,235,234,1,0,2,true
-sc_0103,certain,having or feeling no doubt or uncertainty; confident and assured,234,225,3,6,3,true
-sc_0104,popular,"regarded with great favor, approval, or affection especially by the general public",234,234,0,0,1,true
-sc_0105,particular,a fact about some part (as opposed to general),232,231,1,0,2,true
-sc_0106,known,apprehended with certainty,231,231,0,0,1,true
-sc_0107,small,a garment size for a small person,230,229,0,1,2,true
-sc_0108,view,a way of regarding situations or topics etc.,227,225,0,2,2,true
-sc_0109,death,the permanent end of all life functions in an organism or part of an organism,226,225,0,1,2,true
-sc_0110,former,the first of two or the first mentioned of two,225,224,1,0,2,true
-sc_0111,need,a condition requiring relief,224,218,2,4,3,true
-sc_0112,given,an assumption that is taken for granted,223,222,0,1,2,true
-sc_0113,young,United States film and television actress (1913-2000),221,219,1,1,3,true
-sc_0114,person,"a human being; person, singular, assertive existential pronoun; pronoun, person, singular; quantifier: assertive existential",218,213,2,3,3,true
-sc_0115,common,belonging to or participated in by a community as a whole; public,213,213,0,0,1,true
-sc_0116,little,limited or below average in number or quantity or magnitude or extent,212,208,0,4,2,true
-sc_0117,evidence,your basis for belief or disbelief; knowledge on which to base belief,212,211,1,0,2,true
-sc_0118,spirit,the vital principle or animating force within living things,212,211,0,1,2,true
-sc_0119,commitment,the trait of sincere and steadfast fixity of purpose,211,210,0,1,2,true
-sc_0120,negative,a reply of denial,211,207,1,3,3,true
-sc_0121,major,British statesman who was prime minister from 1990 until 1997 (born in 1943),210,210,0,0,1,true
-sc_0122,specific,a fact about some part (as opposed to general),209,204,3,2,3,true
-sc_0123,relationship,"a relation between people; (‘relationship’ is often used where ‘relation’ would serve, as in ‘the relationship between inflation and unemployment’, but the preferred usage of ‘relationship’ is for human relations or states of relatedness)",207,205,2,0,2,true
-sc_0124,likely,has a good chance of being the case or of coming about,205,205,0,0,1,true
-sc_0125,support,the activity of providing for or maintaining by supplying with money or necessities,204,204,0,0,1,true
-sc_0126,long,primarily temporal sense; being or indicating a relatively great or greater than average duration or passage of time or a duration as specified,204,201,3,0,2,true
-sc_0127,violent,acting with or marked by or resulting from great force or energy or emotional intensity,204,200,4,0,2,true
-sc_0128,model,a hypothetical description of a complex entity or process,204,204,0,0,1,true
-sc_0129,approach,ideas or actions intended to deal with a problem or situation,201,200,1,0,2,true
-sc_0130,development,act of improving by expanding or enlarging or refining,201,200,1,0,2,true
-sc_0131,contemporary,a person of nearly the same age as another,201,200,1,0,2,true
-sc_0132,sacred,concerned with religion or religious purposes,200,199,0,1,2,true
-sc_0133,strong,having strength or power greater than average or expected,200,198,1,1,3,true
-sc_0134,united,characterized by unity; being or joined into a single entity,200,200,0,0,1,true
-sc_0135,christianity,a monotheistic system of beliefs and practices based on the Old Testament and the teachings of Jesus as embodied in the New Testament and emphasizing the role of Jesus as savior,200,200,0,0,1,true
-sc_0136,mass,(Roman Catholic Church and Protestant Churches) the celebration of the Eucharist,199,199,0,0,1,true
-sc_0137,take,the income or profit arising from such transactions as the sale of land or other property,198,197,0,1,2,true
-sc_0138,understanding,the cognitive condition of someone who understands,198,198,0,0,1,true
-sc_0139,involved,connected by participation or association or use,197,197,0,0,1,true
-sc_0140,abuse,cruel or inhumane treatment,196,195,0,1,2,true
-sc_0141,islam,the civilization of Muslims collectively which is governed by the Muslim religion,196,196,0,0,1,true
-sc_0142,conflict,an open clash between two opposing groups (or individuals),195,195,0,0,1,true
-sc_0143,spirituality,property or income owned by a church,195,192,1,2,3,true
-sc_0144,significant,important in effect or meaning,194,193,0,1,2,true
-sc_0145,mission,an organization of missionaries in a foreign land sent to carry on religious work,194,191,2,1,3,true
-sc_0146,behavior,manner of acting or controlling yourself,194,193,0,1,2,true
-sc_0147,theory,a well-substantiated explanation of some aspect of the natural world; an organized system of accepted knowledge that applies in a variety of circumstances to explain a specific set of phenomena,194,193,0,1,2,true
-sc_0148,large,a garment size for a large person,191,187,3,1,3,true
-sc_0149,right,an abstract idea of that which is due to a person or governmental body by law or tradition or nature,191,189,0,2,2,true
-sc_0150,african,a native or inhabitant of Africa,191,191,0,0,1,true
-sc_0151,claim,an assertion of a right (as to money or property),190,190,0,0,1,true
-sc_0152,national,a person who owes allegiance to that nation,188,186,2,0,2,true
-sc_0153,men,the force of workers available,188,185,3,0,2,true
-sc_0154,apocalyptic,of or relating to an apocalypse,187,187,0,0,1,true
-sc_0155,member,one of the persons who compose a social group (especially individuals who have joined and participate in a group organization),187,187,0,0,1,true
-sc_0156,good,benefit,187,186,0,1,2,true
-sc_0157,moral,the significance of a story or event,186,184,1,1,3,true
-sc_0158,body,a group of persons associated by some common tie or occupation and regarded as an entity,185,185,0,0,1,true
-sc_0159,point,a geometric element that has position but no extension,185,183,0,2,2,true
-sc_0160,potential,the inherent capacity for coming into being,184,184,0,0,1,true
-sc_0161,concept,an abstract or general idea inferred or derived from specific instances,184,181,2,1,3,true
-sc_0162,international,any of several international socialist organizations,184,183,1,0,2,true
-sc_0163,living,the experience of being alive; the course of human events and activities,184,184,0,0,1,true
-sc_0164,least,something that is of no importance,183,182,0,1,2,true
-sc_0165,lives,a characteristic state or mode of living,182,181,1,0,2,true
-sc_0166,reality,all of your experiences that determine how things appear to you,182,180,0,2,2,true
-sc_0167,outside,relating to or being on or near the outer side or limit,181,179,0,2,2,true
-sc_0168,context,discourse that surrounds a language unit and helps to determine its interpretation,181,179,1,1,3,true
-sc_0169,knowledge,the psychological result of perception and learning and reasoning,181,177,2,2,3,true
-sc_0170,local,relating to or applicable to or concerned with the administration of a city or town or district rather than a larger area,181,180,0,1,2,true
-sc_0171,earth,the concerns of this life as distinguished from heaven and the afterlife,181,181,0,0,1,true
-sc_0172,aum,a terrorist organization whose goal is to take over Japan and then the world; based on a religion founded in 1987 that combines elements of Buddhism with Christianity,180,180,0,0,1,true
-sc_0173,charisma,a personal attractiveness or interestingness that enables you to influence others,180,180,0,0,1,true
-sc_0174,physical,involving the body as distinguished from the mind or spirit,179,176,3,0,2,true
-sc_0175,mainstream,the prevailing current of thought,179,179,0,0,1,true
-sc_0176,founder,inflammation of the laminated tissue that attaches the hoof to the foot of a horse,179,178,0,1,2,true
-sc_0177,gender,a grammatical category in inflected languages governing the agreement between nouns and pronouns and adjectives; in some languages it is quite arbitrary but in Indo-European languages it is usually based on sex or animateness,178,178,0,0,1,true
-sc_0178,structure,the manner of construction of something and the arrangement of its parts,177,177,0,0,1,true
-sc_0179,mental,involving the mind or an intellectual process,177,170,7,0,2,true
-sc_0180,catholic,a member of a Catholic church,177,175,0,2,2,true
-sc_0181,holy,belonging to or derived from or associated with a divine power,176,176,0,0,1,true
-sc_0182,radical,a person who has radical ideas or opinions,175,174,1,0,2,true
-sc_0183,central,in or near a center or constituting a center; the inner area,175,172,1,2,3,true
-sc_0184,internal,happening or arising or located within some limits or especially surface,172,172,0,0,1,true
-sc_0185,elements,violent or severe weather (viewed as caused by the action of the four elements),171,171,0,0,1,true
-sc_0186,war,a legal state created by a declaration of war and ended by official declaration during which the international rules of war apply,171,170,0,1,2,true
-sc_0187,left,those who support varying degrees of social or political or economic change designed to promote the public welfare,171,171,0,0,1,true
-sc_0188,growth,(biology) the process of an individual organism growing organically; a purely biological unfolding of events involved in an organism changing gradually from a simple to a more complex level,171,171,0,0,1,true
-sc_0189,healing,the natural process by which the body repairs itself,169,169,0,0,1,true
-sc_0190,critical,marked by a tendency to find and call attention to errors and flaws,167,165,2,0,2,true
-sc_0191,definition,a concise explanation of the meaning of a word or phrase or symbol,167,164,2,1,3,true
-sc_0192,interest,a sense of concern with and curiosity about someone or something,167,167,0,0,1,true
-sc_0193,attention,the process whereby a person concentrates on some features of the environment to the (relative) exclusion of others,167,162,4,1,3,true
-sc_0194,values,beliefs of a person or social group in which they have an emotional investment (either for or against something),167,166,1,0,2,true
-sc_0195,fact,a piece of information about circumstances that exist or events that have occurred,166,163,1,2,3,true
-sc_0196,end,the state of affairs that a plan is intended to achieve and that (when achieved) terminates behavior intended to achieve it,166,165,1,0,2,true
-sc_0197,party,an organization to gain political power,166,166,0,0,1,true
-sc_0198,christ,any expected deliverer,166,166,0,0,1,true
-sc_0199,idea,the content of cognition; the main thing you are thinking about,165,163,0,2,2,true
-sc_0200,free,people who are free,165,165,0,0,1,true
-sc_0201,black,British chemist who identified carbon dioxide and who formulated the concepts of specific heat and latent heat (1728-1799),165,165,0,0,1,true
-sc_0202,action,something done (usually as opposed to something said),164,161,3,0,2,true
-sc_0203,day,United States writer best known for his autobiographical works (1874-1935),164,164,0,0,1,true
-sc_0204,problem,a state of difficulty that needs to be resolved,163,163,0,0,1,true
-sc_0205,west,the cardinal compass point that is at 270 degrees,162,162,0,0,1,true
-sc_0206,ideology,an orientation that characterizes the thinking of a group or nation,161,158,0,3,2,true
-sc_0207,special,a special offering (usually temporary and at a reduced price) that is featured in advertising,161,158,0,3,2,true
-sc_0208,key,United States lawyer and poet who wrote a poem after witnessing the British attack on Baltimore during the War of 1812; the poem was later set to music and entitled ‘The Star-Spangled Banner’ (1779-1843),160,158,2,0,2,true
-sc_0209,court,Australian woman tennis player who won many major championships (born in 1947),160,160,0,0,1,true
-sc_0210,meaning,the message that is intended or expressed or signified,159,157,2,0,2,true
-sc_0211,book,the sacred writings of Islam revealed by God to the prophet Muhammad during his life at Mecca and Medina,159,159,0,0,1,true
-sc_0212,focus,the concentration of attention or energy on something,159,159,0,0,1,true
-sc_0213,organized,"formed into a structured or coherent whole, particularly on a large scale",158,157,1,0,2,true
-sc_0214,position,a way of regarding situations or topics etc.,157,155,2,0,2,true
-sc_0215,question,an instance of questioning,157,150,6,1,3,true
-sc_0216,result,a phenomenon that follows and is caused by some previous phenomenon,156,156,0,0,1,true
-sc_0217,similar,marked by correspondence or resemblance,154,151,2,1,3,true
-sc_0218,unification,the state of being joined or united or linked,153,153,0,0,1,true
-sc_0219,literature,creative writing of recognized artistic value,153,153,0,0,1,true
-sc_0220,name,a language unit by which a person or thing is known,153,151,0,2,2,true
-sc_0221,child,a young person of either sex,152,152,0,0,1,true
-sc_0222,suicide,the act of killing yourself,151,151,0,0,1,true
-sc_0223,scientific,of or relating to the practice of science,151,150,1,0,2,true
-sc_0224,real,an old small silver Spanish coin,151,150,1,0,2,true
-sc_0225,find,a productive insight,151,150,0,1,2,true
-sc_0226,branch,a division of some larger or more complex organization,150,150,0,0,1,true
-sc_0227,secular,someone who is not a clergyman or a professional person,150,150,0,0,1,true
-sc_0228,love,a strong positive emotion of regard and affection,150,150,0,0,1,true
-sc_0229,esoteric,confined to and understandable by only an enlightened inner circle,149,144,5,0,2,true
-sc_0230,worship,the activity of worshipping,148,148,0,0,1,true
-sc_0231,man,the generic use of the word to refer to any human being,148,146,2,0,2,true
-sc_0232,existence,the state or fact of existing,147,146,1,0,2,true
-sc_0233,basic,a popular programming language that is relatively easy to learn; an acronym for beginner's all-purpose symbolic instruction code; no longer in general use,147,147,0,0,1,true
-sc_0234,later,at or toward an end or late period or stage of development,147,146,1,0,2,true
-sc_0235,help,the activity of contributing to the fulfillment of a need or furtherance of an effort or purpose,147,147,0,0,1,true
-sc_0236,far,a terrorist organization that seeks to overthrow the government dominated by Tutsi and to institute Hutu control again,146,145,0,1,2,true
-sc_0237,milieu,the environmental condition,146,144,2,0,2,true
-sc_0238,collective,members of a cooperative enterprise,146,145,0,1,2,true
-sc_0239,class,a collection of things sharing a common attribute,145,142,3,0,2,true
-sc_0240,gate,total admission receipts at a sports event,145,145,0,0,1,true
-sc_0241,past,a verb tense that expresses actions or states in the past,145,145,0,0,1,true
-sc_0242,teaching,the profession of a teacher,145,144,1,0,2,true
-sc_0243,current,a flow of electricity through a conductor,144,143,1,0,2,true
-sc_0244,perspective,a way of regarding situations or topics etc.,142,142,0,0,1,true
-sc_0245,extreme,the furthest or highest degree of something,142,139,1,2,3,true
-sc_0246,material,information (data or ideas or observations) that can be used or reworked into a finished form,142,142,0,0,1,true
-sc_0247,future,a verb tense that expresses actions or states in the future,141,138,1,2,3,true
-sc_0248,islamic,of or relating to or supporting Islamism,141,141,0,0,1,true
-sc_0249,lack,the state of needing something that is absent or unavailable,140,137,1,2,3,true
-sc_0250,following,a group of followers or enthusiasts,139,135,0,4,2,true
-sc_0251,source,a document (or organization) from which information is obtained,139,138,1,0,2,true
-sc_0252,satanic,of or relating to Satan,139,139,0,0,1,true
-sc_0253,organizational,of or relating to an organization,138,138,0,0,1,true
-sc_0254,white,a person of European descent with a light-skinned or pale complexion,137,131,0,6,2,true
-sc_0255,satanism,a belief in and reverence for devils (especially Satan),137,137,0,0,1,true
-sc_0256,french,the Romance language spoken in France and in countries colonized by France,136,135,1,0,2,true
-sc_0257,recruitment,the act of getting recruits; enlisting people for the army (or for a job or a cause etc.),136,135,1,0,2,true
-sc_0258,open,information that has become public,136,135,0,1,2,true
-sc_0259,concern,something that interests you because it is important or affects you,135,132,3,0,2,true
-sc_0260,sex,activities associated with sexual intercourse,135,134,1,0,2,true
-sc_0261,greater,greater in size or importance or degree,135,135,0,0,1,true
-sc_0262,transformation,(mathematics) a function that changes the position or direction of the axes of a coordinate system,134,134,0,0,1,true
-sc_0263,male,a person who belongs to the sex that cannot have babies,134,134,0,0,1,true
-sc_0264,act,a legal document codifying the result of deliberations of a committee or society or legislative body,133,133,0,0,1,true
-sc_0265,variety,a collection containing a variety of sorts of things,133,133,0,0,1,true
-sc_0266,consciousness,an alert cognitive state in which you are aware of yourself and your situation,133,132,0,1,2,true
-sc_0267,direct,direct in spatial dimensions; proceeding without deviation or interruption; straight and short,133,133,0,0,1,true
-sc_0268,network,an interconnected system of things or people,133,130,3,0,2,true
-sc_0269,making,the act that results in something coming to be,133,133,0,0,1,true
-sc_0270,authorities,the organization that is the governing authority of a political unit,132,130,2,0,2,true
-sc_0271,basis,a relation that provides the foundation for something,132,132,0,0,1,true
-sc_0272,continued,without stop or interruption,132,132,0,0,1,true
-sc_0273,period,the monthly discharge of blood from the uterus of nonpregnant women from puberty to menopause,132,132,0,0,1,true
-sc_0274,female,a person who belongs to the sex that can have babies,132,132,0,0,1,true
-sc_0275,type,a subdivision of a particular kind of thing,131,122,8,1,3,true
-sc_0276,course,education imparted in a series of lessons or meetings,131,131,0,0,1,true
-sc_0277,external,outward features,130,130,0,0,1,true
-sc_0278,possible,something that can be done,130,126,3,1,3,true
-sc_0279,due,that which is deserved or owed,130,127,3,0,2,true
-sc_0280,majority,the property resulting from being or relating to the greater in number of two parts; the main part,130,129,0,1,2,true
-sc_0281,historical,of or relating to the study of history,130,130,0,0,1,true
-sc_0282,related,being connected either logically or causally or by shared characteristics,129,128,0,1,2,true
-sc_0283,buddhism,a religion represented by the many groups (especially in Asia) that profess various forms of the Buddhist doctrine and that venerate Buddha,129,128,1,0,2,true
-sc_0284,health,a healthy state of wellbeing free from disease,128,128,0,0,1,true
-sc_0285,independent,a neutral or uncommitted person (especially in politics),128,128,0,0,1,true
-sc_0286,degree,a position on a scale of intensity or amount or quality,128,128,0,0,1,true
-sc_0287,year,a body of students who graduate together,128,128,0,0,1,true
-sc_0288,pagan,a person who does not acknowledge your god,127,127,0,0,1,true
-sc_0289,salvation,(theology) the act of delivering from sin or saving from evil,127,127,0,0,1,true
-sc_0290,able,(usually followed by ‘to’) having the necessary means or skill or know-how or authority to do something,126,126,0,0,1,true
-sc_0291,whole,all of something including all its component elements or parts,126,124,0,2,2,true
-sc_0292,relations,mutual dealings or connections or communications among persons or groups,126,119,7,0,2,true
-sc_0293,cause,a justification for something existing or happening,126,122,4,0,2,true
-sc_0294,offer,the verbal act of offering,125,125,0,0,1,true
-sc_0295,conventional,following accepted customs and proprieties,125,125,0,0,1,true
-sc_0296,join,a set containing all and only the members of two or more given sets,125,120,1,4,3,true
-sc_0297,clear,the state of being free of suspicion,124,122,1,1,3,true
-sc_0298,successful,having succeeded or being marked by a favorable outcome,124,123,0,1,2,true
-sc_0299,millennial,relating to a millennium or span of a thousand years,124,124,0,0,1,true
-sc_0300,training,activity leading to skilled behavior,123,121,2,0,2,true
-sc_0301,tension,(psychology) a state of mental or emotional strain or suspense,123,123,0,0,1,true
-sc_0302,inner,located or occurring within or closer to a center,123,123,0,0,1,true
-sc_0303,necessary,absolutely essential,122,120,2,0,2,true
-sc_0304,leave,permission to do something,122,120,1,1,3,true
-sc_0305,word,a unit of language that native speakers can identify,122,108,0,14,2,true
-sc_0306,presence,the state of being present; current existence,122,122,0,0,1,true
-sc_0307,evangelical,relating to or being a Christian church believing in personal conversion and the inerrancy of the Bible especially the 4 Gospels,122,121,0,1,2,true
-sc_0308,report,a written document describing the findings of some individual or group,121,121,0,0,1,true
-sc_0309,emphasis,special importance or significance,121,121,0,0,1,true
-sc_0310,response,a result,121,121,0,0,1,true
-sc_0311,evil,morally objectionable behavior,120,120,0,0,1,true
-sc_0312,communal,relating to a small administrative district or community,120,119,0,1,2,true
-sc_0313,sufi,a Muslim who represents the mystical dimension of Islam; a Muslim who seeks direct experience of Allah; mainly in Iran,120,120,0,0,1,true
-sc_0314,contact,close interaction,119,118,1,0,2,true
-sc_0315,meditation,continuous and profound contemplation or musing on a subject or series of subjects of a deep or abstruse nature,119,117,0,2,2,true
-sc_0316,conditions,the prevailing context that influences the performance or the outcome of a process,118,109,8,1,3,true
-sc_0317,vision,a vivid mental image,118,117,1,0,2,true
-sc_0318,sectarian,a member of a sect,117,89,28,0,2,true
-sc_0319,main,(of a clause) capable of standing syntactically alone as a complete sentence,117,114,2,1,3,true
-sc_0320,limited,small in range or scope,117,117,0,0,1,true
-sc_0321,situation,the general state of things; the combination of circumstances at a given time,117,108,9,0,2,true
-sc_0322,using,an act that exploits or victimizes someone (treats them unfairly),117,115,1,1,3,true
-sc_0323,notion,a vague idea in which some confidence is placed,117,114,3,0,2,true
-sc_0324,reform,a change for the better as a result of correcting abuses,117,117,0,0,1,true
-sc_0325,primary,a preliminary election where delegates or nominees are chosen,117,117,0,0,1,true
-sc_0326,buddhist,one who follows the teachings of Buddha,117,117,0,0,1,true
-sc_0327,opposition,the major political party opposed to the party in office and prepared to replace it if elected,116,116,0,0,1,true
-sc_0328,dangerous,involving or causing danger or risk; liable to hurt or harm,116,115,0,1,2,true
-sc_0329,active,the voice used to indicate that the grammatical subject of the verb is performing the action or causing the happening denoted by the verb,116,115,1,0,2,true
-sc_0330,away,used of an opponent's ground,116,116,0,0,1,true
-sc_0331,prophet,an authoritative person who divines the future,116,116,0,0,1,true
-sc_0332,best,Canadian physiologist (born in the United States) who assisted F. G. Banting in research leading to the discovery of insulin (1899-1978),114,114,0,0,1,true
-sc_0333,activity,any specific behavior,114,113,1,0,2,true
-sc_0334,awareness,having knowledge of,114,113,0,1,2,true
-sc_0335,core,an organization founded by James Leonard Farmer in 1942 to work for racial equality,113,111,0,2,2,true
-sc_0336,complex,a conceptual whole made up of complicated and related parts,113,113,0,0,1,true
-sc_0337,purpose,an anticipated outcome that is intended or that guides your planned actions,113,113,0,0,1,true
-sc_0338,single,a base hit on which the batter stops safely at first base,113,113,0,0,1,true
-sc_0339,universal,(linguistics) a grammatical rule (or other linguistic feature) that is found in all languages,113,113,0,0,1,true
-sc_0340,better,something superior in quality or condition or effect,113,110,1,2,3,true
-sc_0341,return,document giving the tax collector information about the taxpayer's tax liability,113,113,0,0,1,true
-sc_0342,bible,a book regarded as authoritative in its field,113,113,0,0,1,true
-sc_0343,positive,"the primary form of an adjective or adverb; denotes a quality without qualification, comparison, or relation to increase or diminution",112,109,2,1,3,true
-sc_0344,minority,a group of people who differ racially or politically from a larger group of which it is a part,112,112,0,0,1,true
-sc_0345,hindu,a native or inhabitant of Hindustan or India,112,112,0,0,1,true
-sc_0346,france,French writer of sophisticated novels and short stories (1844-1924),111,101,9,1,3,true
-sc_0347,north,the cardinal compass point that is at 0 or 360 degrees,111,111,0,0,1,true
-sc_0348,school,an educational institution,111,110,1,0,2,true
-sc_0349,concerned,feeling or showing worry or solicitude,111,111,0,0,1,true
-sc_0350,involvement,the act of sharing in the activities of a group,110,108,2,0,2,true
-sc_0351,emotional,determined or actuated by emotion rather than reason,110,109,1,0,2,true
-sc_0352,attempt,earnest and conscientious activity intended to do or accomplish something,110,110,0,0,1,true
-sc_0353,analysis,an investigation of the component parts of a whole and their relations in making up the whole,110,110,0,0,1,true
-sc_0354,lead,an advantage held by a competitor in a race,110,110,0,0,1,true
-sc_0355,peoples,the human beings of a particular nation or community or ethnic group,110,110,0,0,1,true
-sc_0356,theology,the rational and systematic study of religion and its influences and of the nature of religious truth,110,110,0,0,1,true
-sc_0357,understood,fully apprehended as to purport or meaning or explanation,110,109,1,0,2,true
-sc_0358,controversial,marked by or capable of arousing controversy,109,109,0,0,1,true
-sc_0359,defined,clearly characterized or delimited,109,109,0,0,1,true
-sc_0360,expression,the feelings expressed on a person's face,109,108,1,0,2,true
-sc_0361,subject,the subject matter of a conversation or discussion,109,109,0,0,1,true
-sc_0362,krishna,8th and most important avatar of Vishnu; incarnated as a handsome young man playing a flute,109,109,0,0,1,true
-sc_0363,know,the fact of being aware of information that is known to few people,109,100,0,9,2,true
-sc_0364,foundation,the basis on which something is grounded,109,109,0,0,1,true
-sc_0365,success,an attainment that is successful,109,109,0,0,1,true
-sc_0366,message,a communication (usually brief) that is written or spoken or signaled,109,108,1,0,2,true
-sc_0367,received,conforming to the established language usage of educated native speakers,108,107,1,0,2,true
-sc_0368,access,the right to enter,107,107,0,0,1,true
-sc_0369,phenomenon,any state or process known through the senses rather than by intuition or reasoning,107,104,3,0,2,true
-sc_0370,money,the most common medium of exchange; functions as legal tender,107,106,0,1,2,true
-sc_0371,conspiracy,a secret agreement between two or more people to perform an unlawful act,107,105,1,1,3,true
-sc_0372,force,a powerful effect or influence,107,104,3,0,2,true
-sc_0373,serious,concerned with work or important matters rather than play or trivialities,106,106,0,0,1,true
-sc_0374,give,the elasticity of something that can be stretched and returns to its original length,106,103,0,3,2,true
-sc_0375,late,being or occurring at an advanced period of time or after a usual or expected time,106,106,0,0,1,true
-sc_0376,controversy,a contentious speech act; a dispute where there is strong disagreement,106,106,0,0,1,true
-sc_0377,academic,an educator who works at a college or university,106,105,0,1,2,true
-sc_0378,environment,the totality of surrounding conditions,106,106,0,0,1,true
-sc_0379,eastern,of or characteristic of eastern regions of the United States,105,105,0,0,1,true
-sc_0380,issue,an important question that is in dispute and must be settled,105,104,1,0,2,true
-sc_0381,importance,the quality of being important and worthy of note,105,105,0,0,1,true
-sc_0382,europe,an international organization of European countries formed after World War II to reduce trade barriers and increase cooperation among its members,104,104,0,0,1,true
-sc_0383,leading,the activity of leading,104,104,0,0,1,true
-sc_0384,field,a branch of knowledge,104,103,1,0,2,true
-sc_0385,full,containing as much or as many as is possible or normal,104,103,0,1,2,true
-sc_0386,pentecostal,any member of a Pentecostal religious body,104,104,0,0,1,true
-sc_0387,formed,having or given a form or shape,103,103,0,0,1,true
-sc_0388,image,an iconic mental representation,103,101,0,2,2,true
-sc_0389,longer,a person with a strong desire for something,103,102,0,1,2,true
-sc_0390,significance,the quality of being significant,103,103,0,0,1,true
-sc_0391,goal,the state of affairs that a plan is intended to achieve and that (when achieved) terminates behavior intended to achieve it,103,102,0,1,2,true
-sc_0392,choice,the person or thing chosen or selected,103,101,0,2,2,true
-sc_0393,live,actually being performed at the time of hearing or viewing,103,103,0,0,1,true
-sc_0394,saint,a person of exceptional holiness,103,103,0,0,1,true
-sc_0395,threat,something that is a source of danger,102,101,1,0,2,true
-sc_0396,experienced,having experience; having knowledge or skill from observation or participation,102,102,0,0,1,true
-sc_0397,association,a formal organization of people or groups of people,101,101,0,0,1,true
-sc_0398,difficult,not easy; requiring great physical or mental effort to accomplish or comprehend or endure,101,94,7,0,2,true
-sc_0399,ancient,a very old person,101,101,0,0,1,true
-sc_0400,muslim,of or relating to or supporting Islamism,101,98,0,3,2,true
-sc_0401,powerful,having great power or force or potency or effect,100,99,1,0,2,true
-sc_0402,call,a special disposition (as if from a divine source) to pursue a particular course,100,96,1,3,3,true
-sc_0403,hand,a hired laborer on a farm or ranch,100,100,0,0,1,true
-sc_0404,service,Canadian writer (born in England) who wrote about life in the Yukon Territory (1874-1958),100,95,5,0,2,true
-sc_0405,economic,"of or relating to an economy, the system of production and management of material wealth",99,97,2,0,2,true
-sc_0406,total,a quantity obtained by the addition of a group of numbers,98,98,0,0,1,true
-sc_0407,rise,the act of changing location in an upward direction,98,97,1,0,2,true
-sc_0408,born,British nuclear physicist (born in Germany) honored for his contributions to quantum mechanics (1882-1970),98,98,0,0,1,true
-sc_0409,master,an artist of consummate skill,98,96,2,0,2,true
-sc_0410,focused,being in focus or brought into focus,97,97,0,0,1,true
-sc_0411,effect,a phenomenon that follows and is caused by some previous phenomenon,97,96,0,1,2,true
-sc_0412,ideal,the idea of something that is perfect; something that one hopes to attain,96,96,0,0,1,true
-sc_0413,doctrine,a belief (or system of beliefs) accepted as authoritative by some group or school,96,93,2,1,3,true
-sc_0414,david,patron saint of Wales (circa 520-600),96,96,0,0,1,true
-sc_0415,last,the last or lowest in an ordering or series,96,96,0,0,1,true
-sc_0416,middle,an intermediate part or section,96,96,0,0,1,true
-sc_0417,put,the option to sell a given stock (or stock index or commodity future) at a given price before a given date,96,95,0,1,2,true
-sc_0418,thinking,the process of using your mind to consider something carefully,95,91,2,2,3,true
-sc_0419,laws,the first of three divisions of the Hebrew Scriptures comprising the first five books of the Hebrew Bible considered as a unit,95,95,0,0,1,true
-sc_0420,existing,having existence or being or actuality,95,95,0,0,1,true
-sc_0421,impact,a forceful consequence; a strong effect,95,93,2,0,2,true
-sc_0422,counter,a person who counts things,95,95,0,0,1,true
-sc_0423,light,a divine presence believed by Quakers to enlighten and guide the soul,95,93,0,2,2,true
-sc_0424,satan,(Judeo-Christian and Islamic religions) chief spirit of evil and adversary of God; tempter of mankind; master of Hell,95,93,1,1,3,true
-sc_0425,hubbard,a United States writer of science fiction and founder of Scientology (1911-1986),95,95,0,0,1,true
-sc_0426,story,a piece of fiction that narrates a chain of related events,95,95,0,0,1,true
-sc_0427,peace,the state prevailing during the absence of war,95,95,0,0,1,true
-sc_0428,growing,(biology) the process of an individual organism growing organically; a purely biological unfolding of events involved in an organism changing gradually from a simple to a more complex level,94,92,1,1,3,true
-sc_0429,participation,the act of sharing in the activities of a group,94,92,2,0,2,true
-sc_0430,shared,have in common; held or experienced in common,94,94,0,0,1,true
-sc_0431,close,in intimate association or accord,94,91,1,2,3,true
-sc_0432,police,the force of policemen and officers,93,92,1,0,2,true
-sc_0433,appeal,earnest or urgent request,93,93,0,0,1,true
-sc_0434,decision,the act of making up your mind about something,93,93,0,0,1,true
-sc_0435,ideological,of or pertaining to or characteristic of an orientation that characterizes the thinking of a group or nation,92,92,0,0,1,true
-sc_0436,words,the words that are spoken,92,90,2,0,2,true
-sc_0437,mother,a term of address for an elderly woman,92,92,0,0,1,true
-sc_0438,dominant,exercising influence or control,91,91,0,0,1,true
-sc_0439,home,an environment offering affection and security,91,91,0,0,1,true
-sc_0440,myth,a traditional story accepted as history; serves to explain the world view of a people,91,91,0,0,1,true
-sc_0441,turn,a change in direction,91,89,0,2,2,true
-sc_0442,lost,people who are destined to die soon,91,91,0,0,1,true
-sc_0443,struggle,an energetic attempt to achieve something,91,91,0,0,1,true
-sc_0444,marriage,the state of being a married couple voluntarily joined for life (or until divorce),91,91,0,0,1,true
-sc_0445,education,the United States federal department that administers all federal programs dealing with education (including federal aid to educational institutions and students); created 1979,90,90,0,0,1,true
-sc_0446,space,the unlimited expanse in which everything is located,90,88,0,2,2,true
-sc_0447,false,not in accordance with the fact or reality or actuality,90,89,1,0,2,true
-sc_0448,available,obtainable or accessible and ready for use or service,90,90,0,0,1,true
-sc_0449,think,an instance of deliberate thinking,89,79,0,10,2,true
-sc_0450,criticism,disapproval expressed by pointing out faults or shortcomings,89,89,0,0,1,true
-sc_0451,regard,(usually preceded by ‘in’) a detail or point,89,86,3,0,2,true
-sc_0452,spread,a conspicuous disparity or difference as between two figures,89,89,0,0,1,true
-sc_0453,latter,the second of two or the second mentioned of two,89,89,0,0,1,true
-sc_0454,acts,something that people do or cause to happen,88,86,1,1,3,true
-sc_0455,committed,"bound or obligated, as under a pledge to a particular cause, action, or attitude",88,88,0,0,1,true
-sc_0456,five,a team that plays basketball,88,88,0,0,1,true
-sc_0457,increased,made greater in size or amount or degree,87,87,0,0,1,true
-sc_0458,official,a worker who holds or is invested with an office,87,87,0,0,1,true
-sc_0459,discussion,an extended communication (often interactive) dealing with some particular topic,87,85,2,0,2,true
-sc_0460,challenge,a demanding or stimulating situation,87,87,0,0,1,true
-sc_0461,extent,the point or degree to which something extends,87,87,0,0,1,true
-sc_0462,mystical,relating to or characteristic of mysticism,87,87,0,0,1,true
-sc_0463,face,the feelings expressed on a person's face,87,79,8,0,2,true
-sc_0464,matter,a vaguely specified concern,86,85,1,0,2,true
-sc_0465,program,a series of steps to be carried out or goals to be accomplished,86,85,0,1,2,true
-sc_0466,generation,all the people living at the same time or of approximately the same age,86,86,0,0,1,true
-sc_0467,original,something that serves as a model or a basis for making copies,86,86,0,0,1,true
-sc_0468,father,‘Father’ is a term of address for priests in some churches (especially the Roman Catholic Church or the Orthodox Catholic Church); ‘Padre’ is frequently used in the military,86,86,0,0,1,true
-sc_0469,jones,United States labor leader (born in Ireland) who helped to found the Industrial Workers of the World (1830-1930),85,85,0,0,1,true
-sc_0470,guru,each of the first ten leaders of the Sikh religion,85,83,2,0,2,true
-sc_0471,published,prepared and printed for distribution and sale,85,85,0,0,1,true
-sc_0472,changed,made or become different in nature or form,85,85,0,0,1,true
-sc_0473,joining,the act of bringing two things into contact (especially for communication),85,85,0,0,1,true
-sc_0474,function,(mathematics) a mathematical relation such that each element of a given set (the domain of the function) is associated with an element of another set (the range of the function),85,85,0,0,1,true
-sc_0475,creation,(theology) God's act of bringing the universe into existence,85,85,0,0,1,true
-sc_0476,solar,relating to or derived from the sun or utilizing the energies of the sun,84,84,0,0,1,true
-sc_0477,capacity,capability to perform or produce,84,84,0,0,1,true
-sc_0478,daily,a newspaper that is published every day,84,82,1,1,3,true
-sc_0479,paganism,any of various religions other than Christianity or Judaism or Islamism,84,84,0,0,1,true
-sc_0480,european,a native or inhabitant of Europe,84,84,0,0,1,true
-sc_0481,orthodox,of or pertaining to or characteristic of Judaism,84,83,0,1,2,true
-sc_0482,path,a course of conduct,84,84,0,0,1,true
-sc_0483,nation,United States prohibitionist who raided saloons and destroyed bottles of liquor with a hatchet (1846-1911),83,81,2,0,2,true
-sc_0484,country,the people who live in a nation or country,83,83,0,0,1,true
-sc_0485,taking,the act of someone who picks up or takes something,83,83,0,0,1,true
-sc_0486,phenomena,any state or process known through the senses rather than by intuition or reasoning,83,83,0,0,1,true
-sc_0487,authoritarian,a person who behaves in a tyrannical manner,83,83,0,0,1,true
-sc_0488,effects,property of a personal character that is portable but not used in business,83,83,0,0,1,true
-sc_0489,respect,(usually preceded by ‘in’) a detail or point,83,80,3,0,2,true
-sc_0490,formation,an arrangement of people or things acting as a unit,83,73,10,0,2,true
-sc_0491,moon,the light of the Moon,83,82,1,0,2,true
-sc_0492,secret,something that should remain hidden from others (especially information that is not to be passed on),82,77,4,1,3,true
-sc_0493,post,United States aviator who in 1933 made the first solo flight around the world (1899-1935),82,81,1,0,2,true
-sc_0494,hold,the act of grasping,82,82,0,0,1,true
-sc_0495,iskcon,a religious sect founded in the United States in 1966; based on Vedic scriptures; groups engage in joyful chanting of ‘Hare Krishna’ and other mantras based on the name of the Hindu god Krishna; devotees usually wear saffron robes and practice vegetarianism and celibacy,82,82,0,0,1,true
-sc_0496,going,the act of departing,82,80,1,1,3,true
-sc_0497,coming,the act of drawing spatially closer to something,82,81,0,1,2,true
-sc_0498,kingdom,a domain in which something is dominant,82,82,0,0,1,true
-sc_0499,par,a state of being essentially equal or equivalent; equally balanced,82,4,78,0,2,true
-sc_0500,principle,a basic generalization that is accepted as true and that can be used as a basis for reasoning or conduct,81,81,0,0,1,true
-sc_0501,acceptance,the mental attitude that something is believable and should be accepted as true,81,81,0,0,1,true
-sc_0502,opposed,being in opposition or having an opponent,81,81,0,0,1,true
-sc_0503,play,a dramatic work intended for performance by actors on a stage,81,80,0,1,2,true
-sc_0504,increasing,becoming greater or larger,81,81,0,0,1,true
-sc_0505,occult,supernatural forces and events and beings collectively,81,80,1,0,2,true
-sc_0506,magic,any art that invokes supernatural powers,81,81,0,0,1,true
-sc_0507,reason,a rational motive for a belief or action,80,80,0,0,1,true
-sc_0508,emergence,the act of emerging,80,80,0,0,1,true
-sc_0509,stress,the relative prominence of a syllable or musical note (especially with regard to stress or pitch),80,80,0,0,1,true
-sc_0510,theoretical,concerned primarily with theories or hypotheses rather than practical considerations,80,80,0,0,1,true
-sc_0511,share,assets belonging to or due to or contributed by an individual person or group,80,80,0,0,1,true
-sc_0512,wicca,a community of followers of the Wicca religion,80,80,0,0,1,true
-sc_0513,web,an interconnected system of things or people,80,79,1,0,2,true
-sc_0514,messianic,of or relating to a messiah promising deliverance,80,80,0,0,1,true
-sc_0515,beginning,the first part or section of something,79,79,0,0,1,true
-sc_0516,center,the choicest or most essential or most vital part of some idea or experience,79,78,0,1,2,true
-sc_0517,intense,possessing or displaying a distinctive feature to a heightened degree,79,79,0,0,1,true
-sc_0518,earlier,at or near the beginning of a period of time or course of events or before the usual or expected time,79,79,0,0,1,true
-sc_0519,natural,someone regarded as certain to succeed,79,79,0,0,1,true
-sc_0520,conservative,a member of a Conservative Party,79,79,0,0,1,true
-sc_0521,moved,being excited or provoked to the expression of an emotion,79,79,0,0,1,true
-sc_0522,origin,properties attributable to your ancestry,79,79,0,0,1,true
-sc_0523,humanity,the quality of being humane,79,79,0,0,1,true
-sc_0524,energy,the federal department responsible for maintaining a national energy policy of the United States; created in 1977,79,78,0,1,2,true
-sc_0525,goddess,a female deity,79,79,0,0,1,true
-sc_0526,value,a numerical quantity measured or assigned or computed,78,78,0,0,1,true
-sc_0527,services,performance of duties or provision of space and equipment helpful to others,78,72,6,0,2,true
-sc_0528,personality,"the complex of all the attributes — behavioral, temperamental, emotional and mental — that characterize a unique individual",78,77,0,1,2,true
-sc_0529,demand,an urgent or peremptory request,78,76,1,1,3,true
-sc_0530,ultimate,the finest or most superior quality of its kind,78,78,0,0,1,true
-sc_0531,short,the fielding position of the player on a baseball team who is stationed between second and third base,78,78,0,0,1,true
-sc_0532,theological,of or relating to or concerning theology,78,78,0,0,1,true
-sc_0533,revelation,the last book of the New Testament; contains visionary descriptions of heaven and of conflicts between good and evil and of the end of the world; attributed to Saint John the Apostle,78,78,0,0,1,true
-sc_0534,civil,not rude; marked by satisfactory (or especially minimal) adherence to social usages and sufficient but not noteworthy consideration for others,78,78,0,0,1,true
-sc_0535,john,youngest son of Henry II; King of England from 1199 to 1216; succeeded to the throne on the death of his brother Richard I; lost his French possessions; in 1215 John was compelled by the barons to sign the Magna Carta (1167-1216),78,78,0,0,1,true
-sc_0536,saw,a condensed but memorable saying embodying some important fact of experience that is taken as true by many people,78,78,0,0,1,true
-sc_0537,british,the people of Great Britain,77,77,0,0,1,true
-sc_0538,effort,earnest and conscientious activity intended to do or accomplish something,77,77,0,0,1,true
-sc_0539,fundamental,the lowest tone of a harmonic series,77,76,1,0,2,true
-sc_0540,series,similar things placed in order or happening one after another,77,77,0,0,1,true
-sc_0541,normal,something regarded as a normative example,77,76,0,1,2,true
-sc_0542,witchcraft,the art of sorcery,77,77,0,0,1,true
-sc_0543,written,set down in writing in any of various ways,77,77,0,0,1,true
-sc_0544,scholarly,characteristic of scholars or scholarship,77,77,0,0,1,true
-sc_0545,style,how something is done or how it happens,77,77,0,0,1,true
-sc_0546,theosophical,of or relating to theosophy,77,77,0,0,1,true
-sc_0547,interpretation,a mental representation of the meaning or significance of something,76,75,1,0,2,true
-sc_0548,effective,producing or capable of producing an intended result or having a striking effect,76,76,0,0,1,true
-sc_0549,considerable,large or relatively large in number or amount or extent or degree,76,76,0,0,1,true
-sc_0550,ability,the quality of being able to perform; a quality that permits or facilitates achievement or accomplishment,76,76,0,0,1,true
-sc_0551,communist,a member of the communist party,76,76,0,0,1,true
-sc_0552,reported,made known or told about; especially presented in a formal account,76,76,0,0,1,true
-sc_0553,range,an area in which something acts or operates or has power or control:,76,76,0,0,1,true
-sc_0554,expected,considered likely or probable to happen or arrive,76,76,0,0,1,true
-sc_0555,numbers,the fourth book of the Old Testament; contains a record of the number of Israelites who followed Moses out of Egypt,76,76,0,0,1,true
-sc_0556,unity,an undivided or unbroken completeness or totality with nothing wanting,76,76,0,0,1,true
-sc_0557,poor,people without possessions or wealth (considered as a group),76,76,0,0,1,true
-sc_0558,line,a formation of people or things one beside another,75,74,0,1,2,true
-sc_0559,establishment,the act of forming or establishing something,75,74,1,0,2,true
-sc_0560,chapter,a subdivision of a written work; usually numbered and titled,75,75,0,0,1,true
-sc_0561,failure,an act that fails,75,75,0,0,1,true
-sc_0562,fear,an emotion experienced in anticipation of some specific pain or danger (usually accompanied by a desire to flee or fight),75,74,1,0,2,true
-sc_0563,online,on a regular route of a railroad or bus or airline system,75,73,2,0,2,true
-sc_0564,construction,the act of constructing something,75,73,2,0,2,true
-sc_0565,sexuality,the properties that distinguish organisms on the basis of their reproductive roles,75,75,0,0,1,true
-sc_0566,pattern,a perceptual structure,74,74,0,0,1,true
-sc_0567,initial,the first letter of a word (especially a person's name),74,74,0,0,1,true
-sc_0568,yoga,discipline aimed at training the consciousness for a state of perfect spiritual insight and tranquility that is achieved through the three paths of actions and knowledge and devotion,74,74,0,0,1,true
-sc_0569,difference,the quality of being unlike or dissimilar,74,70,1,3,3,true
-sc_0570,legitimacy,lawfulness by virtue of being authorized or in accordance with law,74,74,0,0,1,true
-sc_0571,prior,the head of a religious order; in an abbey the prior is next below the abbot,74,74,0,0,1,true
-sc_0572,lay,characteristic of those who are not members of the clergy,74,74,0,0,1,true
-sc_0573,turned,moved around an axis or center,74,74,0,0,1,true
-sc_0574,resistance,the action of opposing something that you disapprove or disagree with,74,74,0,0,1,true
-sc_0575,want,a state of extreme poverty,73,67,0,6,2,true
-sc_0576,data,a collection of facts from which conclusions may be drawn,73,73,0,0,1,true
-sc_0577,persuasion,the act of persuading (or attempting to persuade); communication intended to induce belief or action,73,73,0,0,1,true
-sc_0578,essential,basic and fundamental,73,73,0,0,1,true
-sc_0579,giving,the act of giving,73,73,0,0,1,true
-sc_0580,useful,being of use or service,72,71,1,0,2,true
-sc_0581,language,a systematic means of communicating by the use of sounds or conventional symbols,72,71,1,0,2,true
-sc_0582,debate,a discussion in which reasons are advanced for and against some proposition or proposal,72,72,0,0,1,true
-sc_0583,sent,caused or enabled to go or be conveyed or transmitted,71,55,16,0,2,true
-sc_0584,crisis,an unstable situation of extreme danger or difficulty,71,71,0,0,1,true
-sc_0585,applied,concerned with concrete problems or data rather than with fundamental principles,71,71,0,0,1,true
-sc_0586,account,a record or narrative description of past events,71,70,1,0,2,true
-sc_0587,tendency,an attitude of mind especially one that favors one alternative over others,71,70,1,0,2,true
-sc_0588,strict,"characterized by strictness, severity, or restraint",71,69,0,2,2,true
-sc_0589,adopted,acquired as your own by free choice,71,71,0,0,1,true
-sc_0590,circle,an unofficial association of people or groups,71,71,0,0,1,true
-sc_0591,crucial,of extreme importance; vital to the resolution of a crisis,71,71,0,0,1,true
-sc_0592,building,the act of constructing something,71,71,0,0,1,true
-sc_0593,feel,an intuitive awareness,71,70,1,0,2,true
-sc_0594,masters,United States poet (1869-1950),71,71,0,0,1,true
-sc_0595,south,the cardinal compass point that is at 180 degrees,71,71,0,0,1,true
-sc_0596,stage,a specific identifiable position in a continuum or series or especially in a process,70,65,5,0,2,true
-sc_0597,shift,the act of changing one thing or position for another,70,70,0,0,1,true
-sc_0598,look,the feelings expressed on a person's face,70,70,0,0,1,true
-sc_0599,twentieth,position 20 in a countable series of things,70,70,0,0,1,true
-sc_0600,despite,lack of respect accompanied by a feeling of intense dislike,70,70,0,0,1,true
+sc_0058,found,food and lodging provided in addition to money,304,303,1,0,2,true
+sc_0059,experience,the accumulation of knowledge or skill that results from direct participation in events or activities,301,300,1,0,2,true
+sc_0060,important,of great significance or value,298,297,1,0,2,true
+sc_0061,form,the phonological or orthographic sound or appearance of a word that can be used to describe or identify something,294,292,2,0,2,true
+sc_0062,established,brought about or set up or accepted; especially long established,290,288,1,1,3,true
+sc_0063,less,(comparative of ‘little’ usually used with mass nouns) a quantifier meaning not as great in amount or degree,286,286,0,0,1,true
+sc_0064,law,the collection of rules imposed by authority,284,283,1,0,2,true
+sc_0065,ritual,any customary observance or practice,281,281,0,0,1,true
+sc_0066,early,at or near the beginning of a period of time or course of events or before the usual or expected time,277,277,0,0,1,true
+sc_0067,case,a special set of circumstances,276,276,0,0,1,true
+sc_0068,change,a relational difference between states; especially between states before and after some event,275,272,2,1,3,true
+sc_0069,sexual,of or relating to or characterized by sexuality,273,271,2,0,2,true
+sc_0070,culture,a particular society at a particular time and place,273,271,2,0,2,true
+sc_0071,sense,a general conscious awareness,272,272,0,0,1,true
+sc_0072,information,a message received and understood,271,267,4,0,2,true
+sc_0073,science,a particular branch of scientific knowledge,270,268,2,0,2,true
+sc_0074,government,the organization that is the governing authority of a political unit,268,268,0,0,1,true
+sc_0075,thought,the content of cognition; the main thing you are thinking about,266,265,0,1,2,true
+sc_0076,terms,status with respect to the relations between people or groups,264,264,0,0,1,true
+sc_0077,alternative,one of a number of things from which only one can be chosen,261,257,3,1,3,true
+sc_0078,level,a position on a scale of intensity or amount or quality,260,259,0,1,2,true
+sc_0079,mind,"that which is responsible for one's thoughts, feelings, and conscious brain functions; the seat of the faculty of reason",259,245,0,14,2,true
+sc_0080,freedom,the condition of being free; the power to act or speak or think without externally imposed restraints,258,255,0,3,2,true
+sc_0081,psychological,of or relating to or determined by psychology,255,252,3,0,2,true
+sc_0082,example,an item of information that is typical of a class or group,255,254,0,1,2,true
+sc_0083,identity,the distinct personality of an individual regarded as a persisting entity,253,253,0,0,1,true
+sc_0084,set,evil Egyptian god with the head of a beast that has high square ears and a long snout; brother and murderer of Osiris,252,251,0,1,2,true
+sc_0085,history,a record or narrative description of past events,250,249,1,0,2,true
+sc_0086,status,the relative position or standing of things or especially persons in a society,247,246,0,1,2,true
+sc_0087,great,a person who has achieved distinction and honor in some field,245,244,0,1,2,true
+sc_0088,influence,a power to affect persons or events especially power based on prestige etc,245,242,2,1,3,true
+sc_0089,place,an abstract mental location,244,235,8,1,3,true
+sc_0090,sect,a subdivision of a larger religious group,243,233,2,8,3,true
+sc_0091,high,a lofty level or position or degree,242,241,0,1,2,true
+sc_0092,conversion,a change in the units or form of an expression:,241,241,0,0,1,true
+sc_0093,developed,being changed over time so as to be e.g. stronger or more complete or more useful,240,240,0,0,1,true
+sc_0094,faith,a strong belief in a supernatural power or powers that control human destiny,240,240,0,0,1,true
+sc_0095,means,to have the ability to produce a particular effect or achieve an end,239,238,0,1,2,true
+sc_0096,legal,established by or founded upon law or official or accepted rules,238,238,0,0,1,true
+sc_0097,present,something presented as a gift,236,235,1,0,2,true
+sc_0098,true,proper alignment; the property possessed by something that is in correct or proper alignment,235,235,0,0,1,true
+sc_0099,general,the head of a religious order or congregation,235,235,0,0,1,true
+sc_0100,tradition,an inherited pattern of thought or action,235,234,1,0,2,true
+sc_0101,certain,having or feeling no doubt or uncertainty; confident and assured,234,225,3,6,3,true
+sc_0102,popular,"regarded with great favor, approval, or affection especially by the general public",234,234,0,0,1,true
+sc_0103,particular,a fact about some part (as opposed to general),232,231,1,0,2,true
+sc_0104,known,apprehended with certainty,231,231,0,0,1,true
+sc_0105,small,a garment size for a small person,230,229,0,1,2,true
+sc_0106,view,a way of regarding situations or topics etc.,227,225,0,2,2,true
+sc_0107,death,the permanent end of all life functions in an organism or part of an organism,226,225,0,1,2,true
+sc_0108,former,the first of two or the first mentioned of two,225,224,1,0,2,true
+sc_0109,need,a condition requiring relief,224,218,2,4,3,true
+sc_0110,given,an assumption that is taken for granted,223,222,0,1,2,true
+sc_0111,person,"a human being; person, singular, assertive existential pronoun; pronoun, person, singular; quantifier: assertive existential",218,213,2,3,3,true
+sc_0112,common,belonging to or participated in by a community as a whole; public,213,213,0,0,1,true
+sc_0113,little,limited or below average in number or quantity or magnitude or extent,212,208,0,4,2,true
+sc_0114,evidence,your basis for belief or disbelief; knowledge on which to base belief,212,211,1,0,2,true
+sc_0115,spirit,the vital principle or animating force within living things,212,211,0,1,2,true
+sc_0116,commitment,the trait of sincere and steadfast fixity of purpose,211,210,0,1,2,true
+sc_0117,negative,a reply of denial,211,207,1,3,3,true
+sc_0118,specific,a fact about some part (as opposed to general),209,204,3,2,3,true
+sc_0119,relationship,"a relation between people; (‘relationship’ is often used where ‘relation’ would serve, as in ‘the relationship between inflation and unemployment’, but the preferred usage of ‘relationship’ is for human relations or states of relatedness)",207,205,2,0,2,true
+sc_0120,likely,has a good chance of being the case or of coming about,205,205,0,0,1,true
+sc_0121,support,the activity of providing for or maintaining by supplying with money or necessities,204,204,0,0,1,true
+sc_0122,long,primarily temporal sense; being or indicating a relatively great or greater than average duration or passage of time or a duration as specified,204,201,3,0,2,true
+sc_0123,violent,acting with or marked by or resulting from great force or energy or emotional intensity,204,200,4,0,2,true
+sc_0124,model,a hypothetical description of a complex entity or process,204,204,0,0,1,true
+sc_0125,approach,ideas or actions intended to deal with a problem or situation,201,200,1,0,2,true
+sc_0126,development,act of improving by expanding or enlarging or refining,201,200,1,0,2,true
+sc_0127,contemporary,a person of nearly the same age as another,201,200,1,0,2,true
+sc_0128,sacred,concerned with religion or religious purposes,200,199,0,1,2,true
+sc_0129,strong,having strength or power greater than average or expected,200,198,1,1,3,true
+sc_0130,united,characterized by unity; being or joined into a single entity,200,200,0,0,1,true
+sc_0131,christianity,a monotheistic system of beliefs and practices based on the Old Testament and the teachings of Jesus as embodied in the New Testament and emphasizing the role of Jesus as savior,200,200,0,0,1,true
+sc_0132,mass,(Roman Catholic Church and Protestant Churches) the celebration of the Eucharist,199,199,0,0,1,true
+sc_0133,take,the income or profit arising from such transactions as the sale of land or other property,198,197,0,1,2,true
+sc_0134,understanding,the cognitive condition of someone who understands,198,198,0,0,1,true
+sc_0135,involved,connected by participation or association or use,197,197,0,0,1,true
+sc_0136,abuse,cruel or inhumane treatment,196,195,0,1,2,true
+sc_0137,islam,the civilization of Muslims collectively which is governed by the Muslim religion,196,196,0,0,1,true
+sc_0138,conflict,an open clash between two opposing groups (or individuals),195,195,0,0,1,true
+sc_0139,spirituality,property or income owned by a church,195,192,1,2,3,true
+sc_0140,significant,important in effect or meaning,194,193,0,1,2,true
+sc_0141,mission,an organization of missionaries in a foreign land sent to carry on religious work,194,191,2,1,3,true
+sc_0142,behavior,manner of acting or controlling yourself,194,193,0,1,2,true
+sc_0143,theory,a well-substantiated explanation of some aspect of the natural world; an organized system of accepted knowledge that applies in a variety of circumstances to explain a specific set of phenomena,194,193,0,1,2,true
+sc_0144,large,a garment size for a large person,191,187,3,1,3,true
+sc_0145,right,an abstract idea of that which is due to a person or governmental body by law or tradition or nature,191,189,0,2,2,true
+sc_0146,african,a native or inhabitant of Africa,191,191,0,0,1,true
+sc_0147,claim,an assertion of a right (as to money or property),190,190,0,0,1,true
+sc_0148,national,a person who owes allegiance to that nation,188,186,2,0,2,true
+sc_0149,men,the force of workers available,188,185,3,0,2,true
+sc_0150,apocalyptic,of or relating to an apocalypse,187,187,0,0,1,true
+sc_0151,member,one of the persons who compose a social group (especially individuals who have joined and participate in a group organization),187,187,0,0,1,true
+sc_0152,good,benefit,187,186,0,1,2,true
+sc_0153,moral,the significance of a story or event,186,184,1,1,3,true
+sc_0154,body,a group of persons associated by some common tie or occupation and regarded as an entity,185,185,0,0,1,true
+sc_0155,point,a geometric element that has position but no extension,185,183,0,2,2,true
+sc_0156,potential,the inherent capacity for coming into being,184,184,0,0,1,true
+sc_0157,concept,an abstract or general idea inferred or derived from specific instances,184,181,2,1,3,true
+sc_0158,international,any of several international socialist organizations,184,183,1,0,2,true
+sc_0159,living,the experience of being alive; the course of human events and activities,184,184,0,0,1,true
+sc_0160,least,something that is of no importance,183,182,0,1,2,true
+sc_0161,lives,a characteristic state or mode of living,182,181,1,0,2,true
+sc_0162,reality,all of your experiences that determine how things appear to you,182,180,0,2,2,true
+sc_0163,outside,relating to or being on or near the outer side or limit,181,179,0,2,2,true
+sc_0164,context,discourse that surrounds a language unit and helps to determine its interpretation,181,179,1,1,3,true
+sc_0165,knowledge,the psychological result of perception and learning and reasoning,181,177,2,2,3,true
+sc_0166,local,relating to or applicable to or concerned with the administration of a city or town or district rather than a larger area,181,180,0,1,2,true
+sc_0167,earth,the concerns of this life as distinguished from heaven and the afterlife,181,181,0,0,1,true
+sc_0168,aum,a terrorist organization whose goal is to take over Japan and then the world; based on a religion founded in 1987 that combines elements of Buddhism with Christianity,180,180,0,0,1,true
+sc_0169,charisma,a personal attractiveness or interestingness that enables you to influence others,180,180,0,0,1,true
+sc_0170,physical,involving the body as distinguished from the mind or spirit,179,176,3,0,2,true
+sc_0171,mainstream,the prevailing current of thought,179,179,0,0,1,true
+sc_0172,founder,inflammation of the laminated tissue that attaches the hoof to the foot of a horse,179,178,0,1,2,true
+sc_0173,gender,a grammatical category in inflected languages governing the agreement between nouns and pronouns and adjectives; in some languages it is quite arbitrary but in Indo-European languages it is usually based on sex or animateness,178,178,0,0,1,true
+sc_0174,structure,the manner of construction of something and the arrangement of its parts,177,177,0,0,1,true
+sc_0175,mental,involving the mind or an intellectual process,177,170,7,0,2,true
+sc_0176,catholic,a member of a Catholic church,177,175,0,2,2,true
+sc_0177,holy,belonging to or derived from or associated with a divine power,176,176,0,0,1,true
+sc_0178,radical,a person who has radical ideas or opinions,175,174,1,0,2,true
+sc_0179,central,in or near a center or constituting a center; the inner area,175,172,1,2,3,true
+sc_0180,internal,happening or arising or located within some limits or especially surface,172,172,0,0,1,true
+sc_0181,elements,violent or severe weather (viewed as caused by the action of the four elements),171,171,0,0,1,true
+sc_0182,war,a legal state created by a declaration of war and ended by official declaration during which the international rules of war apply,171,170,0,1,2,true
+sc_0183,left,those who support varying degrees of social or political or economic change designed to promote the public welfare,171,171,0,0,1,true
+sc_0184,growth,(biology) the process of an individual organism growing organically; a purely biological unfolding of events involved in an organism changing gradually from a simple to a more complex level,171,171,0,0,1,true
+sc_0185,healing,the natural process by which the body repairs itself,169,169,0,0,1,true
+sc_0186,critical,marked by a tendency to find and call attention to errors and flaws,167,165,2,0,2,true
+sc_0187,definition,a concise explanation of the meaning of a word or phrase or symbol,167,164,2,1,3,true
+sc_0188,interest,a sense of concern with and curiosity about someone or something,167,167,0,0,1,true
+sc_0189,attention,the process whereby a person concentrates on some features of the environment to the (relative) exclusion of others,167,162,4,1,3,true
+sc_0190,values,beliefs of a person or social group in which they have an emotional investment (either for or against something),167,166,1,0,2,true
+sc_0191,fact,a piece of information about circumstances that exist or events that have occurred,166,163,1,2,3,true
+sc_0192,end,the state of affairs that a plan is intended to achieve and that (when achieved) terminates behavior intended to achieve it,166,165,1,0,2,true
+sc_0193,party,an organization to gain political power,166,166,0,0,1,true
+sc_0194,christ,any expected deliverer,166,166,0,0,1,true
+sc_0195,idea,the content of cognition; the main thing you are thinking about,165,163,0,2,2,true
+sc_0196,free,people who are free,165,165,0,0,1,true
+sc_0197,action,something done (usually as opposed to something said),164,161,3,0,2,true
+sc_0198,problem,a state of difficulty that needs to be resolved,163,163,0,0,1,true
+sc_0199,west,the cardinal compass point that is at 270 degrees,162,162,0,0,1,true
+sc_0200,ideology,an orientation that characterizes the thinking of a group or nation,161,158,0,3,2,true
+sc_0201,special,a special offering (usually temporary and at a reduced price) that is featured in advertising,161,158,0,3,2,true
+sc_0202,key,a solution or remedy for a difficult problem,160,158,2,0,2,true
+sc_0203,court,Australian woman tennis player who won many major championships (born in 1947),160,160,0,0,1,true
+sc_0204,meaning,the message that is intended or expressed or signified,159,157,2,0,2,true
+sc_0205,book,the sacred writings of Islam revealed by God to the prophet Muhammad during his life at Mecca and Medina,159,159,0,0,1,true
+sc_0206,focus,the concentration of attention or energy on something,159,159,0,0,1,true
+sc_0207,organized,"formed into a structured or coherent whole, particularly on a large scale",158,157,1,0,2,true
+sc_0208,position,a way of regarding situations or topics etc.,157,155,2,0,2,true
+sc_0209,question,an instance of questioning,157,150,6,1,3,true
+sc_0210,result,a phenomenon that follows and is caused by some previous phenomenon,156,156,0,0,1,true
+sc_0211,similar,marked by correspondence or resemblance,154,151,2,1,3,true
+sc_0212,unification,the state of being joined or united or linked,153,153,0,0,1,true
+sc_0213,literature,creative writing of recognized artistic value,153,153,0,0,1,true
+sc_0214,name,a language unit by which a person or thing is known,153,151,0,2,2,true
+sc_0215,child,a young person of either sex,152,152,0,0,1,true
+sc_0216,suicide,the act of killing yourself,151,151,0,0,1,true
+sc_0217,scientific,of or relating to the practice of science,151,150,1,0,2,true
+sc_0218,real,an old small silver Spanish coin,151,150,1,0,2,true
+sc_0219,find,a productive insight,151,150,0,1,2,true
+sc_0220,branch,a division of some larger or more complex organization,150,150,0,0,1,true
+sc_0221,secular,someone who is not a clergyman or a professional person,150,150,0,0,1,true
+sc_0222,love,a strong positive emotion of regard and affection,150,150,0,0,1,true
+sc_0223,esoteric,confined to and understandable by only an enlightened inner circle,149,144,5,0,2,true
+sc_0224,worship,the activity of worshipping,148,148,0,0,1,true
+sc_0225,man,the generic use of the word to refer to any human being,148,146,2,0,2,true
+sc_0226,existence,the state or fact of existing,147,146,1,0,2,true
+sc_0227,basic,a popular programming language that is relatively easy to learn; an acronym for beginner's all-purpose symbolic instruction code; no longer in general use,147,147,0,0,1,true
+sc_0228,later,at or toward an end or late period or stage of development,147,146,1,0,2,true
+sc_0229,help,the activity of contributing to the fulfillment of a need or furtherance of an effort or purpose,147,147,0,0,1,true
+sc_0230,far,a terrorist organization that seeks to overthrow the government dominated by Tutsi and to institute Hutu control again,146,145,0,1,2,true
+sc_0231,milieu,the environmental condition,146,144,2,0,2,true
+sc_0232,collective,members of a cooperative enterprise,146,145,0,1,2,true
+sc_0233,class,a collection of things sharing a common attribute,145,142,3,0,2,true
+sc_0234,gate,total admission receipts at a sports event,145,145,0,0,1,true
+sc_0235,past,a verb tense that expresses actions or states in the past,145,145,0,0,1,true
+sc_0236,teaching,the profession of a teacher,145,144,1,0,2,true
+sc_0237,current,a flow of electricity through a conductor,144,143,1,0,2,true
+sc_0238,perspective,a way of regarding situations or topics etc.,142,142,0,0,1,true
+sc_0239,extreme,the furthest or highest degree of something,142,139,1,2,3,true
+sc_0240,material,information (data or ideas or observations) that can be used or reworked into a finished form,142,142,0,0,1,true
+sc_0241,future,a verb tense that expresses actions or states in the future,141,138,1,2,3,true
+sc_0242,islamic,of or relating to or supporting Islamism,141,141,0,0,1,true
+sc_0243,lack,the state of needing something that is absent or unavailable,140,137,1,2,3,true
+sc_0244,following,a group of followers or enthusiasts,139,135,0,4,2,true
+sc_0245,source,a document (or organization) from which information is obtained,139,138,1,0,2,true
+sc_0246,satanic,of or relating to Satan,139,139,0,0,1,true
+sc_0247,organizational,of or relating to an organization,138,138,0,0,1,true
+sc_0248,white,a person of European descent with a light-skinned or pale complexion,137,131,0,6,2,true
+sc_0249,satanism,a belief in and reverence for devils (especially Satan),137,137,0,0,1,true
+sc_0250,french,the Romance language spoken in France and in countries colonized by France,136,135,1,0,2,true
+sc_0251,recruitment,the act of getting recruits; enlisting people for the army (or for a job or a cause etc.),136,135,1,0,2,true
+sc_0252,open,information that has become public,136,135,0,1,2,true
+sc_0253,concern,something that interests you because it is important or affects you,135,132,3,0,2,true
+sc_0254,sex,activities associated with sexual intercourse,135,134,1,0,2,true
+sc_0255,greater,greater in size or importance or degree,135,135,0,0,1,true
+sc_0256,transformation,(mathematics) a function that changes the position or direction of the axes of a coordinate system,134,134,0,0,1,true
+sc_0257,male,a person who belongs to the sex that cannot have babies,134,134,0,0,1,true
+sc_0258,act,a legal document codifying the result of deliberations of a committee or society or legislative body,133,133,0,0,1,true
+sc_0259,variety,a collection containing a variety of sorts of things,133,133,0,0,1,true
+sc_0260,consciousness,an alert cognitive state in which you are aware of yourself and your situation,133,132,0,1,2,true
+sc_0261,direct,direct in spatial dimensions; proceeding without deviation or interruption; straight and short,133,133,0,0,1,true
+sc_0262,network,an interconnected system of things or people,133,130,3,0,2,true
+sc_0263,making,the act that results in something coming to be,133,133,0,0,1,true
+sc_0264,authorities,the organization that is the governing authority of a political unit,132,130,2,0,2,true
+sc_0265,basis,a relation that provides the foundation for something,132,132,0,0,1,true
+sc_0266,continued,without stop or interruption,132,132,0,0,1,true
+sc_0267,period,the monthly discharge of blood from the uterus of nonpregnant women from puberty to menopause,132,132,0,0,1,true
+sc_0268,female,a person who belongs to the sex that can have babies,132,132,0,0,1,true
+sc_0269,type,a subdivision of a particular kind of thing,131,122,8,1,3,true
+sc_0270,course,education imparted in a series of lessons or meetings,131,131,0,0,1,true
+sc_0271,external,outward features,130,130,0,0,1,true
+sc_0272,possible,something that can be done,130,126,3,1,3,true
+sc_0273,due,that which is deserved or owed,130,127,3,0,2,true
+sc_0274,majority,the property resulting from being or relating to the greater in number of two parts; the main part,130,129,0,1,2,true
+sc_0275,historical,of or relating to the study of history,130,130,0,0,1,true
+sc_0276,related,being connected either logically or causally or by shared characteristics,129,128,0,1,2,true
+sc_0277,buddhism,a religion represented by the many groups (especially in Asia) that profess various forms of the Buddhist doctrine and that venerate Buddha,129,128,1,0,2,true
+sc_0278,health,a healthy state of wellbeing free from disease,128,128,0,0,1,true
+sc_0279,independent,a neutral or uncommitted person (especially in politics),128,128,0,0,1,true
+sc_0280,degree,a position on a scale of intensity or amount or quality,128,128,0,0,1,true
+sc_0281,year,a body of students who graduate together,128,128,0,0,1,true
+sc_0282,pagan,a person who does not acknowledge your god,127,127,0,0,1,true
+sc_0283,salvation,(theology) the act of delivering from sin or saving from evil,127,127,0,0,1,true
+sc_0284,able,(usually followed by ‘to’) having the necessary means or skill or know-how or authority to do something,126,126,0,0,1,true
+sc_0285,whole,all of something including all its component elements or parts,126,124,0,2,2,true
+sc_0286,relations,mutual dealings or connections or communications among persons or groups,126,119,7,0,2,true
+sc_0287,cause,a justification for something existing or happening,126,122,4,0,2,true
+sc_0288,offer,the verbal act of offering,125,125,0,0,1,true
+sc_0289,conventional,following accepted customs and proprieties,125,125,0,0,1,true
+sc_0290,join,a set containing all and only the members of two or more given sets,125,120,1,4,3,true
+sc_0291,clear,the state of being free of suspicion,124,122,1,1,3,true
+sc_0292,successful,having succeeded or being marked by a favorable outcome,124,123,0,1,2,true
+sc_0293,millennial,relating to a millennium or span of a thousand years,124,124,0,0,1,true
+sc_0294,training,activity leading to skilled behavior,123,121,2,0,2,true
+sc_0295,tension,(psychology) a state of mental or emotional strain or suspense,123,123,0,0,1,true
+sc_0296,inner,located or occurring within or closer to a center,123,123,0,0,1,true
+sc_0297,necessary,absolutely essential,122,120,2,0,2,true
+sc_0298,leave,permission to do something,122,120,1,1,3,true
+sc_0299,word,a unit of language that native speakers can identify,122,108,0,14,2,true
+sc_0300,presence,the state of being present; current existence,122,122,0,0,1,true
+sc_0301,evangelical,relating to or being a Christian church believing in personal conversion and the inerrancy of the Bible especially the 4 Gospels,122,121,0,1,2,true
+sc_0302,report,a written document describing the findings of some individual or group,121,121,0,0,1,true
+sc_0303,emphasis,special importance or significance,121,121,0,0,1,true
+sc_0304,response,a result,121,121,0,0,1,true
+sc_0305,evil,morally objectionable behavior,120,120,0,0,1,true
+sc_0306,communal,relating to a small administrative district or community,120,119,0,1,2,true
+sc_0307,sufi,a Muslim who represents the mystical dimension of Islam; a Muslim who seeks direct experience of Allah; mainly in Iran,120,120,0,0,1,true
+sc_0308,contact,close interaction,119,118,1,0,2,true
+sc_0309,meditation,continuous and profound contemplation or musing on a subject or series of subjects of a deep or abstruse nature,119,117,0,2,2,true
+sc_0310,conditions,the prevailing context that influences the performance or the outcome of a process,118,109,8,1,3,true
+sc_0311,vision,a vivid mental image,118,117,1,0,2,true
+sc_0312,sectarian,a member of a sect,117,89,28,0,2,true
+sc_0313,main,(of a clause) capable of standing syntactically alone as a complete sentence,117,114,2,1,3,true
+sc_0314,limited,small in range or scope,117,117,0,0,1,true
+sc_0315,situation,the general state of things; the combination of circumstances at a given time,117,108,9,0,2,true
+sc_0316,using,an act that exploits or victimizes someone (treats them unfairly),117,115,1,1,3,true
+sc_0317,notion,a vague idea in which some confidence is placed,117,114,3,0,2,true
+sc_0318,reform,a change for the better as a result of correcting abuses,117,117,0,0,1,true
+sc_0319,primary,a preliminary election where delegates or nominees are chosen,117,117,0,0,1,true
+sc_0320,buddhist,one who follows the teachings of Buddha,117,117,0,0,1,true
+sc_0321,opposition,the major political party opposed to the party in office and prepared to replace it if elected,116,116,0,0,1,true
+sc_0322,dangerous,involving or causing danger or risk; liable to hurt or harm,116,115,0,1,2,true
+sc_0323,active,the voice used to indicate that the grammatical subject of the verb is performing the action or causing the happening denoted by the verb,116,115,1,0,2,true
+sc_0324,away,used of an opponent's ground,116,116,0,0,1,true
+sc_0325,prophet,an authoritative person who divines the future,116,116,0,0,1,true
+sc_0326,activity,any specific behavior,114,113,1,0,2,true
+sc_0327,awareness,having knowledge of,114,113,0,1,2,true
+sc_0328,core,an organization founded by James Leonard Farmer in 1942 to work for racial equality,113,111,0,2,2,true
+sc_0329,complex,a conceptual whole made up of complicated and related parts,113,113,0,0,1,true
+sc_0330,purpose,an anticipated outcome that is intended or that guides your planned actions,113,113,0,0,1,true
+sc_0331,single,a base hit on which the batter stops safely at first base,113,113,0,0,1,true
+sc_0332,universal,(linguistics) a grammatical rule (or other linguistic feature) that is found in all languages,113,113,0,0,1,true
+sc_0333,better,something superior in quality or condition or effect,113,110,1,2,3,true
+sc_0334,return,document giving the tax collector information about the taxpayer's tax liability,113,113,0,0,1,true
+sc_0335,bible,a book regarded as authoritative in its field,113,113,0,0,1,true
+sc_0336,positive,"the primary form of an adjective or adverb; denotes a quality without qualification, comparison, or relation to increase or diminution",112,109,2,1,3,true
+sc_0337,minority,a group of people who differ racially or politically from a larger group of which it is a part,112,112,0,0,1,true
+sc_0338,hindu,a native or inhabitant of Hindustan or India,112,112,0,0,1,true
+sc_0339,north,the cardinal compass point that is at 0 or 360 degrees,111,111,0,0,1,true
+sc_0340,school,an educational institution,111,110,1,0,2,true
+sc_0341,concerned,feeling or showing worry or solicitude,111,111,0,0,1,true
+sc_0342,involvement,the act of sharing in the activities of a group,110,108,2,0,2,true
+sc_0343,emotional,determined or actuated by emotion rather than reason,110,109,1,0,2,true
+sc_0344,attempt,earnest and conscientious activity intended to do or accomplish something,110,110,0,0,1,true
+sc_0345,analysis,an investigation of the component parts of a whole and their relations in making up the whole,110,110,0,0,1,true
+sc_0346,lead,an advantage held by a competitor in a race,110,110,0,0,1,true
+sc_0347,peoples,the human beings of a particular nation or community or ethnic group,110,110,0,0,1,true
+sc_0348,theology,the rational and systematic study of religion and its influences and of the nature of religious truth,110,110,0,0,1,true
+sc_0349,understood,fully apprehended as to purport or meaning or explanation,110,109,1,0,2,true
+sc_0350,controversial,marked by or capable of arousing controversy,109,109,0,0,1,true
+sc_0351,defined,clearly characterized or delimited,109,109,0,0,1,true
+sc_0352,expression,the feelings expressed on a person's face,109,108,1,0,2,true
+sc_0353,subject,the subject matter of a conversation or discussion,109,109,0,0,1,true
+sc_0354,krishna,8th and most important avatar of Vishnu; incarnated as a handsome young man playing a flute,109,109,0,0,1,true
+sc_0355,know,the fact of being aware of information that is known to few people,109,100,0,9,2,true
+sc_0356,foundation,the basis on which something is grounded,109,109,0,0,1,true
+sc_0357,success,an attainment that is successful,109,109,0,0,1,true
+sc_0358,message,a communication (usually brief) that is written or spoken or signaled,109,108,1,0,2,true
+sc_0359,received,conforming to the established language usage of educated native speakers,108,107,1,0,2,true
+sc_0360,access,the right to enter,107,107,0,0,1,true
+sc_0361,phenomenon,any state or process known through the senses rather than by intuition or reasoning,107,104,3,0,2,true
+sc_0362,money,the most common medium of exchange; functions as legal tender,107,106,0,1,2,true
+sc_0363,conspiracy,a secret agreement between two or more people to perform an unlawful act,107,105,1,1,3,true
+sc_0364,force,a powerful effect or influence,107,104,3,0,2,true
+sc_0365,serious,concerned with work or important matters rather than play or trivialities,106,106,0,0,1,true
+sc_0366,give,the elasticity of something that can be stretched and returns to its original length,106,103,0,3,2,true
+sc_0367,late,being or occurring at an advanced period of time or after a usual or expected time,106,106,0,0,1,true
+sc_0368,controversy,a contentious speech act; a dispute where there is strong disagreement,106,106,0,0,1,true
+sc_0369,academic,an educator who works at a college or university,106,105,0,1,2,true
+sc_0370,environment,the totality of surrounding conditions,106,106,0,0,1,true
+sc_0371,issue,an important question that is in dispute and must be settled,105,104,1,0,2,true
+sc_0372,importance,the quality of being important and worthy of note,105,105,0,0,1,true
+sc_0373,europe,an international organization of European countries formed after World War II to reduce trade barriers and increase cooperation among its members,104,104,0,0,1,true
+sc_0374,leading,the activity of leading,104,104,0,0,1,true
+sc_0375,field,a branch of knowledge,104,103,1,0,2,true
+sc_0376,full,containing as much or as many as is possible or normal,104,103,0,1,2,true
+sc_0377,pentecostal,any member of a Pentecostal religious body,104,104,0,0,1,true
+sc_0378,formed,having or given a form or shape,103,103,0,0,1,true
+sc_0379,image,an iconic mental representation,103,101,0,2,2,true
+sc_0380,longer,a person with a strong desire for something,103,102,0,1,2,true
+sc_0381,significance,the quality of being significant,103,103,0,0,1,true
+sc_0382,goal,the state of affairs that a plan is intended to achieve and that (when achieved) terminates behavior intended to achieve it,103,102,0,1,2,true
+sc_0383,choice,the person or thing chosen or selected,103,101,0,2,2,true
+sc_0384,live,actually being performed at the time of hearing or viewing,103,103,0,0,1,true
+sc_0385,saint,a person of exceptional holiness,103,103,0,0,1,true
+sc_0386,threat,something that is a source of danger,102,101,1,0,2,true
+sc_0387,experienced,having experience; having knowledge or skill from observation or participation,102,102,0,0,1,true
+sc_0388,association,a formal organization of people or groups of people,101,101,0,0,1,true
+sc_0389,difficult,not easy; requiring great physical or mental effort to accomplish or comprehend or endure,101,94,7,0,2,true
+sc_0390,ancient,a very old person,101,101,0,0,1,true
+sc_0391,muslim,of or relating to or supporting Islamism,101,98,0,3,2,true
+sc_0392,powerful,having great power or force or potency or effect,100,99,1,0,2,true
+sc_0393,call,a special disposition (as if from a divine source) to pursue a particular course,100,96,1,3,3,true
+sc_0394,hand,a hired laborer on a farm or ranch,100,100,0,0,1,true
+sc_0395,service,a public act of religious worship,100,95,5,0,2,true
+sc_0396,economic,"of or relating to an economy, the system of production and management of material wealth",99,97,2,0,2,true
+sc_0397,total,a quantity obtained by the addition of a group of numbers,98,98,0,0,1,true
+sc_0398,rise,the act of changing location in an upward direction,98,97,1,0,2,true
+sc_0399,master,an artist of consummate skill,98,96,2,0,2,true
+sc_0400,focused,being in focus or brought into focus,97,97,0,0,1,true
+sc_0401,effect,a phenomenon that follows and is caused by some previous phenomenon,97,96,0,1,2,true
+sc_0402,ideal,the idea of something that is perfect; something that one hopes to attain,96,96,0,0,1,true
+sc_0403,doctrine,a belief (or system of beliefs) accepted as authoritative by some group or school,96,93,2,1,3,true
+sc_0404,david,patron saint of Wales (circa 520-600),96,96,0,0,1,true
+sc_0405,last,the last or lowest in an ordering or series,96,96,0,0,1,true
+sc_0406,middle,an intermediate part or section,96,96,0,0,1,true
+sc_0407,put,the option to sell a given stock (or stock index or commodity future) at a given price before a given date,96,95,0,1,2,true
+sc_0408,thinking,the process of using your mind to consider something carefully,95,91,2,2,3,true
+sc_0409,laws,the first of three divisions of the Hebrew Scriptures comprising the first five books of the Hebrew Bible considered as a unit,95,95,0,0,1,true
+sc_0410,existing,having existence or being or actuality,95,95,0,0,1,true
+sc_0411,impact,a forceful consequence; a strong effect,95,93,2,0,2,true
+sc_0412,counter,a person who counts things,95,95,0,0,1,true
+sc_0413,light,a divine presence believed by Quakers to enlighten and guide the soul,95,93,0,2,2,true
+sc_0414,satan,(Judeo-Christian and Islamic religions) chief spirit of evil and adversary of God; tempter of mankind; master of Hell,95,93,1,1,3,true
+sc_0415,story,a piece of fiction that narrates a chain of related events,95,95,0,0,1,true
+sc_0416,peace,the state prevailing during the absence of war,95,95,0,0,1,true
+sc_0417,growing,(biology) the process of an individual organism growing organically; a purely biological unfolding of events involved in an organism changing gradually from a simple to a more complex level,94,92,1,1,3,true
+sc_0418,participation,the act of sharing in the activities of a group,94,92,2,0,2,true
+sc_0419,shared,have in common; held or experienced in common,94,94,0,0,1,true
+sc_0420,close,in intimate association or accord,94,91,1,2,3,true
+sc_0421,police,the force of policemen and officers,93,92,1,0,2,true
+sc_0422,appeal,earnest or urgent request,93,93,0,0,1,true
+sc_0423,decision,the act of making up your mind about something,93,93,0,0,1,true
+sc_0424,ideological,of or pertaining to or characteristic of an orientation that characterizes the thinking of a group or nation,92,92,0,0,1,true
+sc_0425,words,the words that are spoken,92,90,2,0,2,true
+sc_0426,mother,a term of address for an elderly woman,92,92,0,0,1,true
+sc_0427,dominant,exercising influence or control,91,91,0,0,1,true
+sc_0428,home,an environment offering affection and security,91,91,0,0,1,true
+sc_0429,myth,a traditional story accepted as history; serves to explain the world view of a people,91,91,0,0,1,true
+sc_0430,turn,a change in direction,91,89,0,2,2,true
+sc_0431,lost,people who are destined to die soon,91,91,0,0,1,true
+sc_0432,struggle,an energetic attempt to achieve something,91,91,0,0,1,true
+sc_0433,marriage,the state of being a married couple voluntarily joined for life (or until divorce),91,91,0,0,1,true
+sc_0434,education,the activities of educating or instructing; activities that impart knowledge or skill,90,90,0,0,1,true
+sc_0435,space,the unlimited expanse in which everything is located,90,88,0,2,2,true
+sc_0436,false,not in accordance with the fact or reality or actuality,90,89,1,0,2,true
+sc_0437,available,obtainable or accessible and ready for use or service,90,90,0,0,1,true
+sc_0438,think,an instance of deliberate thinking,89,79,0,10,2,true
+sc_0439,criticism,disapproval expressed by pointing out faults or shortcomings,89,89,0,0,1,true
+sc_0440,regard,(usually preceded by ‘in’) a detail or point,89,86,3,0,2,true
+sc_0441,spread,a conspicuous disparity or difference as between two figures,89,89,0,0,1,true
+sc_0442,latter,the second of two or the second mentioned of two,89,89,0,0,1,true
+sc_0443,acts,something that people do or cause to happen,88,86,1,1,3,true
+sc_0444,committed,"bound or obligated, as under a pledge to a particular cause, action, or attitude",88,88,0,0,1,true
+sc_0445,five,a team that plays basketball,88,88,0,0,1,true
+sc_0446,increased,made greater in size or amount or degree,87,87,0,0,1,true
+sc_0447,official,a worker who holds or is invested with an office,87,87,0,0,1,true
+sc_0448,discussion,an extended communication (often interactive) dealing with some particular topic,87,85,2,0,2,true
+sc_0449,challenge,a demanding or stimulating situation,87,87,0,0,1,true
+sc_0450,extent,the point or degree to which something extends,87,87,0,0,1,true
+sc_0451,mystical,relating to or characteristic of mysticism,87,87,0,0,1,true
+sc_0452,face,the feelings expressed on a person's face,87,79,8,0,2,true
+sc_0453,matter,a vaguely specified concern,86,85,1,0,2,true
+sc_0454,program,a series of steps to be carried out or goals to be accomplished,86,85,0,1,2,true
+sc_0455,generation,all the people living at the same time or of approximately the same age,86,86,0,0,1,true
+sc_0456,original,something that serves as a model or a basis for making copies,86,86,0,0,1,true
+sc_0457,father,‘Father’ is a term of address for priests in some churches (especially the Roman Catholic Church or the Orthodox Catholic Church); ‘Padre’ is frequently used in the military,86,86,0,0,1,true
+sc_0458,guru,each of the first ten leaders of the Sikh religion,85,83,2,0,2,true
+sc_0459,published,prepared and printed for distribution and sale,85,85,0,0,1,true
+sc_0460,changed,made or become different in nature or form,85,85,0,0,1,true
+sc_0461,joining,the act of bringing two things into contact (especially for communication),85,85,0,0,1,true
+sc_0462,function,(mathematics) a mathematical relation such that each element of a given set (the domain of the function) is associated with an element of another set (the range of the function),85,85,0,0,1,true
+sc_0463,creation,(theology) God's act of bringing the universe into existence,85,85,0,0,1,true
+sc_0464,solar,relating to or derived from the sun or utilizing the energies of the sun,84,84,0,0,1,true
+sc_0465,capacity,capability to perform or produce,84,84,0,0,1,true
+sc_0466,daily,a newspaper that is published every day,84,82,1,1,3,true
+sc_0467,paganism,any of various religions other than Christianity or Judaism or Islamism,84,84,0,0,1,true
+sc_0468,european,a native or inhabitant of Europe,84,84,0,0,1,true
+sc_0469,orthodox,of or pertaining to or characteristic of Judaism,84,83,0,1,2,true
+sc_0470,path,a course of conduct,84,84,0,0,1,true
+sc_0471,nation,a politically organized body of people under a single government,83,81,2,0,2,true
+sc_0472,country,the people who live in a nation or country,83,83,0,0,1,true
+sc_0473,taking,the act of someone who picks up or takes something,83,83,0,0,1,true
+sc_0474,phenomena,any state or process known through the senses rather than by intuition or reasoning,83,83,0,0,1,true
+sc_0475,authoritarian,a person who behaves in a tyrannical manner,83,83,0,0,1,true
+sc_0476,effects,property of a personal character that is portable but not used in business,83,83,0,0,1,true
+sc_0477,respect,(usually preceded by ‘in’) a detail or point,83,80,3,0,2,true
+sc_0478,formation,an arrangement of people or things acting as a unit,83,73,10,0,2,true
+sc_0479,moon,the light of the Moon,83,82,1,0,2,true
+sc_0480,secret,something that should remain hidden from others (especially information that is not to be passed on),82,77,4,1,3,true
+sc_0481,post,a job in an organization,82,81,1,0,2,true
+sc_0482,hold,the act of grasping,82,82,0,0,1,true
+sc_0483,going,the act of departing,82,80,1,1,3,true
+sc_0484,coming,the act of drawing spatially closer to something,82,81,0,1,2,true
+sc_0485,kingdom,a domain in which something is dominant,82,82,0,0,1,true
+sc_0486,par,a state of being essentially equal or equivalent; equally balanced,82,4,78,0,2,true
+sc_0487,principle,a basic generalization that is accepted as true and that can be used as a basis for reasoning or conduct,81,81,0,0,1,true
+sc_0488,acceptance,the mental attitude that something is believable and should be accepted as true,81,81,0,0,1,true
+sc_0489,opposed,being in opposition or having an opponent,81,81,0,0,1,true
+sc_0490,play,a dramatic work intended for performance by actors on a stage,81,80,0,1,2,true
+sc_0491,increasing,becoming greater or larger,81,81,0,0,1,true
+sc_0492,occult,supernatural forces and events and beings collectively,81,80,1,0,2,true
+sc_0493,magic,any art that invokes supernatural powers,81,81,0,0,1,true
+sc_0494,reason,a rational motive for a belief or action,80,80,0,0,1,true
+sc_0495,emergence,the act of emerging,80,80,0,0,1,true
+sc_0496,stress,the relative prominence of a syllable or musical note (especially with regard to stress or pitch),80,80,0,0,1,true
+sc_0497,theoretical,concerned primarily with theories or hypotheses rather than practical considerations,80,80,0,0,1,true
+sc_0498,share,assets belonging to or due to or contributed by an individual person or group,80,80,0,0,1,true
+sc_0499,wicca,a community of followers of the Wicca religion,80,80,0,0,1,true
+sc_0500,web,an interconnected system of things or people,80,79,1,0,2,true
+sc_0501,messianic,of or relating to a messiah promising deliverance,80,80,0,0,1,true
+sc_0502,beginning,the first part or section of something,79,79,0,0,1,true
+sc_0503,center,the choicest or most essential or most vital part of some idea or experience,79,78,0,1,2,true
+sc_0504,intense,possessing or displaying a distinctive feature to a heightened degree,79,79,0,0,1,true
+sc_0505,earlier,at or near the beginning of a period of time or course of events or before the usual or expected time,79,79,0,0,1,true
+sc_0506,natural,someone regarded as certain to succeed,79,79,0,0,1,true
+sc_0507,conservative,a member of a Conservative Party,79,79,0,0,1,true
+sc_0508,moved,being excited or provoked to the expression of an emotion,79,79,0,0,1,true
+sc_0509,origin,properties attributable to your ancestry,79,79,0,0,1,true
+sc_0510,humanity,the quality of being humane,79,79,0,0,1,true
+sc_0511,energy,enterprising or ambitious drive; forceful exertion,79,78,0,1,2,true
+sc_0512,goddess,a female deity,79,79,0,0,1,true
+sc_0513,value,a numerical quantity measured or assigned or computed,78,78,0,0,1,true
+sc_0514,services,performance of duties or provision of space and equipment helpful to others,78,72,6,0,2,true
+sc_0515,personality,"the complex of all the attributes — behavioral, temperamental, emotional and mental — that characterize a unique individual",78,77,0,1,2,true
+sc_0516,demand,an urgent or peremptory request,78,76,1,1,3,true
+sc_0517,ultimate,the finest or most superior quality of its kind,78,78,0,0,1,true
+sc_0518,short,the fielding position of the player on a baseball team who is stationed between second and third base,78,78,0,0,1,true
+sc_0519,theological,of or relating to or concerning theology,78,78,0,0,1,true
+sc_0520,revelation,the last book of the New Testament; contains visionary descriptions of heaven and of conflicts between good and evil and of the end of the world; attributed to Saint John the Apostle,78,78,0,0,1,true
+sc_0521,civil,not rude; marked by satisfactory (or especially minimal) adherence to social usages and sufficient but not noteworthy consideration for others,78,78,0,0,1,true
+sc_0522,saw,a condensed but memorable saying embodying some important fact of experience that is taken as true by many people,78,78,0,0,1,true
+sc_0523,british,the people of Great Britain,77,77,0,0,1,true
+sc_0524,effort,earnest and conscientious activity intended to do or accomplish something,77,77,0,0,1,true
+sc_0525,fundamental,the lowest tone of a harmonic series,77,76,1,0,2,true
+sc_0526,series,similar things placed in order or happening one after another,77,77,0,0,1,true
+sc_0527,normal,something regarded as a normative example,77,76,0,1,2,true
+sc_0528,witchcraft,the art of sorcery,77,77,0,0,1,true
+sc_0529,written,set down in writing in any of various ways,77,77,0,0,1,true
+sc_0530,scholarly,characteristic of scholars or scholarship,77,77,0,0,1,true
+sc_0531,style,how something is done or how it happens,77,77,0,0,1,true
+sc_0532,theosophical,of or relating to theosophy,77,77,0,0,1,true
+sc_0533,interpretation,a mental representation of the meaning or significance of something,76,75,1,0,2,true
+sc_0534,effective,producing or capable of producing an intended result or having a striking effect,76,76,0,0,1,true
+sc_0535,considerable,large or relatively large in number or amount or extent or degree,76,76,0,0,1,true
+sc_0536,ability,the quality of being able to perform; a quality that permits or facilitates achievement or accomplishment,76,76,0,0,1,true
+sc_0537,communist,a member of the communist party,76,76,0,0,1,true
+sc_0538,reported,made known or told about; especially presented in a formal account,76,76,0,0,1,true
+sc_0539,range,an area in which something acts or operates or has power or control:,76,76,0,0,1,true
+sc_0540,expected,considered likely or probable to happen or arrive,76,76,0,0,1,true
+sc_0541,numbers,the fourth book of the Old Testament; contains a record of the number of Israelites who followed Moses out of Egypt,76,76,0,0,1,true
+sc_0542,unity,an undivided or unbroken completeness or totality with nothing wanting,76,76,0,0,1,true
+sc_0543,poor,people without possessions or wealth (considered as a group),76,76,0,0,1,true
+sc_0544,line,a formation of people or things one beside another,75,74,0,1,2,true
+sc_0545,establishment,the act of forming or establishing something,75,74,1,0,2,true
+sc_0546,chapter,a subdivision of a written work; usually numbered and titled,75,75,0,0,1,true
+sc_0547,failure,an act that fails,75,75,0,0,1,true
+sc_0548,fear,an emotion experienced in anticipation of some specific pain or danger (usually accompanied by a desire to flee or fight),75,74,1,0,2,true
+sc_0549,online,on a regular route of a railroad or bus or airline system,75,73,2,0,2,true
+sc_0550,construction,the act of constructing something,75,73,2,0,2,true
+sc_0551,sexuality,the properties that distinguish organisms on the basis of their reproductive roles,75,75,0,0,1,true
+sc_0552,pattern,a perceptual structure,74,74,0,0,1,true
+sc_0553,initial,the first letter of a word (especially a person's name),74,74,0,0,1,true
+sc_0554,yoga,discipline aimed at training the consciousness for a state of perfect spiritual insight and tranquility that is achieved through the three paths of actions and knowledge and devotion,74,74,0,0,1,true
+sc_0555,difference,the quality of being unlike or dissimilar,74,70,1,3,3,true
+sc_0556,legitimacy,lawfulness by virtue of being authorized or in accordance with law,74,74,0,0,1,true
+sc_0557,prior,the head of a religious order; in an abbey the prior is next below the abbot,74,74,0,0,1,true
+sc_0558,lay,characteristic of those who are not members of the clergy,74,74,0,0,1,true
+sc_0559,turned,moved around an axis or center,74,74,0,0,1,true
+sc_0560,resistance,the action of opposing something that you disapprove or disagree with,74,74,0,0,1,true
+sc_0561,want,a state of extreme poverty,73,67,0,6,2,true
+sc_0562,data,a collection of facts from which conclusions may be drawn,73,73,0,0,1,true
+sc_0563,persuasion,the act of persuading (or attempting to persuade); communication intended to induce belief or action,73,73,0,0,1,true
+sc_0564,essential,basic and fundamental,73,73,0,0,1,true
+sc_0565,giving,the act of giving,73,73,0,0,1,true
+sc_0566,useful,being of use or service,72,71,1,0,2,true
+sc_0567,language,a systematic means of communicating by the use of sounds or conventional symbols,72,71,1,0,2,true
+sc_0568,debate,a discussion in which reasons are advanced for and against some proposition or proposal,72,72,0,0,1,true
+sc_0569,sent,caused or enabled to go or be conveyed or transmitted,71,55,16,0,2,true
+sc_0570,crisis,an unstable situation of extreme danger or difficulty,71,71,0,0,1,true
+sc_0571,applied,concerned with concrete problems or data rather than with fundamental principles,71,71,0,0,1,true
+sc_0572,account,a record or narrative description of past events,71,70,1,0,2,true
+sc_0573,tendency,an attitude of mind especially one that favors one alternative over others,71,70,1,0,2,true
+sc_0574,strict,"characterized by strictness, severity, or restraint",71,69,0,2,2,true
+sc_0575,adopted,acquired as your own by free choice,71,71,0,0,1,true
+sc_0576,circle,an unofficial association of people or groups,71,71,0,0,1,true
+sc_0577,crucial,of extreme importance; vital to the resolution of a crisis,71,71,0,0,1,true
+sc_0578,building,the act of constructing something,71,71,0,0,1,true
+sc_0579,feel,an intuitive awareness,71,70,1,0,2,true
+sc_0580,south,the cardinal compass point that is at 180 degrees,71,71,0,0,1,true
+sc_0581,stage,a specific identifiable position in a continuum or series or especially in a process,70,65,5,0,2,true
+sc_0582,shift,the act of changing one thing or position for another,70,70,0,0,1,true
+sc_0583,look,the feelings expressed on a person's face,70,70,0,0,1,true
+sc_0584,twentieth,position 20 in a countable series of things,70,70,0,0,1,true
+sc_0585,despite,lack of respect accompanied by a feeling of intense dislike,70,70,0,0,1,true
+sc_0586,criteria,a basis for comparison; a reference point against which other things can be evaluated,69,68,1,0,2,true
+sc_0587,tax,charge against a citizen's person or property or activity for the support of government,69,69,0,0,1,true
+sc_0588,rejection,the act of rejecting something,69,69,0,0,1,true
+sc_0589,character,a characteristic property that defines the apparent individual nature of something,69,68,0,1,2,true
+sc_0590,expressed,precisely and clearly expressed or readily observable; leaving nothing to implication,69,69,0,0,1,true
+sc_0591,moment,having important effects or influence,69,66,1,2,3,true
+sc_0592,factor,an abstract part of something,69,69,0,0,1,true
+sc_0593,attitude,a complex mental state involving beliefs and feelings and values and dispositions to act in certain ways,69,68,1,0,2,true
+sc_0594,financial,involving financial matters,68,67,1,0,2,true
+sc_0595,population,the people who inhabit a territory or state,68,68,0,0,1,true
+sc_0596,fall,a sudden drop from an upright position,68,67,0,1,2,true
+sc_0597,connection,a relation between things or events (as in the case of one causing the other or sharing features with it),68,68,0,0,1,true
+sc_0598,modernity,the quality of being current or of the present,68,68,0,0,1,true
+sc_0599,legitimate,of marriages and offspring; recognized as lawful,68,68,0,0,1,true
+sc_0600,jewish,of or relating to Jews or their culture or religion,68,68,0,0,1,true
+sc_0601,wisdom,an Apocryphal book consisting mainly of a meditation on wisdom; although ascribed to Solomon it was probably written in the first century BC,68,68,0,0,1,true
+sc_0602,dynamics,the branch of mechanics concerned with the forces that cause motions of bodies,68,68,0,0,1,true
+sc_0603,hard,not easy; requiring great physical or mental effort to accomplish or comprehend or endure,68,66,0,2,2,true
+sc_0604,say,the chance to speak,67,59,0,8,2,true
+sc_0605,autonomy,immunity from arbitrary exercise of authority: political independence,67,66,1,0,2,true
+sc_0606,dramatic,suitable to or characteristic of drama,67,67,0,0,1,true
+sc_0607,ufo,an (apparently) flying object whose nature is unknown; especially those considered to have extraterrestrial origins,67,67,0,0,1,true
+sc_0608,prayer,the act of communicating with a deity (especially as a petition or in adoration or contrition or thanksgiving),67,67,0,0,1,true
+sc_0609,liberty,immunity from arbitrary exercise of authority: political independence,67,67,0,0,1,true
+sc_0610,project,a planned undertaking,67,66,0,1,2,true
+sc_0611,illness,impairment of normal physiological function affecting part or all of an organism,67,65,2,0,2,true
+sc_0612,plan,a series of steps to be carried out or goals to be accomplished,67,65,2,0,2,true
+sc_0613,attack,(military) an offensive against an enemy (using weapons),66,66,0,0,1,true
+sc_0614,enforcement,the act of enforcing; ensuring observance of or obedience to,66,66,0,0,1,true
+sc_0615,seeking,the act of searching for something,66,66,0,0,1,true
+sc_0616,distinction,a discrimination between things as different and distinct on the basis of their characteristics or attributes,66,65,1,0,2,true
+sc_0617,private,confined to particular persons or groups,66,66,0,0,1,true
+sc_0618,keep,the financial means whereby one lives,66,65,0,1,2,true
+sc_0619,exercise,the activity of exerting your muscles in various ways to keep fit,65,65,0,0,1,true
+sc_0620,aspect,a distinct feature or element in a problem,65,64,0,1,2,true
+sc_0621,works,everything available; usually preceded by ‘the’,65,65,0,0,1,true
+sc_0622,feminist,of or relating to or advocating equal rights for women,65,65,0,0,1,true
+sc_0623,evolution,a process in which something passes by degrees to a different stage (especially a more advanced or mature stage),65,65,0,0,1,true
+sc_0624,figure,a diagram or picture illustrating textual material,65,62,0,3,2,true
+sc_0625,circumstances,your overall circumstances or condition in life (including everything that happens to you),64,64,0,0,1,true
+sc_0626,interaction,a mutual or reciprocal action; interacting,64,64,0,0,1,true
+sc_0627,exit,the act of going out,64,63,0,1,2,true
+sc_0628,protestant,an adherent of Protestantism,64,64,0,0,1,true
+sc_0629,side,one of two or more contesting groups,64,61,2,1,3,true
+sc_0630,supernatural,supernatural forces and events and beings collectively,64,64,0,0,1,true
+sc_0631,wide,having great (or a certain) extent from one side to the other,64,64,0,0,1,true
+sc_0632,house,the members of a business organization that owns or operates one or more establishments,64,64,0,0,1,true
+sc_0633,lower,the bottom one of two,63,63,0,0,1,true
+sc_0634,final,an examination administered at the end of an academic term,63,63,0,0,1,true
+sc_0635,hierarchy,a series of ordered groupings of people or things within a system,63,62,0,1,2,true
+sc_0636,security,the state of being free from danger or injury,63,63,0,0,1,true
+sc_0637,chosen,one who is the object of choice; who is given preference,63,63,0,0,1,true
+sc_0638,affiliation,a social or business relationship,63,63,0,0,1,true
+sc_0639,category,a collection of things sharing a common attribute,63,63,0,0,1,true
+sc_0640,formal,being in accord with established forms and conventions and requirements (as e.g. of formal dress),63,63,0,0,1,true
+sc_0641,framework,a hypothetical description of a complex entity or process,63,63,0,0,1,true
+sc_0642,nineteenth,position 19 in a countable series of things,63,63,0,0,1,true
+sc_0643,soul,the immaterial part of a person; the actuating cause of an individual life,63,62,1,0,2,true
+sc_0644,list,a database containing an ordered array of items (names or topics),62,62,0,0,1,true
+sc_0645,sociological,of or relating to or determined by sociology,62,62,0,0,1,true
+sc_0646,cognitive,of or being or relating to or involving cognition,62,62,0,0,1,true
+sc_0647,accused,a defendant in a criminal proceeding,62,61,1,0,2,true
+sc_0648,run,a score in baseball made by a runner touching all four bases safely,62,62,0,0,1,true
+sc_0649,leaving,the act of departing,62,62,0,0,1,true
+sc_0650,text,the words of something written,62,62,0,0,1,true
+sc_0651,biblical,of or pertaining to or contained in or in accordance with the Bible,62,62,0,0,1,true
+sc_0652,protection,the activity of protecting someone or something,61,58,3,0,2,true
+sc_0653,show,an act or social event involving a public performance or entertainment,61,61,0,0,1,true
+sc_0654,deviant,a person whose behavior deviates from what is acceptable especially in sexual behavior,61,61,0,0,1,true
+sc_0655,absolute,something that is conceived or that exists independently and not in relation to other things; something that does not depend on anything else and is beyond human control; something that is not relative,61,59,2,0,2,true
+sc_0656,trust,something (as property) held by one party (the trustee) for the benefit of another (the beneficiary),61,59,1,1,3,true
+sc_0657,symbolic,relating to or using or proceeding by means of symbols,61,61,0,0,1,true
+sc_0658,lifestyle,a manner of living that reflects the person's values and attitudes,61,61,0,0,1,true
+sc_0659,rule,a principle or condition that customarily governs behavior,61,61,0,0,1,true
+sc_0660,indian,a native or inhabitant of India,61,61,0,0,1,true
+sc_0661,teacher,a person whose occupation is teaching,61,61,0,0,1,true
+sc_0662,politics,social relations involving intrigue to gain authority or power,61,61,0,0,1,true
+sc_0663,sea,turbulent water with swells of considerable size,61,61,0,0,1,true
+sc_0664,move,the act of deciding to do something,60,60,0,0,1,true
+sc_0665,separate,a separately printed article that originally appeared in a larger publication,60,60,0,0,1,true
+sc_0666,experimentation,the testing of an idea,60,60,0,0,1,true
+sc_0667,aware,(sometimes followed by ‘of’) having or showing knowledge or understanding or realization or perception,60,60,0,0,1,true
+sc_0668,discipline,a branch of knowledge,60,60,0,0,1,true
+sc_0669,strategy,an elaborate and systematic plan of action,60,60,0,0,1,true
+sc_0670,press,the state of demanding notice or attention,60,60,0,0,1,true
+sc_0671,secularization,the activity of changing something (art or education or society or morality etc.) so it is no longer under the control or influence of religion,60,60,0,0,1,true
+sc_0672,ordinary,a judge of a probate court,60,60,0,0,1,true
+sc_0673,heart,the locus of feelings and intuitions,60,60,0,0,1,true
+sc_0674,race,people who are believed to belong to the same genetic stock,60,60,0,0,1,true
+sc_0675,persecution,the act of persecuting (especially on the basis of race or religion),60,60,0,0,1,true
+sc_0676,stance,standing posture,60,60,0,0,1,true
+sc_0677,policy,a plan of action adopted by an individual or social group,59,59,0,0,1,true
+sc_0678,medical,a thorough physical examination; includes a variety of tests depending on the age and sex and health of the person,59,55,3,1,3,true
+sc_0679,opportunity,a possibility due to a favorable combination of circumstances,59,59,0,0,1,true
+sc_0680,half,(of siblings) related through one parent only,59,59,0,0,1,true
+sc_0681,contrast,the opposition or dissimilarity of things that are compared,59,59,0,0,1,true
+sc_0682,relation,an abstraction belonging to or characteristic of two entities or parts together,59,58,1,0,2,true
+sc_0683,interested,having or showing interest; especially curiosity or fascination or concern,59,59,0,0,1,true
+sc_0684,build,constitution of the human body,59,58,1,0,2,true
+sc_0685,foreign,of concern to or concerning the affairs of other nations (other than your own),59,59,0,0,1,true
+sc_0686,search,the activity of looking thoroughly in order to find something or someone,59,58,1,0,2,true
+sc_0687,quality,an essential and distinguishing attribute of something or someone,59,58,1,0,2,true
+sc_0688,prophetic,foretelling events as if by supernatural intervention,59,59,0,0,1,true
+sc_0689,desire,the feeling that accompanies an unsatisfied state,59,59,0,0,1,true
+sc_0690,element,an abstract part of something,58,57,0,1,2,true
+sc_0691,danger,the condition of being susceptible to harm or injury,58,50,8,0,2,true
+sc_0692,university,the body of faculty and students at a university,58,56,2,0,2,true
+sc_0693,direction,the spatial relation between something and the course along which it points or moves,58,54,4,0,2,true
+sc_0694,psychology,the science of mental life,58,58,0,0,1,true
+sc_0695,technology,the application of the knowledge and usage of tools (such as machines or utensils) and techniques to control one's environment,58,58,0,0,1,true
+sc_0696,serve,(sports) a stroke that puts the ball in play,58,57,1,0,2,true
+sc_0697,campaign,a series of actions advancing a principle or tending toward a particular end,58,58,0,0,1,true
+sc_0698,event,a special set of circumstances,58,57,0,1,2,true
+sc_0699,delusion,(psychology) an erroneous belief that is held in the face of evidence to the contrary,58,58,0,0,1,true
+sc_0700,murder,unlawful premeditated killing of a human being by a human being,57,57,0,0,1,true
+sc_0701,centre,the choicest or most essential or most vital part of some idea or experience,57,55,2,0,2,true
+sc_0702,distinct,easy to perceive; especially clearly outlined,57,57,0,0,1,true
+sc_0703,writing,the act of creating written works,57,56,1,0,2,true
+sc_0704,object,a tangible and visible entity; an entity that can cast a shadow,57,57,0,0,1,true
+sc_0705,product,a quantity obtained by multiplication,57,57,0,0,1,true
+sc_0706,reference,a remark that calls attention to something or someone,57,56,1,0,2,true
+sc_0707,raised,located or moved above the surround or above the normal position,57,55,0,2,2,true
+sc_0708,societal,relating to human society and its members,57,57,0,0,1,true
+sc_0709,equal,a person who is of equal standing with another in a group,57,57,0,0,1,true
+sc_0710,standard,a basis for comparison; a reference point against which other things can be evaluated,57,57,0,0,1,true
+sc_0711,federal,a member of the Union Army during the American Civil War,57,57,0,0,1,true
+sc_0712,sacrifice,the act of losing or surrendering something as a penalty for a mistake or fault or failure to perform etc.,57,57,0,0,1,true
+sc_0713,deep,relatively deep or strong; affecting one deeply,57,57,0,0,1,true
+sc_0714,responsible,worthy of or requiring responsibility or trust; or held accountable,57,56,0,1,2,true
+sc_0715,enlightenment,a movement in Europe from about 1650 until 1800 that advocated the use of reason and individualism instead of tradition and established doctrine,57,56,0,1,2,true
+sc_0716,woman,a female person who plays a significant role (wife or mistress or girlfriend) in the life of a particular man,57,57,0,0,1,true
+sc_0717,city,people living in a large densely populated municipality,57,57,0,0,1,true
+sc_0718,dead,people who are no longer living,56,56,0,0,1,true
+sc_0719,voluntary,(military) a person who freely enlists for service,56,55,0,1,2,true
+sc_0720,responsibility,the social force that binds you to the courses of action demanded by that force,56,56,0,0,1,true
+sc_0721,indoctrination,teaching someone to accept doctrines uncritically,56,56,0,0,1,true
+sc_0722,actual,presently existing in fact and not merely potential or possible,56,56,0,0,1,true
+sc_0723,dynamic,an efficient incentive,56,55,0,1,2,true
+sc_0724,east,the cardinal compass point that is at 90 degrees,56,56,0,0,1,true
+sc_0725,sufficient,of a quantity that can fulfill a need or requirement but without being abundant,56,56,0,0,1,true
+sc_0726,appropriate,suitable for a particular person or place or condition etc,56,56,0,0,1,true
+sc_0727,institutional,relating to or constituting or involving an institution,56,56,0,0,1,true
+sc_0728,oriented,adjusted or located in relation to surroundings or circumstances; sometimes used in combination,56,56,0,0,1,true
+sc_0729,structural,"relating to or caused by structure, especially political or economic structure",56,56,0,0,1,true
+sc_0730,typical,exhibiting the qualities or characteristics that identify a group or kind or category,56,55,1,0,2,true
+sc_0731,cosmic,of or from or pertaining to or characteristic of the cosmos or universe,56,56,0,0,1,true
+sc_0732,gain,the advantageous quality of being beneficial,56,56,0,0,1,true
+sc_0733,communication,the activity of communicating; the activity of conveying information,56,52,4,0,2,true
+sc_0734,diversity,noticeable heterogeneity,55,55,0,0,1,true
+sc_0735,opinion,a personal belief or judgment that is not founded on proof or certainty,55,53,0,2,2,true
+sc_0736,content,(usually plural) everything that is included in a collection and that is held or included in something,55,55,0,0,1,true
+sc_0737,discourse,extended verbal expression in speech or writing,55,55,0,0,1,true
+sc_0738,bad,that which is below standard or expectations as of ethics or decency,55,54,0,1,2,true
+sc_0739,area,a subject of study,55,55,0,0,1,true
+sc_0740,devotion,feelings of ardent love,55,55,0,0,1,true
+sc_0741,business,a commercial or industrial enterprise and the people who constitute it,55,54,1,0,2,true
+sc_0742,philosophy,a belief (or system of beliefs) accepted as authoritative by some group or school,55,55,0,0,1,true
+sc_0743,rhetoric,using language effectively to please or persuade,55,55,0,0,1,true
+sc_0744,perfect,a tense of verbs used in describing action that has been completed (sometimes regarded as perfective aspect),55,55,0,0,1,true
+sc_0745,prophets,the second of three divisions of the Hebrew Scriptures,55,54,0,1,2,true
+sc_0746,manipulation,exerting shrewd or devious influence especially for one's own advantage,54,45,8,1,3,true
+sc_0747,deal,a particular instance of buying or selling,54,54,0,0,1,true
+sc_0748,youth,a young person (especially a young man or boy),54,54,0,0,1,true
+sc_0749,practical,concerned with actual use or practice,54,54,0,0,1,true
+sc_0750,version,an interpretation of a matter from a particular viewpoint,54,54,0,0,1,true
+sc_0751,totalistic,of or relating to the principles of totalitarianism according to which the state regulates every realm of life,54,54,0,0,1,true
+sc_0752,rational,consistent with or based on or using reason,54,54,0,0,1,true
+sc_0753,increase,a process of becoming larger or longer or more numerous or more important,54,54,0,0,1,true
+sc_0754,decline,change toward something smaller or lower,54,53,1,0,2,true
+sc_0755,absence,the state of being absent,54,52,2,0,2,true
+sc_0756,sociology,the study and classification of human societies,54,54,0,0,1,true
+sc_0757,treatment,care provided to improve a situation (especially medical procedures or applications that are intended to relieve illness or injury),54,54,0,0,1,true
+sc_0758,destructive,causing destruction or much damage,54,54,0,0,1,true
+sc_0759,loss,something that is lost,54,53,1,0,2,true
+sc_0760,innovation,the creation of something in the mind,54,54,0,0,1,true
+sc_0761,mean,an average of n numbers computed by adding some function of the numbers and dividing by some function of n,54,51,0,3,2,true
+sc_0762,birth,the process of giving birth,54,54,0,0,1,true
+sc_0763,extensive,of agriculture; increasing productivity by using large areas with minimal outlay and labor,54,54,0,0,1,true
+sc_0764,multiple,the product of a quantity by an integer,54,54,0,0,1,true
+sc_0765,isolation,a state of separation between persons or groups,54,51,3,0,2,true
+sc_0766,gospel,an unquestionable truth,54,54,0,0,1,true
+sc_0767,heaven,a place regarded by various beliefs as the abode of their deities; also a place where good people are believed to go after death,54,54,0,0,1,true
+sc_0768,studied,produced or marked by conscious design or premeditation,54,54,0,0,1,true
+sc_0769,derived,formed or developed from something else; not original,54,54,0,0,1,true
+sc_0770,orientation,the act of orienting,53,53,0,0,1,true
+sc_0771,destruction,the termination of something by causing so much damage to it that it cannot be repaired or no longer exists,53,52,1,0,2,true
+sc_0772,educational,relating to the process of education,53,52,1,0,2,true
+sc_0773,declared,made known or openly avowed,53,53,0,0,1,true
+sc_0774,article,nonfictional prose forming an independent part of a publication,53,50,3,0,2,true
+sc_0775,objective,the goal intended to be attained (and which is believed to be attainable),53,52,1,0,2,true
+sc_0776,liberal,a person who favors a political philosophy of progress and reform and the protection of civil liberties,53,52,1,0,2,true
+sc_0777,phase,(physical chemistry) a distinct state of matter in a system; matter that is identical in chemical composition and physical state and separated from other material by the phase boundary,53,49,4,0,2,true
+sc_0778,career,the particular occupation for which you are trained,53,53,0,0,1,true
+sc_0779,treated,subjected to a physical (or chemical) treatment or action or agent,53,53,0,0,1,true
+sc_0780,complete,having every necessary or normal part or component or step,53,52,1,0,2,true
+sc_0781,wanted,desired or wished for or sought,53,52,1,0,2,true
+sc_0782,names,verbal abuse; a crude substitute for argument,53,50,0,3,2,true
+sc_0783,board,a committee having supervisory powers,53,52,0,1,2,true
+sc_0784,read,something that is read,53,53,0,0,1,true
+sc_0785,student,a learner who is enrolled in an educational institution,53,52,1,0,2,true
+sc_0786,pressure,the force applied to a unit area of surface; measured in pascals (SI unit) or in dynes (cgs unit),52,51,0,1,2,true
+sc_0787,illegal,prohibited by law or by official or accepted rules,52,50,2,0,2,true
+sc_0788,progress,gradual improvement or growth or development,52,51,1,0,2,true
+sc_0789,initiation,the act of starting something for the first time; introducing something new,52,52,0,0,1,true
+sc_0790,care,the work of providing treatment for or attending to someone or something,52,51,1,0,2,true
+sc_0791,council,a body serving in an administrative capacity,52,52,0,0,1,true
+sc_0792,substantial,having substance or capable of being treated as fact; not imaginary,52,52,0,0,1,true
+sc_0793,empirical,derived from experiment and observation rather than theory,52,52,0,0,1,true
+sc_0794,separation,the state of lacking unity,52,52,0,0,1,true
+sc_0795,none,a service in the Roman Catholic Church formerly read or chanted at 3 PM (the ninth hour counting from sunrise) but now somewhat earlier,52,52,0,0,1,true
+sc_0796,scholarship,financial aid provided to a student on the basis of academic merit,52,51,0,1,2,true
+sc_0797,recognition,the state or quality of being recognized or acknowledged,52,52,0,0,1,true
+sc_0798,relevant,having a bearing on or connection with the subject at issue,52,47,5,0,2,true
+sc_0799,simple,a person lacking intelligence or common sense,52,52,0,0,1,true
+sc_0800,aim,an anticipated outcome that is intended or that guides your planned actions,52,50,2,0,2,true
+sc_0801,planet,a person who follows or serves another,52,52,0,0,1,true
+sc_0802,task,a specific piece of work required to be done as a duty or for a specific fee,52,51,1,0,2,true
+sc_0803,kept,(especially of promises or contracts) not violated or disregarded,52,52,0,0,1,true
+sc_0804,organisation,the persons (or committees or departments etc.) who make up a body for the purpose of administering something,52,47,5,0,2,true
+sc_0805,therapeutic,relating to or involved in therapy,51,51,0,0,1,true
+sc_0806,explanation,a statement that makes something comprehensible by describing the relevant structure or operation or circumstances etc.,51,51,0,0,1,true
+sc_0807,chinese,any of the Sino-Tibetan languages spoken in China; regarded as dialects of a single language (even though they are mutually unintelligible) because they share an ideographic writing system,51,51,0,0,1,true
+sc_0808,alien,a person who comes from a foreign country; someone who does not owe allegiance to your country,51,51,0,0,1,true
+sc_0809,millenarian,a person who believes in the coming of the millennium (a time of great peace and prosperity),51,51,0,0,1,true
+sc_0810,address,(computer science) the code that identifies where a piece of information is stored,51,50,0,1,2,true
+sc_0811,connected,joined or linked together,51,51,0,0,1,true
+sc_0812,reading,the cognitive process of understanding a written linguistic message,51,51,0,0,1,true
+sc_0813,messiah,Jesus Christ; considered by Christians to be the promised deliverer,51,51,0,0,1,true
+sc_0814,theosophy,a system of belief based on mystical insight into the nature of God and the soul,51,50,1,0,2,true
+sc_0815,apostolic,of or relating to or deriving from the Apostles or their teachings,51,51,0,0,1,true
+sc_0816,headquarters,(plural) a military unit consisting of a commander and the headquarters staff,51,51,0,0,1,true
+sc_0817,office,the actions and activities assigned to or required or expected of a person or group,51,51,0,0,1,true
+sc_0818,meeting,a formally arranged gathering,50,50,0,0,1,true
+sc_0819,speaking,the utterance of intelligible speech,50,48,1,1,3,true
+sc_0820,creative,having the ability or power to create,50,50,0,0,1,true
+sc_0821,wiccan,a believer in Wicca,50,50,0,0,1,true
+sc_0822,therapy,(medicine) the act of caring for someone (as by medication or remedial training etc.),50,49,1,0,2,true
+sc_0823,perception,the representation of what is perceived; basic component in the formation of a concept,50,50,0,0,1,true
+sc_0824,prophecy,knowledge of the future (usually said to be obtained from a divine source),50,50,0,0,1,true
+sc_0825,food,any substance that can be metabolized by an animal to give energy and build tissue,50,50,0,0,1,true
+sc_0826,village,a community of people smaller than a town,50,50,0,0,1,true
+sc_0827,democratic,belong to or relating to the Democratic Party,49,49,0,0,1,true
+sc_0828,recruit,a recently enlisted soldier,49,49,0,0,1,true
+sc_0829,defining,any process serving to define the shape of something,49,49,0,0,1,true
+sc_0830,characteristic,a prominent attribute or aspect of something,49,48,0,1,2,true
+sc_0831,dependent,a person who relies on another person for support (especially financial support),49,49,0,0,1,true
+sc_0832,professional,a person engaged in one of the learned professions,49,49,0,0,1,true
+sc_0833,label,a brief description given for purposes of identification,49,49,0,0,1,true
+sc_0834,reincarnation,embodiment in a new form (especially the reappearance or a person in another form),49,49,0,0,1,true
+sc_0835,argument,a fact or assertion offered as evidence that something is true,49,49,0,0,1,true
+sc_0836,possibility,a future prospect or potential,49,49,0,0,1,true
+sc_0837,york,the English royal house (a branch of the Plantagenet line) that reigned from 1461 to 1485; its emblem was a white rose,49,49,0,0,1,true
+sc_0838,trade,the commercial exchange (buying and selling on domestic or international markets) of goods and services,49,49,0,0,1,true
+sc_0839,wrong,that which is contrary to the principles of justice or law,48,47,0,1,2,true
+sc_0840,represented,represented accurately or precisely,48,48,0,0,1,true
+sc_0841,method,"a way of doing something, especially a systematic way; implies an orderly logical arrangement (usually in steps)",48,48,0,0,1,true
+sc_0842,hostile,not belonging to your own country's forces or those of an ally,48,48,0,0,1,true
+sc_0843,fundamentalist,an adherent of fundamentalist principles,48,48,0,0,1,true
+sc_0844,draw,an entertainer who attracts large audiences,48,47,0,1,2,true
+sc_0845,wealth,the state of being rich and affluent; having a plentiful supply of material goods and money,48,47,1,0,2,true
+sc_0846,pilgrimage,a journey to a sacred place,48,48,0,0,1,true
+sc_0847,prepared,made ready or fit or suitable beforehand,47,47,0,0,1,true
+sc_0848,committee,a special group delegated to consider some matter,47,47,0,0,1,true
+sc_0849,condition,a state at a particular time,47,45,2,0,2,true
+sc_0850,convert,a person who has been converted to another religious or political belief,47,47,0,0,1,true
+sc_0851,universe,(statistics) the entire aggregation of items from which samples can be drawn,47,47,0,0,1,true
+sc_0852,systematic,characterized by order and planning,47,47,0,0,1,true
+sc_0853,willing,the act of making a choice,47,47,0,0,1,true
+sc_0854,testimony,a solemn statement made under oath,47,46,1,0,2,true
+sc_0855,logic,the branch of philosophy that analyzes inference,47,46,1,0,2,true
+sc_0856,parent,a father or mother; one who begets or one who gives birth to or nurtures and raises a child; a relative who plays the role of guardian,47,43,4,0,2,true
+sc_0857,studying,reading carefully with intent to remember,47,47,0,0,1,true
+sc_0858,critique,an essay or article that gives a critical evaluation (as of a book or play),47,38,9,0,2,true
+sc_0859,controlled,restrained or managed or kept within certain bounds,47,45,0,2,2,true
+sc_0860,site,a computer connected to the internet that maintains a series of web pages on the World Wide Web; a computer connected to the internet that maintains a series of web pages on the World Wide Web,47,45,2,0,2,true
+sc_0861,insight,clear or deep perception of a situation,47,47,0,0,1,true
+sc_0862,divided,separated into parts or pieces,47,47,0,0,1,true
+sc_0863,influential,having or exercising influence or power,47,47,0,0,1,true
+sc_0864,head,"that which is responsible for one's thoughts, feelings, and conscious brain functions; the seat of the faculty of reason",47,47,0,0,1,true
+sc_0865,succession,a following of one thing after another in time,47,47,0,0,1,true
+sc_0866,ministry,religious ministers collectively (especially Presbyterian),47,47,0,0,1,true
+sc_0867,management,the act of managing something,46,45,1,0,2,true
+sc_0868,fit,a display of bad temper,46,45,0,1,2,true
+sc_0869,conduct,manner of acting or controlling yourself,46,46,0,0,1,true
+sc_0870,supported,sustained or maintained by aid (as distinct from physical support),46,46,0,0,1,true
+sc_0871,transition,the act of passing from one state or place to the next,46,46,0,0,1,true
+sc_0872,revival,bringing again into activity and prominence,46,46,0,0,1,true
+sc_0873,military,the military forces of a nation,46,46,0,0,1,true
+sc_0874,roots,the condition of belonging to a particular place or group by virtue of social or ethnic or cultural lineage,46,46,0,0,1,true
+sc_0875,identification,the act of designating or identifying something,45,44,0,1,2,true
+sc_0876,manner,how something is done or how it happens,45,45,0,0,1,true
+sc_0877,discrimination,unfair treatment of a person or group on the basis of prejudice,45,45,0,0,1,true
+sc_0878,background,a person's social heritage: previous experience or training,45,45,0,0,1,true
+sc_0879,suffering,a state of acute pain,45,45,0,0,1,true
+sc_0880,ethnic,a person who is a member of an ethnic group,45,45,0,0,1,true
+sc_0881,news,information about recent and important events,45,44,1,0,2,true
+sc_0882,looking,the act of directing the eyes toward something and perceiving it visually; look,45,45,0,0,1,true
+sc_0883,psychic,a person apparently sensitive to things beyond the natural range of perception,45,45,0,0,1,true
+sc_0884,president,an executive officer of a firm or corporation,45,45,0,0,1,true
+sc_0885,reaction,(chemistry) a process in which one or more substances are changed into others,44,43,1,0,2,true
+sc_0886,extended,fully extended or stretched forth,44,44,0,0,1,true
+sc_0887,reject,the person or thing that is rejected or set aside as inferior in quality,44,44,0,0,1,true
+sc_0888,paranoia,a psychological disorder characterized by delusions of persecution or grandeur,44,44,0,0,1,true
+sc_0889,doubt,the state of being unsure of something,44,44,0,0,1,true
+sc_0890,normative,relating to or dealing with norms,44,44,0,0,1,true
+sc_0891,audience,a gathering of spectators or listeners at a (usually public) performance,44,44,0,0,1,true
+sc_0892,investigation,an inquiry into unfamiliar or questionable activities,44,43,1,0,2,true
+sc_0893,hostility,a hostile (very unfriendly) disposition,44,44,0,0,1,true
+sc_0894,battle,an energetic attempt to achieve something,44,44,0,0,1,true
+sc_0895,revolutionary,of or relating to or characteristic or causing an axial or orbital turn,44,44,0,0,1,true
+sc_0896,belonging,happiness felt in a secure relationship,44,43,1,0,2,true
+sc_0897,liberation,the act of liberating someone or something,44,44,0,0,1,true
+sc_0898,mormon,the ancient prophet whose writings were revealed to Joseph Smith who founded the Church of Jesus Christ of Latter-Day Saints,44,44,0,0,1,true
+sc_0899,founding,the act of starting something for the first time; introducing something new,44,44,0,0,1,true
+sc_0900,justice,the quality of being just or fair,43,37,6,0,2,true
+sc_0901,visible,capable of being seen; or open to easy view,43,43,0,0,1,true
+sc_0902,unconventional,not conforming to accepted rules or standards,43,42,1,0,2,true
+sc_0903,judgment,an opinion formed by judging something,43,43,0,0,1,true
+sc_0904,relative,a person related by blood or marriage,43,42,1,0,2,true
+sc_0905,agenda,a temporally organized plan for matters to be attended to,43,42,0,1,2,true
+sc_0906,combination,a collection of things that have been combined; an assemblage of separate parts or qualities,43,43,0,0,1,true
+sc_0907,risk,a source of danger; a possibility of incurring loss or misfortune,43,42,0,1,2,true
+sc_0908,missionary,relating to or connected to a religious mission,43,43,0,0,1,true
+sc_0909,raid,a sudden short attack,43,43,0,0,1,true
+sc_0910,underground,a secret group organized to overthrow a government or occupation force,43,43,0,0,1,true
+sc_0911,feeling,the experiencing of affective and emotional states,43,43,0,0,1,true
+sc_0912,college,the body of faculty and students of a college,43,43,0,0,1,true
+sc_0913,bound,the greatest possible degree of something,43,43,0,0,1,true
+sc_0914,denomination,a group of religious congregations having its own organization and a distinctive faith,43,43,0,0,1,true
+sc_0915,elite,a group or class of persons enjoying superior intellectual or social or economic status,42,42,0,0,1,true
+sc_0916,application,the act of bringing something to bear; using it for a particular purpose,42,42,0,0,1,true
+sc_0917,childhood,the state of a child between infancy and adolescence,42,41,1,0,2,true
+sc_0918,adult,a fully developed person from maturity onward,42,42,0,0,1,true
+sc_0919,grounds,your basis for belief or disbelief; knowledge on which to base belief,42,42,0,0,1,true
+sc_0920,unusual,not usual or common or ordinary,42,42,0,0,1,true
+sc_0921,alliance,the state of being allied or confederated,42,42,0,0,1,true
+sc_0922,setting,the state of the environment in which a situation exists,42,42,0,0,1,true
+sc_0923,racial,of or related to genetically distinguished groups of people,42,42,0,0,1,true
+sc_0924,medicine,the branches of medical science that deal with nonsurgical techniques,42,42,0,0,1,true
+sc_0925,reach,an area in which something acts or operates or has power or control:,42,42,0,0,1,true
+sc_0926,rest,something left after other parts have been taken away,42,42,0,0,1,true
+sc_0927,superior,one of greater rank or station or quality,42,42,0,0,1,true
+sc_0928,sign,a perceptible indication of something not immediately apparent (as a visible clue that something has happened),42,42,0,0,1,true
+sc_0929,celibacy,an unmarried status,42,42,0,0,1,true
+sc_0930,fair,a traveling show; having sideshows and rides and games of skill etc.,42,42,0,0,1,true
+sc_0931,scripture,any writing that is regarded as sacred by a religious group,42,42,0,0,1,true
+sc_0932,constant,a quantity that does not vary,41,41,0,0,1,true
+sc_0933,sphere,a particular environment or walk of life,41,41,0,0,1,true
+sc_0934,offering,something offered (as a proposal or bid),41,41,0,0,1,true
+sc_0935,hands,(with ‘in’) guardianship over; in divorce cases it is the right to house and care for and discipline a child,41,40,0,1,2,true
+sc_0936,trance,a psychological state induced by (or as if induced by) a magical incantation,41,41,0,0,1,true
+sc_0937,hypnosis,a state that resembles sleep but that is induced by suggestion,41,41,0,0,1,true
+sc_0938,profile,an analysis (often in graphical form) representing the extent to which something exhibits various characteristics,41,40,1,0,2,true
+sc_0939,agency,"a business or organization that provides a particular service, especially the mediation of transactions between two parties",41,41,0,0,1,true
+sc_0940,dimension,the magnitude of something in a particular direction (especially length or width or height),41,39,2,0,2,true
+sc_0941,annual,a reference book that is published regularly once every year,41,41,0,0,1,true
+sc_0942,reduced,made less in size or amount or degree,41,41,0,0,1,true
+sc_0943,regular,a regular patron,41,41,0,0,1,true
+sc_0944,benefit,financial assistance in time of need,41,41,0,0,1,true
+sc_0945,feature,a prominent attribute or aspect of something,41,41,0,0,1,true
+sc_0946,sun,the rays of the sun,41,41,0,0,1,true
+sc_0947,designed,done or made or performed with purpose and intent,41,41,0,0,1,true
+sc_0948,distance,the property created by the space between two objects or points,41,40,1,0,2,true
+sc_0949,interesting,arousing or holding the attention,41,37,1,3,3,true
+sc_0950,economy,the system of production and distribution and consumption,41,41,0,0,1,true
+sc_0951,finding,"the act of determining the properties of something, usually by research or calculation",41,41,0,0,1,true
+sc_0952,promise,a verbal commitment by one person to another agreeing to do (or not to do) something in the future,41,41,0,0,1,true
+sc_0953,near,not far distant in time or space or degree or circumstances,41,41,0,0,1,true
+sc_0954,teach,an English pirate who operated in the Caribbean and off the Atlantic coast of North America (died in 1718),41,41,0,0,1,true
+sc_0955,testament,either of the two main parts of the Christian Bible,41,40,1,0,2,true
+sc_0956,minister,a person authorized to conduct religious worship,40,40,0,0,1,true
+sc_0957,individualism,the quality of being individual,40,40,0,0,1,true
+sc_0958,marked,having or as if having an identifying mark or a mark as specified; often used in combination,40,40,0,0,1,true
+sc_0959,acceptable,worthy of acceptance or satisfactory,40,40,0,0,1,true
+sc_0960,manifest,a customs document listing the contents put on a ship or plane,40,40,0,0,1,true
+sc_0961,developing,processing a photosensitive material in order to make an image visible,40,40,0,0,1,true
+sc_0962,step,any maneuver made as part of progress toward a goal,40,40,0,0,1,true
+sc_0963,mythology,myths collectively; the body of stories associated with a culture or institution or person,40,39,1,0,2,true
+sc_0964,typology,classification according to general type,40,40,0,0,1,true
+sc_0965,bringing,the act of delivering or distributing something (as goods or mail),40,40,0,0,1,true
+sc_0966,judge,an authority who is able to estimate worth or quality,40,40,0,0,1,true
+sc_0967,witness,someone who sees an event and reports what happened,40,40,0,0,1,true
+sc_0968,realm,a domain in which something is dominant,40,40,0,0,1,true
+sc_0969,gone,stupefied or excited by a chemical substance (especially alcohol),40,40,0,0,1,true
+sc_0970,commission,a special group delegated to consider some matter,39,37,2,0,2,true
+sc_0971,fight,the act of fighting; any contest or struggle,39,38,0,1,2,true
+sc_0972,labeled,bearing or marked with a label or tag,39,39,0,0,1,true
+sc_0973,unable,(usually followed by ‘to’) not having the necessary means or skill or know-how,39,39,0,0,1,true
+sc_0974,guilt,the state of having committed an offense,39,39,0,0,1,true
+sc_0975,express,mail that is distributed by a rapid and efficient system,39,39,0,0,1,true
+sc_0976,expansion,the act of increasing (something) in size or volume or quantity or scope,39,38,1,0,2,true
+sc_0977,possession,the act of having and controlling property,39,38,1,0,2,true
+sc_0978,television,broadcasting visual images of stationary or moving objects,39,39,0,0,1,true
+sc_0979,dedicated,devoted to a cause or ideal or purpose,39,39,0,0,1,true
+sc_0980,regional,characteristic of a region,39,39,0,0,1,true
+sc_0981,feelings,emotional or moral sensitivity (especially in relation to personal principles or dignity),39,39,0,0,1,true
+sc_0982,guidance,something that provides direction or advice as to a decision or course of action,39,39,0,0,1,true
+sc_0983,buddha,founder of Buddhism (c 563-483 BC),39,39,0,0,1,true
+sc_0984,symbol,an arbitrary sign (written or printed) that has acquired a conventional significance,39,39,0,0,1,true
+sc_0985,encounter,a minor short-term fight,39,39,0,0,1,true
+sc_0986,coverage,the total amount and type of insurance carried,39,39,0,0,1,true
+sc_0987,plus,a useful or valuable quality,38,7,30,1,3,true
+sc_0988,affairs,matters of personal concern,38,38,0,0,1,true
+sc_0989,intended,resulting from one's intentions,38,38,0,0,1,true
+sc_0990,constitutional,a regular walk taken as a form of exercise,38,38,0,0,1,true
+sc_0991,quest,a search for an alternative that meets cognitive criteria,38,38,0,0,1,true
+sc_0992,percent,a proportion in relation to a whole (which is usually the amount per hundred); ten percent,38,38,0,0,1,true
+sc_0993,mark,Apostle and companion of Saint Peter; assumed to be the author of the second Gospel,38,37,1,0,2,true
+sc_0994,intellectual,a person who uses the mind creatively,38,38,0,0,1,true
+sc_0995,survival,a state of surviving; remaining alive,38,38,0,0,1,true
+sc_0996,progressive,a tense of verbs used in describing action that is on-going,38,38,0,0,1,true
+sc_0997,proved,established beyond doubt,38,38,0,0,1,true
+sc_0998,employed,having your services engaged for; or having a job especially one that pays wages or a salary,38,38,0,0,1,true
+sc_0999,cross,a marking that consists of lines that cross each other,38,38,0,0,1,true
+sc_1000,ground,a rational motive for a belief or action,38,38,0,0,1,true
+sc_1001,hierarchical,classified according to various criteria into successive levels or layers,38,34,3,1,3,true
+sc_1002,patriarchal,characteristic of a form of social organization in which the male is the family head and title is traced through the male line,38,38,0,0,1,true
+sc_1003,amendment,the act of amending or correcting,38,38,0,0,1,true
+sc_1004,assumption,a statement that is assumed to be true and from which a conclusion can be drawn,37,37,0,0,1,true
+sc_1005,intervention,"the act of intervening (as to mediate a dispute, etc.)",37,35,2,0,2,true
+sc_1006,subsequent,following in time or order,37,37,0,0,1,true
+sc_1007,questioning,a request for information,37,37,0,0,1,true
+sc_1008,institutionalized,officially placed in or committed to a specialized institution,37,37,0,0,1,true
+sc_1009,coercion,the act of compelling by force of authority,37,37,0,0,1,true
+sc_1010,vulnerable,susceptible to attack,37,35,2,0,2,true
+sc_1011,dialogue,a conversation between two persons,37,35,2,0,2,true
+sc_1012,weak,wanting in physical strength,37,37,0,0,1,true
+sc_1013,lord,a person who has general authority over others,37,37,0,0,1,true
+sc_1014,obvious,easily perceived and understood,37,37,0,0,1,true
+sc_1015,urban,relating to or concerned with a city or densely populated area,37,37,0,0,1,true
+sc_1016,witch,a female sorcerer or magician,37,37,0,0,1,true
+sc_1017,pose,affected manners intended to impress others,37,36,1,0,2,true
+sc_1018,mysticism,a religion based on mystical communion with an ultimate reality,37,37,0,0,1,true
+sc_1019,earthly,of or belonging to or characteristic of this earth as distinguished from heaven,37,37,0,0,1,true
+sc_1020,volume,the property of something that is great in magnitude,37,37,0,0,1,true
+sc_1021,fbi,a federal law enforcement agency that is the principal investigative arm of the Department of Justice,37,37,0,0,1,true
+sc_1022,married,a person who is married,37,37,0,0,1,true
+sc_1023,front,the outward appearance of a person,37,37,0,0,1,true
+sc_1024,philosophical,of or relating to philosophy or philosophers,36,36,0,0,1,true
+sc_1025,moving,in motion,36,36,0,0,1,true
+sc_1026,brainwashed,subjected to intensive forced indoctrination resulting in the rejection of old beliefs and acceptance of new ones,36,35,0,1,2,true
+sc_1027,consistent,(sometimes followed by ‘with’) in agreement or consistent or reliable,36,28,8,0,2,true
+sc_1028,unstable,lacking stability or fixity or firmness,36,36,0,0,1,true
+sc_1029,target,a reference point to shoot at,36,36,0,0,1,true
+sc_1030,contrary,a relation of direct opposition,36,36,0,0,1,true
+sc_1031,immediate,having no intervening medium,36,36,0,0,1,true
+sc_1032,unlikely,not likely to be true or to occur or to have occurred,36,36,0,0,1,true
+sc_1033,pentecostalism,the principles and practices of Pentecostal religious groups; characterized by religious excitement and talking in tongues,36,36,0,0,1,true
+sc_1034,religiosity,exaggerated or affected piety and religious zeal,36,36,0,0,1,true
+sc_1035,instance,an item of information that is typical of a class or group,36,34,2,0,2,true
+sc_1036,technique,a practical method or art applied to some particular task,36,35,1,0,2,true
+sc_1037,acting,the performance of a part or role in a drama,36,36,0,0,1,true
+sc_1038,trial,the act of testing something,36,36,0,0,1,true
+sc_1039,conclusion,a position or opinion or judgment reached after consideration,36,36,0,0,1,true
+sc_1040,subjective,taking place within the mind and modified by individual bias,36,34,2,0,2,true
+sc_1041,cut,a share of the profits,36,36,0,0,1,true
+sc_1042,harmful,causing or capable of causing harm,36,36,0,0,1,true
+sc_1043,talk,an exchange of ideas via conversation,36,36,0,0,1,true
+sc_1044,pure,free of extraneous elements of any kind,36,36,0,0,1,true
+sc_1045,fellowship,an association of people who share common beliefs or activities,36,36,0,0,1,true
+sc_1046,author,someone who originates or causes or initiates something,36,36,0,0,1,true
+sc_1047,behaviour,the action or reaction of something (as a machine or substance) under specified circumstances,36,36,0,0,1,true
+sc_1048,parliament,a legislative assembly in certain countries,36,36,0,0,1,true
+sc_1049,code,a set of rules or principles or laws (especially written ones),35,33,2,0,2,true
+sc_1050,administrative,of or relating to or responsible for administration,35,35,0,0,1,true
+sc_1051,principal,the original amount of a debt on which interest is calculated,35,35,0,0,1,true
+sc_1052,break,a pause from doing something (as work),35,35,0,0,1,true
+sc_1053,motivated,provided with a motive or given incentive for action,35,35,0,0,1,true
+sc_1054,exchange,chemical process in which one atom or ion or group changes places with another,35,35,0,0,1,true
+sc_1055,stereotype,a conventional or formulaic conception or image,35,34,0,1,2,true
+sc_1056,behavioral,of or relating to behavior,35,33,2,0,2,true
+sc_1057,stable,resistant to change of position or condition,35,35,0,0,1,true
+sc_1058,essence,the choicest or most essential or most vital part of some idea or experience,35,35,0,0,1,true
+sc_1059,tool,the means whereby some act is accomplished,35,34,1,0,2,true
+sc_1060,integrated,formed into a whole or introduced into another entity,35,35,0,0,1,true
+sc_1061,dealing,method or manner of conduct in relation to others,35,35,0,0,1,true
+sc_1062,division,an army unit large enough to sustain combat,35,35,0,0,1,true
+sc_1063,capable,(usually followed by ‘of’) having capacity or ability,35,35,0,0,1,true
+sc_1064,correct,free from error; especially conforming to fact or truth,35,35,0,0,1,true
+sc_1065,link,the means of connection between things linked in series,35,34,1,0,2,true
+sc_1066,george,Christian martyr; patron saint of England; hero of the legend of Saint George and the Dragon in which he slew a dragon and saved a princess (?-303),35,35,0,0,1,true
+sc_1067,theme,the subject matter of a conversation or discussion,35,35,0,0,1,true
+sc_1068,native,an indigenous person who was born in a particular place,35,35,0,0,1,true
+sc_1069,restoration,the act of restoring something or someone to a satisfactory state,35,35,0,0,1,true
+sc_1070,era,(baseball) a measure of a pitcher's effectiveness; calculated as the average number of earned runs allowed by the pitcher for every nine innings pitched,35,35,0,0,1,true
+sc_1071,scale,an ordered reference standard,35,35,0,0,1,true
+sc_1072,convinced,having a strong belief or conviction,35,34,0,1,2,true
+sc_1073,methodological,relating to the methodology of some discipline,35,35,0,0,1,true
+sc_1074,hinduism,"the religion of most people in India, Bangladesh, Sri Lanka, and Nepal",35,34,1,0,2,true
+sc_1075,german,the standard German language; developed historically from West Germanic,35,32,0,3,2,true
+sc_1076,wing,a unit of military aircraft,35,35,0,0,1,true
+sc_1077,soviet,an elected governmental council in a communist country (especially one that is a member of the Union of Soviet Socialist Republics),35,35,0,0,1,true
+sc_1078,union,an organization of employees formed to bargain with the employer,34,32,2,0,2,true
+sc_1079,loyalty,the quality of being loyal,34,34,0,0,1,true
+sc_1080,advantage,the quality of having a superior or more favorable position,34,34,0,0,1,true
+sc_1081,corporate,of or belonging to a corporation,34,34,0,0,1,true
+sc_1082,learning,the cognitive process of acquiring skill or knowledge,34,34,0,0,1,true
+sc_1083,amount,a quantity of money,34,34,0,0,1,true
+sc_1084,measure,any maneuver made as part of progress toward a goal,34,34,0,0,1,true
+sc_1085,submission,something (manuscripts or architectural plans and models or estimates or works of art of all genres etc.) submitted for the judgment of others (as in a competition),34,33,1,0,2,true
+sc_1086,determined,having been learned or found or determined especially by investigation,34,34,0,0,1,true
+sc_1087,average,a statistic describing the location of a distribution,34,34,0,0,1,true
+sc_1088,constituted,brought about or set up or accepted; especially long established,34,34,0,0,1,true
+sc_1089,fringe,one of the light or dark bands produced by the interference and diffraction of light,34,34,0,0,1,true
+sc_1090,environmental,of or relating to the external conditions or surroundings,34,34,0,0,1,true
+sc_1091,defense,the act of defending against harm,34,34,0,0,1,true
+sc_1092,size,the physical magnitude of something (how big it is),34,34,0,0,1,true
+sc_1093,worldly,characteristic of or devoted to the temporal world as opposed to the spiritual world,34,34,0,0,1,true
+sc_1094,constitution,the constitution written at the Constitutional Convention in Philadelphia in 1787 and subsequently ratified by the original thirteen states,34,34,0,0,1,true
+sc_1095,construct,an abstract or general idea inferred or derived from specific instances,34,34,0,0,1,true
+sc_1096,independence,freedom from control or influence of another or others,34,34,0,0,1,true
+sc_1097,date,a participant in a date,34,34,0,0,1,true
+sc_1098,exploitation,the act of making some area of land or water more profitable or productive or useful,34,31,2,1,3,true
+sc_1099,paid,marked by the reception of pay,34,34,0,0,1,true
+sc_1100,mary,the mother of Jesus; Christians refer to her as the Virgin Mary; she is especially honored by Roman Catholics,34,34,0,0,1,true
+sc_1101,feminine,a gender that refers chiefly (but not exclusively) to females or to objects classified as female,34,34,0,0,1,true
+sc_1102,voice,the distinctive quality or pitch or condition of a person's speech,34,33,1,0,2,true
+sc_1103,street,the streets of a city viewed as a depressed environment in which there is poverty and crime and prostitution and dereliction,34,34,0,0,1,true
+sc_1104,visit,the act of going to see some person or place or thing for a short time,33,33,0,0,1,true
+sc_1105,extraordinary,beyond what is ordinary or usual; highly unusual or exceptional or remarkable; special,33,33,0,0,1,true
+sc_1106,host,a person who invites guests to a social event (such as a party in his or her own home) and who is responsible for them while they are there,33,33,0,0,1,true
+sc_1107,findings,a collection of tools and other articles used by an artisan to make jewelry or clothing or shoes,33,33,0,0,1,true
+sc_1108,educated,possessing an education (especially having more than average knowledge),33,33,0,0,1,true
+sc_1109,rate,amount of a charge or payment relative to some basis,33,33,0,0,1,true
+sc_1110,anxiety,"(psychiatry) a relatively permanent state of worry and nervousness occurring in a variety of mental disorders, usually accompanied by compulsive behavior or attacks of panic",33,33,0,0,1,true
+sc_1111,combined,made or joined or united into one,33,33,0,0,1,true
+sc_1112,won,not subject to defeat,33,33,0,0,1,true
+sc_1113,metaphysical,pertaining to or of the nature of metaphysics,33,33,0,0,1,true
+sc_1114,impression,a vague idea in which some confidence is placed,33,33,0,0,1,true
+sc_1115,operation,the state of being in effect or being operative,33,33,0,0,1,true
+sc_1116,repression,a state of forcible subjugation,33,32,1,0,2,true
+sc_1117,closed,not open or affording passage or access,33,32,0,1,2,true
+sc_1118,publishing,the business of issuing printed matter for sale or distribution,33,33,0,0,1,true
+sc_1119,ill,an often persistent bodily disorder or disease; a cause for complaining,33,29,4,0,2,true
+sc_1120,ordered,having a systematic arrangement; especially having elements succeeding in order according to rule,33,33,0,0,1,true
+sc_1121,cycle,a series of poems or songs on the same theme,33,33,0,0,1,true
+sc_1122,shamanism,any animistic religion similar to Asian shamanism (especially as practiced by certain Native American tribes),33,33,0,0,1,true
+sc_1123,company,small military unit; usually two or three platoons,33,32,1,0,2,true
+sc_1124,slavery,the state of being under the control of another person,33,32,1,0,2,true
+sc_1125,slave,someone who works as hard as a slave,33,33,0,0,1,true
+sc_1126,march,a degree granted for the successful completion of advanced study of architecture,32,31,1,0,2,true
+sc_1127,top,the highest level or degree attainable; the highest stage of development,32,31,0,1,2,true
+sc_1128,ethical,of or relating to the philosophical study of ethics,32,32,0,0,1,true
+sc_1129,bill,a statute in draft before it becomes law,32,32,0,0,1,true
+sc_1130,entity,that which is perceived or known or inferred to have its own distinct existence (living or nonliving),32,32,0,0,1,true
+sc_1131,conscious,knowing and perceiving; having awareness of surroundings and sensations and thoughts,32,32,0,0,1,true
+sc_1132,integral,the result of a mathematical integration; F(x) is the integral of f(x) if dF/dx = f(x),32,32,0,0,1,true
+sc_1133,sample,a small part of something intended as representative of the whole,32,31,1,0,2,true
+sc_1134,defection,withdrawing support or help despite allegiance or responsibility,32,32,0,0,1,true
+sc_1135,alienation,the feeling of being alienated from other people,32,32,0,0,1,true
+sc_1136,eyes,opinion or judgment,32,30,0,2,2,true
+sc_1137,strength,the property of being physically or mentally strong,32,32,0,0,1,true
+sc_1138,stand,a growth of similar plants (usually trees) in a particular area,32,32,0,0,1,true
+sc_1139,calling,the particular occupation for which you are trained,32,32,0,0,1,true
+sc_1140,turning,the act of changing or reversing the direction of the course,32,32,0,0,1,true
+sc_1141,statement,a message that is stated or declared; a communication (oral or written) setting forth particulars or facts etc,32,32,0,0,1,true
+sc_1142,charge,an impetuous rush toward someone or something,32,30,2,0,2,true
+sc_1143,manifestation,a manifest indication of the existence or presence or nature of some person or thing,32,31,1,0,2,true
+sc_1144,transcendental,of or characteristic of a system of philosophy emphasizing the intuitive and spiritual above the empirical and material,32,32,0,0,1,true
+sc_1145,profound,showing intellectual penetration or emotional depth,32,32,0,0,1,true
+sc_1146,entry,an item inserted in a written record,32,31,0,1,2,true
+sc_1147,test,trying something to find out about it,32,32,0,0,1,true
+sc_1148,mantra,a commonly repeated word or phrase,32,32,0,0,1,true
+sc_1149,tell,a Swiss patriot who lived in the early 14th century and who was renowned for his skill as an archer; according to legend an Austrian governor compelled him to shoot an apple from his son's head with his crossbow (which he did successfully without mishap),32,32,0,0,1,true
+sc_1150,intelligence,the ability to comprehend; to understand and profit from experience,32,31,0,1,2,true
+sc_1151,nazi,"derogatory term for a person who is fanatically dedicated to, or seeks to control, some activity, practice, etc.",32,32,0,0,1,true
+sc_1152,believing,the cognitive process that leads to convictions,32,32,0,0,1,true
+sc_1153,brotherhood,the kinship relation between a male offspring and the siblings,32,32,0,0,1,true
+sc_1154,speech,(language) communication by word of mouth,32,32,0,0,1,true
+sc_1155,flag,"a listing printed in all issues of a newspaper or magazine (usually on the editorial page) that gives the name of the publication and the names of the editorial staff, etc.",32,32,0,0,1,true
+sc_1156,folk,people in general (often used in the plural),32,32,0,0,1,true
+sc_1157,swami,a Hindu religious teacher; used as a title of respect,32,32,0,0,1,true
+sc_1158,sufism,Islamic mysticism,32,32,0,0,1,true
+sc_1159,commune,a body of people or families living together and sharing everything,31,31,0,0,1,true
+sc_1160,difficulty,an effort that is inconvenient,31,31,0,0,1,true
+sc_1161,judicial,belonging or appropriate to the office of a judge,31,30,1,0,2,true
+sc_1162,pay,something that remunerates,31,31,0,0,1,true
+sc_1163,rigid,designating an airship or dirigible having a form maintained by a stiff unyielding frame or structure,31,31,0,0,1,true
+sc_1164,counseling,something that provides direction or advice as to a decision or course of action,31,31,0,0,1,true
+sc_1165,agent,a representative who acts on behalf of other persons or organizations,31,31,0,0,1,true
+sc_1166,atmosphere,a particular environment or surrounding influence,31,31,0,0,1,true
+sc_1167,experiment,the act of conducting a controlled test or investigation,31,31,0,0,1,true
+sc_1168,informed,having much knowledge or education,31,31,0,0,1,true
+sc_1169,strange,being definitely out of the ordinary and unexpected; slightly odd or even a bit weird,31,30,0,1,2,true
+sc_1170,balance,a state of equilibrium,31,31,0,0,1,true
+sc_1171,protest,a formal and solemn declaration of objection,31,31,0,0,1,true
+sc_1172,conception,an abstract or general idea inferred or derived from specific instances,31,31,0,0,1,true
+sc_1173,classic,an artist who has created classic works,31,30,0,1,2,true
+sc_1174,mount,the act of climbing something,31,31,0,0,1,true
+sc_1175,confrontation,a bold challenge,31,31,0,0,1,true
+sc_1176,learned,established by conditioning or learning,31,31,0,0,1,true
+sc_1177,necessity,the condition of being essential or indispensable,31,31,0,0,1,true
+sc_1178,rates,a local tax on property,31,31,0,0,1,true
+sc_1179,addition,the act of adding one thing to another,31,31,0,0,1,true
+sc_1180,legitimation,the act of rendering a person legitimate,31,31,0,0,1,true
+sc_1181,sharing,using or enjoying something jointly with others,31,31,0,0,1,true
+sc_1182,impossible,something that cannot be done,31,31,0,0,1,true
+sc_1183,globalization,growth to a global or worldwide scale,31,31,0,0,1,true
+sc_1184,raise,the amount a salary is increased,31,31,0,0,1,true
+sc_1185,start,a turn to be a starter (in a game at the beginning),31,30,0,1,2,true
+sc_1186,exclusive,a news report that is reported first by one news organization,31,30,1,0,2,true
+sc_1187,comparative,the comparative form of an adjective or adverb,31,31,0,0,1,true
+sc_1188,colonial,a resident of a colony,31,31,0,0,1,true
+sc_1189,prosperity,an economic state of growth with rising profits and full employment,31,31,0,0,1,true
+sc_1190,congregation,a group of people who adhere to a common faith and habitually attend a given church,31,31,0,0,1,true
+sc_1191,abolition,the act of abolishing a system or practice or institution (especially abolishing slavery),31,31,0,0,1,true
+sc_1192,tragedy,drama in which the protagonist is overcome by some superior force or circumstance; excites terror or pity,30,30,0,0,1,true
+sc_1193,try,earnest and conscientious activity intended to do or accomplish something,30,29,0,1,2,true
+sc_1194,deviance,a state or condition markedly different from the norm,30,30,0,0,1,true
+sc_1195,varied,characterized by variety,30,29,1,0,2,true
+sc_1196,catholicism,the beliefs and practices of a Catholic Church,30,29,0,1,2,true
+sc_1197,charged,of a particle or body or system; having a net amount of positive or negative electric charge,30,30,0,0,1,true
+sc_1198,carry,the act of carrying something,30,30,0,0,1,true
+sc_1199,surveillance,close observation of a person or group (usually by the police),30,30,0,0,1,true
+sc_1200,novel,an extended fictional work in prose; usually in the form of a story,30,30,0,0,1,true
+sc_1201,exhibit,an object or statement produced before a court of law and referred to while giving evidence,30,30,0,0,1,true
+sc_1202,relief,the feeling that comes when something burdensome is removed or reduced,30,30,0,0,1,true
+sc_1203,conviction,an unshakable belief in something without need for proof or evidence,30,30,0,0,1,true
+sc_1204,chanting,the act of singing in a monotonous tone,30,30,0,0,1,true
+sc_1205,costs,pecuniary reimbursement to the winning party for the expenses of litigation,30,30,0,0,1,true
+sc_1206,genuine,not fake or counterfeit,30,30,0,0,1,true
+sc_1207,publication,a copy of a printed work offered for distribution,30,30,0,0,1,true
+sc_1208,dissent,(law) the difference of one judge's opinion from that of the majority,30,30,0,0,1,true
+sc_1209,norm,a standard or model or pattern regarded as typical,30,30,0,0,1,true
+sc_1210,familiar,a person attached to the household of a high official (as a pope or bishop) who renders service in return for support,30,30,0,0,1,true
+sc_1211,mode,how something is done or how it happens,30,24,5,1,3,true
+sc_1212,medium,a means or instrumentality for storing or communicating information,30,30,0,0,1,true
+sc_1213,balanced,being in a state of proper equilibrium,30,30,0,0,1,true
+sc_1214,fiction,a literary work based on the imagination and not necessarily on fact,30,30,0,0,1,true
+sc_1215,room,opportunity for,30,29,0,1,2,true
+sc_1216,interactive,used especially of drugs or muscles that work together so the total effect is greater than the sum of the two (or more),30,30,0,0,1,true
+sc_1217,exception,a deliberate act of omission,30,29,1,0,2,true
+sc_1218,conference,an association of sports teams that organizes matches for its members,30,30,0,0,1,true
+sc_1219,polygamy,the condition or practice of having more than one spouse at a time,30,30,0,0,1,true
+sc_1220,duty,the social force that binds you to the courses of action demanded by that force,30,30,0,0,1,true
+sc_1221,cadre,a small unit serving as part of or as the nucleus of a larger political movement,30,26,4,0,2,true
+sc_1222,property,something owned; any tangible or intangible possession that is owned by someone,30,30,0,0,1,true
+sc_1223,trend,a general tendency to change (as of opinion),30,29,1,0,2,true
+sc_1224,programme,an announcement of the events that will occur as part of a theatrical or sporting event,30,30,0,0,1,true
+sc_1225,cultist,a member of a religious cult,29,29,0,0,1,true
+sc_1226,paradigm,systematic arrangement of all the inflected forms of a word,29,29,0,0,1,true
+sc_1227,ceremony,any activity that is performed in an especially solemn elaborate or formal way,29,28,0,1,2,true
+sc_1228,custody,a state of being confined (usually for a short time),29,29,0,0,1,true
+sc_1229,executive,a person responsible for the administration of a business,29,29,0,0,1,true
+sc_1230,psychopathology,the branch of psychology concerned with abnormal behavior,29,29,0,0,1,true
+sc_1231,totalism,an ideological belief in the complete and unrestricted power of government.,29,29,0,0,1,true
+sc_1232,boundary,the greatest possible degree of something,29,29,0,0,1,true
+sc_1233,happiness,state of well-being characterized by emotions ranging from contentment to intense joy,29,29,0,0,1,true
+sc_1234,conformity,correspondence in form or appearance,29,29,0,0,1,true
+sc_1235,getting,the act of acquiring something,29,28,0,1,2,true
+sc_1236,maintenance,activity involved in maintaining something in good working order,29,29,0,0,1,true
+sc_1237,clergy,"in Christianity, clergymen collectively (as distinguished from the laity)",29,29,0,0,1,true
+sc_1238,survey,a detailed critical inspection,29,29,0,0,1,true
+sc_1239,questionable,subject to question,29,29,0,0,1,true
+sc_1240,thesis,an unproved statement put forward as a premise in an argument,29,29,0,0,1,true
+sc_1241,inspiration,arousal of the mind to special unusual activity or creativity,29,29,0,0,1,true
+sc_1242,seeing,perception by means of the eyes,29,29,0,0,1,true
+sc_1243,deprivation,a state of extreme poverty,29,28,1,0,2,true
+sc_1244,funds,assets in the form of money,29,29,0,0,1,true
+sc_1245,save,(sports) the act of preventing the opposition from scoring,29,29,0,0,1,true
+sc_1246,extraterrestrial,a form of life assumed to exist outside the Earth or its atmosphere,29,29,0,0,1,true
+sc_1247,lineage,the hereditary derivation of an individual,29,29,0,0,1,true
+sc_1248,unknown,anyone who does not belong in the environment in which they are found,29,29,0,0,1,true
+sc_1249,expanded,increased in extent or size or bulk or scope,29,29,0,0,1,true
+sc_1250,exempt,(of persons) freed from or not subject to an obligation or liability (as e.g. taxes) to which others or other things are subject,29,29,0,0,1,true
+sc_1251,market,the world of commercial activity where goods and services are bought and sold,29,29,0,0,1,true
+sc_1252,blood,temperament or disposition,29,29,0,0,1,true
+sc_1253,structured,having definite and highly organized structure,29,29,0,0,1,true
+sc_1254,brief,a document stating the facts and points of law of a client's case,29,29,0,0,1,true
+sc_1255,sin,(Akkadian) god of the Moon; counterpart of Sumerian Nanna,29,29,0,0,1,true
+sc_1256,believer,a supporter who accepts something as true,29,29,0,0,1,true
+sc_1257,asking,the verbal act of requesting,29,29,0,0,1,true
+sc_1258,incident,a public disturbance,29,29,0,0,1,true
+sc_1259,secondary,the defensive football players who line up behind the linemen,29,29,0,0,1,true
+sc_1260,charitable,relating to or characterized by charity,29,29,0,0,1,true
+sc_1261,dance,an artistic form of nonverbal communication,29,29,0,0,1,true
+sc_1262,aggressive,having or showing determination and energetic pursuit of your ends,28,28,0,0,1,true
+sc_1263,engagement,a meeting arranged in advance,28,27,1,0,2,true
+sc_1264,cultism,devotion to the doctrine or a cult or to the practices of a cult,28,28,0,0,1,true
+sc_1265,allegiance,the act of binding yourself (intellectually or emotionally) to a course of action,28,28,0,0,1,true
+sc_1266,neutral,one who does not side with any party in a war or dispute,28,28,0,0,1,true
+sc_1267,goes,a usually brief attempt,28,28,0,0,1,true
+sc_1268,keeping,conformity or harmony,28,28,0,0,1,true
+sc_1269,nine,a team of professional baseball players who play and travel together,28,26,2,0,2,true
+sc_1270,comprehensive,an intensive examination testing a student's proficiency in some special field of knowledge,28,28,0,0,1,true
+sc_1271,array,an orderly arrangement,28,28,0,0,1,true
+sc_1272,favor,an act of gracious kindness,28,28,0,0,1,true
+sc_1273,picture,a clear and telling mental image,28,28,0,0,1,true
+sc_1274,doctrinal,relating to or involving or preoccupied with doctrine,28,28,0,0,1,true
+sc_1275,valid,well grounded in logic or truth or having legal force,28,27,1,0,2,true
+sc_1276,analyses,an investigation of the component parts of a whole and their relations in making up the whole,28,28,0,0,1,true
+sc_1277,assigned,appointed to a post or duty,28,24,4,0,2,true
+sc_1278,fraud,intentional deception resulting in injury to another person,28,28,0,0,1,true
+sc_1279,psychiatric,relating to or used in or engaged in the practice of psychiatry,28,28,0,0,1,true
+sc_1280,expert,a person with special knowledge or ability who performs skillfully,28,28,0,0,1,true
+sc_1281,demanding,requiring more than usually expected or thought due; especially great patience and effort and skill,28,27,1,0,2,true
+sc_1282,topic,the subject matter of a conversation or discussion,28,26,0,2,2,true
+sc_1283,comparison,the act of examining resemblances,28,27,1,0,2,true
+sc_1284,corrupt,lacking in integrity,28,28,0,0,1,true
+sc_1285,renewal,the conversion of wasteland into land suitable for use of habitation or cultivation,28,28,0,0,1,true
+sc_1286,resource,available source of wealth; a new or reserve supply that can be drawn upon when needed,28,27,1,0,2,true
+sc_1287,spent,"depleted of energy, force, or strength",28,28,0,0,1,true
+sc_1288,music,an artistic form of auditory communication incorporating instrumental or vocal tones in a structured and continuous manner,28,27,0,1,2,true
+sc_1289,paranoid,a person afflicted with paranoia,28,28,0,0,1,true
+sc_1290,reporting,the news as presented by reporters for newspapers or radio or television,28,28,0,0,1,true
+sc_1291,divinity,the quality of being divine,28,28,0,0,1,true
+sc_1292,stay,continuing or remaining in a place or state,28,28,0,0,1,true
+sc_1293,unlike,marked by dissimilarity,28,28,0,0,1,true
+sc_1294,eclectic,someone who selects according to the eclectic method,28,28,0,0,1,true
+sc_1295,rich,people who have possessions and wealth (considered as a group),28,28,0,0,1,true
+sc_1296,rebellion,refusal to accept some authority or code or convention,28,28,0,0,1,true
+sc_1297,answer,a statement (either spoken or written) that is made to reply to a question or request or criticism or accusation,28,28,0,0,1,true
+sc_1298,holistic,emphasizing the organic or functional relation between parts and the whole,28,28,0,0,1,true
+sc_1299,staff,personnel who assist their superior in carrying out an assigned task,28,28,0,0,1,true
+sc_1300,capitalism,an economic system based on private ownership of capital,27,27,0,0,1,true
+sc_1301,kill,the act of terminating a life,27,27,0,0,1,true
+sc_1302,affected,acted upon; influenced,27,27,0,0,1,true
+sc_1303,obedience,the act of obeying; dutiful or submissive behavior with respect to another person,27,27,0,0,1,true
+sc_1304,equivalent,a person or thing equal to another in value or measure or force or effect or significance etc,27,27,0,0,1,true
+sc_1305,induced,brought about or caused; not spontaneous,27,27,0,0,1,true
+sc_1306,ego,an inflated feeling of pride in your superiority to others,27,27,0,0,1,true
+sc_1307,mobilization,act of assembling and putting into readiness for war or other emergency:,27,27,0,0,1,true
+sc_1308,daughter,a female human offspring,27,27,0,0,1,true
+sc_1309,accompanied,having companions or an escort,27,27,0,0,1,true
+sc_1310,nationalism,love of country and willingness to sacrifice for it,27,27,0,0,1,true
+sc_1311,moderate,a person who takes a position in the political center,27,27,0,0,1,true
+sc_1312,suspicion,an impression that something might be the case,27,27,0,0,1,true
+sc_1313,distress,psychological suffering,27,27,0,0,1,true
+sc_1314,selection,the act of choosing or selecting,27,27,0,0,1,true
+sc_1315,pluralism,a social organization in which diversity of racial or religious or ethnic or cultural groups is tolerated,27,27,0,0,1,true
+sc_1316,tactics,the branch of military science dealing with detailed maneuvers to achieve objectives set by strategy,27,27,0,0,1,true
+sc_1317,anthony,Roman general under Julius Caesar in the Gallic wars; repudiated his wife for the Egyptian queen Cleopatra; they were defeated by Octavian at Actium (83-30 BC),27,27,0,0,1,true
+sc_1318,industry,the people or companies engaged in a particular kind of commercial enterprise,27,27,0,0,1,true
+sc_1319,ethic,the principles of right and wrong that are accepted by an individual or a social group,27,27,0,0,1,true
+sc_1320,appearance,outward or visible aspect of a person or thing,27,27,0,0,1,true
+sc_1321,root,(linguistics) the form of a word after all affixes are removed,27,27,0,0,1,true
+sc_1322,nuclear,(weapons) deriving destructive energy from the release of atomic energy,27,27,0,0,1,true
+sc_1323,meaningful,having a meaning or purpose,27,27,0,0,1,true
+sc_1324,representative,a person who represents others,27,27,0,0,1,true
+sc_1325,holding,the act of retaining something,27,27,0,0,1,true
+sc_1326,stop,the act of stopping something,27,27,0,0,1,true
+sc_1327,contradiction,opposition between two conflicting forces or ideas,27,27,0,0,1,true
+sc_1328,institution,an organization founded and united for a specific purpose,27,27,0,0,1,true
+sc_1329,assault,close fighting during the culmination of a military attack,27,27,0,0,1,true
+sc_1330,frequent,coming at short intervals or habitually,27,27,0,0,1,true
+sc_1331,orthodoxy,the quality of being orthodox (especially in religion),27,27,0,0,1,true
+sc_1332,devotee,an ardent follower and admirer,27,27,0,0,1,true
+sc_1333,letters,the literary culture,27,27,0,0,1,true
+sc_1334,sound,the particular auditory effect produced by a given cause,27,26,0,1,2,true
+sc_1335,adoption,the act of accepting with approval; favorable reception,27,27,0,0,1,true
+sc_1336,institute,an association organized to promote art or science or education,27,27,0,0,1,true
+sc_1337,travel,the act of going from one place to another,27,27,0,0,1,true
+sc_1338,fashion,how something is done or how it happens,27,27,0,0,1,true
+sc_1339,reflected,(especially of incident sound or light) bent or sent back,27,27,0,0,1,true
+sc_1340,performance,a dramatic or musical entertainment,27,26,1,0,2,true
+sc_1341,preaching,a moralistic rebuke,27,26,1,0,2,true
+sc_1342,counterculture,a culture with lifestyles and values opposed to those of the established culture,27,27,0,0,1,true
+sc_1343,veneration,a feeling of profound respect for someone or something,27,27,0,0,1,true
+sc_1344,cent,a coin worth one-hundredth of the value of the basic unit,27,27,0,0,1,true
+sc_1345,researcher,a scientist who devotes themself to doing research,26,26,0,0,1,true
+sc_1346,section,a self-contained part of a larger composition (written or musical),26,26,0,0,1,true
+sc_1347,functioning,process or manner of functioning or operating,26,24,2,0,2,true
+sc_1348,split,extending the legs at right angles to the trunk (one in front and the other in back),26,26,0,0,1,true
+sc_1349,logical,capable of or reflecting the capability for correct and valid reasoning,26,26,0,0,1,true
+sc_1350,vehicle,a medium for the expression or achievement of something,26,26,0,0,1,true
+sc_1351,motivation,the psychological feature that arouses an organism to action toward a desired goal; the reason for the action; that which gives purpose and direction to behavior,26,26,0,0,1,true
+sc_1352,harmony,compatibility in opinion and action,26,26,0,0,1,true
+sc_1353,gas,the state of matter distinguished from the solid and liquid states by: relatively low density and viscosity; relatively great expansion and contraction with changes in pressure and temperature; the ability to diffuse readily; and the spontaneous tendency to become distributed uniformly throughout any container,26,26,0,0,1,true
+sc_1354,equality,the quality of being the same in quantity or measure or value or status,26,26,0,0,1,true
+sc_1355,publicity,a message issued in behalf of some product or cause or idea or person or institution,26,26,0,0,1,true
+sc_1356,opposite,"a word that expresses a meaning opposed to the meaning of another word, in which case the two words are antonyms of each other",26,25,1,0,2,true
+sc_1357,domain,a particular environment or walk of life,26,26,0,0,1,true
+sc_1358,validity,the quality of being valid and rigorous,26,26,0,0,1,true
+sc_1359,composed,serenely self-possessed and free from agitation especially in times of stress,26,26,0,0,1,true
+sc_1360,wish,a specific feeling of desire,26,26,0,0,1,true
+sc_1361,mutual,concerning each of two or more persons or things; especially given or done in return,26,26,0,0,1,true
+sc_1362,bear,an investor with a pessimistic market outlook; an investor who expects prices to fall and so sells now in order to buy later at a lower price,26,26,0,0,1,true
+sc_1363,standing,social or financial or professional status or reputation,26,26,0,0,1,true
+sc_1364,trauma,any physical damage to the body caused by violence or accident or fracture etc.; the condition of an injury,26,26,0,0,1,true
+sc_1365,reliable,worthy of reliance or trust,26,26,0,0,1,true
+sc_1366,ready,poised for action,26,26,0,0,1,true
+sc_1367,title,a heading that names a statute or legislative bill; may give a brief summary of the matters it deals with,26,26,0,0,1,true
+sc_1368,classical,traditional genre of music conforming to an established form and appealing to critical interest and developed musical taste,26,26,0,0,1,true
+sc_1369,command,an authoritative direction or instruction to do something,26,26,0,0,1,true
+sc_1370,employment,the state of being employed or having a job,26,26,0,0,1,true
+sc_1371,jihad,a holy struggle or striving by a Muslim for a moral or spiritual or political goal,26,26,0,0,1,true
+sc_1372,patient,a person who requires medical care,26,22,4,0,2,true
+sc_1373,sophisticated,having or appealing to those having worldly knowledge and refinement and savoir-faire,26,26,0,0,1,true
+sc_1374,classified,a short ad in a newspaper or magazine (usually in small print) and appearing along with other ads of the same type,26,26,0,0,1,true
+sc_1375,guilty,responsible for or chargeable with a reprehensible act,25,24,1,0,2,true
+sc_1376,attractive,pleasing to the eye or mind especially through beauty or charm,25,24,1,0,2,true
+sc_1377,armed,(used of persons or the military) characterized by having or bearing arms,25,25,0,0,1,true
+sc_1378,conscience,motivation deriving logically from ethical or moral principles that govern a person's thoughts and actions,25,20,5,0,2,true
+sc_1379,narrow,not wide,25,25,0,0,1,true
+sc_1380,barker,someone who stands in front of a show (as at a carnival) and gives a loud colorful sales talk to potential customers,25,25,0,0,1,true
+sc_1381,satisfaction,"the contentment one feels when one has fulfilled a desire, need, or expectation",25,24,1,0,2,true
+sc_1382,stability,the quality or attribute of being firm and steadfast,25,25,0,0,1,true
+sc_1383,easy,posing no difficulty; requiring little effort,25,23,0,2,2,true
+sc_1384,accommodation,a settlement of differences,25,25,0,0,1,true
+sc_1385,confined,not invading healthy tissue,25,25,0,0,1,true
+sc_1386,fellow,a boy or man,25,25,0,0,1,true
+sc_1387,unacceptable,not acceptable; not welcome,25,24,1,0,2,true
+sc_1388,scene,the visual percept of a region,25,25,0,0,1,true
+sc_1389,implicit,implied though not directly expressed; inherent in the nature of something,25,25,0,0,1,true
+sc_1390,proliferation,growth by the rapid multiplication of parts,25,25,0,0,1,true
+sc_1391,closer,a person who closes something,25,25,0,0,1,true
+sc_1392,sociocultural,relating to both social and cultural matters,25,25,0,0,1,true
+sc_1393,tied,fastened with strings or cords,25,24,0,1,2,true
+sc_1394,ethos,(anthropology) the distinctive spirit of a culture or an era,25,25,0,0,1,true
+sc_1395,examination,the act of examining something closely (as for mistakes),25,25,0,0,1,true
+sc_1396,articulated,consisting of segments held together by joints,25,25,0,0,1,true
+sc_1397,integration,the action of incorporating a racial or religious group into a community,25,24,0,1,2,true
+sc_1398,brazilian,a native or inhabitant of Brazil,25,25,0,0,1,true
+sc_1399,outcome,a phenomenon that follows and is caused by some previous phenomenon,25,25,0,0,1,true
+sc_1400,journal,a daily written record of (usually personal) experiences and observations,25,25,0,0,1,true
+sc_1401,net,the excess of revenues over outlays in a given period of time (including depreciation and other non-cash expenses),25,25,0,0,1,true
+sc_1402,registered,(of animals) officially recorded with or certified by a recognized breed association; especially in a stud book,25,25,0,0,1,true
+sc_1403,solidarity,a union of interests or purposes or sympathies among members of a group,25,25,0,0,1,true
+sc_1404,consensus,agreement in the judgment or opinion reached by a group as a whole,25,25,0,0,1,true
+sc_1405,watching,the act of observing; taking a patient look,25,25,0,0,1,true
+sc_1406,consideration,the process of giving careful thought to something,25,25,0,0,1,true
+sc_1407,discovery,the act of discovering something,25,25,0,0,1,true
+sc_1408,panic,an overwhelming feeling of fear and anxiety,25,25,0,0,1,true
+sc_1409,confusion,disorder resulting from a failure to behave predictably,25,22,3,0,2,true
+sc_1410,heavenly,relating to or inhabiting a divine heaven,25,25,0,0,1,true
+sc_1411,privilege,a special advantage or immunity or benefit not enjoyed by all,25,19,0,6,2,true
+sc_1412,healthy,having or indicating good health in body or mind; free from infirmity or disease,25,25,0,0,1,true
+sc_1413,contribution,the effort contributed by a person in bringing about a result,25,25,0,0,1,true
+sc_1414,forward,"a position on a basketball, soccer, or hockey team",25,25,0,0,1,true
+sc_1415,escape,an inclination to retreat from unpleasant realities through diversion or fantasy,25,24,1,0,2,true
+sc_1416,visionary,a person given to fanciful speculations and enthusiasms with little regard for what is actually possible,25,25,0,0,1,true
+sc_1417,accessible,capable of being reached,25,25,0,0,1,true
+sc_1418,drawing,"an illustration that is drawn by hand and published in a book, magazine, or newspaper",25,25,0,0,1,true
+sc_1419,radio,medium for communication,25,25,0,0,1,true
+sc_1420,brahma,the Creator; one of the three major deities in the later Hindu pantheon,25,25,0,0,1,true
+sc_1421,commercial,a commercially sponsored ad on radio or television,25,25,0,0,1,true
+sc_1422,animal,a living organism characterized by voluntary movement,25,25,0,0,1,true
+sc_1423,headed,having a heading or caption,25,25,0,0,1,true
+sc_1424,devotional,a short religious service,25,25,0,0,1,true
+sc_1425,marxist,an advocate of Marxism,25,25,0,0,1,true
+sc_1426,charity,a foundation created to promote the public good (not for assistance to any particular individuals),25,25,0,0,1,true
+sc_1427,dependence,the state of relying on or being controlled by someone or something else,24,23,1,0,2,true
+sc_1428,selling,the exchange of goods for an agreed sum of money,24,23,0,1,2,true
+sc_1429,initiate,someone new to a field or activity,24,24,0,0,1,true
+sc_1430,involuntary,not subject to the control of the will,24,24,0,0,1,true
+sc_1431,hypnotic,of or relating to hypnosis,24,24,0,0,1,true
+sc_1432,instrumental,relating to or designed for or performed on musical instruments,24,24,0,0,1,true
+sc_1433,cold,a mild viral infection involving the nose and respiratory passages (but not the lungs),24,24,0,0,1,true
+sc_1434,embrace,the act of clasping another person in the arms (as in greeting or affection),24,23,1,0,2,true
+sc_1435,developmental,of or relating to or constituting development,24,24,0,0,1,true
+sc_1436,accurate,conforming exactly or almost exactly to fact or to a standard or performing with total accuracy,24,24,0,0,1,true
+sc_1437,abandon,the trait of lacking restraint or control; reckless freedom from inhibition or worry,24,23,1,0,2,true
+sc_1438,departure,the act of departing,24,24,0,0,1,true
+sc_1439,parental,designating the generation of organisms from which hybrid offspring are produced,24,24,0,0,1,true
+sc_1440,regulation,an authoritative command,24,24,0,0,1,true
+sc_1441,utopian,an idealistic (but usually impractical) social reformer,24,24,0,0,1,true
+sc_1442,expectation,belief about (or mental picture of) the future,24,24,0,0,1,true
+sc_1443,hypothesis,a proposal intended to explain certain facts or observations,24,24,0,0,1,true
+sc_1444,introduction,the act of beginning something new,24,24,0,0,1,true
+sc_1445,emphasizing,the act of giving special importance or significance to something,24,24,0,0,1,true
+sc_1446,scare,sudden mass fear and anxiety over anticipated events,24,24,0,0,1,true
+sc_1447,spiritualism,(theology) any doctrine that asserts the separate existence of God,24,24,0,0,1,true
+sc_1448,game,a contest with rules to determine a winner,24,24,0,0,1,true
+sc_1449,spectrum,an ordered array of the components of an emission or wave,24,23,1,0,2,true
+sc_1450,production,the act or process of producing something,24,24,0,0,1,true
+sc_1451,shaped,having the shape of,24,24,0,0,1,true
+sc_1452,scope,an area in which something acts or operates or has power or control:,24,23,1,0,2,true
+sc_1453,advent,arrival that has been awaited (especially of something momentous),24,24,0,0,1,true
+sc_1454,romantic,a soulful or amorous idealist,24,24,0,0,1,true
+sc_1455,mail,the bags of letters and packages that are transported by the postal service,24,24,0,0,1,true
+sc_1456,faithful,any loyal and steadfast following,24,24,0,0,1,true
+sc_1457,likelihood,the probability of a specified outcome,24,24,0,0,1,true
+sc_1458,imagery,the ability to form mental images of things or events,24,24,0,0,1,true
+sc_1459,addressed,(of mail) marked with a destination,24,24,0,0,1,true
+sc_1460,limit,the greatest possible degree of something,24,22,2,0,2,true
+sc_1461,raising,the properties acquired as a consequence of the way you were treated as a child,24,24,0,0,1,true
+sc_1462,passage,the act of passing from one state or place to the next,24,23,1,0,2,true
+sc_1463,mormons,"church founded by Joseph Smith in 1830 with headquarters in Salt Lake City, Utah",24,24,0,0,1,true
+sc_1464,earliest,at or near the beginning of a period of time or course of events or before the usual or expected time,24,24,0,0,1,true
+sc_1465,documented,furnished with or supported by documents,24,24,0,0,1,true
+sc_1466,devil,(Judeo-Christian and Islamic religions) chief spirit of evil and adversary of God; tempter of mankind; master of Hell,24,23,0,1,2,true
+sc_1467,dark,absence of light or illumination,24,22,0,2,2,true
+sc_1468,creed,any system of principles or beliefs,24,24,0,0,1,true
+sc_1469,mythic,relating to or having the nature of myth,24,24,0,0,1,true
+sc_1470,motherhood,the kinship relation between an offspring and the mother,24,24,0,0,1,true
+sc_1471,punishment,"the act of punishing, or the infliction of a penalty",24,24,0,0,1,true
+sc_1472,star,someone who is dazzlingly skilled in any field,24,24,0,0,1,true
+sc_1473,brother,(Roman Catholic Church) a title given to a monk and used as form of address,24,24,0,0,1,true
+sc_1474,baptism,a Christian sacrament signifying spiritual cleansing and rebirth,24,24,0,0,1,true
+sc_1475,sealing,the act of treating something to make it repel water,24,24,0,0,1,true
+sc_1476,appointed,subject to appointment,24,24,0,0,1,true
+sc_1477,senior,an undergraduate student during the year preceding graduation,24,24,0,0,1,true
+sc_1478,holiness,the quality of being holy,24,24,0,0,1,true
+sc_1479,authoritative,endowed with authority,24,23,0,1,2,true
+sc_1480,consequence,a phenomenon that follows and is caused by some previous phenomenon,23,23,0,0,1,true
+sc_1481,assembly,the act of constructing something (as a piece of machinery),23,23,0,0,1,true
+sc_1482,faced,having a face or facing especially of a specified kind or number; often used in combination,23,23,0,0,1,true
+sc_1483,serving,the act of delivering a writ or summons upon someone,23,22,0,1,2,true
+sc_1484,dependency,the state of relying on or being controlled by someone or something else,23,22,1,0,2,true
+sc_1485,korean,a native or inhabitant of Korea who speaks the Korean language,23,23,0,0,1,true
+sc_1486,purity,being undiluted or unmixed with extraneous material,23,22,0,1,2,true
+sc_1487,selected,chosen in preference to another,23,23,0,0,1,true
+sc_1488,fundamentalism,a form of Protestantism that takes the interpretation of every word in the sacred texts as literal truth,23,23,0,0,1,true
+sc_1489,supporting,the act of bearing the weight of or strengthening,23,23,0,0,1,true
+sc_1490,communism,a form of socialism that abolishes private ownership,23,23,0,0,1,true
+sc_1491,terminology,a system of words used to name things in a particular discipline,23,23,0,0,1,true
+sc_1492,rebirth,after death the soul begins a new cycle of existence in another human body,23,23,0,0,1,true
+sc_1493,primitive,a person who belongs to an early stage of civilization,23,23,0,0,1,true
+sc_1494,naive,marked by or showing unaffected simplicity and lack of guile or worldly experience,23,23,0,0,1,true
+sc_1495,federation,an organization formed by merging several groups or parties,23,23,0,0,1,true
+sc_1496,conversation,the use of speech for informal exchange of views or ideas or information etc.,23,23,0,0,1,true
+sc_1497,option,the right to buy or sell property at an agreed price; the right is purchased and if it is not exercised by a stated date the money is forfeited,23,22,1,0,2,true
+sc_1498,shifting,the act of moving from one place to another,23,23,0,0,1,true
+sc_1499,feedback,the process in which part of the output of a system is returned to its input in order to regulate its further output,23,23,0,0,1,true
+sc_1500,technological,of or relating to a practical subject that is organized according to scientific principles,23,23,0,0,1,true

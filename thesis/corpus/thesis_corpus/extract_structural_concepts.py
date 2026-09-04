@@ -61,8 +61,11 @@ ARCHIVES = {
 
 WORDNET_LEXICON = "oewn:2024"
 MIN_TOKEN_LEN = 3
-CANDIDATE_POOL_SIZE = 6000  # ranked pool inspected for WordNet membership before domain filtering
-TARGET_SIZE = 600  # how many domain-filtered candidates to keep
+CANDIDATE_POOL_SIZE = 10000  # ranked pool inspected for WordNet membership before domain filtering
+TARGET_SIZE = 1500  # how many domain-filtered candidates to keep -- the practical ceiling before
+                     # quality degrades further (proper-noun leakage picks up past ~2000, each
+                     # term backed by fewer real mentions); checked directly against the full
+                     # 7,053-candidate pool before settling here, not picked blind
 
 # Restricts candidates to lexicographer files plausibly about social
 # relations, belief, psychology, or group dynamics -- matching the intent
@@ -99,15 +102,36 @@ GLOSS_OVERRIDES = {
     "group": "any number of entities (members) considered as a unit",
     "god": "the supernatural being conceived as the perfect and omnipotent and omniscient originator and ruler of the universe",
     "lay": "characteristic of those who are not members of the clergy",
+    # Found extending the target size to 1500: a real WordNet sense exists
+    # and is a genuinely useful concept, but the top-ranked sense picked was
+    # a specific US-federal-department/institution instance instead of the
+    # general one.
+    "education": "the activities of educating or instructing; activities that impart knowledge or skill",
+    "justice": "the quality of being just or fair",
+    "energy": "enterprising or ambitious drive; forceful exertion",
+    "defense": "the act of defending against harm",
+    "key": "a solution or remedy for a difficult problem",
+    "nation": "a politically organized body of people under a single government",
+    "post": "a job in an organization",
+    "service": "a public act of religious worship",
+    "balance": "a state of equilibrium",
+    "private": "confined to particular persons or groups",
 }
 
 # Spot-checked and excluded: a WordNet sense exists and cleared the domain
 # filter, but it's either a proper-noun leak the instance_hyponym check
-# missed (e.g. "truth" matching Sojourner Truth), an overly narrow/wrong
+# missed, an acronym coinciding with a common word (e.g. "LET" = Lashkar-e-
+# Taiba, "SHAPE" = NATO's Supreme Headquarters), an overly narrow/wrong
 # sense not fixable with a one-line override, or a nationality/demonym
-# that isn't a structural concept in the relevant sense. Not exhaustive --
-# a candidate pool this size (600) will have residual noise beyond what a
-# spot-check catches; documented here rather than claimed fully clean.
+# that isn't a structural concept in the relevant sense. Two specific-named
+# leaks are worth flagging explicitly: "hubbard" (L. Ron Hubbard) and
+# "iskcon" (a specific religious sect, the Hare Krishnas) are exactly the
+# kind of proper-noun/named-group leak this whole domain filter exists to
+# keep out, even though they're topically on-point -- structural concepts
+# should describe roles/dynamics, not name specific people or groups (that
+# job belongs to emergent_entities). Not exhaustive -- a pool this size
+# will have residual noise beyond what a spot-check catches; documented
+# here rather than claimed fully clean.
 EXCLUDE_WORDS = {
     "truth",  # matches "Sojourner Truth" (proper-noun leak)
     "back",  # matches a football position, not the general sense
@@ -117,6 +141,17 @@ EXCLUDE_WORDS = {
     "japanese",  # nationality/demonym, not a structural concept
     "roman",  # nationality/demonym, not a structural concept
     "writings",  # matches a specific Hebrew Scriptures sense
+    # Found extending the target size from 600 to 1500 (systematic sweep
+    # for biographical-looking glosses, plus manual spot-checks):
+    "broad", "asian", "english", "prime", "peter", "elijah", "ted",
+    "american", "western", "young", "major", "black", "day", "eastern",
+    "best", "france", "born", "hubbard", "jones", "iskcon", "john",
+    "masters", "land", "base", "hope", "twenty", "begin", "singer", "low",
+    "joseph", "james", "drew", "richardson", "smith", "berg", "eight",
+    "charles", "london", "usa", "manson", "bond", "king", "southern",
+    "thornton", "muhammad", "weber", "sessions", "army", "henry", "lewis",
+    "robert", "robbins", "let", "ron", "shape", "pas", "italian",
+    "russian", "simon", "palmer",
 }
 
 _TOKEN_RE = re.compile(r"[a-zA-Z']+")
