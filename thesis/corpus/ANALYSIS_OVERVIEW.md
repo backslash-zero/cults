@@ -2,21 +2,9 @@
 
 A reference snapshot of the shared cross-corpus embedding space, for planning
 the geometrical analysis. Reflects the pipeline as of the `build_shared_space`
-run that produced `processed/shared_space/embedding_space.jsonl` (46,648
-points, k=396). Regenerate the numbers below after any pipeline rerun — they
+run that produced `processed/shared_space/embedding_space.jsonl` (47,248
+points, k=395). Regenerate the numbers below after any pipeline rerun — they
 are not guaranteed to stay in sync automatically.
-
-**Pending as of this snapshot**: a 7th dataset, `structural_concepts`, has
-been designed and its candidate list extracted (600 concepts, real numbers
-below) but not yet embedded or pooled — that step needs Ollama, which runs
-on a separate machine. `build_shared_space.py` already requires and will
-pool it once `dictionaries/structural_concepts_embedded.jsonl` exists (see
-`python -m thesis_corpus.embed_concept_backbone --input
-dictionaries/structural_concepts_candidates.csv --output
-dictionaries/structural_concepts_embedded.jsonl` in `thesis_corpus/README.md`).
-Everything below marked *(pending)* will change on the next rerun; the
-46,648/k=396 figures above are the *last actually verified* run, without
-`structural_concepts`.
 
 ## Project Goals & Hypothesis
 
@@ -56,8 +44,8 @@ What the analysis is meant to establish:
 
 ## Datasets in the Shared Space
 
-One shared 396-dimensional PCA space (95.0% cumulative variance), pooled from
-six sources, 46,648 points total:
+One shared 395-dimensional PCA space (95.0% cumulative variance), pooled from
+seven sources, 47,248 points total:
 
 | `source_dataset` | Points | Key format | Label semantics |
 |---|---|---|---|
@@ -66,18 +54,18 @@ six sources, 46,648 points total:
 | `interviews` | 230 | `document_id:chunk_index` | Same, from 26 interview transcripts |
 | `miviludes_criteria` | 17 | `crit-<slug>` | French criterion text (`label`); English translation as `label_en`, display-only — not a separate point |
 | `concept_backbone` | 3,000 | WordNet ILI id (e.g. `i71809`) | The concept's primary English lemma |
-| `structural_concepts` *(pending)* | 600 candidates extracted, not yet embedded/pooled | `sc_<0001..0600>` | The term itself (e.g. "control", "authority") |
+| `structural_concepts` | 600 | `sc_<0001..0600>` | The term itself (e.g. "control", "authority") |
 | `emergent_entities` | 3,251 | normalized anchor text | The anchor text itself (e.g. "scientology") |
 
 ## Point Roles
 
 Every point also carries a `point_role`, cutting across `source_dataset` to
-group the (soon seven) datasets into three kinds of thing:
+group the seven datasets into three kinds of thing:
 
 | `point_role` | Datasets | What it is |
 |---|---|---|
 | `expression` | `literature`, `miviludes`, `interviews`, `miviludes_criteria` | A criterion expression extracted from a text, or the MIVILUDES's own criterion text — something a source actually said |
-| `reference` | `concept_backbone`, `structural_concepts` *(pending)* | A backdrop vocabulary point, not itself a claim any source makes. Two subsets: `concept_backbone` is topic-neutral (WordNet, not derived from any corpus — an independent yardstick); `structural_concepts` is corpus-derived (extracted from the corpora's own expression text, geometrically closer to the data by construction, but not topic-neutral — see "Why two reference subsets" below) |
+| `reference` | `concept_backbone`, `structural_concepts` | A backdrop vocabulary point, not itself a claim any source makes. Two subsets: `concept_backbone` is topic-neutral (WordNet, not derived from any corpus — an independent yardstick); `structural_concepts` is corpus-derived (extracted from the corpora's own expression text, geometrically closer to the data by construction, but not topic-neutral — see "Why two reference subsets" below) |
 | `emergent` | `emergent_entities` | A named entity/group/concept mentioned *by* the corpora themselves — corpus-derived like an expression, but a recurring reference object rather than a claim |
 
 ### Why two reference subsets
@@ -110,14 +98,22 @@ monk) were hand-corrected and a few proper-noun leaks excluded; neither is
 exhaustive at this scale — residual noise should be expected, not assumed
 absent.
 
+**Verified after embedding and rerunning**: `structural_concepts`' nearest
+expression-point distance (mean 32.97, sampled) now sits essentially at the
+expression-to-expression baseline (33.19) — it reads as embedded *within*
+the expression cloud, not as a separate cluster. `concept_backbone` remains
+farther out (34.63), consistent with staying topic-neutral rather than
+corpus-proximate. Centroid distance to the expression centroid also
+improved: 15.9 (`structural_concepts`) vs. 16.7 (`concept_backbone`), both
+against `emergent_entities`' 12.5.
+
 ## Categorical Facets Available for Analysis
 
 All fields below live directly in `embedding_space.jsonl` and every
 `visualization_{pca,umap,tsne}_3d.jsonl` file — no extra join needed for
 these. `null`/absent where not applicable, never a fabricated default.
 
-- **`source_dataset`** (6 values now, 7 once `structural_concepts` is
-  pooled — table above) — the coarsest split.
+- **`source_dataset`** (7 values, table above) — the coarsest split.
 - **`point_role`** (3 values, table above) — `expression`/`reference`/
   `emergent`; the coarser split when the question is about the *kind* of
   point rather than which specific dataset it came from (e.g. "compare
@@ -155,7 +151,7 @@ these. `null`/absent where not applicable, never a fabricated default.
   (332), Unification Church (273), Jehovah's Witnesses (233), sect (205),
   brainwashing (204).
 - **`mention_distribution`** — emergent-entity and structural-concept
-  points only (once the latter is pooled); `null` elsewhere (including
+  points only; `null` elsewhere (including
   `concept_backbone`, which has no corpus-mention notion at all). A
   per-corpus mention count, e.g.
   `{"literature": 3683, "miviludes": 130, "interviews": 54}` for
@@ -190,9 +186,6 @@ these. `null`/absent where not applicable, never a fabricated default.
 
 ## What's NOT Yet Done
 
-- `structural_concepts` (600 candidates) needs embedding on the
-  Ollama-serving machine, then `build_shared_space.py` and `visualize_3d.py`
-  need rerunning — see "Pending as of this snapshot" at the top.
 - No clustering or distance analysis has been run on the shared space.
 - No criterion-centred nearest-neighbour inspection (e.g. which corpus
   expressions sit closest to each of the 17 MIVILUDES criteria).

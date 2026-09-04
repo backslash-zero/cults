@@ -605,12 +605,9 @@ every dataset ends up in the same shared coordinate system:
 - Total pooled points is logged at runtime, not asserted against a
   hardcoded constant (it will keep changing as the corpus grows, the
   emergent-entity threshold is adjusted, or the structural-concepts target
-  size changes): **46,648** points as of the last run before
-  `structural_concepts` was added (39,236 literature + 914 MIVILUDES + 230
-  interviews + 17 MIVILUDES criteria + 3,000 concept backbone + 3,251
-  emergent entities) — adding ~600 structural concepts is expected to bring
-  this to roughly 47,200 once embedded and rerun; update this figure from
-  the actual run's log line rather than trusting this estimate.
+  size changes): **47,248** points on the current corpus (39,236 literature
+  + 914 MIVILUDES + 230 interviews + 17 MIVILUDES criteria + 3,000 concept
+  backbone + 600 structural concepts + 3,251 emergent entities).
 
 **Standardization**: `StandardScaler` (zero mean, unit variance per
 dimension) runs before PCA. Every vector already comes from the same
@@ -626,7 +623,7 @@ to get the complete explained-variance curve — written to
 `processed/shared_space/variance_curve.{csv,json,png}` so the choice is
 inspectable rather than asserted — and the smallest `k` reaching 95%
 cumulative variance is picked from that curve. On the actual pooled data:
-`k=396` for 95.0% (curve is fairly gradual, not a sharp knee — e.g. 61% at
+`k=395` for 95.0% (curve is fairly gradual, not a sharp knee — e.g. 61% at
 k=100, 90% at k=300 — so this is a real but not dramatic compression;
 worth knowing when interpreting distances in the shared space).
 
@@ -732,7 +729,7 @@ center relative to the others).
 
 ## 3-D visualization projections (`visualize_3d`)
 
-`embedding_space.jsonl`'s 396 dimensions can't be plotted directly. This
+`embedding_space.jsonl`'s 395 dimensions can't be plotted directly. This
 script reads it once and writes three separate 3-D projections, one per
 method, so the shared space can actually be visualized:
 
@@ -747,7 +744,7 @@ method, so the shared space can actually be visualized:
   nonlinear projection tuned for cluster structure, at the cost of global
   distances being less meaningful than UMAP's or PCA's.
 
-All three are fit directly on the 396-d shared-space vectors (already
+All three are fit directly on the 395-d shared-space vectors (already
 standardized + PCA'd upstream in `build_shared_space.py`; no further scaling
 applied here).
 
@@ -771,7 +768,7 @@ thesis/corpus/processed/
     visualization_tsne_3d.jsonl   # ...same fields, tsne_3d_vector
 ```
 
-Each file has one row per point in `embedding_space.jsonl` (46,648), keeping
+Each file has one row per point in `embedding_space.jsonl` (47,248), keeping
 every field but the vector unchanged and carrying only its own 3-d vector.
-Unlike `embedding_space.jsonl`, these are small (46,648 × 3 floats each) and
+Unlike `embedding_space.jsonl`, these are small (47,248 × 3 floats each) and
 tracked in git, same as `variance_curve.*`.
