@@ -11,7 +11,9 @@
 //   shared_space/visualization_{pca,umap,tsne}_3d.jsonl
 //
 // Writes, under frontend/static/data/:
-//   points-meta.json       -- [{source_dataset, key, label}, ...] (43,415 entries, written once)
+//   points-meta.json       -- [{source_dataset, key, label, label_en, attribution,
+//                               claim_mode, epistemic_status, response_rank}, ...]
+//                              (46,648 entries, written once)
 //   positions-pca.json     -- [[x, y, z], ...] order-aligned to points-meta.json
 //   positions-umap.json
 //   positions-tsne.json
@@ -133,7 +135,16 @@ function main() {
 		const rows = loadJsonlLines(inputPath);
 
 		if (pointsMeta === null) {
-			pointsMeta = rows.map((r) => ({ source_dataset: r.source_dataset, key: r.key, label: r.label }));
+			pointsMeta = rows.map((r) => ({
+				source_dataset: r.source_dataset,
+				key: r.key,
+				label: r.label,
+				label_en: r.label_en ?? undefined,
+				attribution: r.attribution ?? undefined,
+				claim_mode: r.claim_mode ?? undefined,
+				epistemic_status: r.epistemic_status ?? undefined,
+				response_rank: r.response_rank ?? undefined
+			}));
 			for (const r of pointsMeta) {
 				countsBySourceDataset[r.source_dataset] = (countsBySourceDataset[r.source_dataset] ?? 0) + 1;
 			}

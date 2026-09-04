@@ -97,9 +97,9 @@ export type SourceDataset =
 	| 'literature'
 	| 'miviludes'
 	| 'interviews'
-	| 'miviludes_criteria_fr'
-	| 'miviludes_criteria_en'
-	| 'concept_backbone';
+	| 'miviludes_criteria'
+	| 'concept_backbone'
+	| 'entity_anchors';
 
 export type ProjectionMethod = 'pca' | 'umap' | 'tsne';
 
@@ -107,6 +107,11 @@ export interface PointMeta {
 	source_dataset: SourceDataset;
 	key: string;
 	label: string;
+	label_en?: string;
+	attribution?: string;
+	claim_mode?: string;
+	epistemic_status?: string;
+	response_rank?: number;
 }
 
 export interface SharedSpaceStats {

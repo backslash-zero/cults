@@ -13,7 +13,7 @@
 </p>
 
 <a
-	href="/cult-spaces/explore?dataset=miviludes_criteria_fr,miviludes_criteria_en"
+	href="/cult-spaces/explore?dataset=miviludes_criteria"
 	class="font-terminal-grotesque hover:underline"
 >
 	Explore these criteria in 3-D →

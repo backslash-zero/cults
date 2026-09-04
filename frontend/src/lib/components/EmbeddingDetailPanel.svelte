@@ -11,6 +11,12 @@
 			{SOURCE_DATASET_LABELS[point.source_dataset]}
 		</p>
 		<p class="text-gray-700 dark:text-gray-300 text-sm">{point.label}</p>
+		{#if point.label_en && point.label_en !== point.label}
+			<p class="text-gray-500 dark:text-gray-400 text-sm italic">{point.label_en}</p>
+		{/if}
+		{#if point.response_rank}
+			<p class="text-xs text-gray-400 dark:text-gray-500">Response #{point.response_rank}</p>
+		{/if}
 		<p class="text-xs text-gray-400 dark:text-gray-500 font-mono break-all">{point.key}</p>
 	{:else}
 		<p class="text-gray-400 dark:text-gray-500 italic text-sm">Click a point to see its details.</p>

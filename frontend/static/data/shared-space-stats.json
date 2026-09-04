@@ -1,19 +1,19 @@
 {
-  "totalPoints": 43415,
+  "totalPoints": 46648,
   "countsBySourceDataset": {
     "literature": 39236,
     "miviludes": 914,
-    "interviews": 231,
-    "miviludes_criteria_fr": 17,
-    "miviludes_criteria_en": 17,
-    "concept_backbone": 3000
+    "interviews": 230,
+    "miviludes_criteria": 17,
+    "concept_backbone": 3000,
+    "entity_anchors": 3251
   },
   "registry": {
     "totalDocuments": 85,
     "byCorpus": {
       "interviews": {
         "documents": 26,
-        "itemsEmbedded": 231,
+        "itemsEmbedded": 230,
         "byStage2Status": {
           "embedded": 26
         }
@@ -36,8 +36,8 @@
     }
   },
   "sharedSpace": {
-    "chosenDimensions": 390,
-    "varianceAtK": 0.950156811984304,
+    "chosenDimensions": 396,
+    "varianceAtK": 0.9503408342114568,
     "varianceThreshold": 0.95
   }
 }
