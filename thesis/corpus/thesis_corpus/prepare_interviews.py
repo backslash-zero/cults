@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -33,6 +34,17 @@ CORPUS_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_SOURCE_DIR = CORPUS_DIR / "interviews" / "cleaned"
 DEFAULT_DATABASE_PATH = CORPUS_DIR / "interviews" / "metadata" / "database.json"
 DEFAULT_OUTPUT_DIR = CORPUS_DIR / "processed" / "interviews"
+
+# Some transcripts end with a "--- \n\n TRANSCRIPTION / EDITING NOTES" section:
+# the transcriber's own commentary on ambiguous names, ASR corrections, etc.
+# -- not interview content. Left in place, this gets chunked and annotated
+# like real dialogue (confirmed on 3/26 transcripts: b2-aug13-1832,
+# b3-aug22-2057, b3-aug22-2101 -- one bad extracted item, "cercle solaire",
+# traced back to this section's own commentary rather than the interviewee's
+# actual words). Stripped here so it never reaches the chunker.
+_NOTES_SECTION_RE = re.compile(
+    r"\n-{3,}\s*\n+TRANSCRIPTION\s*/\s*EDITING NOTES\b.*", re.DOTALL,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("thesis_corpus.prepare_interviews")
@@ -50,6 +62,7 @@ def process_one(entry: dict, source_dir: Path, output_dir: Path) -> str:
         return "missing"
 
     text = transcript_path.read_text(encoding="utf-8")
+    text = _NOTES_SECTION_RE.sub("", text).rstrip() + "\n"
     doc_dir = output_dir / "documents" / document_id
     doc_dir.mkdir(parents=True, exist_ok=True)
 

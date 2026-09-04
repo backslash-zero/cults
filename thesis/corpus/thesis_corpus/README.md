@@ -412,6 +412,42 @@ space every corpus and the MIVILUDES criteria get projected into — the
 concept backbone isn't compared *against* that space after the fact, it
 helps *define* it.
 
+## Entity anchors as their own point-set (`build_shared_space`)
+
+Every extracted expression (Stage 2, above) is tagged with `entity_anchors`
+— the named entities/dimensions it mentions (e.g. "Scientology",
+"charismatic leader") — and Stage 2 already embeds each one individually,
+writing a per-item `entity_anchor_vectors` map (`{anchor_string: 1024-d
+vector}`). Until now this sat unused in the archive. `build_shared_space.py`
+now pools these into their own set of points in the shared space, alongside
+the concept backbone — giving named entities an actual position relative to
+both the corpus expressions that mention them and the topic-neutral concept
+backbone, rather than leaving them as a buried per-item list field.
+
+**Normalization**: each anchor string is lowercased, stripped, and has
+internal whitespace runs collapsed to one space (`"Charismatic  Leader"` and
+`"charismatic leader"` merge to the same entity) before pooling. Anchors are
+pooled once **across all three corpora together** (not per-corpus), so the
+same named entity mentioned in literature, MIVILUDES, and an interview
+becomes a single point.
+
+**Frequency threshold**: 19,596 unique normalized anchors exist across the
+whole corpus, most mentioned only once or twice — mostly noise (typos,
+overly specific one-off phrases). Only anchors mentioned **at least 3
+times** across all corpora get their own point (`--entity-anchor-min-mentions`,
+default 3), giving 3,251 entity-anchor points — deliberately the same order
+of magnitude as the 3,000-entry concept backbone. Top anchors by mention
+count: Scientology (3,867), charismatic leader (3,417), NRMs (1,279), cults
+(688), Heaven's Gate (577), new religious movements (529), new age (387),
+Unification Church (273), Jehovah's Witnesses (233), brainwashing (204).
+
+Each entity-anchor point carries the same minimal shape as every other point
+(`source_dataset="entity_anchors"`, `key`/`label` = the normalized anchor
+text, `shared_space_vector`) — no mention-count field is persisted per point
+(the threshold filtering happens once at build time; kept this way for
+schema symmetry with `concept_backbone`, which also doesn't carry its own
+`centrality_score` into the shared space).
+
 ## Shared cross-corpus space (`build_shared_space`)
 
 Every embedding step above (the three `extract_and_embed` corpora,
@@ -430,32 +466,55 @@ every dataset ends up in the same shared coordinate system:
 
 - Each corpus item (literature/miviludes/interviews) contributes **one**
   point (`embedding_vector`).
-- Each MIVILUDES criterion contributes **two** points, not one — its
-  `embedding_vector_fr` and `embedding_vector_en` separately (both are
-  legitimate embedded representations of the same content; their distance
-  from each other in the shared space is itself a sanity check on the
-  multilingual embedding).
+- Each MIVILUDES criterion contributes **one** point — its French embedding
+  (`embedding_vector_fr`, the official original) only. The English
+  translation is kept purely as a display label (`label_en`) on that same
+  point, not embedded separately; translation fidelity between the two is
+  instead checked directly via raw-space (pre-PCA) cosine similarity between
+  `embedding_vector_fr` and `embedding_vector_en`, printed for all 17
+  criteria before pooling (see "Diagnostics" below) — this gets the same
+  sanity check the old two-points-per-criterion approach gave, without
+  spending a second near-duplicate point in the analytical space to get it.
 - Each concept-backbone entry contributes **one** point (`embedding_vector`).
-- Expected total, asserted at runtime: 39,236 + 914 + 231 + 34 + 3,000 =
-  **43,415** points.
+- Each entity anchor mentioned at least 3 times across all corpora
+  contributes **one** point (see "Entity anchors as their own point-set"
+  above).
+- Total pooled points is logged at runtime, not asserted against a
+  hardcoded constant (it will keep changing as the corpus grows or the
+  entity-anchor threshold is adjusted): **46,648** points on the current
+  corpus (39,236 literature + 914 MIVILUDES + 230 interviews + 17 MIVILUDES
+  criteria + 3,000 concept backbone + 3,251 entity anchors).
 
 **Standardization**: `StandardScaler` (zero mean, unit variance per
 dimension) runs before PCA. Every vector already comes from the same
-embedding model, but the five datasets differ a lot in register (academic
+embedding model, but the six datasets differ a lot in register (academic
 prose, government French, casual interview speech, bare word+gloss
-dictionary entries) and could plausibly carry different per-dimension
-distributions — standardizing is a defensive measure against any one
-dataset dominating the fit purely due to scale, not a claim that such an
-imbalance is known to exist.
+dictionary entries, bare named entities) and could plausibly carry different
+per-dimension distributions — standardizing is a defensive measure against
+any one dataset dominating the fit purely due to scale, not a claim that
+such an imbalance is known to exist.
 
 **Dimensionality is not a fixed constant**: PCA is first fit at full rank
 to get the complete explained-variance curve — written to
 `processed/shared_space/variance_curve.{csv,json,png}` so the choice is
 inspectable rather than asserted — and the smallest `k` reaching 95%
 cumulative variance is picked from that curve. On the actual pooled data:
-`k=390` for 95.0% (curve is fairly gradual, not a sharp knee — e.g. 61% at
+`k=396` for 95.0% (curve is fairly gradual, not a sharp knee — e.g. 61% at
 k=100, 90% at k=300 — so this is a real but not dramatic compression;
 worth knowing when interpreting distances in the shared space).
+
+**Diagnostics printed at build time** (not pass/fail checks): MIVILUDES
+criteria FR/EN raw-embedding cosine similarity, per criterion plus
+mean/min, with any pair below 0.90 flagged. On the current corpus: mean
+0.873, min 0.500 (`crit-legal-disputes`) — 8 of 17 pairs fall under 0.90.
+Both of the two lowest (`crit-legal-disputes`, 0.50; `crit-indoctrination-of-
+children`, 0.71) were inspected by hand and are accurate translations (\"La
+déstabilisation..."/"Mental destabilization..." style short official-French
+phrases against slightly more explanatory English glosses) — the lower
+similarities look like a short-phrase cross-lingual embedding effect rather
+than a translation error, worth bearing in mind whenever comparing short
+texts (this also applies to entity anchors, often 1-3 words) across
+languages in this space.
 
 ```
 python -m thesis_corpus.build_shared_space
@@ -471,7 +530,8 @@ writes new ones under `processed/shared_space/`.
 ```
 thesis/corpus/processed/
   shared_space/
-    embedding_space.jsonl   # one row per pooled point: source_dataset, key, label, attribution, shared_space_vector
+    embedding_space.jsonl   # one row per pooled point: source_dataset, key, label, label_en,
+                             # attribution, claim_mode, epistemic_status, response_rank, shared_space_vector
     variance_curve.csv      # n_components, cumulative_variance -- the full curve
     variance_curve.json     # {curve, chosen_k, variance_at_k, threshold}
     variance_curve.png      # plot of the above
@@ -486,36 +546,53 @@ otherwise): that kind of step would read `embedding_space.jsonl` and write
 its own file alongside it here, rather than a fixed-dimension shared space
 and a later visualization-specific reduction living in different places.
 
-`embedding_space.jsonl` is gitignored (large — 358MB at 43,415 points ×
-390 dims — and, like every other embedding output, derived from
-copyrighted/participant text). The variance-curve files are small and
-tracked. `key` (`document_id:chunk_index` for corpus items, `id` for
-MIVILUDES criteria, `concept_id` for concept-backbone entries) is what any
-later reduction should carry through unchanged, so a point can always be
-traced back to this file, and from there back to the original corpus
-archive it came from.
+`embedding_space.jsonl` is gitignored (large, and like every other embedding
+output derived from copyrighted/participant text). The variance-curve files
+are small and tracked. `key` (`document_id:chunk_index` for corpus items,
+`id` for MIVILUDES criteria, `concept_id` for concept-backbone entries, the
+normalized anchor text for entity anchors) is what any later reduction
+should carry through unchanged, so a point can always be traced back to
+this file, and from there back to the original corpus archive it came from.
 
-`attribution` carries each corpus item's annotation-stage attribution tag
-(`author`, `cited_author`, `participant`, `institution`, `journalist`,
-`unspecified` -- see `ollama_client.py`'s schema) straight through from the
-source archive; `null` for MIVILUDES criteria and concept-backbone points,
-which were never annotated this way. This is what lets an interview point
-be filtered by who said it -- in particular, separating the interviewee's
-own statements (`participant`) from the interviewer's questions
-(`unspecified`, unless the interviewer is themselves quoting someone), which
-otherwise end up pooled together indistinguishably since both speakers'
-turns can land in the same ~300-700 word chunk.
+Per-point fields beyond the universal `source_dataset`/`key`/`label`/
+`shared_space_vector`, all `null` where not applicable rather than given a
+fabricated default:
 
-After writing the output, the script prints two diagnostic (not pass/fail)
-sanity checks: mean vector norm by `source_dataset` (flags any one dataset
-being pushed to the periphery or center relative to the others), and each
-MIVILUDES criterion's FR vs EN point norms side by side (expected to be
-close, confirming the multilingual embedding + shared PCA are behaving
-sensibly).
+- `label_en`: the English translation, MIVILUDES-criteria points only —
+  display-only, not embedded (see above).
+- `attribution`: each corpus item's annotation-stage attribution tag
+  (`author`, `cited_author`, `participant`, `institution`, `journalist`,
+  `unspecified` -- see `ollama_client.py`'s schema), straight through from
+  the source archive. `null` for MIVILUDES criteria, concept-backbone, and
+  entity-anchor points, which were never annotated this way. This is what
+  lets an interview point be filtered by who said it -- in particular,
+  separating the interviewee's own statements (`participant`) from the
+  interviewer's questions (`unspecified`, unless the interviewer is
+  themselves quoting someone), which otherwise end up pooled together
+  indistinguishably since both speakers' turns can land in the same
+  ~300-700 word chunk.
+- `claim_mode` / `epistemic_status`: the same annotation-stage tags,
+  corpus-item points only (`null` elsewhere) — how the expression makes its
+  claim (a direct statement, a definition, a reflective question, ...) and
+  its epistemic status (asserted, contested, negated, speculative, ...).
+- `response_rank`: interviews only (`null` elsewhere). Interviews open with
+  a free-listing prompt ("what comes to mind when you hear the word
+  cult?"), and order of mention is a standard cognitive-salience proxy in
+  prototype theory (first-mentioned = most prototypical). This is the
+  1-indexed position of the item within its own interview document, in the
+  order the archive already lists them — not filtered to the interviewee's
+  turns only, so an interviewer's question can also carry a rank.
+
+After writing the output, the script prints diagnostic (not pass/fail)
+sanity checks: MIVILUDES criteria FR/EN raw-embedding cosine similarity
+(see above, printed before pooling since only the French vector survives
+into the shared space), the top 20 most-mentioned entity anchors, and mean
+vector norm by `source_dataset` (flags any one dataset being pushed to the
+periphery or center relative to the others).
 
 ## 3-D visualization projections (`visualize_3d`)
 
-`embedding_space.jsonl`'s 390 dimensions can't be plotted directly. This
+`embedding_space.jsonl`'s 396 dimensions can't be plotted directly. This
 script reads it once and writes three separate 3-D projections, one per
 method, so the shared space can actually be visualized:
 
@@ -530,7 +607,7 @@ method, so the shared space can actually be visualized:
   nonlinear projection tuned for cluster structure, at the cost of global
   distances being less meaningful than UMAP's or PCA's.
 
-All three are fit directly on the 390-d shared-space vectors (already
+All three are fit directly on the 396-d shared-space vectors (already
 standardized + PCA'd upstream in `build_shared_space.py`; no further scaling
 applied here).
 
@@ -547,12 +624,13 @@ only writes new files under `processed/shared_space/`.
 ```
 thesis/corpus/processed/
   shared_space/
-    visualization_pca_3d.jsonl    # source_dataset, key, label, attribution, pca_3d_vector
-    visualization_umap_3d.jsonl   # source_dataset, key, label, attribution, umap_3d_vector
-    visualization_tsne_3d.jsonl   # source_dataset, key, label, attribution, tsne_3d_vector
+    visualization_pca_3d.jsonl    # source_dataset, key, label, label_en, attribution,
+                                    # claim_mode, epistemic_status, response_rank, pca_3d_vector
+    visualization_umap_3d.jsonl   # ...same fields, umap_3d_vector
+    visualization_tsne_3d.jsonl   # ...same fields, tsne_3d_vector
 ```
 
-Each file has one row per point in `embedding_space.jsonl` (43,415), keeping
-`source_dataset`/`key`/`label`/`attribution` unchanged and carrying only its
-own 3-d vector. Unlike `embedding_space.jsonl`, these are small (43,415 × 3 floats
-each) and tracked in git, same as `variance_curve.*`.
+Each file has one row per point in `embedding_space.jsonl` (46,648), keeping
+every field but the vector unchanged and carrying only its own 3-d vector.
+Unlike `embedding_space.jsonl`, these are small (46,648 × 3 floats each) and
+tracked in git, same as `variance_curve.*`.

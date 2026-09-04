@@ -15,21 +15,39 @@ Methods.tex, "A Generic Concept Backbone"): it is not a static reference
 list sitting outside the analysis, but an active participant in fitting
 this shared space, alongside every corpus item and the MIVILUDES criteria.
 
-Pooling (43,415 points total, by design -- asserted at runtime):
+Pooling (six source_dataset values; total point count is logged at runtime,
+not asserted against a hardcoded constant -- it changes whenever the corpus
+grows or the entity-anchor threshold below is adjusted):
   - Each corpus item (literature/miviludes/interviews) contributes ONE
-    point: its embedding_vector.
-  - Each MIVILUDES criterion contributes TWO points, not one: its
-    embedding_vector_fr and embedding_vector_en separately (both are
-    legitimate embedded representations of the same content; their
-    distance from each other in the shared space is itself a sanity check
-    on the multilingual embedding).
+    point: its embedding_vector, plus its claim_mode/epistemic_status/
+    attribution tags carried through unchanged for later faceting. Interview
+    items additionally carry response_rank: interviews open with a
+    free-listing prompt ("what comes to mind when you hear the word
+    cult?"), and order of mention is a standard cognitive-salience proxy in
+    prototype theory (first-mentioned = most prototypical) -- this is the
+    position of the item within its own document, in the order the archive
+    already lists them (1-indexed).
+  - Each MIVILUDES criterion contributes ONE point: its French embedding
+    (the official original). The English translation is kept only as a
+    display label (`label_en`) on the same point, not embedded separately --
+    translation fidelity is instead checked directly, once, via raw-space
+    cosine similarity between the French and English embeddings (see
+    `check_miviludes_translation_fidelity`), rather than by spending a
+    second near-duplicate point in the shared analytical space.
   - Each concept-backbone entry contributes ONE point: its embedding_vector.
+  - Each entity anchor mentioned at least `--entity-anchor-min-mentions`
+    times across all three corpora contributes ONE point: a per-unique
+    (normalized) anchor embedding already computed in Stage 2
+    (`entity_anchor_vectors`), never before pooled into any space. Gives
+    named entities/dimensions (e.g. "Scientology", "charismatic leader")
+    an actual position relative to corpus expressions and the concept
+    backbone.
 
 Preprocessing: StandardScaler (zero mean, unit variance per dimension)
 before PCA. Every vector already comes from the same embedding model, but
-the five datasets differ a lot in register (academic prose, government
-French, casual interview speech, bare word+gloss dictionary entries) and
-could plausibly carry different per-dimension distributions -- this is a
+the sources differ a lot in register (academic prose, government French,
+casual interview speech, bare word+gloss dictionary entries) and could
+plausibly carry different per-dimension distributions -- this is a
 defensive measure against any one dataset dominating the fit purely due to
 scale, not a claim that such an imbalance is known to exist.
 
@@ -39,17 +57,20 @@ asserted), and the smallest k reaching 95% cumulative variance is chosen
 from that curve.
 
 This needs no Ollama -- only numpy/scikit-learn/matplotlib on data that's
-already local. Never modifies any of the five source files; only ever
-writes new files under processed/.
+already local. Never modifies any of the source files; only ever writes new
+files under processed/.
 
 Usage (from thesis/corpus/):
     python -m thesis_corpus.build_shared_space
+    python -m thesis_corpus.build_shared_space --entity-anchor-min-mentions 5
 """
 from __future__ import annotations
 
 import argparse
 import json
 import logging
+import re
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import matplotlib
@@ -84,27 +105,80 @@ VARIANCE_JSON_PATH = SHARED_SPACE_DIR / "variance_curve.json"
 
 VARIANCE_THRESHOLD = 0.95
 EMBEDDING_DIM = 1024
+ENTITY_ANCHOR_MIN_MENTIONS = 3
+COSINE_WARNING_THRESHOLD = 0.90
+
+_WHITESPACE_RE = re.compile(r"\s+")
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("thesis_corpus.build_shared_space")
 
 
+def normalize_anchor(anchor: str) -> str:
+    """Lowercase, strip, and collapse internal whitespace runs to one space
+    -- so "Charismatic  Leader" and "charismatic leader" merge to the same
+    entity rather than becoming two near-duplicate points."""
+    return _WHITESPACE_RE.sub(" ", anchor.strip().lower())
+
+
 def load_corpus_points(corpus_name: str, path: Path) -> list[dict]:
     points = []
+    response_rank_by_document: dict[str, int] = defaultdict(int)
+    for_interviews = corpus_name == "interviews"
     with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
             item = json.loads(line)
+            response_rank = None
+            if for_interviews:
+                response_rank_by_document[item["document_id"]] += 1
+                response_rank = response_rank_by_document[item["document_id"]]
             points.append({
                 "source_dataset": corpus_name,
                 "key": f"{item['document_id']}:{item['chunk_index']}",
                 "label": item["embedding_text"],
                 "attribution": item.get("attribution"),
+                "claim_mode": item.get("claim_mode"),
+                "epistemic_status": item.get("epistemic_status"),
+                "response_rank": response_rank,
                 "vector": item["embedding_vector"],
             })
     return points
+
+
+def check_miviludes_translation_fidelity(path: Path) -> None:
+    """Diagnostic only: cosine similarity between each criterion's raw
+    (pre-PCA) French and English embeddings. Only the French embedding is
+    pooled into the shared space (see load_miviludes_criteria_points) --
+    this replaces the old approach of pooling both and comparing their
+    shared-space distance from the origin, which spent a second
+    near-duplicate point on a check obtainable directly from the raw
+    vectors."""
+    similarities = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            item = json.loads(line)
+            fr = np.array(item["embedding_vector_fr"], dtype=np.float64)
+            en = np.array(item["embedding_vector_en"], dtype=np.float64)
+            cosine = float(np.dot(fr, en) / (np.linalg.norm(fr) * np.linalg.norm(en)))
+            similarities.append((item["id"], cosine))
+
+    print("\nMIVILUDES criteria FR vs EN raw-embedding cosine similarity (diagnostic; only FR is pooled into the shared space):")
+    for key, cosine in sorted(similarities):
+        flag = "  <-- below 0.90" if cosine < COSINE_WARNING_THRESHOLD else ""
+        print(f"  {key:<40} cosine={cosine:.4f}{flag}")
+    values = [c for _, c in similarities]
+    print(f"  mean={sum(values)/len(values):.4f}  min={min(values):.4f}")
+    if min(values) < COSINE_WARNING_THRESHOLD:
+        logger.warning(
+            "At least one MIVILUDES criterion's FR/EN cosine similarity is below %.2f -- inspect that translation.",
+            COSINE_WARNING_THRESHOLD,
+        )
 
 
 def load_miviludes_criteria_points(path: Path) -> list[dict]:
@@ -116,16 +190,11 @@ def load_miviludes_criteria_points(path: Path) -> list[dict]:
                 continue
             item = json.loads(line)
             points.append({
-                "source_dataset": "miviludes_criteria_fr",
+                "source_dataset": "miviludes_criteria",
                 "key": item["id"],
                 "label": item["criterion_fr"],
+                "label_en": item["criterion_en"],
                 "vector": item["embedding_vector_fr"],
-            })
-            points.append({
-                "source_dataset": "miviludes_criteria_en",
-                "key": item["id"],
-                "label": item["criterion_en"],
-                "vector": item["embedding_vector_en"],
             })
     return points
 
@@ -147,9 +216,51 @@ def load_concept_backbone_points(path: Path) -> list[dict]:
     return points
 
 
-def sanity_checks(points: list[dict], coords: np.ndarray) -> None:
-    from collections import defaultdict
+def load_entity_anchor_points(archive_paths: dict[str, Path], min_mentions: int) -> list[dict]:
+    """Pools one point per unique (normalized) entity anchor mentioned at
+    least `min_mentions` times across all three corpus archives, using the
+    per-anchor embedding Stage 2 already computed (entity_anchor_vectors) --
+    never before pooled into any space. First-seen vector per normalized
+    anchor is kept (the embedding is a function of the literal anchor text
+    alone, so occurrences of the same normalized string carry equivalent
+    vectors modulo casing/whitespace, already normalized away here)."""
+    vector_by_anchor: dict[str, list[float]] = {}
+    mentions: Counter[str] = Counter()
 
+    for path in archive_paths.values():
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                item = json.loads(line)
+                raw_vectors = item.get("entity_anchor_vectors") or {}
+                for raw_anchor, vector in raw_vectors.items():
+                    key = normalize_anchor(raw_anchor)
+                    if not key:
+                        continue
+                    mentions[key] += 1
+                    vector_by_anchor.setdefault(key, vector)
+
+    print(f"\nEntity anchors: {len(mentions)} unique (normalized) across all corpora; "
+          f"top 20 by mention count:")
+    for anchor, count in mentions.most_common(20):
+        print(f"  {count:>5}  {anchor}")
+
+    points = []
+    for anchor, count in mentions.items():
+        if count < min_mentions:
+            continue
+        points.append({
+            "source_dataset": "entity_anchors",
+            "key": anchor,
+            "label": anchor,
+            "vector": vector_by_anchor[anchor],
+        })
+    return points
+
+
+def sanity_checks(points: list[dict], coords: np.ndarray) -> None:
     norms_by_dataset = defaultdict(list)
     for p, c in zip(points, coords):
         norms_by_dataset[p["source_dataset"]].append(float(np.linalg.norm(c)))
@@ -158,19 +269,13 @@ def sanity_checks(points: list[dict], coords: np.ndarray) -> None:
     for dataset, norms in sorted(norms_by_dataset.items()):
         print(f"  {dataset:<24} n={len(norms):<6} mean_norm={sum(norms)/len(norms):.3f}")
 
-    fr_by_key = {p["key"]: c for p, c in zip(points, coords) if p["source_dataset"] == "miviludes_criteria_fr"}
-    en_by_key = {p["key"]: c for p, c in zip(points, coords) if p["source_dataset"] == "miviludes_criteria_en"}
-    print("\nMIVILUDES criteria FR vs EN point norms (should be similar in magnitude):")
-    for key in sorted(fr_by_key):
-        fr_norm = np.linalg.norm(fr_by_key[key])
-        en_norm = np.linalg.norm(en_by_key[key])
-        print(f"  {key:<40} fr={fr_norm:.3f}  en={en_norm:.3f}  diff={abs(fr_norm - en_norm):.3f}")
-
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--variance-threshold", type=float, default=VARIANCE_THRESHOLD)
+    parser.add_argument("--entity-anchor-min-mentions", type=int, default=ENTITY_ANCHOR_MIN_MENTIONS,
+                         help="Minimum times an entity anchor must be mentioned across all corpora to get its own point.")
     args = parser.parse_args()
 
     points: list[dict] = []
@@ -185,9 +290,9 @@ def main() -> None:
 
     if not MIVILUDES_CRITERIA_PATH.exists():
         raise SystemExit(f"Missing: {MIVILUDES_CRITERIA_PATH}")
+    check_miviludes_translation_fidelity(MIVILUDES_CRITERIA_PATH)
     criteria_points = load_miviludes_criteria_points(MIVILUDES_CRITERIA_PATH)
-    counts["miviludes_criteria_fr"] = sum(1 for p in criteria_points if p["source_dataset"] == "miviludes_criteria_fr")
-    counts["miviludes_criteria_en"] = sum(1 for p in criteria_points if p["source_dataset"] == "miviludes_criteria_en")
+    counts["miviludes_criteria"] = len(criteria_points)
     points.extend(criteria_points)
 
     if not CONCEPT_BACKBONE_PATH.exists():
@@ -196,16 +301,12 @@ def main() -> None:
     counts["concept_backbone"] = len(concept_points)
     points.extend(concept_points)
 
+    entity_anchor_points = load_entity_anchor_points(CORPUS_ARCHIVES, args.entity_anchor_min_mentions)
+    counts["entity_anchors"] = len(entity_anchor_points)
+    points.extend(entity_anchor_points)
+
     logger.info("Pooled point counts: %s", counts)
     logger.info("Total pooled points: %d", len(points))
-    expected_total = 39_236 + 914 + 231 + 34 + 3_000
-    if len(points) != expected_total:
-        logger.warning(
-            "Pooled total %d does not match the expected 43,415 -- one of the "
-            "corpora likely changed size since the plan was written; proceeding "
-            "with whatever is actually on disk, but double-check the counts above.",
-            len(points),
-        )
 
     vectors = np.array([p["vector"] for p in points], dtype=np.float64)
     for p in points:
@@ -264,7 +365,11 @@ def main() -> None:
                 "source_dataset": p["source_dataset"],
                 "key": p["key"],
                 "label": p["label"],
+                "label_en": p.get("label_en"),
                 "attribution": p.get("attribution"),
+                "claim_mode": p.get("claim_mode"),
+                "epistemic_status": p.get("epistemic_status"),
+                "response_rank": p.get("response_rank"),
                 "shared_space_vector": coord.tolist(),
             }
             f.write(json.dumps(out, ensure_ascii=False) + "\n")
