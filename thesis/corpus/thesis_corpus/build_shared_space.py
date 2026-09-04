@@ -15,34 +15,49 @@ Methods.tex, "A Generic Concept Backbone"): it is not a static reference
 list sitting outside the analysis, but an active participant in fitting
 this shared space, alongside every corpus item and the MIVILUDES criteria.
 
+Every point additionally carries a `point_role`, distinguishing three kinds
+of thing this space pools together (see Methods.tex, "A Shared Cross-Corpus
+Space"):
+  - `"expression"`: a criterion expression extracted from a text (the three
+    corpora) or a MIVILUDES criterion -- something a source actually said.
+  - `"reference"`: an external, generic vocabulary entry (the concept
+    backbone) -- not derived from any corpus, included as a fixed,
+    topic-neutral yardstick.
+  - `"emergent"`: a named entity/group/concept mentioned BY the corpora
+    themselves (emergent entities, below) -- corpus-derived like an
+    expression point, but a recurring reference object rather than a claim
+    about one.
+
 Pooling (six source_dataset values; total point count is logged at runtime,
 not asserted against a hardcoded constant -- it changes whenever the corpus
-grows or the entity-anchor threshold below is adjusted):
+grows or the emergent-entity threshold below is adjusted):
   - Each corpus item (literature/miviludes/interviews) contributes ONE
-    point: its embedding_vector, plus its claim_mode/epistemic_status/
-    attribution tags carried through unchanged for later faceting. Interview
-    items additionally carry response_rank: interviews open with a
-    free-listing prompt ("what comes to mind when you hear the word
-    cult?"), and order of mention is a standard cognitive-salience proxy in
-    prototype theory (first-mentioned = most prototypical) -- this is the
-    position of the item within its own document, in the order the archive
-    already lists them (1-indexed).
-  - Each MIVILUDES criterion contributes ONE point: its French embedding
-    (the official original). The English translation is kept only as a
-    display label (`label_en`) on the same point, not embedded separately --
-    translation fidelity is instead checked directly, once, via raw-space
-    cosine similarity between the French and English embeddings (see
-    `check_miviludes_translation_fidelity`), rather than by spending a
-    second near-duplicate point in the shared analytical space.
-  - Each concept-backbone entry contributes ONE point: its embedding_vector.
-  - Each entity anchor mentioned at least `--entity-anchor-min-mentions`
-    times across all three corpora contributes ONE point: a per-unique
-    (normalized) anchor embedding already computed in Stage 2
-    (`entity_anchor_vectors`), never before pooled into any space. Gives
-    named entities/dimensions (e.g. "Scientology", "charismatic leader")
-    an actual position relative to corpus expressions and the concept
-    backbone. Carries `mention_distribution` (per-corpus mention counts) as
-    provenance metadata, not used in the PCA fit.
+    point (`point_role="expression"`): its embedding_vector, plus its
+    claim_mode/epistemic_status/attribution tags carried through unchanged
+    for later faceting. Interview items additionally carry response_rank:
+    interviews open with a free-listing prompt ("what comes to mind when
+    you hear the word cult?"), and order of mention is a standard
+    cognitive-salience proxy in prototype theory (first-mentioned = most
+    prototypical) -- this is the position of the item within its own
+    document, in the order the archive already lists them (1-indexed).
+  - Each MIVILUDES criterion contributes ONE point (`point_role="expression"`):
+    its French embedding (the official original). The English translation is
+    kept only as a display label (`label_en`) on the same point, not
+    embedded separately -- translation fidelity is instead checked directly,
+    once, via raw-space cosine similarity between the French and English
+    embeddings (see `check_miviludes_translation_fidelity`), rather than by
+    spending a second near-duplicate point in the shared analytical space.
+  - Each concept-backbone entry contributes ONE point
+    (`point_role="reference"`): its embedding_vector.
+  - Each emergent entity mentioned at least `--entity-anchor-min-mentions`
+    times across all three corpora contributes ONE point
+    (`point_role="emergent"`): a per-unique (normalized) entity-anchor
+    embedding already computed in Stage 2 (`entity_anchor_vectors`), never
+    before pooled into any space. Gives named entities/dimensions (e.g.
+    "Scientology", "charismatic leader") an actual position relative to
+    corpus expressions and the concept backbone. Carries
+    `mention_distribution` (per-corpus mention counts) as provenance
+    metadata, not used in the PCA fit.
 
 Preprocessing: StandardScaler (zero mean, unit variance per dimension)
 before PCA. Every vector already comes from the same embedding model, but
@@ -138,6 +153,7 @@ def load_corpus_points(corpus_name: str, path: Path) -> list[dict]:
                 response_rank = response_rank_by_document[item["document_id"]]
             points.append({
                 "source_dataset": corpus_name,
+                "point_role": "expression",
                 "key": f"{item['document_id']}:{item['chunk_index']}",
                 "label": item["embedding_text"],
                 "attribution": item.get("attribution"),
@@ -192,6 +208,7 @@ def load_miviludes_criteria_points(path: Path) -> list[dict]:
             item = json.loads(line)
             points.append({
                 "source_dataset": "miviludes_criteria",
+                "point_role": "expression",
                 "key": item["id"],
                 "label": item["criterion_fr"],
                 "label_en": item["criterion_en"],
@@ -210,6 +227,7 @@ def load_concept_backbone_points(path: Path) -> list[dict]:
             item = json.loads(line)
             points.append({
                 "source_dataset": "concept_backbone",
+                "point_role": "reference",
                 "key": item["concept_id"],
                 "label": item["concept_en"],
                 "vector": item["embedding_vector"],
@@ -217,7 +235,7 @@ def load_concept_backbone_points(path: Path) -> list[dict]:
     return points
 
 
-def load_entity_anchor_points(archive_paths: dict[str, Path], min_mentions: int) -> list[dict]:
+def load_emergent_entities(archive_paths: dict[str, Path], min_mentions: int) -> list[dict]:
     """Pools one point per unique (normalized) entity anchor mentioned at
     least `min_mentions` times across all three corpus archives, using the
     per-anchor embedding Stage 2 already computed (entity_anchor_vectors) --
@@ -225,6 +243,11 @@ def load_entity_anchor_points(archive_paths: dict[str, Path], min_mentions: int)
     anchor is kept (the embedding is a function of the literal anchor text
     alone, so occurrences of the same normalized string carry equivalent
     vectors modulo casing/whitespace, already normalized away here).
+
+    These are "emergent entities" (`point_role="emergent"`): named
+    entities/groups/concepts mentioned BY the corpora themselves, as
+    distinct from an "expression" point (a claim a source makes) or a
+    "reference" point (the corpus-independent concept backbone).
 
     Each point also carries `mention_distribution`: a per-corpus mention
     count (e.g. {"literature": 820, "miviludes": 15, "interviews": 12}) --
@@ -256,7 +279,7 @@ def load_entity_anchor_points(archive_paths: dict[str, Path], min_mentions: int)
     def distribution_for(anchor: str) -> dict[str, int]:
         return {corpus_name: mentions_by_corpus[corpus_name].get(anchor, 0) for corpus_name in archive_paths}
 
-    print(f"\nEntity anchors: {len(total_mentions)} unique (normalized) across all corpora; "
+    print(f"\nEmergent entities: {len(total_mentions)} unique (normalized) across all corpora; "
           f"top 20 by mention count:")
     for anchor, count in total_mentions.most_common(20):
         print(f"  {anchor}: {count} total mentions -- {distribution_for(anchor)}")
@@ -266,7 +289,8 @@ def load_entity_anchor_points(archive_paths: dict[str, Path], min_mentions: int)
         if count < min_mentions:
             continue
         points.append({
-            "source_dataset": "entity_anchors",
+            "source_dataset": "emergent_entities",
+            "point_role": "emergent",
             "key": anchor,
             "label": anchor,
             "mention_distribution": distribution_for(anchor),
@@ -316,9 +340,9 @@ def main() -> None:
     counts["concept_backbone"] = len(concept_points)
     points.extend(concept_points)
 
-    entity_anchor_points = load_entity_anchor_points(CORPUS_ARCHIVES, args.entity_anchor_min_mentions)
-    counts["entity_anchors"] = len(entity_anchor_points)
-    points.extend(entity_anchor_points)
+    emergent_entity_points = load_emergent_entities(CORPUS_ARCHIVES, args.entity_anchor_min_mentions)
+    counts["emergent_entities"] = len(emergent_entity_points)
+    points.extend(emergent_entity_points)
 
     logger.info("Pooled point counts: %s", counts)
     logger.info("Total pooled points: %d", len(points))
@@ -378,6 +402,7 @@ def main() -> None:
         for p, coord in zip(points, shared_coords):
             out = {
                 "source_dataset": p["source_dataset"],
+                "point_role": p["point_role"],
                 "key": p["key"],
                 "label": p["label"],
                 "label_en": p.get("label_en"),

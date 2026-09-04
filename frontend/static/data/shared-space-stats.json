@@ -6,7 +6,7 @@
     "interviews": 230,
     "miviludes_criteria": 17,
     "concept_backbone": 3000,
-    "entity_anchors": 3251
+    "emergent_entities": 3251
   },
   "registry": {
     "totalDocuments": 85,

@@ -1,8 +1,27 @@
 <script lang="ts">
 	import * as THREE from 'three';
 	import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-	import type { PointMeta, SourceDataset } from '$lib/types';
+	import type { PointMeta, PointRole, SourceDataset } from '$lib/types';
 	import { colorForDataset } from '$lib/pointColors';
+
+	// Per-point-role visual treatment (PointsMaterial has no per-vertex
+	// size/opacity without a custom shader, so each role gets its own
+	// THREE.Points mesh/material instead -- a handful of draw calls, not a
+	// new dependency). 'reference' (concept_backbone) renders smaller and
+	// faded, since it's a fixed backdrop vocabulary rather than something
+	// the corpora produced; 'emergent' (named entities the corpora
+	// themselves surface) renders largest, to stand out as a landmark;
+	// 'expression' (everything else -- the actual extracted claims) sits
+	// in between. Any point_role this doesn't recognize (or missing) falls
+	// back to the 'expression' treatment.
+	const ROLE_STYLE: Record<PointRole, { size: number; opacity: number }> = {
+		reference: { size: 0.5, opacity: 0.4 },
+		emergent: { size: 1.0, opacity: 1.0 },
+		expression: { size: 0.7, opacity: 1.0 }
+	};
+	function styleForRole(role: PointRole | undefined) {
+		return ROLE_STYLE[role ?? 'expression'] ?? ROLE_STYLE.expression;
+	}
 
 	let {
 		points,
@@ -34,8 +53,10 @@
 	let camera: THREE.PerspectiveCamera;
 	let renderer: THREE.WebGLRenderer;
 	let controls: OrbitControls;
-	let pointCloud: THREE.Points | null = null;
-	let visibleIndices: number[] = [];
+	// One THREE.Points mesh per point_role present among the visible points
+	// (see ROLE_STYLE above), each with its own size/opacity and its own
+	// index map back into `points`/`positions`.
+	let roleGroups: { mesh: THREE.Points; indices: number[] }[] = [];
 	let raycastThreshold = 0.5;
 	let animationFrameId: number;
 
@@ -79,7 +100,7 @@
 		animate();
 
 		function onClick(event: MouseEvent) {
-			if (!pointCloud) return;
+			if (roleGroups.length === 0) return;
 			const rect = canvasEl.getBoundingClientRect();
 			const ndc = new THREE.Vector2(
 				((event.clientX - rect.left) / rect.width) * 2 - 1,
@@ -87,10 +108,11 @@
 			);
 			raycaster.setFromCamera(ndc, camera);
 			raycaster.params.Points!.threshold = raycastThreshold;
-			const hits = raycaster.intersectObject(pointCloud);
+			const hits = raycaster.intersectObjects(roleGroups.map((g) => g.mesh));
 			if (hits.length > 0 && hits[0].index !== undefined) {
-				const originalIndex = visibleIndices[hits[0].index];
-				onSelect(points[originalIndex] ?? null);
+				const group = roleGroups.find((g) => g.mesh === hits[0].object);
+				const originalIndex = group?.indices[hits[0].index];
+				onSelect(originalIndex !== undefined ? (points[originalIndex] ?? null) : null);
 			}
 		}
 		canvasEl.addEventListener('click', onClick);
@@ -101,8 +123,10 @@
 			canvasEl.removeEventListener('click', onClick);
 			controls.dispose();
 			renderer.dispose();
-			pointCloud?.geometry.dispose();
-			(pointCloud?.material as THREE.Material | undefined)?.dispose();
+			for (const { mesh } of roleGroups) {
+				mesh.geometry.dispose();
+				(mesh.material as THREE.Material).dispose();
+			}
 		};
 	});
 
@@ -131,16 +155,20 @@
 	});
 
 	// Rebuild the point-cloud geometry whenever the visible dataset, points,
-	// positions, search term, or theme changes.
+	// positions, search term, or theme changes. Built as one geometry/mesh
+	// per point_role (see ROLE_STYLE) rather than one mesh overall, since
+	// each role needs its own point size and opacity.
 	$effect(() => {
 		if (!scene) return;
 
 		const query = searchTerm.trim().toLowerCase();
 		const highlightColor = new THREE.Color(HIGHLIGHT_COLOR);
 		const dimTarget = new THREE.Color(CANVAS_BACKGROUND);
-		const filteredPositions: number[] = [];
-		const filteredColors: number[] = [];
-		visibleIndices = [];
+
+		const byRole = new Map<
+			PointRole,
+			{ indices: number[]; positions: number[]; colors: number[] }
+		>();
 
 		for (let i = 0; i < points.length; i++) {
 			const point = points[i];
@@ -149,35 +177,52 @@
 			const coord = positions[i];
 			if (!coord) continue;
 
-			visibleIndices.push(i);
-			filteredPositions.push(coord[0], coord[1], coord[2]);
+			const role: PointRole = point.point_role ?? 'expression';
+			let bucket = byRole.get(role);
+			if (!bucket) {
+				bucket = { indices: [], positions: [], colors: [] };
+				byRole.set(role, bucket);
+			}
+
+			bucket.indices.push(i);
+			bucket.positions.push(coord[0], coord[1], coord[2]);
 
 			const baseColor = new THREE.Color(colorForDataset(point.source_dataset, true));
 			if (query.length > 0) {
 				const isMatch = point.label.toLowerCase().includes(query);
 				const color = isMatch ? highlightColor : baseColor.clone().lerp(dimTarget, DIM_MIX);
-				filteredColors.push(color.r, color.g, color.b);
+				bucket.colors.push(color.r, color.g, color.b);
 			} else {
-				filteredColors.push(baseColor.r, baseColor.g, baseColor.b);
+				bucket.colors.push(baseColor.r, baseColor.g, baseColor.b);
 			}
 		}
 
-		if (pointCloud) {
-			scene.remove(pointCloud);
-			pointCloud.geometry.dispose();
-			(pointCloud.material as THREE.Material).dispose();
-			pointCloud = null;
+		for (const { mesh } of roleGroups) {
+			scene.remove(mesh);
+			mesh.geometry.dispose();
+			(mesh.material as THREE.Material).dispose();
 		}
+		roleGroups = [];
 
-		if (visibleIndices.length === 0) return;
+		for (const [role, bucket] of byRole) {
+			if (bucket.indices.length === 0) continue;
 
-		const geometry = new THREE.BufferGeometry();
-		geometry.setAttribute('position', new THREE.Float32BufferAttribute(filteredPositions, 3));
-		geometry.setAttribute('color', new THREE.Float32BufferAttribute(filteredColors, 3));
+			const geometry = new THREE.BufferGeometry();
+			geometry.setAttribute('position', new THREE.Float32BufferAttribute(bucket.positions, 3));
+			geometry.setAttribute('color', new THREE.Float32BufferAttribute(bucket.colors, 3));
 
-		const material = new THREE.PointsMaterial({ size: 0.35, vertexColors: true, sizeAttenuation: true });
-		pointCloud = new THREE.Points(geometry, material);
-		scene.add(pointCloud);
+			const style = styleForRole(role);
+			const material = new THREE.PointsMaterial({
+				size: style.size,
+				vertexColors: true,
+				sizeAttenuation: true,
+				transparent: style.opacity < 1,
+				opacity: style.opacity
+			});
+			const mesh = new THREE.Points(geometry, material);
+			scene.add(mesh);
+			roleGroups.push({ mesh, indices: bucket.indices });
+		}
 	});
 </script>
 

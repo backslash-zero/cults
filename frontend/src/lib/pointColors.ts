@@ -1,4 +1,4 @@
-import type { SourceDataset } from './types';
+import type { PointRole, SourceDataset } from './types';
 
 // Fixed categorical hue order (never cycled) from the validated default
 // palette -- slots 1-6 (blue/orange/aqua/yellow/magenta/green), assigned in
@@ -12,11 +12,17 @@ import type { SourceDataset } from './types';
 // in practice.
 export const SOURCE_DATASET_COLORS: Record<SourceDataset, { light: string; dark: string }> = {
 	literature: { light: '#2a78d6', dark: '#3987e5' },
+	// point_role: 'reference' -- an external, corpus-independent vocabulary
+	// (WordNet), not derived from anything in the corpora.
 	concept_backbone: { light: '#eb6834', dark: '#d95926' },
 	interviews: { light: '#1baf7a', dark: '#199e70' },
 	miviludes: { light: '#eda100', dark: '#c98500' },
 	miviludes_criteria: { light: '#e87ba4', dark: '#d55181' },
-	entity_anchors: { light: '#008300', dark: '#008300' }
+	// point_role: 'emergent' -- named entities/concepts mentioned BY the
+	// corpora themselves, as distinct from concept_backbone's reference
+	// vocabulary above (both render at a fixed size/opacity per point_role
+	// in EmbeddingExplorer.svelte, not by source_dataset).
+	emergent_entities: { light: '#008300', dark: '#008300' }
 };
 
 export const SOURCE_DATASET_LABELS: Record<SourceDataset, string> = {
@@ -25,7 +31,20 @@ export const SOURCE_DATASET_LABELS: Record<SourceDataset, string> = {
 	interviews: 'Interviews',
 	miviludes: 'MIVILUDES',
 	miviludes_criteria: 'MIVILUDES criteria',
-	entity_anchors: 'Named entities'
+	emergent_entities: 'Emergent entities'
+};
+
+// The static SourceDataset -> PointRole mapping the legend groups by (the
+// per-point point_role field says the same thing per-point; this is the
+// same fact at the category level, for grouping datasets that have no
+// individual points to inspect yet).
+export const SOURCE_DATASET_ROLES: Record<SourceDataset, PointRole> = {
+	literature: 'expression',
+	miviludes: 'expression',
+	interviews: 'expression',
+	miviludes_criteria: 'expression',
+	concept_backbone: 'reference',
+	emergent_entities: 'emergent'
 };
 
 export const DEFAULT_VISIBLE_DATASETS: SourceDataset[] = ['literature', 'concept_backbone'];

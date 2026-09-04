@@ -412,17 +412,23 @@ space every corpus and the MIVILUDES criteria get projected into — the
 concept backbone isn't compared *against* that space after the fact, it
 helps *define* it.
 
-## Entity anchors as their own point-set (`build_shared_space`)
+## Emergent entities as their own point-set (`build_shared_space`)
 
 Every extracted expression (Stage 2, above) is tagged with `entity_anchors`
 — the named entities/dimensions it mentions (e.g. "Scientology",
 "charismatic leader") — and Stage 2 already embeds each one individually,
 writing a per-item `entity_anchor_vectors` map (`{anchor_string: 1024-d
 vector}`). Until now this sat unused in the archive. `build_shared_space.py`
-now pools these into their own set of points in the shared space, alongside
-the concept backbone — giving named entities an actual position relative to
-both the corpus expressions that mention them and the topic-neutral concept
-backbone, rather than leaving them as a buried per-item list field.
+now pools these into their own set of points in the shared space, called
+**emergent entities**: named entities/groups/concepts mentioned *by* the
+corpora themselves, as distinct from a corpus-expression point (a claim a
+source makes, `point_role="expression"`) or the concept backbone (an
+external, corpus-independent vocabulary, `point_role="reference"`) —
+emergent entities get `point_role="emergent"`. See "Point roles" below for
+the full three-way distinction. This gives named entities an actual
+position relative to both the corpus expressions that mention them and the
+topic-neutral concept backbone, rather than leaving them as a buried
+per-item list field.
 
 **Normalization**: each anchor string is lowercased, stripped, and has
 internal whitespace runs collapsed to one space (`"Charismatic  Leader"` and
@@ -435,18 +441,32 @@ becomes a single point.
 whole corpus, most mentioned only once or twice — mostly noise (typos,
 overly specific one-off phrases). Only anchors mentioned **at least 3
 times** across all corpora get their own point (`--entity-anchor-min-mentions`,
-default 3), giving 3,251 entity-anchor points — deliberately the same order
-of magnitude as the 3,000-entry concept backbone. Top anchors by mention
-count: Scientology (3,867), charismatic leader (3,417), NRMs (1,279), cults
-(688), Heaven's Gate (577), new religious movements (529), new age (387),
-Unification Church (273), Jehovah's Witnesses (233), brainwashing (204).
+default 3), giving 3,251 emergent-entity points — deliberately the same
+order of magnitude as the 3,000-entry concept backbone. Top anchors by
+mention count: Scientology (3,867), charismatic leader (3,417), NRMs
+(1,279), cults (688), Heaven's Gate (577), new religious movements (529),
+new age (387), Unification Church (273), Jehovah's Witnesses (233),
+brainwashing (204).
 
-Each entity-anchor point carries the same minimal shape as every other point
-(`source_dataset="entity_anchors"`, `key`/`label` = the normalized anchor
-text, `shared_space_vector`) — no mention-count field is persisted per point
-(the threshold filtering happens once at build time; kept this way for
-schema symmetry with `concept_backbone`, which also doesn't carry its own
-`centrality_score` into the shared space).
+Each emergent-entity point carries the same minimal shape as every other
+point (`source_dataset="emergent_entities"`, `point_role="emergent"`,
+`key`/`label` = the normalized anchor text, `shared_space_vector`), plus a
+`mention_distribution` field: a per-corpus mention count (e.g.
+`{"literature": 3683, "miviludes": 130, "interviews": 54}` for
+"scientology") — provenance metadata only, not used in the PCA fit, that
+tells apart an entity mentioned near-exclusively in one corpus from one that
+genuinely recurs across all three.
+
+## Point roles
+
+Every point in the shared space carries a `point_role`, cutting across
+`source_dataset` to group the six datasets into three kinds of thing:
+
+| `point_role` | Datasets | What it is |
+|---|---|---|
+| `expression` | `literature`, `miviludes`, `interviews`, `miviludes_criteria` | A criterion expression extracted from a text, or the MIVILUDES's own criterion text — something a source actually said |
+| `reference` | `concept_backbone` | An external, generic vocabulary entry, included as a fixed, topic-neutral yardstick — not derived from any corpus |
+| `emergent` | `emergent_entities` | A named entity/group/concept mentioned *by* the corpora themselves — corpus-derived like an expression, but a recurring reference object rather than a claim |
 
 ## Shared cross-corpus space (`build_shared_space`)
 
@@ -476,14 +496,14 @@ every dataset ends up in the same shared coordinate system:
   sanity check the old two-points-per-criterion approach gave, without
   spending a second near-duplicate point in the analytical space to get it.
 - Each concept-backbone entry contributes **one** point (`embedding_vector`).
-- Each entity anchor mentioned at least 3 times across all corpora
-  contributes **one** point (see "Entity anchors as their own point-set"
+- Each emergent entity mentioned at least 3 times across all corpora
+  contributes **one** point (see "Emergent entities as their own point-set"
   above).
 - Total pooled points is logged at runtime, not asserted against a
   hardcoded constant (it will keep changing as the corpus grows or the
-  entity-anchor threshold is adjusted): **46,648** points on the current
+  emergent-entity threshold is adjusted): **46,648** points on the current
   corpus (39,236 literature + 914 MIVILUDES + 230 interviews + 17 MIVILUDES
-  criteria + 3,000 concept backbone + 3,251 entity anchors).
+  criteria + 3,000 concept backbone + 3,251 emergent entities).
 
 **Standardization**: `StandardScaler` (zero mean, unit variance per
 dimension) runs before PCA. Every vector already comes from the same
@@ -513,7 +533,7 @@ déstabilisation..."/"Mental destabilization..." style short official-French
 phrases against slightly more explanatory English glosses) — the lower
 similarities look like a short-phrase cross-lingual embedding effect rather
 than a translation error, worth bearing in mind whenever comparing short
-texts (this also applies to entity anchors, often 1-3 words) across
+texts (this also applies to emergent entities, often 1-3 words) across
 languages in this space.
 
 ```
@@ -530,8 +550,9 @@ writes new ones under `processed/shared_space/`.
 ```
 thesis/corpus/processed/
   shared_space/
-    embedding_space.jsonl   # one row per pooled point: source_dataset, key, label, label_en,
-                             # attribution, claim_mode, epistemic_status, response_rank, shared_space_vector
+    embedding_space.jsonl   # one row per pooled point: source_dataset, point_role, key, label,
+                             # label_en, attribution, claim_mode, epistemic_status, response_rank,
+                             # mention_distribution, shared_space_vector
     variance_curve.csv      # n_components, cumulative_variance -- the full curve
     variance_curve.json     # {curve, chosen_k, variance_at_k, threshold}
     variance_curve.png      # plot of the above
@@ -550,11 +571,15 @@ and a later visualization-specific reduction living in different places.
 output derived from copyrighted/participant text). The variance-curve files
 are small and tracked. `key` (`document_id:chunk_index` for corpus items,
 `id` for MIVILUDES criteria, `concept_id` for concept-backbone entries, the
-normalized anchor text for entity anchors) is what any later reduction
+normalized anchor text for emergent entities) is what any later reduction
 should carry through unchanged, so a point can always be traced back to
 this file, and from there back to the original corpus archive it came from.
 
-Per-point fields beyond the universal `source_dataset`/`key`/`label`/
+`point_role` is the universal three-way split (see "Point roles" above):
+`expression` (literature/miviludes/interviews/miviludes_criteria),
+`reference` (concept_backbone), or `emergent` (emergent_entities).
+
+Per-point fields beyond `source_dataset`/`point_role`/`key`/`label`/
 `shared_space_vector`, all `null` where not applicable rather than given a
 fabricated default:
 
@@ -564,7 +589,7 @@ fabricated default:
   (`author`, `cited_author`, `participant`, `institution`, `journalist`,
   `unspecified` -- see `ollama_client.py`'s schema), straight through from
   the source archive. `null` for MIVILUDES criteria, concept-backbone, and
-  entity-anchor points, which were never annotated this way. This is what
+  emergent-entity points, which were never annotated this way. This is what
   lets an interview point be filtered by who said it -- in particular,
   separating the interviewee's own statements (`participant`) from the
   interviewer's questions (`unspecified`, unless the interviewer is
@@ -582,13 +607,19 @@ fabricated default:
   1-indexed position of the item within its own interview document, in the
   order the archive already lists them — not filtered to the interviewee's
   turns only, so an interviewer's question can also carry a rank.
+- `mention_distribution`: emergent-entity points only (`null` elsewhere). A
+  per-corpus mention count (e.g. `{"literature": 3683, "miviludes": 130,
+  "interviews": 54}` for "scientology") — provenance metadata, not used in
+  the PCA fit, that tells apart an entity mentioned almost exclusively in
+  one corpus from one that recurs across all three.
 
 After writing the output, the script prints diagnostic (not pass/fail)
 sanity checks: MIVILUDES criteria FR/EN raw-embedding cosine similarity
 (see above, printed before pooling since only the French vector survives
-into the shared space), the top 20 most-mentioned entity anchors, and mean
-vector norm by `source_dataset` (flags any one dataset being pushed to the
-periphery or center relative to the others).
+into the shared space), the top 20 most-mentioned emergent entities (with
+their per-corpus mention distribution), and mean vector norm by
+`source_dataset` (flags any one dataset being pushed to the periphery or
+center relative to the others).
 
 ## 3-D visualization projections (`visualize_3d`)
 
@@ -624,8 +655,9 @@ only writes new files under `processed/shared_space/`.
 ```
 thesis/corpus/processed/
   shared_space/
-    visualization_pca_3d.jsonl    # source_dataset, key, label, label_en, attribution,
-                                    # claim_mode, epistemic_status, response_rank, pca_3d_vector
+    visualization_pca_3d.jsonl    # source_dataset, point_role, key, label, label_en, attribution,
+                                    # claim_mode, epistemic_status, response_rank,
+                                    # mention_distribution, pca_3d_vector
     visualization_umap_3d.jsonl   # ...same fields, umap_3d_vector
     visualization_tsne_3d.jsonl   # ...same fields, tsne_3d_vector
 ```

@@ -11,9 +11,13 @@
 //   shared_space/visualization_{pca,umap,tsne}_3d.jsonl
 //
 // Writes, under frontend/static/data/:
-//   points-meta.json       -- [{source_dataset, key, label, label_en, attribution,
+//   points-meta.json       -- [{source_dataset, point_role, key, label, label_en, attribution,
 //                               claim_mode, epistemic_status, response_rank}, ...]
-//                              (46,648 entries, written once)
+//                              (46,648 entries, written once). point_role groups the six
+//                              source_dataset values into three kinds of point: 'expression'
+//                              (literature/miviludes/interviews/miviludes_criteria), 'reference'
+//                              (concept_backbone), 'emergent' (emergent_entities -- named entities
+//                              the corpora themselves surface, formerly called entity_anchors).
 //   positions-pca.json     -- [[x, y, z], ...] order-aligned to points-meta.json
 //   positions-umap.json
 //   positions-tsne.json
@@ -137,6 +141,7 @@ function main() {
 		if (pointsMeta === null) {
 			pointsMeta = rows.map((r) => ({
 				source_dataset: r.source_dataset,
+				point_role: r.point_role ?? undefined,
 				key: r.key,
 				label: r.label,
 				label_en: r.label_en ?? undefined,

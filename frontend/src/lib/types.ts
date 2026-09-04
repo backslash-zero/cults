@@ -99,12 +99,20 @@ export type SourceDataset =
 	| 'interviews'
 	| 'miviludes_criteria'
 	| 'concept_backbone'
-	| 'entity_anchors';
+	| 'emergent_entities';
+
+// Cuts across SourceDataset to group the six datasets into three kinds of
+// point: 'expression' (literature/miviludes/interviews/miviludes_criteria,
+// a claim a source makes), 'reference' (concept_backbone, an external,
+// corpus-independent vocabulary), 'emergent' (emergent_entities, a named
+// entity/concept mentioned by the corpora themselves).
+export type PointRole = 'expression' | 'reference' | 'emergent';
 
 export type ProjectionMethod = 'pca' | 'umap' | 'tsne';
 
 export interface PointMeta {
 	source_dataset: SourceDataset;
+	point_role?: PointRole;
 	key: string;
 	label: string;
 	label_en?: string;

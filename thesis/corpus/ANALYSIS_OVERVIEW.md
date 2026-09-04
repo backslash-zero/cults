@@ -54,7 +54,18 @@ six sources, 46,648 points total:
 | `interviews` | 230 | `document_id:chunk_index` | Same, from 26 interview transcripts |
 | `miviludes_criteria` | 17 | `crit-<slug>` | French criterion text (`label`); English translation as `label_en`, display-only — not a separate point |
 | `concept_backbone` | 3,000 | WordNet ILI id (e.g. `i71809`) | The concept's primary English lemma |
-| `entity_anchors` | 3,251 | normalized anchor text | The anchor text itself (e.g. "scientology") |
+| `emergent_entities` | 3,251 | normalized anchor text | The anchor text itself (e.g. "scientology") |
+
+## Point Roles
+
+Every point also carries a `point_role`, cutting across `source_dataset` to
+group the six datasets into three kinds of thing:
+
+| `point_role` | Datasets | What it is |
+|---|---|---|
+| `expression` | `literature`, `miviludes`, `interviews`, `miviludes_criteria` | A criterion expression extracted from a text, or the MIVILUDES's own criterion text — something a source actually said |
+| `reference` | `concept_backbone` | An external, generic WordNet vocabulary entry, included as a fixed, topic-neutral yardstick — not derived from any corpus |
+| `emergent` | `emergent_entities` | A named entity/group/concept mentioned *by* the corpora themselves — corpus-derived like an expression, but a recurring reference object rather than a claim |
 
 ## Categorical Facets Available for Analysis
 
@@ -63,6 +74,11 @@ All fields below live directly in `embedding_space.jsonl` and every
 these. `null`/absent where not applicable, never a fabricated default.
 
 - **`source_dataset`** (6 values, table above) — the coarsest split.
+- **`point_role`** (3 values, table above) — `expression`/`reference`/
+  `emergent`; the coarser split when the question is about the *kind* of
+  point rather than which specific dataset it came from (e.g. "compare
+  expression points against reference points" without caring whether an
+  expression came from literature or an interview).
 - **`attribution`** — corpus-expression points only (`literature`,
   `miviludes`, `interviews`); `null` for the other three. Values: `author`,
   `cited_author`, `participant`, `institution`, `journalist`, `unspecified`.
@@ -85,16 +101,17 @@ these. `null`/absent where not applicable, never a fabricated default.
   *analysis-time derived* facet (not itself stored): `is_prototypical_core`
   = `response_rank <= 3`, to separate a prototypical core from peripheral
   mentions.
-- **`entity_anchors`** (the point-set, not a per-point field) — 3,251 named
-  entities/dimensions mentioned ≥3 times across all corpora, each with its
-  own position in the shared space. Not joined onto corpus-expression
-  points as a list field; compare by proximity instead. Top by mention
-  count: Scientology (3,867), charismatic leader (3,417), NRMs (1,279),
-  cults (688), Heaven's Gate (577), new religious movements (529), cult
-  (426), new age (387), new religions (332), Unification Church (273),
-  Jehovah's Witnesses (233), sect (205), brainwashing (204).
-- **`mention_distribution`** — entity-anchor points only; `null` elsewhere.
-  A per-corpus mention count, e.g.
+- **`emergent_entities`** (the point-set, not a per-point field) — 3,251
+  named entities/dimensions mentioned ≥3 times across all corpora, each with
+  its own position in the shared space (`point_role="emergent"`). Not
+  joined onto corpus-expression points as a list field; compare by
+  proximity instead. Top by mention count: Scientology (3,867), charismatic
+  leader (3,417), NRMs (1,279), cults (688), Heaven's Gate (577), new
+  religious movements (529), cult (426), new age (387), new religions
+  (332), Unification Church (273), Jehovah's Witnesses (233), sect (205),
+  brainwashing (204).
+- **`mention_distribution`** — emergent-entity points only; `null`
+  elsewhere. A per-corpus mention count, e.g.
   `{"literature": 3683, "miviludes": 130, "interviews": 54}` for
   "scientology" — provenance metadata, not used in the PCA fit (still one
   point per anchor either way). Lets an anchor mentioned near-exclusively in
@@ -109,7 +126,8 @@ these. `null`/absent where not applicable, never a fabricated default.
   (`crit-legal-disputes`) — 8/17 pairs under 0.90; the two lowest were
   inspected by hand and are accurate translations, not errors (a
   short-official-phrase cross-lingual embedding effect — worth remembering
-  when comparing other short texts, like entity anchors, across languages).
+  when comparing other short texts, like emergent entities, across
+  languages).
 
 ## Joinable Document/Interview Metadata (not embedded, join via `document_id`/`id`)
 

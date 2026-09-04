@@ -69,6 +69,7 @@ def load_shared_space(path: Path) -> tuple[list[dict], np.ndarray]:
             item = json.loads(line)
             points.append({
                 "source_dataset": item["source_dataset"],
+                "point_role": item.get("point_role"),
                 "key": item["key"],
                 "label": item["label"],
                 "label_en": item.get("label_en"),
