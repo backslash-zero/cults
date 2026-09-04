@@ -15,7 +15,9 @@
 //   positions-pca.json     -- [[x, y, z], ...] order-aligned to points-meta.json
 //   positions-umap.json
 //   positions-tsne.json
-//   shared-space-stats.json -- counts + registry + variance summary for the Overview page
+//   shared-space-stats.json    -- counts + registry + variance summary for the Overview page
+//   miviludes-documents.json   -- the 2 MIVILUDES source documents (title/url/citation from
+//                                 their .bib files, item counts live from registry.csv)
 //
 // The three visualization_*_3d.jsonl files are structurally row-aligned:
 // visualize_3d.py builds one in-memory points list and writes it three
@@ -48,6 +50,44 @@ function parseRegistry(csvText) {
 		const fields = line.split(',');
 		return Object.fromEntries(header.map((key, i) => [key, fields[i]]));
 	});
+}
+
+// The 2 MIVILUDES source documents don't warrant a Sanity type of their
+// own -- this hardcoded map (title/url/citation from their .bib files:
+// thesis/corpus/MIVILUDES/Latest Report/Latest Report/Latest Report.bib and
+// thesis/corpus/MIVILUDES/Sectarian Drifts/CommentIdentifierDerive.bib) is
+// joined below with registry.csv's live item_count, so chunk counts stay
+// accurate if the pipeline reprocesses without needing a .bib parser for
+// just 2 records.
+const MIVILUDES_DOCUMENTS = {
+	'mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair': {
+		title: "Rapport d'activité de la Miviludes 2022-2024",
+		url: 'https://www.miviludes.interieur.gouv.fr/nos-ressources/nos-publications/rapports-dactivite-de-miviludes',
+		citation: 'missioninterministerielledevigilanceetdeluttecontrelesderivessectairesmiviludesRapportDactiviteMiviludes2024',
+	},
+	'raw-transcript': {
+		title: 'Comment identifier une dérive sectaire ? | Miviludes',
+		url: 'https://www.miviludes.interieur.gouv.fr/comprendre-prevenir-et-lutter/comment-identifier-derive-sectaire',
+		citation: 'CommentIdentifierDerive',
+	},
+};
+
+function buildMiviludesDocuments(registryRows) {
+	return registryRows
+		.filter((row) => row.corpus === 'miviludes')
+		.map((row) => {
+			const known = MIVILUDES_DOCUMENTS[row.document_id];
+			if (!known) {
+				throw new Error(`No known title/url/citation for MIVILUDES document_id "${row.document_id}" -- update MIVILUDES_DOCUMENTS`);
+			}
+			return {
+				documentId: row.document_id,
+				title: known.title,
+				url: known.url,
+				citation: known.citation,
+				itemsEmbedded: Number(row.item_count) || 0,
+			};
+		});
 }
 
 function summarizeRegistry(rows) {
@@ -127,6 +167,11 @@ function main() {
 	const statsPath = path.join(OUTPUT_DIR, 'shared-space-stats.json');
 	writeFileSync(statsPath, JSON.stringify(stats, null, 2));
 	console.log(`Wrote ${statsPath}`);
+
+	const miviludesDocuments = buildMiviludesDocuments(registryRows);
+	const miviludesDocumentsPath = path.join(OUTPUT_DIR, 'miviludes-documents.json');
+	writeFileSync(miviludesDocumentsPath, JSON.stringify(miviludesDocuments, null, 2));
+	console.log(`Wrote ${miviludesDocumentsPath} (${miviludesDocuments.length} documents)`);
 
 	console.log(`\nDone. ${pointsMeta.length} points across ${METHODS.length} projection methods.`);
 }

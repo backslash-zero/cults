@@ -3,8 +3,6 @@ const groq = String.raw;
 export const overviewQuery = groq`{
 	"interviewCount": count(*[_type == "interview"]),
 	"literatureCount": count(*[_type == "literatureItem"]),
-	"dictionaryCount": count(*[_type == "dictionaryEntry"]),
-	"customTermCount": count(*[_type == "customTerm"]),
 	"miviludesCriteriaCount": count(*[_type == "miviludesCriterion"]),
 	"interviews": *[_type == "interview"]{
 		batch, language, method, translated, totalWordCount

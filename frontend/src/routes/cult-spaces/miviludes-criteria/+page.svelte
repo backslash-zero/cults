@@ -12,6 +12,13 @@
 	shared embedding space.
 </p>
 
+<a
+	href="/cult-spaces/explore?dataset=miviludes_criteria_fr,miviludes_criteria_en"
+	class="font-terminal-grotesque hover:underline"
+>
+	Explore these criteria in 3-D →
+</a>
+
 {#if data.criteria.length === 0}
 	<EmptyState message="No criteria synced yet — run the Sanity sync." />
 {:else}

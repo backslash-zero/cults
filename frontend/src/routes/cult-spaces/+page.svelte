@@ -4,33 +4,42 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-	let { overview, stats } = $derived(data);
+	let { overview, stats, miviludesDocumentCount } = $derived(data);
 </script>
 
 <p class="text-2xl text-gray-700 dark:text-gray-300 font-terminal-grotesque prose">
-	My research investigates how unstable, contested concepts can be formally defined and
-	represented as semantic spaces—using "cult" as a primary case study. The project originated from
-	asking whether AI psychosis could be understood as a form of sectarian drift.
+	This project investigates the criteria through which particular objects, groups, and practices
+	come to be considered "cults," comparing the semantic structures that emerge from scholarly
+	literature, interviews with participants, and institutional material on sectarian drift.
 </p>
 
-<section class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-	<CorpusSummaryCard title="Interviews" count={overview.interviewCount} href="/cult-spaces/interviews" />
-	<CorpusSummaryCard title="Literature" count={overview.literatureCount} href="/cult-spaces/literature" />
-	<CorpusSummaryCard
-		title="Dictionaries"
-		count={overview.dictionaryCount}
-		href="/cult-spaces/dictionaries"
-	/>
-	<CorpusSummaryCard
-		title="Custom terms"
-		count={overview.customTermCount}
-		href="/cult-spaces/custom-terms"
-	/>
-	<CorpusSummaryCard
-		title="MIVILUDES criteria"
-		count={overview.miviludesCriteriaCount}
-		href="/cult-spaces/miviludes-criteria"
-	/>
+<section class="flex flex-col gap-3">
+	<h2 class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 font-terminal-grotesque">
+		Corpora
+	</h2>
+	<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+		<CorpusSummaryCard title="Interviews" count={overview.interviewCount} href="/cult-spaces/interviews" />
+		<CorpusSummaryCard title="Literature" count={overview.literatureCount} href="/cult-spaces/literature" />
+		<CorpusSummaryCard title="MIVILUDES" count={miviludesDocumentCount} href="/cult-spaces/miviludes" />
+	</div>
+</section>
+
+<section class="flex flex-col gap-3">
+	<h2 class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 font-terminal-grotesque">
+		Reference lists
+	</h2>
+	<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+		<CorpusSummaryCard
+			title="MIVILUDES criteria"
+			count={overview.miviludesCriteriaCount}
+			href="/cult-spaces/miviludes-criteria"
+		/>
+		<CorpusSummaryCard
+			title="Concept backbone"
+			count={stats.countsBySourceDataset.concept_backbone ?? 0}
+			href="/cult-spaces/concept-backbone"
+		/>
+	</div>
 </section>
 
 {#if overview.interviewCount > 0}

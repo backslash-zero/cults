@@ -40,8 +40,6 @@ export interface InterviewAggregates {
 export interface CorpusOverview {
 	interviewCount: number;
 	literatureCount: number;
-	dictionaryCount: number;
-	customTermCount: number;
 	miviludesCriteriaCount: number;
 	interviewStats: InterviewAggregates;
 }
@@ -85,6 +83,14 @@ export interface MiviludesCriterion {
 	order?: number;
 	source?: string;
 	citation?: string;
+}
+
+export interface MiviludesDocument {
+	documentId: string;
+	title: string;
+	url: string;
+	citation: string;
+	itemsEmbedded: number;
 }
 
 export type SourceDataset =

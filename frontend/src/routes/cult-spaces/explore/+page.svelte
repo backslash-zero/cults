@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import EmbeddingExplorer from '$lib/components/EmbeddingExplorer.svelte';
 	import EmbeddingLegend from '$lib/components/EmbeddingLegend.svelte';
 	import EmbeddingDetailPanel from '$lib/components/EmbeddingDetailPanel.svelte';
@@ -15,11 +16,18 @@
 	let positionsByMethod: Partial<Record<ProjectionMethod, [number, number, number][]>> = $state({});
 	let method: ProjectionMethod = $state('umap');
 
-	let visible: Record<SourceDataset, boolean> = $state(
-		Object.fromEntries(
-			ALL_SOURCE_DATASETS.map((d) => [d, DEFAULT_VISIBLE_DATASETS.includes(d)])
-		) as Record<SourceDataset, boolean>
-	);
+	// Pages like MIVILUDES criteria / Concept backbone link in here with
+	// ?dataset=a,b to preset which categories are visible on load.
+	function initialVisible(): Record<SourceDataset, boolean> {
+		const datasetParam = page.url.searchParams.get('dataset');
+		const selected = datasetParam ? datasetParam.split(',') : DEFAULT_VISIBLE_DATASETS;
+		return Object.fromEntries(ALL_SOURCE_DATASETS.map((d) => [d, selected.includes(d)])) as Record<
+			SourceDataset,
+			boolean
+		>;
+	}
+
+	let visible: Record<SourceDataset, boolean> = $state(initialVisible());
 
 	let searchInput = $state('');
 	let searchTerm = $state('');
