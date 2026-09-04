@@ -71,6 +71,7 @@ def load_shared_space(path: Path) -> tuple[list[dict], np.ndarray]:
                 "source_dataset": item["source_dataset"],
                 "key": item["key"],
                 "label": item["label"],
+                "attribution": item.get("attribution"),
             })
             vectors.append(item["shared_space_vector"])
     return points, np.array(vectors, dtype=np.float64)

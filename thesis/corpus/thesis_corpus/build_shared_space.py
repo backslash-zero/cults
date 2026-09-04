@@ -101,6 +101,7 @@ def load_corpus_points(corpus_name: str, path: Path) -> list[dict]:
                 "source_dataset": corpus_name,
                 "key": f"{item['document_id']}:{item['chunk_index']}",
                 "label": item["embedding_text"],
+                "attribution": item.get("attribution"),
                 "vector": item["embedding_vector"],
             })
     return points
@@ -263,6 +264,7 @@ def main() -> None:
                 "source_dataset": p["source_dataset"],
                 "key": p["key"],
                 "label": p["label"],
+                "attribution": p.get("attribution"),
                 "shared_space_vector": coord.tolist(),
             }
             f.write(json.dumps(out, ensure_ascii=False) + "\n")

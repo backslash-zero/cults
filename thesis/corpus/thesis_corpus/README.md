@@ -471,7 +471,7 @@ writes new ones under `processed/shared_space/`.
 ```
 thesis/corpus/processed/
   shared_space/
-    embedding_space.jsonl   # one row per pooled point: source_dataset, key, label, shared_space_vector
+    embedding_space.jsonl   # one row per pooled point: source_dataset, key, label, attribution, shared_space_vector
     variance_curve.csv      # n_components, cumulative_variance -- the full curve
     variance_curve.json     # {curve, chosen_k, variance_at_k, threshold}
     variance_curve.png      # plot of the above
@@ -494,6 +494,17 @@ MIVILUDES criteria, `concept_id` for concept-backbone entries) is what any
 later reduction should carry through unchanged, so a point can always be
 traced back to this file, and from there back to the original corpus
 archive it came from.
+
+`attribution` carries each corpus item's annotation-stage attribution tag
+(`author`, `cited_author`, `participant`, `institution`, `journalist`,
+`unspecified` -- see `ollama_client.py`'s schema) straight through from the
+source archive; `null` for MIVILUDES criteria and concept-backbone points,
+which were never annotated this way. This is what lets an interview point
+be filtered by who said it -- in particular, separating the interviewee's
+own statements (`participant`) from the interviewer's questions
+(`unspecified`, unless the interviewer is themselves quoting someone), which
+otherwise end up pooled together indistinguishably since both speakers'
+turns can land in the same ~300-700 word chunk.
 
 After writing the output, the script prints two diagnostic (not pass/fail)
 sanity checks: mean vector norm by `source_dataset` (flags any one dataset
@@ -536,12 +547,12 @@ only writes new files under `processed/shared_space/`.
 ```
 thesis/corpus/processed/
   shared_space/
-    visualization_pca_3d.jsonl    # source_dataset, key, label, pca_3d_vector
-    visualization_umap_3d.jsonl   # source_dataset, key, label, umap_3d_vector
-    visualization_tsne_3d.jsonl   # source_dataset, key, label, tsne_3d_vector
+    visualization_pca_3d.jsonl    # source_dataset, key, label, attribution, pca_3d_vector
+    visualization_umap_3d.jsonl   # source_dataset, key, label, attribution, umap_3d_vector
+    visualization_tsne_3d.jsonl   # source_dataset, key, label, attribution, tsne_3d_vector
 ```
 
 Each file has one row per point in `embedding_space.jsonl` (43,415), keeping
-`source_dataset`/`key`/`label` unchanged and carrying only its own 3-d
-vector. Unlike `embedding_space.jsonl`, these are small (43,415 × 3 floats
+`source_dataset`/`key`/`label`/`attribution` unchanged and carrying only its
+own 3-d vector. Unlike `embedding_space.jsonl`, these are small (43,415 × 3 floats
 each) and tracked in git, same as `variance_curve.*`.
