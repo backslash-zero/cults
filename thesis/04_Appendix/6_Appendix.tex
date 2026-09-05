@@ -1,0 +1,20 @@
+\chapter{Emergent Entities}\label{ch:emergent_entities}
+
+This appendix lists the emergent-entity anchors described in \ref{sec:emergent_entities}: named entities, groups, and concepts mentioned by the corpora themselves (literature, MIVILUDES, interviews), pooled and normalised (lowercased, whitespace-collapsed), then kept only if mentioned at least three times across the whole corpus. Of 19{,}596 unique normalised anchors, this threshold keeps 3{,}251 as embedded points in the shared space (\ref{sec:shared_space}).
+
+Table~\ref{tab:emergent_entities} ranks the top 100 by total mention count across all three corpora — the top 100 (3.1\% of all 3{,}251 entities) already account for 20{,}309 of 43{,}979 total mentions (46.2\%), a long-tail distribution typical of this kind of corpus-derived vocabulary. The full ranked list of all 3{,}251 entities, with the same per-corpus breakdown, is available as \texttt{processed/shared\_space/emergent\_entities\_ranked.csv}.
+
+\begin{longtable}{@{}r p{5.5cm} r r r r@{}}
+\caption{Top 100 emergent entities by total mention count, with per-corpus breakdown}\label{tab:emergent_entities} \\
+\toprule
+Rank & Entity & Total & Literature & MIVILUDES & Interviews \\
+\midrule
+\endfirsthead
+\toprule
+Rank & Entity & Total & Literature & MIVILUDES & Interviews \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\input{04_Appendix/Emergent_Entities/top_100_rows}
+\end{longtable}
