@@ -178,6 +178,63 @@ def annotate_chunk(
     raise AnnotationError(f"Model did not return valid/schema-conforming JSON: {last_error}")
 
 
+class TranslationError(Exception):
+    pass
+
+
+def translate_text(
+    host: str,
+    model: str,
+    text: str,
+    target_language: str = "English",
+    source_language: str | None = None,
+    timeout: float = 60.0,
+    retries: int = 2,
+) -> str:
+    """Bare chat-completion translation -- no JSON schema, no Pydantic
+    validation, unlike annotate_chunk (which is tied to the annotation
+    schema above). Used by translate_miviludes_expressions.py to translate
+    short, already-extracted expressions."""
+    system_prompt = (
+        f"You are a translator. Translate the user's text into {target_language}. "
+        "Return only the translation itself -- no commentary, no quotation "
+        "marks, no explanation."
+    )
+    if source_language:
+        system_prompt += f" The source text is in {source_language}."
+
+    last_error: Exception | None = None
+    for _attempt in range(retries + 1):
+        try:
+            resp = httpx.post(
+                f"{host}/api/chat",
+                json={
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": text},
+                    ],
+                    "stream": False,
+                    "think": False,
+                    "options": {"temperature": 0},
+                },
+                timeout=timeout,
+            )
+            resp.raise_for_status()
+            translated = resp.json()["message"]["content"].strip()
+            if not translated:
+                raise TranslationError("Model returned an empty translation")
+            return translated
+        except httpx.HTTPError as e:
+            last_error = TranslationError(f"Ollama chat request failed: {e}")
+        except (KeyError, TypeError) as e:
+            last_error = TranslationError(f"Unexpected chat response shape: {e}")
+        except TranslationError as e:
+            last_error = e
+
+    raise last_error
+
+
 EMBED_BATCH_SIZE = 64
 
 
