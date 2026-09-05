@@ -73,6 +73,7 @@ def load_shared_space(path: Path) -> tuple[list[dict], np.ndarray]:
                 "key": item["key"],
                 "label": item["label"],
                 "label_en": item.get("label_en"),
+                "label_fr": item.get("label_fr"),
                 "attribution": item.get("attribution"),
                 "claim_mode": item.get("claim_mode"),
                 "epistemic_status": item.get("epistemic_status"),

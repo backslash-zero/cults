@@ -14,10 +14,12 @@ processed/*/documents/**/extracted.txt
 processed/*/documents/**/pages.jsonl
 processed/*/pending_annotations.jsonl
 processed/*/criterion_expressions*.jsonl
+processed/miviludes/expression_translations*.jsonl
 metadata/miviludes_criteria_embedded.jsonl
 dictionaries/concept_backbone_embedded.jsonl
 dictionaries/structural_concepts_embedded.jsonl
 processed/shared_space/embedding_space.jsonl
+processed/shared_space/literature_balanced_sample.jsonl
 
 # MIVILUDES source PDFs — same reasoning as litterature with pdfs/ above
 MIVILUDES/**/*.pdf

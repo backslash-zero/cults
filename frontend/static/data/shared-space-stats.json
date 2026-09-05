@@ -1,9 +1,9 @@
 {
-  "totalPoints": 48148,
+  "totalPoints": 44325,
   "countsBySourceDataset": {
-    "literature": 39236,
-    "miviludes": 914,
-    "interviews": 230,
+    "literature": 35621,
+    "miviludes": 732,
+    "interviews": 204,
     "miviludes_criteria": 17,
     "concept_backbone": 3000,
     "structural_concepts": 1500,
@@ -37,8 +37,8 @@
     }
   },
   "sharedSpace": {
-    "chosenDimensions": 395,
-    "varianceAtK": 0.9501607667998149,
+    "chosenDimensions": 394,
+    "varianceAtK": 0.9500104192236694,
     "varianceThreshold": 0.95
   }
 }

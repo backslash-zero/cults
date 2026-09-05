@@ -42,7 +42,11 @@ the corpus grows or the emergent-entity threshold below is adjusted):
   - Each corpus item (literature/miviludes/interviews) contributes ONE
     point (`point_role="expression"`): its embedding_vector, plus its
     claim_mode/epistemic_status/attribution tags carried through unchanged
-    for later faceting. Interview items additionally carry response_rank:
+    for later faceting -- except exact-duplicate expressions within the
+    same document (keeping the first occurrence) and expressions under
+    MIN_EXPRESSION_WORDS words, both filtered here at pooling time rather
+    than in the archive (see load_corpus_points). Interview items
+    additionally carry response_rank:
     interviews open with a free-listing prompt ("what comes to mind when
     you hear the word cult?"), and order of mention is a standard
     cognitive-salience proxy in prototype theory (first-mentioned = most
@@ -143,7 +147,17 @@ VARIANCE_JSON_PATH = SHARED_SPACE_DIR / "variance_curve.json"
 VARIANCE_THRESHOLD = 0.95
 EMBEDDING_DIM = 1024
 ENTITY_ANCHOR_MIN_MENTIONS = 3
-COSINE_WARNING_THRESHOLD = 0.90
+# Below this, a FR/EN pair is treated as a likely mistranslation worth
+# inspecting by hand. NOT 0.90: the MIVILUDES criteria check's own first
+# run flagged crit-legal-disputes at 0.50 under a flat <0.90 rule, and
+# hand inspection found it was actually an accurate translation -- short
+# official phrases just embed less stably cross-lingually than length
+# alone would suggest. 0.70 is calibrated to catch genuine mistranslations
+# without flagging that kind of expected short-phrase noise.
+COSINE_FLAG_THRESHOLD = 0.70
+# Expressions shorter than this (naive whitespace word count) are dropped
+# when pooling -- see MIN_EXPRESSION_WORDS' use in load_corpus_points.
+MIN_EXPRESSION_WORDS = 5
 
 _WHITESPACE_RE = re.compile(r"\s+")
 
@@ -158,32 +172,91 @@ def normalize_anchor(anchor: str) -> str:
     return _WHITESPACE_RE.sub(" ", anchor.strip().lower())
 
 
-def load_corpus_points(corpus_name: str, path: Path) -> list[dict]:
+def load_corpus_points(corpus_name: str, path: Path) -> tuple[list[dict], dict[str, int]]:
+    """Two known-and-deferred extraction issues (documented in Methods.tex,
+    "Vectorising Scholarly Work") get filtered here, at pooling time, rather
+    than by mutating the archive: the LLM occasionally emits the same
+    expression twice within one chunk's response, and occasionally emits a
+    short, low-content phrase -- already captured as an entity anchor on a
+    fuller expression -- as though it were an independent expression.
+    Filtering the pooled space (not the archive) matches this codebase's
+    "never modify the source, only write new files" convention -- the
+    archive stays the full, traceable record of what the LLM actually
+    produced, flaws included.
+
+    response_rank is computed BEFORE filtering, over every item in original
+    archive order, so a dropped item doesn't shift the rank of items after
+    it -- "3rd mentioned" should reflect what was actually said 3rd, not a
+    renumbering among whatever survives the filter.
+
+    Returns (points, removal_counts) -- removal_counts is
+    {"duplicates": N, "short_fragments": M}, for the "X duplicates removed,
+    Y short fragments removed" log line and Methods.tex documentation."""
     points = []
     response_rank_by_document: dict[str, int] = defaultdict(int)
     for_interviews = corpus_name == "interviews"
+    seen_text_by_document: dict[str, set[str]] = defaultdict(set)
+    duplicates_removed = 0
+    short_fragments_removed = 0
     with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
             item = json.loads(line)
+            document_id = item["document_id"]
+            text = item["embedding_text"]
+
             response_rank = None
             if for_interviews:
-                response_rank_by_document[item["document_id"]] += 1
-                response_rank = response_rank_by_document[item["document_id"]]
+                response_rank_by_document[document_id] += 1
+                response_rank = response_rank_by_document[document_id]
+
+            if text in seen_text_by_document[document_id]:
+                duplicates_removed += 1
+                continue
+            seen_text_by_document[document_id].add(text)
+
+            if len(text.split()) < MIN_EXPRESSION_WORDS:
+                short_fragments_removed += 1
+                continue
+
             points.append({
                 "source_dataset": corpus_name,
                 "point_role": "expression",
-                "key": f"{item['document_id']}:{item['chunk_index']}",
-                "label": item["embedding_text"],
+                "key": f"{document_id}:{item['chunk_index']}",
+                "label": text,
                 "attribution": item.get("attribution"),
                 "claim_mode": item.get("claim_mode"),
                 "epistemic_status": item.get("epistemic_status"),
                 "response_rank": response_rank,
                 "vector": item["embedding_vector"],
             })
-    return points
+    return points, {"duplicates": duplicates_removed, "short_fragments": short_fragments_removed}
+
+
+def _report_translation_fidelity(label: str, similarities: list[tuple[str, float]]) -> None:
+    """Shared reporting for both the 17-criteria and (once wired in) the
+    914-expression translation-fidelity checks: full distribution, not
+    just mean/min -- a flat low-percentile number is expected for short
+    phrases (see COSINE_FLAG_THRESHOLD) and shouldn't itself read as a
+    problem. Only pairs below COSINE_FLAG_THRESHOLD are named individually,
+    as candidates for manual inspection, not as confirmed errors."""
+    values = np.array([c for _, c in similarities], dtype=np.float64)
+    print(f"\n{label} FR vs EN raw-embedding cosine similarity "
+          f"(diagnostic; only FR is pooled into the shared space):")
+    print(f"  n={len(values)}  mean={values.mean():.4f}  median={np.median(values):.4f}  "
+          f"p10={np.percentile(values, 10):.4f}  min={values.min():.4f}")
+    flagged = sorted((k, c) for k, c in similarities if c < COSINE_FLAG_THRESHOLD)
+    if flagged:
+        print(f"  {len(flagged)} pair(s) below {COSINE_FLAG_THRESHOLD:.2f} -- candidates for manual "
+              f"inspection (not automatically errors; short phrases embed noisily cross-lingually):")
+        for key, cosine in flagged:
+            print(f"    {key:<40} cosine={cosine:.4f}")
+        logger.warning(
+            "%d %s FR/EN pair(s) below the %.2f flag threshold -- inspect by hand before treating as an error.",
+            len(flagged), label, COSINE_FLAG_THRESHOLD,
+        )
 
 
 def check_miviludes_translation_fidelity(path: Path) -> None:
@@ -206,17 +279,7 @@ def check_miviludes_translation_fidelity(path: Path) -> None:
             cosine = float(np.dot(fr, en) / (np.linalg.norm(fr) * np.linalg.norm(en)))
             similarities.append((item["id"], cosine))
 
-    print("\nMIVILUDES criteria FR vs EN raw-embedding cosine similarity (diagnostic; only FR is pooled into the shared space):")
-    for key, cosine in sorted(similarities):
-        flag = "  <-- below 0.90" if cosine < COSINE_WARNING_THRESHOLD else ""
-        print(f"  {key:<40} cosine={cosine:.4f}{flag}")
-    values = [c for _, c in similarities]
-    print(f"  mean={sum(values)/len(values):.4f}  min={min(values):.4f}")
-    if min(values) < COSINE_WARNING_THRESHOLD:
-        logger.warning(
-            "At least one MIVILUDES criterion's FR/EN cosine similarity is below %.2f -- inspect that translation.",
-            COSINE_WARNING_THRESHOLD,
-        )
+    _report_translation_fidelity("MIVILUDES criteria", similarities)
 
 
 def load_miviludes_criteria_points(path: Path) -> list[dict]:
@@ -369,13 +432,22 @@ def main() -> None:
 
     points: list[dict] = []
     counts: dict[str, int] = {}
+    removed: dict[str, dict[str, int]] = {}
 
     for corpus_name, path in CORPUS_ARCHIVES.items():
         if not path.exists():
             raise SystemExit(f"Missing corpus archive: {path}")
-        new_points = load_corpus_points(corpus_name, path)
+        new_points, removal_counts = load_corpus_points(corpus_name, path)
         counts[corpus_name] = len(new_points)
+        removed[corpus_name] = removal_counts
         points.extend(new_points)
+
+    logger.info("Filtered during pooling (duplicates / short fragments, per corpus): %s", removed)
+    total_duplicates = sum(r["duplicates"] for r in removed.values())
+    total_short = sum(r["short_fragments"] for r in removed.values())
+    print(f"\nFiltered during pooling: {total_duplicates} exact-duplicate expressions removed "
+          f"(per document, keeping first occurrence), {total_short} short fragments removed "
+          f"(under {MIN_EXPRESSION_WORDS} words). Per corpus: {removed}")
 
     if not MIVILUDES_CRITERIA_PATH.exists():
         raise SystemExit(f"Missing: {MIVILUDES_CRITERIA_PATH}")
@@ -468,6 +540,7 @@ def main() -> None:
                 "key": p["key"],
                 "label": p["label"],
                 "label_en": p.get("label_en"),
+                "label_fr": p.get("label_fr"),
                 "attribution": p.get("attribution"),
                 "claim_mode": p.get("claim_mode"),
                 "epistemic_status": p.get("epistemic_status"),

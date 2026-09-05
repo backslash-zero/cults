@@ -117,6 +117,7 @@ export interface PointMeta {
 	key: string;
 	label: string;
 	label_en?: string;
+	label_fr?: string;
 	attribution?: string;
 	claim_mode?: string;
 	epistemic_status?: string;
