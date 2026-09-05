@@ -194,7 +194,17 @@ def translate_text(
     """Bare chat-completion translation -- no JSON schema, no Pydantic
     validation, unlike annotate_chunk (which is tied to the annotation
     schema above). Used by translate_miviludes_expressions.py to translate
-    short, already-extracted expressions."""
+    short, already-extracted expressions.
+
+    qwen3's "thinking" mode can leak an extended reasoning trace into the
+    response content even with "think": False in the request (observed in
+    practice: every one of a 914-item run came back as a multi-paragraph
+    trace ending in a literal "</think>" marker followed by the real
+    answer, rather than a bare translation) -- unlike annotate_chunk, which
+    is shielded from this by "format": "json" constraining the output
+    shape. Defensively strip anything up to and including the last
+    "</think>" if present, so a bad chat-template default can't silently
+    embed a reasoning trace instead of a translation."""
     system_prompt = (
         f"You are a translator. Translate the user's text into {target_language}. "
         "Return only the translation itself -- no commentary, no quotation "
@@ -222,6 +232,8 @@ def translate_text(
             )
             resp.raise_for_status()
             translated = resp.json()["message"]["content"].strip()
+            if "</think>" in translated:
+                translated = translated.rsplit("</think>", 1)[-1].strip()
             if not translated:
                 raise TranslationError("Model returned an empty translation")
             return translated
