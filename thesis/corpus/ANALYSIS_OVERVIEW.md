@@ -47,7 +47,7 @@ What the analysis is meant to establish:
 |---|---|---|
 | Legal/administrative | MIVILUDES | The French state's operational "sectarian drift" framework — deliberately avoids labeling groups, focuses on harmful consequences |
 | Scholarly | Literature | Academic NRM/cult-studies literature |
-| Lay/prototype | Interviews | 26 semi-structured interviews, opening with a free-listing prompt; everyday use of "cult" |
+| Lay/everyday | Interviews | 26 semi-structured interviews, opening with a single first-association prompt (not a multi-item free list — see `response_rank`/initial-exemplars note below); everyday use of "cult" |
 
 ## Datasets in the Shared Space
 
@@ -177,15 +177,24 @@ these. `null`/absent where not applicable, never a fabricated default.
   `contested`, `negated`, `speculative` — the small non-`asserted` slivers
   are exactly the sites of live disagreement/ambivalence ("is this a cult or
   a religion?") worth isolating geometrically.
-- **`response_rank`** — interviews only; `null` elsewhere. 1-indexed position
-  of the item within its own interview transcript, in archive order (not
-  filtered to the interviewee's own turns). Interviews open with a
-  free-listing prompt ("what comes to mind when you hear the word cult?"),
-  and order of mention is a standard cognitive-salience proxy in prototype
-  theory — first-mentioned is treated as most prototypical. A useful
-  *analysis-time derived* facet (not itself stored): `is_prototypical_core`
-  = `response_rank <= 3`, to separate a prototypical core from peripheral
-  mentions.
+- **`response_rank`** — interviews only; `null` elsewhere. A 1-indexed
+  extraction-order counter (chunk order, then extraction order within a
+  chunk) over every pooled item in a document, computed *before* the
+  dedup/short-fragment filter. **Not a free-listing rank and not a
+  cognitive-salience proxy** — checked directly
+  (`thesis_corpus.audit_free_listing_rank`) and found unreliable even at
+  its narrowest, most favorable reading: only 11/26 interviews have
+  `response_rank == 1` land on the participant's own first claim rather
+  than, e.g., the interviewer's own question text (`unspecified`
+  attribution). The interview protocol itself isn't a multi-item
+  free-listing task either (`sec:interview_protocol`,
+  04\_Appendix/3\_Appendix.tex) — one prompt elicits a single example,
+  followed by a second prompt and probes asking the participant to justify
+  *that same example*, not to list more items. Retained here purely as
+  extraction-order provenance. The actual interview-side geometric
+  evidence comes from a separate, manually-reviewed initial-exemplar
+  workflow instead — see `thesis_corpus.analyze_initial_exemplars` and
+  `interviews/metadata/initial_exemplars.csv`.
 - **`emergent_entities`** (the point-set, not a per-point field) — 3,251
   named entities/dimensions mentioned ≥3 times across all corpora, each with
   its own position in the shared space (`point_role="emergent"`). Not
@@ -266,10 +275,24 @@ prose; summarized here for quick reference while planning analysis:
 
 ## What's NOT Yet Done
 
-- No clustering or distance analysis has been run on the shared space.
-- No criterion-centred nearest-neighbour inspection (e.g. which corpus
-  expressions sit closest to each of the 17 MIVILUDES criteria).
-- No rank-stratified analysis (prototypical core vs. peripheral mentions in
-  interviews).
-- Results.tex is still a placeholder beyond the qualitative interview-survey
-  notes; no geometric finding has been written up yet.
+A geometric-analysis toolkit now exists (`thesis_corpus.analyze_global_structure`,
+`analyze_cluster_structure`, `audit_free_listing_rank`,
+`analyze_initial_exemplars`, `analyze_criterion_neighbours`,
+`analyze_emergent_entities`, `generate_figures`,
+`generate_geometric_draft_report` — see that package's own docstrings, and
+`processed/analysis/<run-id>/` for output), covering centroids/dispersion,
+k-NN/silhouette cluster structure, criterion-neighbour distances (with a
+French/English language-representation sensitivity audit), emergent-entity
+provenance, and 2-D UMAP figures. What's still outstanding:
+
+- No run's output has been interpreted or written into Results.tex yet —
+  the toolkit produces tables/figures/a neutral draft report, not a
+  finished analysis.
+- The interview-side initial-exemplar workflow
+  (`interviews/metadata/initial_exemplars.csv`,
+  `thesis_corpus.propose_initial_exemplars`) has candidates proposed for
+  all 26 interviews but not yet manually reviewed — `analyze_initial_exemplars`
+  refuses to run until that review is done.
+- Rank-based prototype analysis is retired outright, not deferred:
+  `response_rank` cannot support a salience/prototype claim (see that
+  field's own note above) — this was a design finding, not unfinished work.

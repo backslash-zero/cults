@@ -17,9 +17,6 @@
 		{#if point.label_fr && point.label_fr !== point.label}
 			<p class="text-gray-500 dark:text-gray-400 text-sm italic">{point.label_fr}</p>
 		{/if}
-		{#if point.response_rank}
-			<p class="text-xs text-gray-400 dark:text-gray-500">Response #{point.response_rank}</p>
-		{/if}
 		<p class="text-xs text-gray-400 dark:text-gray-500 font-mono break-all">{point.key}</p>
 	{:else}
 		<p class="text-gray-400 dark:text-gray-500 italic text-sm">Click a point to see its details.</p>

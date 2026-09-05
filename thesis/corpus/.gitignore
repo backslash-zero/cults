@@ -21,5 +21,12 @@ dictionaries/structural_concepts_embedded.jsonl
 processed/shared_space/embedding_space.jsonl
 processed/shared_space/literature_balanced_sample.jsonl
 
+# geometric-analysis toolkit output -- large, regeneratable from
+# embedding_space.jsonl, and qualitative-retrieval tables carry literal
+# copyrighted excerpt text (same reasoning as criterion_expressions*.jsonl
+# above). thesis_corpus/interviews/metadata/initial_exemplars.csv is NOT
+# covered by this -- that's the durable, manually-reviewed research record.
+processed/analysis/
+
 # MIVILUDES source PDFs — same reasoning as litterature with pdfs/ above
 MIVILUDES/**/*.pdf

@@ -754,13 +754,19 @@ fabricated default:
   corpus-item points only (`null` elsewhere) — how the expression makes its
   claim (a direct statement, a definition, a reflective question, ...) and
   its epistemic status (asserted, contested, negated, speculative, ...).
-- `response_rank`: interviews only (`null` elsewhere). Interviews open with
-  a free-listing prompt ("what comes to mind when you hear the word
-  cult?"), and order of mention is a standard cognitive-salience proxy in
-  prototype theory (first-mentioned = most prototypical). This is the
-  1-indexed position of the item within its own interview document, in the
-  order the archive already lists them — not filtered to the interviewee's
-  turns only, so an interviewer's question can also carry a rank.
+- `response_rank`: interviews only (`null` elsewhere). The 1-indexed
+  position of the item within its own interview document, in the order the
+  archive already lists them — not filtered to the interviewee's turns
+  only, so an interviewer's question can also carry a rank (confirmed in
+  practice: one interview's rank-1 item is literally the interviewer's own
+  opening question). **Not a free-listing rank or a cognitive-salience
+  proxy** — the interview protocol elicits a single first-association
+  example plus justification/probes, not a ranked list, and
+  `thesis_corpus.audit_free_listing_rank` finds even the narrowest reading
+  of "rank 1 = the participant's own first claim" holds for only 11/26
+  interviews. Kept as extraction-order provenance only; see
+  `thesis_corpus.analyze_initial_exemplars` for the actual (manually
+  reviewed) interview-side geometric analysis.
 - `mention_distribution`: emergent-entity and structural-concept points only
   (`null` elsewhere, including `concept_backbone`, which has no
   corpus-mention notion). A per-corpus mention count (e.g.

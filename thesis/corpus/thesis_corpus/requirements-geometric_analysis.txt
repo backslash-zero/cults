@@ -1,0 +1,13 @@
+# Shared by every module in the geometric-analysis toolkit (analyze_*.py,
+# generate_figures.py, generate_geometric_draft_report.py,
+# propose_initial_exemplars.py, geometric_analysis_common.py) -- one file
+# rather than one per script, since all of them need the identical
+# dependency set. A deliberate, small deviation from this codebase's usual
+# per-script requirements-*.txt convention.
+#
+# All three packages are already used elsewhere in this codebase
+# (build_shared_space.py, visualize_3d.py) -- no new dependency introduced.
+numpy
+scikit-learn
+umap-learn
+matplotlib

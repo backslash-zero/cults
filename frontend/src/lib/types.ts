@@ -121,6 +121,9 @@ export interface PointMeta {
 	attribution?: string;
 	claim_mode?: string;
 	epistemic_status?: string;
+	/** Extraction-order provenance only -- not a free-listing rank or a
+	 * cognitive-salience proxy (see thesis_corpus.audit_free_listing_rank).
+	 * Deliberately not displayed anywhere in the UI. */
 	response_rank?: number;
 }
 
