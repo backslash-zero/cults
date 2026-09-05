@@ -2,9 +2,16 @@
 
 A reference snapshot of the shared cross-corpus embedding space, for planning
 the geometrical analysis. Reflects the pipeline as of the `build_shared_space`
-run that produced `processed/shared_space/embedding_space.jsonl` (48,148
-points, k=395). Regenerate the numbers below after any pipeline rerun — they
-are not guaranteed to stay in sync automatically.
+run that produced `processed/shared_space/embedding_space.jsonl` (44,325
+points, k=394, after the duplicate/short-fragment filter below). Regenerate
+the numbers below after any pipeline rerun — they are not guaranteed to stay
+in sync automatically.
+
+**Pending**: MIVILUDES's 732 expression points are still embedded in their
+original French (language-asymmetry mitigation planned, not yet run — see
+"Known Limitations" below); once translated, `label` for these points will
+become the English translation and `label_fr` will hold the French original,
+same inverted pattern as `miviludes_criteria`'s `label`/`label_en`.
 
 ## Project Goals & Hypothesis
 
@@ -44,14 +51,19 @@ What the analysis is meant to establish:
 
 ## Datasets in the Shared Space
 
-One shared 395-dimensional PCA space (95.0% cumulative variance), pooled from
-seven sources, 48,148 points total:
+One shared 394-dimensional PCA space (95.0% cumulative variance), pooled from
+seven sources, 44,325 points total. The three expression-corpus counts below
+are *after* pooling-time filtering (exact-duplicate expressions within the
+same document, and expressions under 5 words — both known LLM-extraction
+artefacts documented in Methods.tex, never removed from the archives
+themselves): 775 duplicates + 3,048 short fragments removed in total
+(literature 707/2,908, MIVILUDES 67/115, interviews 1/25):
 
 | `source_dataset` | Points | Key format | Label semantics |
 |---|---|---|---|
-| `literature` | 39,236 | `document_id:chunk_index` | An extracted expression's short embedding text |
-| `miviludes` | 914 | `document_id:chunk_index` | Same, from the 2 MIVILUDES source documents |
-| `interviews` | 230 | `document_id:chunk_index` | Same, from 26 interview transcripts |
+| `literature` | 35,621 | `document_id:chunk_index` | An extracted expression's short embedding text |
+| `miviludes` | 732 | `document_id:chunk_index` | Same, from the 2 MIVILUDES source documents (currently French — see "Pending" above) |
+| `interviews` | 204 | `document_id:chunk_index` | Same, from 26 interview transcripts |
 | `miviludes_criteria` | 17 | `crit-<slug>` | French criterion text (`label`); English translation as `label_en`, display-only — not a separate point |
 | `concept_backbone` | 3,000 | WordNet ILI id (e.g. `i71809`) | The concept's primary English lemma |
 | `structural_concepts` | 1,500 | `sc_<0001..1500>` | The term itself (e.g. "control", "authority") |
@@ -110,16 +122,19 @@ birth year, a year range) caught 53 of these at once; verified zero such
 matches remain in the final 1,500. Neither correction is exhaustive —
 residual noise should be expected at this scale, not assumed absent.
 
-**Verified after embedding and rerunning** (both at 600 and again at the
-final 1,500): `structural_concepts`' nearest expression-point distance
-(mean 33.37, sampled) sits close to the expression-to-expression baseline
-(33.21) — essentially embedded within the expression cloud, not a separate
-cluster. `concept_backbone` remains farther out (34.66), consistent with
-staying topic-neutral rather than corpus-proximate. Centroid distance to
-the expression centroid also improved: 16.1 (`structural_concepts`) vs.
-16.6 (`concept_backbone`), both against `emergent_entities`' 12.6. (At 600
-concepts the numbers were marginally tighter — 32.97/15.9 — the larger,
-lower-frequency tail pulls the average out slightly, but the effect holds.)
+**Verified after embedding and rerunning** (at 600 concepts, again at the
+final 1,500, and again after the duplicate/short-fragment filter below):
+`structural_concepts`' nearest expression-point distance (mean 33.79,
+sampled) sits close to the expression-to-expression baseline (33.68) —
+essentially embedded within the expression cloud, not a separate cluster.
+`concept_backbone` remains farther out (34.85), consistent with staying
+topic-neutral rather than corpus-proximate. Centroid distance to the
+expression centroid also improved: 16.2 (`structural_concepts`) vs. 16.7
+(`concept_backbone`), both against `emergent_entities`' 13.2. The exact
+figures have shifted slightly across each rerun (600→1,500 concepts, then
+the pooling-time filter) but the qualitative finding — structural concepts
+close to baseline, concept backbone consistently farther out — has held at
+every stage.
 
 ## Categorical Facets Available for Analysis
 
@@ -136,7 +151,7 @@ these. `null`/absent where not applicable, never a fabricated default.
 - **`attribution`** — corpus-expression points only (`literature`,
   `miviludes`, `interviews`); `null` for the other three. Values: `author`,
   `cited_author`, `participant`, `institution`, `journalist`, `unspecified`.
-  For interviews specifically: 210 `participant` / 20 `unspecified` (this is
+  For interviews specifically: 185 `participant` / 19 `unspecified` (this is
   what separates the interviewee's own words from the interviewer's
   questions — both can land in the same extracted chunk otherwise).
 - **`claim_mode`** — same coverage as `attribution`. Values:
@@ -178,12 +193,14 @@ these. `null`/absent where not applicable, never a fabricated default.
   shared.
 - **`miviludes_criteria`** (17 points) — joinable to the official MIVILUDES
   17-criteria list via `key` (`crit-<slug>`). FR/EN translation fidelity
-  (raw-embedding cosine, not a shared-space property): mean 0.87, min 0.50
-  (`crit-legal-disputes`) — 8/17 pairs under 0.90; the two lowest were
-  inspected by hand and are accurate translations, not errors (a
-  short-official-phrase cross-lingual embedding effect — worth remembering
-  when comparing other short texts, like emergent entities, across
-  languages).
+  (raw-embedding cosine, not a shared-space property): mean 0.87, median
+  0.90, p10 0.81, min 0.50 (`crit-legal-disputes`) — only that one pair
+  falls under the 0.70 manual-inspection threshold (recalibrated from an
+  earlier flat <0.90 rule, which flagged this same pair as if it were a
+  fresh concern; hand inspection confirms it's an accurate translation, not
+  an error — short official phrases just embed less stably cross-lingually
+  than length alone would suggest, worth remembering when comparing other
+  short texts, like emergent entities, across languages).
 
 ## Joinable Document/Interview Metadata (not embedded, join via `document_id`/`id`)
 
@@ -198,8 +215,38 @@ these. `null`/absent where not applicable, never a fabricated default.
   the "Comment identifier une dérive sectaire?" criteria page) —
   `document_id` itself is the only useful split.
 
+## Known Limitations
+
+Mirrors `Methods.tex`'s "Known Limitations" subsection — see there for full
+prose; summarized here for quick reference while planning analysis:
+
+- **Corpus imbalance**: literature is ~97% of expression points (35,621 vs.
+  MIVILUDES's 732, interviews' 204). Measured, not assumed: the
+  equal-corpus-weighted grand centroid sits 4.02 shared-space units from the
+  plain unweighted one. Use `thesis_corpus.balanced_analysis` for any
+  quantitative (not visualization) claim about the corpus as a whole —
+  `weighted_centroid()` / `per_corpus_centroids()` as reusable functions, or
+  the pre-written `processed/shared_space/literature_balanced_sample.jsonl`
+  (2,500 points, stratified by document) as a drop-in literature subset.
+- **MIVILUDES = 2 documents**: treat as one influential operational
+  framework, not a representative sample of French state framing broadly.
+- **Language asymmetry**: MIVILUDES is ~100% French; both reference
+  point-sets are English-only. Mitigation (translate MIVILUDES's 732
+  expressions to English, use as the primary embedding, French as a
+  `label_fr` display field) is designed and code-complete
+  (`translate_miviludes_expressions.py`) but not yet run — needs Ollama, on
+  the Windows machine, same handoff pattern as `structural_concepts`'s
+  embedding step. See "Pending" at the top.
+- **Interview sample**: convenience-sampled through the researcher's own
+  network (one response excluded for researcher-influence bias; another
+  named the researcher's own academic programme a "cult"). Treat as
+  exploratory prototype data, not a representative sample of lay usage.
+
 ## What's NOT Yet Done
 
+- MIVILUDES's expression translation (see "Known Limitations") needs
+  running on the Ollama-serving machine, then `build_shared_space.py` and
+  `visualize_3d.py` need rerunning.
 - No clustering or distance analysis has been run on the shared space.
 - No criterion-centred nearest-neighbour inspection (e.g. which corpus
   expressions sit closest to each of the 17 MIVILUDES criteria).

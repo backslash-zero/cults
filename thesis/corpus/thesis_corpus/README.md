@@ -633,9 +633,11 @@ every dataset ends up in the same shared coordinate system:
 - Total pooled points is logged at runtime, not asserted against a
   hardcoded constant (it will keep changing as the corpus grows, the
   emergent-entity threshold is adjusted, or the structural-concepts target
-  size changes): **48,148** points on the current corpus (39,236 literature
-  + 914 MIVILUDES + 230 interviews + 17 MIVILUDES criteria + 3,000 concept
-  backbone + 1,500 structural concepts + 3,251 emergent entities).
+  size changes): **44,325** points on the current corpus (35,621 literature
+  + 732 MIVILUDES + 204 interviews + 17 MIVILUDES criteria + 3,000 concept
+  backbone + 1,500 structural concepts + 3,251 emergent entities) — the
+  three expression-corpus counts are *after* the duplicate/short-fragment
+  filter below (raw archive sizes are larger: 39,236 / 914 / 230).
 
 **Standardization**: `StandardScaler` (zero mean, unit variance per
 dimension) runs before PCA. Every vector already comes from the same
@@ -651,20 +653,41 @@ to get the complete explained-variance curve — written to
 `processed/shared_space/variance_curve.{csv,json,png}` so the choice is
 inspectable rather than asserted — and the smallest `k` reaching 95%
 cumulative variance is picked from that curve. On the actual pooled data:
-`k=395` for 95.0% (curve is fairly gradual, not a sharp knee — e.g. 61% at
+`k=394` for 95.0% (curve is fairly gradual, not a sharp knee — e.g. 61% at
 k=100, 90% at k=300 — so this is a real but not dramatic compression;
 worth knowing when interpreting distances in the shared space).
 
+**Extraction-noise filter** (applied inside `load_corpus_points`, never on
+the archive itself): two known-and-deferred extraction issues (Methods.tex,
+"Vectorising Scholarly Work") are filtered at pooling time. Exact-duplicate
+expressions within the same document (keeping the first occurrence) and
+expressions under `MIN_EXPRESSION_WORDS` (5) words are dropped before the
+point is created; `response_rank` is computed *before* filtering, over
+every item in original archive order, so a dropped item doesn't shift the
+rank of items after it. On the current corpus: 775 duplicates + 3,048 short
+fragments removed (literature 707/2,908, MIVILUDES 67/115, interviews
+1/25) — logged at build time as `{"duplicates": N, "short_fragments": M}`
+per corpus.
+
 **Diagnostics printed at build time** (not pass/fail checks): MIVILUDES
-criteria FR/EN raw-embedding cosine similarity, per criterion plus
-mean/min, with any pair below 0.90 flagged. On the current corpus: mean
-0.873, min 0.500 (`crit-legal-disputes`) — 8 of 17 pairs fall under 0.90.
-Both of the two lowest (`crit-legal-disputes`, 0.50; `crit-indoctrination-of-
-children`, 0.71) were inspected by hand and are accurate translations (\"La
-déstabilisation..."/"Mental destabilization..." style short official-French
-phrases against slightly more explanatory English glosses) — the lower
-similarities look like a short-phrase cross-lingual embedding effect rather
-than a translation error, worth bearing in mind whenever comparing short
+criteria FR/EN raw-embedding cosine similarity, reporting the full
+distribution (mean, median, 10th percentile, min) rather than just
+mean/min, with any pair below `COSINE_FLAG_THRESHOLD` (0.70, not 0.90 --
+see below) named for manual inspection. On the current corpus: mean 0.873,
+median 0.901, p10 0.806, min 0.500 (`crit-legal-disputes`) — only that one
+pair falls under 0.70. **Why 0.70, not 0.90**: a flat <0.90 rule initially
+flagged 8 of 17 pairs, including `crit-legal-disputes` (0.50) and
+`crit-indoctrination-of-children` (0.71); hand inspection found both were
+accurate translations (\"La déstabilisation...\"/\"Mental
+destabilization...\" style short official-French phrases against slightly
+more explanatory English glosses) -- short phrases just embed less stably
+cross-lingually than length alone would suggest, and a flat 0.90 threshold
+conflated that expected noise with genuine mistranslation. 0.70 is
+calibrated to catch the latter without flagging the former. The shared
+`_report_translation_fidelity` helper this uses is written to be reused by
+an analogous, larger check over MIVILUDES's 732 expressions, planned once
+they're translated (see "Known limitations" below) but not yet
+implemented -- worth bearing in mind whenever comparing short
 texts (this also applies to emergent entities, often 1-3 words) across
 languages in this space.
 
@@ -757,7 +780,7 @@ center relative to the others).
 
 ## 3-D visualization projections (`visualize_3d`)
 
-`embedding_space.jsonl`'s 395 dimensions can't be plotted directly. This
+`embedding_space.jsonl`'s 394 dimensions can't be plotted directly. This
 script reads it once and writes three separate 3-D projections, one per
 method, so the shared space can actually be visualized:
 
@@ -772,7 +795,7 @@ method, so the shared space can actually be visualized:
   nonlinear projection tuned for cluster structure, at the cost of global
   distances being less meaningful than UMAP's or PCA's.
 
-All three are fit directly on the 395-d shared-space vectors (already
+All three are fit directly on the 394-d shared-space vectors (already
 standardized + PCA'd upstream in `build_shared_space.py`; no further scaling
 applied here).
 
@@ -789,14 +812,78 @@ only writes new files under `processed/shared_space/`.
 ```
 thesis/corpus/processed/
   shared_space/
-    visualization_pca_3d.jsonl    # source_dataset, point_role, key, label, label_en, attribution,
-                                    # claim_mode, epistemic_status, response_rank,
+    visualization_pca_3d.jsonl    # source_dataset, point_role, key, label, label_en, label_fr,
+                                    # attribution, claim_mode, epistemic_status, response_rank,
                                     # mention_distribution, pca_3d_vector
     visualization_umap_3d.jsonl   # ...same fields, umap_3d_vector
     visualization_tsne_3d.jsonl   # ...same fields, tsne_3d_vector
 ```
 
-Each file has one row per point in `embedding_space.jsonl` (48,148), keeping
+Each file has one row per point in `embedding_space.jsonl` (44,325), keeping
 every field but the vector unchanged and carrying only its own 3-d vector.
-Unlike `embedding_space.jsonl`, these are small (48,148 × 3 floats each) and
+Unlike `embedding_space.jsonl`, these are small (44,325 × 3 floats each) and
 tracked in git, same as `variance_curve.*`.
+
+## Corpus-imbalance mitigation (`balanced_analysis`)
+
+Literature is ~97% of expression points (35,621 vs. MIVILUDES's 732,
+interviews' 204) — see "Known limitations" below. `thesis_corpus.balanced_analysis`
+provides two tools for any *quantitative* claim about the corpus as a whole
+(visualizations and the PCA fit itself keep every literature point
+unchanged; this is a post-hoc, analysis-time correction, not a re-fit):
+
+- `weighted_centroid(embedding_space_path)` / `per_corpus_centroids(...)`:
+  reusable functions computing a grand centroid where literature, MIVILUDES,
+  and interviews each contribute equal total weight, regardless of point
+  count. On the current corpus, the equal-weighted centroid sits 4.02
+  shared-space units from the plain unweighted one — confirming the
+  imbalance actually moves a raw statistic, not just a theoretical concern.
+- A stratified-by-document literature subsample: `python -m
+  thesis_corpus.balanced_analysis` writes
+  `processed/shared_space/literature_balanced_sample.jsonl` (2,500 points
+  by default, `--sample-size` to change it), grouping literature points by
+  `document_id` and sampling proportionally to each document's share of the
+  corpus, so no single chunk-heavy document dominates the sample. Same row
+  shape as `embedding_space.jsonl` — a drop-in subset.
+
+```
+python -m thesis_corpus.balanced_analysis
+python -m thesis_corpus.balanced_analysis --sample-size 3000 --seed 7
+```
+
+## Known limitations
+
+- **Corpus imbalance**: see "Corpus-imbalance mitigation" above.
+- **MIVILUDES = 2 documents**: the MIVILUDES corpus (914 raw / 732 pooled
+  expressions) comes from exactly two source documents. Treat as one
+  influential operational framework, not a representative sample of French
+  state framing broadly.
+- **Language asymmetry, mitigation pending**: MIVILUDES's expressions are
+  currently embedded in their original French, while both reference
+  point-sets (`concept_backbone`, `structural_concepts`) are English-only —
+  the same asymmetry the MIVILUDES-criteria FR/EN cosine spread (0.50-0.95)
+  already demonstrates adds real noise. `thesis_corpus.translate_miviludes_expressions`
+  (new, code-complete) will translate MIVILUDES's 732 expressions to
+  English and re-embed them, so `build_shared_space.py` can use the English
+  embedding as the point's primary vector (French becomes a `label_fr`
+  display field, mirroring `miviludes_criteria`'s `label`/`label_en`
+  pattern, just inverted) — needs Ollama, run on the Windows/Ollama machine
+  (same handoff pattern as `structural_concepts`'s embedding step), not yet
+  run:
+
+  ```
+  # On the Ollama-serving machine, from thesis/corpus/:
+  python -m thesis_corpus.translate_miviludes_expressions
+  # Then copy processed/miviludes/expression_translations_embedded.jsonl back,
+  # and rerun build_shared_space.py + visualize_3d.py here.
+  ```
+
+  Interview transcripts are deliberately left in their original language
+  regardless (see "Running on a different corpus" above) — only 19% of
+  interviews are French, a much smaller asymmetry than MIVILUDES's
+  near-total French text.
+- **Interview sample**: convenience-sampled through the researcher's own
+  network (documented in Methods.tex, "Vectorising Prototypes": one
+  response excluded for researcher-influence bias, another named the
+  researcher's own academic programme a "cult"). Treat as exploratory
+  prototype data, not a representative sample of lay usage.
