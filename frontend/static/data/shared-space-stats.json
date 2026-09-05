@@ -38,7 +38,7 @@
   },
   "sharedSpace": {
     "chosenDimensions": 394,
-    "varianceAtK": 0.9500104192236694,
+    "varianceAtK": 0.9500826189764078,
     "varianceThreshold": 0.95
   }
 }

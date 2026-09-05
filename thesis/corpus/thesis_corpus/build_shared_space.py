@@ -45,7 +45,11 @@ the corpus grows or the emergent-entity threshold below is adjusted):
     for later faceting -- except exact-duplicate expressions within the
     same document (keeping the first occurrence) and expressions under
     MIN_EXPRESSION_WORDS words, both filtered here at pooling time rather
-    than in the archive (see load_corpus_points). Interview items
+    than in the archive (see load_corpus_points). MIVILUDES items use their
+    English translation (translate_miviludes_expressions.py) as the
+    embedded vector/label instead of the French original, closing a
+    measured language-asymmetry gap against the English-only reference
+    vocabularies; French moves to a `label_fr` field. Interview items
     additionally carry response_rank:
     interviews open with a free-listing prompt ("what comes to mind when
     you hear the word cult?"), and order of mention is a standard
@@ -138,6 +142,14 @@ CONCEPT_BACKBONE_PATH = CORPUS_DIR / "dictionaries" / "concept_backbone_embedded
 # (the existing embed_concept_backbone.py is fully generic over its
 # --input/--output CSV, no separate embed script needed).
 STRUCTURAL_CONCEPTS_PATH = CORPUS_DIR / "dictionaries" / "structural_concepts_embedded.jsonl"
+# Produced by translate_miviludes_expressions.py on the Ollama machine (see
+# thesis_corpus/README.md) -- translates MIVILUDES's own expressions to
+# English so they're embedded on the same footing as the English-only
+# reference vocabularies (concept_backbone, structural_concepts). Required,
+# not optional: the whole point is to close a measured language-asymmetry
+# gap, so silently falling back to French if this ever went missing would
+# let that gap reopen unnoticed.
+MIVILUDES_EXPRESSION_TRANSLATIONS_PATH = PROCESSED_DIR / "miviludes" / "expression_translations_embedded.jsonl"
 
 OUTPUT_PATH = SHARED_SPACE_DIR / "embedding_space.jsonl"
 VARIANCE_CSV_PATH = SHARED_SPACE_DIR / "variance_curve.csv"
@@ -172,7 +184,9 @@ def normalize_anchor(anchor: str) -> str:
     return _WHITESPACE_RE.sub(" ", anchor.strip().lower())
 
 
-def load_corpus_points(corpus_name: str, path: Path) -> tuple[list[dict], dict[str, int]]:
+def load_corpus_points(
+    corpus_name: str, path: Path, translations: dict[str, dict] | None = None,
+) -> tuple[list[dict], dict[str, int]]:
     """Two known-and-deferred extraction issues (documented in Methods.tex,
     "Vectorising Scholarly Work") get filtered here, at pooling time, rather
     than by mutating the archive: the LLM occasionally emits the same
@@ -182,7 +196,30 @@ def load_corpus_points(corpus_name: str, path: Path) -> tuple[list[dict], dict[s
     Filtering the pooled space (not the archive) matches this codebase's
     "never modify the source, only write new files" convention -- the
     archive stays the full, traceable record of what the LLM actually
-    produced, flaws included.
+    produced, flaws included. Filtering (duplicate/length checks) always
+    operates on the original archive text, regardless of `translations` --
+    the notion of "a duplicate" or "a short fragment" is about what was
+    actually extracted, not which language ends up embedded.
+
+    `translations` (only ever passed for `corpus_name == "miviludes"`): a
+    load_miviludes_translations() lookup, keyed by
+    `document_id:chunk_index:occurrence` (see that function for why a bare
+    `document_id:chunk_index` isn't unique here). The matching occurrence
+    counter is rebuilt below from the archive's own read order -- reset per
+    (document_id, chunk_index) pair and incremented for every raw item,
+    filtered or not, since the translations file was built from the full,
+    unfiltered 914-item archive and its own occurrence numbering has no
+    knowledge of which items this function later drops. When given, each
+    surviving point's `vector`/`label` become the English translation's
+    `embedding_vector_en`/`text_en`, and the original French moves to a new
+    `label_fr` field -- closing the language-asymmetry gap against the
+    English-only reference vocabularies (concept_backbone,
+    structural_concepts). Fails loudly if any pooled MIVILUDES expression
+    has no matching translation, or if a matched translation's French text
+    doesn't match the archive's (a guard against the occurrence-counter
+    reconstruction silently drifting out of sync), rather than silently
+    keeping French or pairing the wrong translation for just that one
+    point.
 
     response_rank is computed BEFORE filtering, over every item in original
     archive order, so a dropped item doesn't shift the rank of items after
@@ -196,6 +233,7 @@ def load_corpus_points(corpus_name: str, path: Path) -> tuple[list[dict], dict[s
     response_rank_by_document: dict[str, int] = defaultdict(int)
     for_interviews = corpus_name == "interviews"
     seen_text_by_document: dict[str, set[str]] = defaultdict(set)
+    occurrence_by_chunk: dict[tuple[str, int], int] = defaultdict(int)
     duplicates_removed = 0
     short_fragments_removed = 0
     with open(path, encoding="utf-8") as f:
@@ -205,7 +243,15 @@ def load_corpus_points(corpus_name: str, path: Path) -> tuple[list[dict], dict[s
                 continue
             item = json.loads(line)
             document_id = item["document_id"]
+            chunk_index = item["chunk_index"]
             text = item["embedding_text"]
+            key = f"{document_id}:{chunk_index}"
+
+            translation_key = None
+            if translations is not None:
+                chunk = (document_id, chunk_index)
+                translation_key = f"{document_id}:{chunk_index}:{occurrence_by_chunk[chunk]}"
+                occurrence_by_chunk[chunk] += 1
 
             response_rank = None
             if for_interviews:
@@ -221,16 +267,37 @@ def load_corpus_points(corpus_name: str, path: Path) -> tuple[list[dict], dict[s
                 short_fragments_removed += 1
                 continue
 
+            label, label_fr, vector = text, None, item["embedding_vector"]
+            if translations is not None:
+                translation = translations.get(translation_key)
+                if translation is None:
+                    raise SystemExit(
+                        f"Missing translation for MIVILUDES expression {translation_key} -- "
+                        f"{MIVILUDES_EXPRESSION_TRANSLATIONS_PATH} exists but doesn't "
+                        "cover every pooled expression. Rerun translate_miviludes_expressions.py."
+                    )
+                if translation["text_fr"] != text:
+                    raise SystemExit(
+                        f"Translation mismatch for MIVILUDES expression {translation_key}: "
+                        f"archive text {text!r} != translation's text_fr "
+                        f"{translation['text_fr']!r}. The occurrence-based join has drifted "
+                        "out of sync with the archive -- do not trust this pipeline run."
+                    )
+                label = translation["text_en"]
+                label_fr = translation["text_fr"]
+                vector = translation["embedding_vector_en"]
+
             points.append({
                 "source_dataset": corpus_name,
                 "point_role": "expression",
-                "key": f"{document_id}:{item['chunk_index']}",
-                "label": text,
+                "key": key,
+                "label": label,
+                "label_fr": label_fr,
                 "attribution": item.get("attribution"),
                 "claim_mode": item.get("claim_mode"),
                 "epistemic_status": item.get("epistemic_status"),
                 "response_rank": response_rank,
-                "vector": item["embedding_vector"],
+                "vector": vector,
             })
     return points, {"duplicates": duplicates_removed, "short_fragments": short_fragments_removed}
 
@@ -280,6 +347,57 @@ def check_miviludes_translation_fidelity(path: Path) -> None:
             similarities.append((item["id"], cosine))
 
     _report_translation_fidelity("MIVILUDES criteria", similarities)
+
+
+def load_miviludes_translations(path: Path) -> dict[str, dict]:
+    """`document_id:chunk_index` is NOT a unique key per expression --
+    checked directly: a chunk can and does yield multiple expressions (e.g.
+    MIVILUDES's 914 expressions span only 118 unique document_id:chunk_index
+    pairs; literature's 39,236 span only 5,146), a pre-existing, previously
+    harmless property of this pipeline that becomes a real bug the moment
+    something (this function) tries to use that pair as a dict key -- an
+    earlier version of this function did exactly that and silently
+    collapsed 914 translations down to 118, each one then handed out to
+    every expression sharing its chunk regardless of which French text it
+    actually translated.
+
+    Fixed by keying on `document_id:chunk_index:occurrence`, where
+    `occurrence` is "the Nth time this document_id:chunk_index pair has
+    been seen so far" -- unique by construction, and reconstructible from
+    load_corpus_points' own read of the source archive because both files
+    are traversed in on-disk order and that order was verified identical
+    (translate_miviludes_expressions.py processes the source archive
+    sequentially and never reorders it)."""
+    translations = {}
+    occurrence_by_chunk: dict[tuple[str, int], int] = defaultdict(int)
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            item = json.loads(line)
+            chunk = (item["document_id"], item["chunk_index"])
+            occurrence = occurrence_by_chunk[chunk]
+            occurrence_by_chunk[chunk] += 1
+            translations[f"{item['document_id']}:{item['chunk_index']}:{occurrence}"] = item
+    return translations
+
+
+def check_miviludes_expression_translation_fidelity(translations: dict[str, dict]) -> None:
+    """Diagnostic only: same raw-embedding cosine-similarity check as
+    check_miviludes_translation_fidelity above, applied to MIVILUDES's 914
+    expressions instead of the 17 criteria. Uses the self-contained
+    embedding_vector_fr/_en pair translate_miviludes_expressions.py already
+    stores side by side, so this never needs to reopen the (large,
+    gitignored) main archive."""
+    similarities = []
+    for key, item in translations.items():
+        fr = np.array(item["embedding_vector_fr"], dtype=np.float64)
+        en = np.array(item["embedding_vector_en"], dtype=np.float64)
+        cosine = float(np.dot(fr, en) / (np.linalg.norm(fr) * np.linalg.norm(en)))
+        similarities.append((key, cosine))
+
+    _report_translation_fidelity("MIVILUDES expressions", similarities)
 
 
 def load_miviludes_criteria_points(path: Path) -> list[dict]:
@@ -430,6 +548,15 @@ def main() -> None:
                          help="Minimum times an entity anchor must be mentioned across all corpora to get its own point.")
     args = parser.parse_args()
 
+    if not MIVILUDES_EXPRESSION_TRANSLATIONS_PATH.exists():
+        raise SystemExit(
+            f"Missing: {MIVILUDES_EXPRESSION_TRANSLATIONS_PATH} -- run "
+            "translate_miviludes_expressions.py (on the Ollama machine), then "
+            "copy the output back to this path."
+        )
+    miviludes_translations = load_miviludes_translations(MIVILUDES_EXPRESSION_TRANSLATIONS_PATH)
+    check_miviludes_expression_translation_fidelity(miviludes_translations)
+
     points: list[dict] = []
     counts: dict[str, int] = {}
     removed: dict[str, dict[str, int]] = {}
@@ -437,7 +564,8 @@ def main() -> None:
     for corpus_name, path in CORPUS_ARCHIVES.items():
         if not path.exists():
             raise SystemExit(f"Missing corpus archive: {path}")
-        new_points, removal_counts = load_corpus_points(corpus_name, path)
+        translations = miviludes_translations if corpus_name == "miviludes" else None
+        new_points, removal_counts = load_corpus_points(corpus_name, path, translations)
         counts[corpus_name] = len(new_points)
         removed[corpus_name] = removal_counts
         points.extend(new_points)

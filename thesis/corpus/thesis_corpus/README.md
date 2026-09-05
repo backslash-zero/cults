@@ -684,12 +684,11 @@ more explanatory English glosses) -- short phrases just embed less stably
 cross-lingually than length alone would suggest, and a flat 0.90 threshold
 conflated that expected noise with genuine mistranslation. 0.70 is
 calibrated to catch the latter without flagging the former. The shared
-`_report_translation_fidelity` helper this uses is written to be reused by
-an analogous, larger check over MIVILUDES's 732 expressions, planned once
-they're translated (see "Known limitations" below) but not yet
-implemented -- worth bearing in mind whenever comparing short
-texts (this also applies to emergent entities, often 1-3 words) across
-languages in this space.
+`_report_translation_fidelity` helper this uses is reused by an analogous,
+larger `check_miviludes_expression_translation_fidelity()` check over all
+914 MIVILUDES expressions (see "Known limitations" below) -- worth bearing
+in mind whenever comparing short texts (this also applies to emergent
+entities, often 1-3 words) across languages in this space.
 
 ```
 python -m thesis_corpus.build_shared_space
@@ -706,8 +705,8 @@ writes new ones under `processed/shared_space/`.
 thesis/corpus/processed/
   shared_space/
     embedding_space.jsonl   # one row per pooled point: source_dataset, point_role, key, label,
-                             # label_en, attribution, claim_mode, epistemic_status, response_rank,
-                             # mention_distribution, shared_space_vector
+                             # label_en, label_fr, attribution, claim_mode, epistemic_status,
+                             # response_rank, mention_distribution, shared_space_vector
     variance_curve.csv      # n_components, cumulative_variance -- the full curve
     variance_curve.json     # {curve, chosen_k, variance_at_k, threshold}
     variance_curve.png      # plot of the above
@@ -835,7 +834,7 @@ unchanged; this is a post-hoc, analysis-time correction, not a re-fit):
 - `weighted_centroid(embedding_space_path)` / `per_corpus_centroids(...)`:
   reusable functions computing a grand centroid where literature, MIVILUDES,
   and interviews each contribute equal total weight, regardless of point
-  count. On the current corpus, the equal-weighted centroid sits 4.02
+  count. On the current corpus, the equal-weighted centroid sits 3.98
   shared-space units from the plain unweighted one — confirming the
   imbalance actually moves a raw statistic, not just a theoretical concern.
 - A stratified-by-document literature subsample: `python -m
@@ -858,25 +857,35 @@ python -m thesis_corpus.balanced_analysis --sample-size 3000 --seed 7
   expressions) comes from exactly two source documents. Treat as one
   influential operational framework, not a representative sample of French
   state framing broadly.
-- **Language asymmetry, mitigation pending**: MIVILUDES's expressions are
-  currently embedded in their original French, while both reference
-  point-sets (`concept_backbone`, `structural_concepts`) are English-only —
-  the same asymmetry the MIVILUDES-criteria FR/EN cosine spread (0.50-0.95)
-  already demonstrates adds real noise. `thesis_corpus.translate_miviludes_expressions`
-  (new, code-complete) will translate MIVILUDES's 732 expressions to
-  English and re-embed them, so `build_shared_space.py` can use the English
-  embedding as the point's primary vector (French becomes a `label_fr`
-  display field, mirroring `miviludes_criteria`'s `label`/`label_en`
-  pattern, just inverted) — needs Ollama, run on the Windows/Ollama machine
-  (same handoff pattern as `structural_concepts`'s embedding step), not yet
-  run:
+- **Language asymmetry, fixed**: MIVILUDES's expressions were originally
+  embedded in their original French, while both reference point-sets
+  (`concept_backbone`, `structural_concepts`) are English-only — the same
+  asymmetry the MIVILUDES-criteria FR/EN cosine spread (0.50-0.95) already
+  demonstrated adds real noise. `thesis_corpus.translate_miviludes_expressions`
+  translated all 914 MIVILUDES expressions (pre-filter) to English and
+  re-embedded them (run on the Windows/Ollama machine, same handoff pattern
+  as `structural_concepts`'s embedding step); `build_shared_space.py` now
+  pools the English embedding as each of the 732 surviving points' primary
+  vector, with French moved to `label_fr` (mirrors `miviludes_criteria`'s
+  `label`/`label_en` pattern, just inverted).
 
-  ```
-  # On the Ollama-serving machine, from thesis/corpus/:
-  python -m thesis_corpus.translate_miviludes_expressions
-  # Then copy processed/miviludes/expression_translations_embedded.jsonl back,
-  # and rerun build_shared_space.py + visualize_3d.py here.
-  ```
+  Fidelity, via `check_miviludes_expression_translation_fidelity()`: FR/EN
+  raw-embedding cosine across all 914 gives mean 0.90, median 0.91, p10
+  0.82, min 0.55; 12/914 (1.3%) fall under the 0.70 threshold, all
+  hand-confirmed as accurate short-phrase translations, not errors.
+  Separately, comparing each translation's word count to its French
+  source surfaced 5/914 (0.55%) cases where the model returned an
+  explanation instead of a bare translation (e.g. `"The phrase '...' in
+  French describes..."`, ratio > 4.5x source length); 3 of these 5
+  survived pooling and are left as documented residual noise rather than
+  hand-corrected.
+
+  The join between the source archive and the translations file is keyed
+  on `document_id:chunk_index:occurrence` rather than a bare
+  `document_id:chunk_index` — see the note on non-unique keys under
+  "Datasets in the Shared Space" in `ANALYSIS_OVERVIEW.md`; a bare-key join
+  here previously (silently, briefly, mid-session) mispaired most
+  translations before this fix.
 
   Interview transcripts are deliberately left in their original language
   regardless (see "Running on a different corpus" above) — only 19% of
