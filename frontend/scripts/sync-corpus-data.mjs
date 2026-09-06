@@ -13,11 +13,12 @@
 // Writes, under frontend/static/data/:
 //   points-meta.json       -- [{source_dataset, point_role, key, label, label_en, label_fr, attribution,
 //                               claim_mode, epistemic_status, response_rank}, ...]
-//                              (46,648 entries, written once). point_role groups the six
+//                              (44,520 entries, written once). point_role groups the eight
 //                              source_dataset values into three kinds of point: 'expression'
 //                              (literature/miviludes/interviews/miviludes_criteria), 'reference'
-//                              (concept_backbone), 'emergent' (emergent_entities -- named entities
-//                              the corpora themselves surface, formerly called entity_anchors).
+//                              (concept_backbone/structural_concepts/conceptnet_concepts),
+//                              'emergent' (emergent_entities -- named entities the corpora
+//                              themselves surface, formerly called entity_anchors).
 //   positions-pca.json     -- [[x, y, z], ...] order-aligned to points-meta.json
 //   positions-umap.json
 //   positions-tsne.json

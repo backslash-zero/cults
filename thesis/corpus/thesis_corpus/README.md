@@ -586,12 +586,12 @@ genuinely recurs across all three.
 ## Point roles
 
 Every point in the shared space carries a `point_role`, cutting across
-`source_dataset` to group the seven datasets into three kinds of thing:
+`source_dataset` to group the eight datasets into three kinds of thing:
 
 | `point_role` | Datasets | What it is |
 |---|---|---|
 | `expression` | `literature`, `miviludes`, `interviews`, `miviludes_criteria` | A criterion expression extracted from a text, or the MIVILUDES's own criterion text — something a source actually said |
-| `reference` | `concept_backbone`, `structural_concepts` | A backdrop vocabulary point, not itself a claim any source makes. Two subsets, kept distinct: `concept_backbone` is topic-neutral (WordNet, not derived from any corpus, an independent yardstick); `structural_concepts` is corpus-derived (extracted from the corpora's own expression text, geometrically closer to the data, but not topic-neutral) |
+| `reference` | `concept_backbone`, `structural_concepts`, `conceptnet_concepts` | A backdrop vocabulary point, not itself a claim any source makes. Three subsets, kept distinct: `concept_backbone` is topic-neutral (WordNet, not derived from any corpus, an independent yardstick); `structural_concepts` is corpus-derived (extracted from the corpora's own expression text, geometrically closer to the data, but not topic-neutral); `conceptnet_concepts` generalizes `structural_concepts` via ConceptNet's associative graph, hand-pruned to 195 domain-relevant terms out of 1,345 automated candidates (see `extract_conceptnet_concepts.py`/`filter_conceptnet_concepts.py`) |
 | `emergent` | `emergent_entities` | A named entity/group/concept mentioned *by* the corpora themselves — corpus-derived like an expression, but a recurring reference object rather than a claim |
 
 ## Shared cross-corpus space (`build_shared_space`)
@@ -627,17 +627,23 @@ every dataset ends up in the same shared coordinate system:
   reference subset" above. Requires `structural_concepts_embedded.jsonl` to
   exist; the script fails with a clear message (naming the exact embed
   command) if it doesn't.
+- Each ConceptNet-derived concept kept on manual review contributes **one**
+  point (`embedding_vector`) — see `extract_conceptnet_concepts.py` and
+  `filter_conceptnet_concepts.py`. Requires `conceptnet_concepts_embedded.jsonl`
+  to exist and hard-fails if any row in it has `is_generic != "true"` (that
+  file should only ever contain the hand-reviewed-kept subset).
 - Each emergent entity mentioned at least 3 times across all corpora
   contributes **one** point (see "Emergent entities as their own point-set"
   above).
 - Total pooled points is logged at runtime, not asserted against a
   hardcoded constant (it will keep changing as the corpus grows, the
   emergent-entity threshold is adjusted, or the structural-concepts target
-  size changes): **44,325** points on the current corpus (35,621 literature
+  size changes): **44,520** points on the current corpus (35,621 literature
   + 732 MIVILUDES + 204 interviews + 17 MIVILUDES criteria + 3,000 concept
-  backbone + 1,500 structural concepts + 3,251 emergent entities) — the
-  three expression-corpus counts are *after* the duplicate/short-fragment
-  filter below (raw archive sizes are larger: 39,236 / 914 / 230).
+  backbone + 1,500 structural concepts + 195 ConceptNet concepts + 3,251
+  emergent entities) — the three expression-corpus counts are *after* the
+  duplicate/short-fragment filter below (raw archive sizes are larger:
+  39,236 / 914 / 230).
 
 **Standardization**: `StandardScaler` (zero mean, unit variance per
 dimension) runs before PCA. Every vector already comes from the same
@@ -926,9 +932,9 @@ thesis/corpus/processed/
     visualization_tsne_3d.jsonl   # ...same fields, tsne_3d_vector
 ```
 
-Each file has one row per point in `embedding_space.jsonl` (44,325), keeping
+Each file has one row per point in `embedding_space.jsonl` (44,520), keeping
 every field but the vector unchanged and carrying only its own 3-d vector.
-Unlike `embedding_space.jsonl`, these are small (44,325 × 3 floats each) and
+Unlike `embedding_space.jsonl`, these are small (44,520 × 3 floats each) and
 tracked in git, same as `variance_curve.*`.
 
 ## Corpus-imbalance mitigation (`balanced_analysis`)

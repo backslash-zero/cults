@@ -1,5 +1,5 @@
 {
-  "totalPoints": 44325,
+  "totalPoints": 44520,
   "countsBySourceDataset": {
     "literature": 35621,
     "miviludes": 732,
@@ -7,6 +7,7 @@
     "miviludes_criteria": 17,
     "concept_backbone": 3000,
     "structural_concepts": 1500,
+    "conceptnet_concepts": 195,
     "emergent_entities": 3251
   },
   "registry": {
@@ -38,7 +39,7 @@
   },
   "sharedSpace": {
     "chosenDimensions": 394,
-    "varianceAtK": 0.9500826189764078,
+    "varianceAtK": 0.9501127970379908,
     "varianceThreshold": 0.95
   }
 }

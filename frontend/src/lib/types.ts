@@ -100,13 +100,15 @@ export type SourceDataset =
 	| 'miviludes_criteria'
 	| 'concept_backbone'
 	| 'structural_concepts'
+	| 'conceptnet_concepts'
 	| 'emergent_entities';
 
-// Cuts across SourceDataset to group the six datasets into three kinds of
+// Cuts across SourceDataset to group the eight datasets into three kinds of
 // point: 'expression' (literature/miviludes/interviews/miviludes_criteria,
-// a claim a source makes), 'reference' (concept_backbone, an external,
-// corpus-independent vocabulary), 'emergent' (emergent_entities, a named
-// entity/concept mentioned by the corpora themselves).
+// a claim a source makes), 'reference' (concept_backbone/structural_concepts/
+// conceptnet_concepts, backdrop vocabularies not derived from any source's
+// claim), 'emergent' (emergent_entities, a named entity/concept mentioned by
+// the corpora themselves).
 export type PointRole = 'expression' | 'reference' | 'emergent';
 
 export type ProjectionMethod = 'pca' | 'umap' | 'tsne';

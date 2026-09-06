@@ -2,7 +2,7 @@
 
 A reference snapshot of the shared cross-corpus embedding space, for planning
 the geometrical analysis. Reflects the pipeline as of the `build_shared_space`
-run that produced `processed/shared_space/embedding_space.jsonl` (44,325
+run that produced `processed/shared_space/embedding_space.jsonl` (44,520
 points, k=394, after the duplicate/short-fragment filter below). Regenerate
 the numbers below after any pipeline rerun — they are not guaranteed to stay
 in sync automatically.
@@ -52,7 +52,7 @@ What the analysis is meant to establish:
 ## Datasets in the Shared Space
 
 One shared 394-dimensional PCA space (95.0% cumulative variance), pooled from
-seven sources, 44,325 points total. The three expression-corpus counts below
+eight sources, 44,520 points total. The three expression-corpus counts below
 are *after* pooling-time filtering (exact-duplicate expressions within the
 same document, and expressions under 5 words — both known LLM-extraction
 artefacts documented in Methods.tex, never removed from the archives
@@ -67,6 +67,7 @@ themselves): 775 duplicates + 3,048 short fragments removed in total
 | `miviludes_criteria` | 17 | `crit-<slug>` | French criterion text (`label`); English translation as `label_en`, display-only — not a separate point |
 | `concept_backbone` | 3,000 | WordNet ILI id (e.g. `i71809`) | The concept's primary English lemma |
 | `structural_concepts` | 1,500 | `sc_<0001..1500>` | The term itself (e.g. "control", "authority") |
+| `conceptnet_concepts` | 195 | `cn_<0001..1345>` | The term itself (e.g. "spell", "mentor"); ConceptNet's associative neighborhood of the `structural_concepts` seeds, hand-pruned from 1,345 automated candidates down to 195 kept as domain-relevant (1,150 flagged as generic hub words on manual review — see `dictionaries/conceptnet_concepts_candidates.csv`'s `is_generic` column) |
 | `emergent_entities` | 3,251 | normalized anchor text | The anchor text itself (e.g. "scientology") |
 
 **`document_id:chunk_index` is not a unique key per point** for `literature`,
@@ -84,20 +85,20 @@ work — fixed by keying on `document_id:chunk_index:occurrence`, see
 ## Point Roles
 
 Every point also carries a `point_role`, cutting across `source_dataset` to
-group the seven datasets into three kinds of thing:
+group the eight datasets into three kinds of thing:
 
 | `point_role` | Datasets | What it is |
 |---|---|---|
 | `expression` | `literature`, `miviludes`, `interviews`, `miviludes_criteria` | A criterion expression extracted from a text, or the MIVILUDES's own criterion text — something a source actually said |
-| `reference` | `concept_backbone`, `structural_concepts` | A backdrop vocabulary point, not itself a claim any source makes. Two subsets: `concept_backbone` is topic-neutral (WordNet, not derived from any corpus — an independent yardstick); `structural_concepts` is corpus-derived (extracted from the corpora's own expression text, geometrically closer to the data by construction, but not topic-neutral — see "Why two reference subsets" below) |
+| `reference` | `concept_backbone`, `structural_concepts`, `conceptnet_concepts` | A backdrop vocabulary point, not itself a claim any source makes. Three subsets: `concept_backbone` is topic-neutral (WordNet, not derived from any corpus — an independent yardstick); `structural_concepts` is corpus-derived (extracted from the corpora's own expression text, geometrically closer to the data by construction, but not topic-neutral); `conceptnet_concepts` generalizes `structural_concepts` via ConceptNet's associative graph, then hand-pruned — see "Why three reference subsets" below |
 | `emergent` | `emergent_entities` | A named entity/group/concept mentioned *by* the corpora themselves — corpus-derived like an expression, but a recurring reference object rather than a claim |
 
 A fourth role, `prototype`, exists too — but only in the separate
 `interview_prototypes.jsonl` file described below, never pooled into
-`embedding_space.jsonl` itself. The 44,325-point count and everything in
+`embedding_space.jsonl` itself. The 44,520-point count and everything in
 this table above is unaffected by it.
 
-### Why two reference subsets
+### Why three reference subsets
 
 The original `concept_backbone` is deliberately topic-neutral, which is
 exactly what makes it a valid independent yardstick — but measured in the
@@ -141,8 +142,9 @@ residual noise should be expected at this scale, not assumed absent.
 
 **Verified after embedding and rerunning** (at 600 concepts, again at the
 final 1,500, again after the duplicate/short-fragment filter, and again
-after the MIVILUDES translation fix below): `structural_concepts`' mean
-nearest-expression-point distance (31.61, all 1,500) sits closer to the
+after the MIVILUDES translation fix below, but *before* the
+`conceptnet_concepts` addition — see caveat below): `structural_concepts`'
+mean nearest-expression-point distance (31.61, all 1,500) sits closer to the
 expression-to-expression baseline (29.06, sampled 1,000) than
 `concept_backbone`'s does (33.08) — structural concepts read closer to the
 expression cloud than the topic-neutral concept backbone, as intended.
@@ -155,13 +157,44 @@ MIVILUDES's 732 points from French to English shifted every dimension's
 mean/variance slightly, and with it every point's coordinates, including
 literature's. The qualitative finding — structural concepts closer to
 baseline, concept backbone consistently farther out — has held at every
-stage regardless.
+stage regardless. **Caveat**: adding `conceptnet_concepts` is the latest
+such pooling-time change (below) and these exact distances have not yet
+been recomputed against it — treat them as illustrative of the pattern,
+not current numbers, until the geometrical-analysis toolkit's global-structure
+module (`analyze_global_structure.py`) reruns.
+
+### The third reference subset: `conceptnet_concepts`
+
+Seeded from `structural_concepts`' 1,500 terms (not a repeat of them —
+already-present terms are excluded), `extract_conceptnet_concepts.py`
+pulls every English ConceptNet edge touching one of those seed words
+(475,700 edges after excluding loose/morphological/oppositional relation
+types — see that script's docstring), ranks the resulting ~1,300 candidate
+terms by `n_seed_connections × specificity` (specificity = how much of a
+term's *total* ConceptNet connectivity is accounted for by these seeds,
+not just raw seed-edge weight — needed because ranking by raw weight alone
+floods the result with hub words like "make"/"have"/"activity" that
+loosely connect to nearly everything), then applies the same in-domain
+Open English WordNet lexfile filter `structural_concepts` uses. That
+automated pipeline still surfaced real hub-word noise near the top of its
+1,345 candidates (e.g. "make", "location", "communicating", "intellect"),
+so every row was then hand-reviewed: 195 kept as genuinely relevant to the
+cult/sect/authority/manipulation/religion domain (e.g. "spell", "oracle",
+"mentor", "grooming", "insulation" [isolation sense], "torah", "yoke"),
+1,150 flagged `is_generic=false` and excluded (see
+`dictionaries/conceptnet_concepts_candidates.csv`). Only the 195 kept rows
+are ever embedded (`filter_conceptnet_concepts.py` extracts them before
+the Ollama embedding pass) — the excluded 1,150 never leave the candidates
+CSV. This is a smoother generalization of `structural_concepts` — thematically
+anchored to the same domain via its seed words, but reached through
+ConceptNet's associative graph rather than drawn directly from corpus
+text, so it is not itself topic-neutral the way `concept_backbone` is.
 
 ## Interview Initial-Exemplar Prototype Layer
 
 `processed/shared_space/interview_prototypes.jsonl` — a **separate,
 manually-reviewed, projected layer**, not part of `embedding_space.jsonl`
-and not counted in its 44,325 points or its PCA fit. It exists because
+and not counted in its 44,520 points or its PCA fit. It exists because
 `build_shared_space.py`'s pooling-time length filter (drops expressions
 under 5 words) removes exactly the kind of short, complete, spontaneous
 answer the interview protocol's opening prompt is designed to elicit
@@ -216,7 +249,7 @@ All fields below live directly in `embedding_space.jsonl` and every
 `visualization_{pca,umap,tsne}_3d.jsonl` file — no extra join needed for
 these. `null`/absent where not applicable, never a fabricated default.
 
-- **`source_dataset`** (7 values, table above) — the coarsest split.
+- **`source_dataset`** (8 values, table above) — the coarsest split.
 - **`point_role`** (3 values, table above) — `expression`/`reference`/
   `emergent`; the coarser split when the question is about the *kind* of
   point rather than which specific dataset it came from (e.g. "compare

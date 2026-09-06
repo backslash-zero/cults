@@ -1,9 +1,10 @@
 import type { PointRole, SourceDataset } from './types';
 
 // Fixed categorical hue order (never cycled) from the validated default
-// palette -- slots 1-6 (blue/orange/aqua/yellow/magenta/green), assigned in
-// the order these datasets were introduced. 6 unordered categories exceed
-// the all-pairs CVD-safe cap of 3 documented for scatter/point-cloud use,
+// palette -- blue/orange/aqua/yellow/magenta/purple/green/brick-red,
+// assigned in the order these datasets were introduced. 8 unordered
+// categories exceed the all-pairs CVD-safe cap of 3 documented for
+// scatter/point-cloud use,
 // so identity is deliberately never carried by hue alone here: the legend
 // always pairs each swatch with its category name, the detail panel always
 // shows the selected point's source_dataset as text, and only 2 categories
@@ -23,9 +24,17 @@ export const SOURCE_DATASET_COLORS: Record<SourceDataset, { light: string; dark:
 	// corpora's own expression text, not WordNet). See
 	// SOURCE_DATASET_ROLES below for the shared point_role grouping.
 	structural_concepts: { light: '#4a3aa7', dark: '#9085e9' },
+	// point_role: 'reference', same as the two above -- ConceptNet's
+	// associative neighborhood of the structural_concepts seed words,
+	// hand-pruned to 195 domain-relevant terms (see
+	// extract_conceptnet_concepts.py / filter_conceptnet_concepts.py).
+	// Validated with scripts/validate_palette.js (dataviz skill): passes
+	// adjacent-pair CVD/normal-vision checks against the existing 7 in
+	// both light and dark mode.
+	conceptnet_concepts: { light: '#a83232', dark: '#c85a5a' },
 	// point_role: 'emergent' -- named entities/concepts mentioned BY the
-	// corpora themselves, as distinct from both reference subsets above
-	// (all render at a fixed size/opacity per point_role in
+	// corpora themselves, as distinct from all three reference subsets
+	// above (all render at a fixed size/opacity per point_role in
 	// EmbeddingExplorer.svelte, not by source_dataset).
 	emergent_entities: { light: '#008300', dark: '#008300' }
 };
@@ -37,6 +46,7 @@ export const SOURCE_DATASET_LABELS: Record<SourceDataset, string> = {
 	miviludes: 'MIVILUDES',
 	miviludes_criteria: 'MIVILUDES criteria',
 	structural_concepts: 'Structural concepts',
+	conceptnet_concepts: 'ConceptNet concepts',
 	emergent_entities: 'Emergent entities'
 };
 
@@ -51,6 +61,7 @@ export const SOURCE_DATASET_ROLES: Record<SourceDataset, PointRole> = {
 	miviludes_criteria: 'expression',
 	concept_backbone: 'reference',
 	structural_concepts: 'reference',
+	conceptnet_concepts: 'reference',
 	emergent_entities: 'emergent'
 };
 

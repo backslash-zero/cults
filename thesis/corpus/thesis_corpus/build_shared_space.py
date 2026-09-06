@@ -21,22 +21,27 @@ Space"):
   - `"expression"`: a criterion expression extracted from a text (the three
     corpora) or a MIVILUDES criterion -- something a source actually said.
   - `"reference"`: a backdrop vocabulary point, not itself a claim any
-    source makes. Two distinct subsets share this role, deliberately kept
+    source makes. Three distinct subsets share this role, deliberately kept
     separate rather than merged into one, since they buy different things:
     `concept_backbone` (WordNet, topic-neutral -- not derived from any
-    corpus, a fixed independent yardstick) and `structural_concepts`
+    corpus, a fixed independent yardstick), `structural_concepts`
     (corpus-derived generic/structural vocabulary -- extracted from the
     corpora's own expression text, geometrically closer to the data by
     construction, but not topic-neutral: it exists *because* the corpora
-    use this vocabulary). Use `concept_backbone` when independence from the
-    corpus matters; use `structural_concepts` when proximity/interpretive
-    relevance matters more than neutrality.
+    use this vocabulary), and `conceptnet_concepts` (see
+    extract_conceptnet_concepts.py -- ConceptNet's associative neighborhood
+    of the `structural_concepts` seed words, filtered to in-domain WordNet
+    senses and then hand-pruned of hub words; a smoother generalization of
+    `structural_concepts`, seeded from the corpus but not restricted to
+    exactly what it says). Use `concept_backbone` when independence from the
+    corpus matters; use `structural_concepts`/`conceptnet_concepts` when
+    proximity/interpretive relevance matters more than neutrality.
   - `"emergent"`: a named entity/group/concept mentioned BY the corpora
     themselves (emergent entities, below) -- corpus-derived like an
     expression point, but a recurring reference object rather than a claim
     about one.
 
-Pooling (seven source_dataset values; total point count is logged at
+Pooling (eight source_dataset values; total point count is logged at
 runtime, not asserted against a hardcoded constant -- it changes whenever
 the corpus grows or the emergent-entity threshold below is adjusted):
   - Each corpus item (literature/miviludes/interviews) contributes ONE
@@ -73,6 +78,15 @@ the corpus grows or the emergent-entity threshold below is adjusted):
     `mention_distribution` (per-corpus mention counts, same provenance
     role as on emergent-entity points) reconstructed from the CSV's
     mention-count columns.
+  - Each ConceptNet-derived concept kept on manual review (see
+    extract_conceptnet_concepts.py: `is_generic == "true"` is the default,
+    hand-flipped to `"false"` per row for generic hub words that survived
+    the automated ranking -- so kept rows are the ones still `"true"` after
+    review) contributes ONE point (`point_role="reference"`,
+    `source_dataset="conceptnet_concepts"`): its embedding_vector. Only the
+    hand-reviewed, kept subset is ever embedded/pooled (see
+    filter_conceptnet_concepts.py) -- the 1,150 rows flagged as generic hub
+    words during manual review never leave the candidates CSV.
   - Each emergent entity mentioned at least `--entity-anchor-min-mentions`
     times across all three corpora contributes ONE point
     (`point_role="emergent"`): a per-unique (normalized) entity-anchor
@@ -145,6 +159,12 @@ CONCEPT_BACKBONE_PATH = CORPUS_DIR / "dictionaries" / "concept_backbone_embedded
 # (the existing embed_concept_backbone.py is fully generic over its
 # --input/--output CSV, no separate embed script needed).
 STRUCTURAL_CONCEPTS_PATH = CORPUS_DIR / "dictionaries" / "structural_concepts_embedded.jsonl"
+# Produced by extract_conceptnet_concepts.py, hand-reviewed (is_generic
+# flipped to "false" on 1,150 of 1,345 rows -- generic hub words), then
+# filter_conceptnet_concepts.py + embed_concept_backbone.py on the
+# Windows/Ollama machine (see filter_conceptnet_concepts.py's docstring
+# for the exact command). Only the 195 rows kept on review are embedded.
+CONCEPTNET_CONCEPTS_PATH = CORPUS_DIR / "dictionaries" / "conceptnet_concepts_embedded.jsonl"
 # Produced by translate_miviludes_expressions.py on the Ollama machine (see
 # thesis_corpus/README.md) -- translates MIVILUDES's own expressions to
 # English so they're embedded on the same footing as the English-only
@@ -493,6 +513,40 @@ def load_structural_concepts_points(path: Path) -> list[dict]:
     return points
 
 
+def load_conceptnet_concepts_points(path: Path) -> list[dict]:
+    """Reads conceptnet_concepts_embedded.jsonl -- the hand-reviewed subset
+    of extract_conceptnet_concepts.py's candidates (is_generic=="true" rows
+    only; filter_conceptnet_concepts.py produces the CSV that gets embedded)
+    -- via the same embed_concept_backbone.py pipeline as concept_backbone
+    and structural_concepts. A `point_role="reference"` point-set, seeded
+    from structural_concepts but generalized via ConceptNet's associative
+    graph rather than drawn directly from corpus text -- see the module
+    docstring's "reference" bullet for how this differs from the other two
+    reference subsets."""
+    points = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            item = json.loads(line)
+            if item.get("is_generic") != "true":
+                raise ValueError(
+                    f"{path} contains a row with is_generic != 'true' "
+                    f"({item['concept_id']!r}) -- only hand-reviewed-kept "
+                    "rows should ever reach this file; re-run "
+                    "filter_conceptnet_concepts.py before re-embedding."
+                )
+            points.append({
+                "source_dataset": "conceptnet_concepts",
+                "point_role": "reference",
+                "key": item["concept_id"],
+                "label": item["concept_en"],
+                "vector": item["embedding_vector"],
+            })
+    return points
+
+
 def load_emergent_entities(archive_paths: dict[str, Path], min_mentions: int) -> list[dict]:
     """Pools one point per unique (normalized) entity anchor mentioned at
     least `min_mentions` times across all three corpus archives, using the
@@ -628,6 +682,18 @@ def main() -> None:
     structural_concept_points = load_structural_concepts_points(STRUCTURAL_CONCEPTS_PATH)
     counts["structural_concepts"] = len(structural_concept_points)
     points.extend(structural_concept_points)
+
+    if not CONCEPTNET_CONCEPTS_PATH.exists():
+        raise SystemExit(
+            f"Missing: {CONCEPTNET_CONCEPTS_PATH} -- hand-review "
+            "dictionaries/conceptnet_concepts_candidates.csv, then run "
+            "filter_conceptnet_concepts.py + embed_concept_backbone.py "
+            "(on the Ollama machine) to produce it -- see "
+            "filter_conceptnet_concepts.py's docstring for the exact commands."
+        )
+    conceptnet_concept_points = load_conceptnet_concepts_points(CONCEPTNET_CONCEPTS_PATH)
+    counts["conceptnet_concepts"] = len(conceptnet_concept_points)
+    points.extend(conceptnet_concept_points)
 
     emergent_entity_points = load_emergent_entities(CORPUS_ARCHIVES, args.entity_anchor_min_mentions)
     counts["emergent_entities"] = len(emergent_entity_points)

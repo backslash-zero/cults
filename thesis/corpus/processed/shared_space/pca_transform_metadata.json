@@ -2,9 +2,9 @@
   "k": 394,
   "embedding_dim": 1024,
   "variance_threshold": 0.95,
-  "variance_at_k": 0.9500826189764078,
+  "variance_at_k": 0.9501127970379908,
   "seed": 42,
-  "n_points_fit": 44325,
-  "embedding_space_sha256": "761d8fdb73d423e4fb7d21a829ee3896ea6510afb23e650e0ebb02877c87cf4e",
-  "git_commit": "2b90a5dae116fe28c6b21ab2aa02799532ed1586"
+  "n_points_fit": 44520,
+  "embedding_space_sha256": "3a25886c932c04431c51d9d1929cafb0b175fcb8ed6b3e0d8b5a368d35ec2c03",
+  "git_commit": "8671b98d61e20f6aa46eec9c0c54ae64a62d2f58"
 }
