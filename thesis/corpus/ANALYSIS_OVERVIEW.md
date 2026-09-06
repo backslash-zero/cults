@@ -92,6 +92,11 @@ group the seven datasets into three kinds of thing:
 | `reference` | `concept_backbone`, `structural_concepts` | A backdrop vocabulary point, not itself a claim any source makes. Two subsets: `concept_backbone` is topic-neutral (WordNet, not derived from any corpus — an independent yardstick); `structural_concepts` is corpus-derived (extracted from the corpora's own expression text, geometrically closer to the data by construction, but not topic-neutral — see "Why two reference subsets" below) |
 | `emergent` | `emergent_entities` | A named entity/group/concept mentioned *by* the corpora themselves — corpus-derived like an expression, but a recurring reference object rather than a claim |
 
+A fourth role, `prototype`, exists too — but only in the separate
+`interview_prototypes.jsonl` file described below, never pooled into
+`embedding_space.jsonl` itself. The 44,325-point count and everything in
+this table above is unaffected by it.
+
 ### Why two reference subsets
 
 The original `concept_backbone` is deliberately topic-neutral, which is
@@ -152,6 +157,59 @@ literature's. The qualitative finding — structural concepts closer to
 baseline, concept backbone consistently farther out — has held at every
 stage regardless.
 
+## Interview Initial-Exemplar Prototype Layer
+
+`processed/shared_space/interview_prototypes.jsonl` — a **separate,
+manually-reviewed, projected layer**, not part of `embedding_space.jsonl`
+and not counted in its 44,325 points or its PCA fit. It exists because
+`build_shared_space.py`'s pooling-time length filter (drops expressions
+under 5 words) removes exactly the kind of short, complete, spontaneous
+answer the interview protocol's opening prompt is designed to elicit
+("AI cult", "Illuminati", "Tomato cult!") — real content for this purpose,
+not noise (see "Known Limitations" below for the filter's own, still-valid
+rationale for literature/MIVILUDES). Rather than relaxing that filter —
+which would reshuffle the whole pooled space, its PCA fit, and every
+downstream count — this layer draws directly from the **unfiltered**
+interview archive (`processed/interviews/criterion_expressions.jsonl`),
+so it can include short genuine opening responses the pooled space cannot.
+
+**How a point gets here**: a human reviews `interviews/metadata/initial_exemplars.csv`
+row by row against the real transcript, then `thesis_corpus.build_interview_prototype_layer`
+resolves the reviewed row against the raw archive (a virtual key stable
+regardless of pooling — `thesis_corpus.geometric_analysis_common.derive_archive_expression_keys`),
+takes that item's *already-computed* raw 1024-d embedding (no re-extraction,
+no re-embedding), and projects it through `build_shared_space.py`'s
+**persisted** fitted `StandardScaler`+PCA transform — the same
+transform every pooled point already went through, so a prototype point
+sits in the exact same 394-D coordinate system as everything else and is
+directly comparable to it by Euclidean distance. Fails loudly (not
+silently) on an unreviewed row, a missing `initial_response_form`, or a
+row whose resolved archive text no longer matches what was reviewed.
+
+**Current state**: 25 resolved prototype points, 1 interview unavailable
+(`b3-aug23-1213` — no participant claim, excluding questions/reflections,
+exists anywhere in that transcript; not a filtering casualty, a genuine
+absence).
+
+**Fields** (`source_dataset="interview_prototypes"`, `point_role="prototype"`):
+`document_id`, `source_expression_key` (the archive-level virtual key),
+`source_expression_label` (the pipeline's own extracted text for that
+item — what's actually embedded), `transcript_initial_exemplar_text` (the
+reviewer's own verbatim transcription of what the participant said —
+deliberately a separate field, since an LLM extraction can trim or
+paraphrase the verbatim wording), `exemplar_type` (*what* was named, if
+anything), `initial_response_form` (*whether* anything was named at all —
+`named_exemplar` / `descriptive_characterisation` / `mixed` / `unclear`),
+`follow_up_examples` (named examples that only emerged after a follow-up
+probe, kept distinct from the opening answer), `shared_space_vector`.
+
+**What this is not**: a ranked free-list (`response_rank` is not a
+free-listing rank — see that field's own note above) and not a
+representative-population estimate (n=25, a convenience-sampled
+interview corpus — exploratory prototype evidence about what a
+spontaneous first association can look like geometrically, nothing
+stronger).
+
 ## Categorical Facets Available for Analysis
 
 All fields below live directly in `embedding_space.jsonl` and every
@@ -193,8 +251,8 @@ these. `null`/absent where not applicable, never a fabricated default.
   *that same example*, not to list more items. Retained here purely as
   extraction-order provenance. The actual interview-side geometric
   evidence comes from a separate, manually-reviewed initial-exemplar
-  workflow instead — see `thesis_corpus.analyze_initial_exemplars` and
-  `interviews/metadata/initial_exemplars.csv`.
+  prototype layer instead — see "Interview Initial-Exemplar Prototype
+  Layer" below.
 - **`emergent_entities`** (the point-set, not a per-point field) — 3,251
   named entities/dimensions mentioned ≥3 times across all corpora, each with
   its own position in the shared space (`point_role="emergent"`). Not
@@ -277,22 +335,21 @@ prose; summarized here for quick reference while planning analysis:
 
 A geometric-analysis toolkit now exists (`thesis_corpus.analyze_global_structure`,
 `analyze_cluster_structure`, `audit_free_listing_rank`,
+`propose_initial_exemplars`, `build_interview_prototype_layer`,
 `analyze_initial_exemplars`, `analyze_criterion_neighbours`,
 `analyze_emergent_entities`, `generate_figures`,
 `generate_geometric_draft_report` — see that package's own docstrings, and
 `processed/analysis/<run-id>/` for output), covering centroids/dispersion,
 k-NN/silhouette cluster structure, criterion-neighbour distances (with a
 French/English language-representation sensitivity audit), emergent-entity
-provenance, and 2-D UMAP figures. What's still outstanding:
+provenance, the interview initial-exemplar prototype layer (see above),
+and 2-D UMAP figures. The interview-side manual review is done: 25/26
+interviews resolved into `interview_prototypes.jsonl`, 1 unavailable (see
+above). What's still outstanding:
 
 - No run's output has been interpreted or written into Results.tex yet —
   the toolkit produces tables/figures/a neutral draft report, not a
   finished analysis.
-- The interview-side initial-exemplar workflow
-  (`interviews/metadata/initial_exemplars.csv`,
-  `thesis_corpus.propose_initial_exemplars`) has candidates proposed for
-  all 26 interviews but not yet manually reviewed — `analyze_initial_exemplars`
-  refuses to run until that review is done.
 - Rank-based prototype analysis is retired outright, not deferred:
   `response_rank` cannot support a salience/prototype claim (see that
   field's own note above) — this was a design finding, not unfinished work.

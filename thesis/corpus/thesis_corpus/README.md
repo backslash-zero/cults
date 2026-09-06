@@ -710,7 +710,37 @@ thesis/corpus/processed/
     variance_curve.csv      # n_components, cumulative_variance -- the full curve
     variance_curve.json     # {curve, chosen_k, variance_at_k, threshold}
     variance_curve.png      # plot of the above
+    pca_transform.joblib          # the fitted StandardScaler + PCA themselves (gitignored)
+    pca_transform_metadata.json   # k, embedding_dim, seed, embedding_space_sha256, git_commit
 ```
+
+**`pca_transform.joblib`/`pca_transform_metadata.json`** (added this
+session): the fitted `StandardScaler` and `PCA` objects from the fit
+above, persisted via `joblib.dump({"scaler": ..., "pca": ...}, ...)`
+immediately after `embedding_space.jsonl` is written. Purpose: project a
+*new* raw 1024-d vector into this exact same 394-D coordinate system later
+— `pca.transform(scaler.transform(vector))[:, :k]` — **without refitting
+anything**, which would silently shift every existing point's coordinates.
+This is what makes `build_interview_prototype_layer.py` possible (see
+below): a manually-reviewed interview exemplar that never survived
+pooling gets embedded once by Stage 2, then dropped into the identical
+space every pooled point already lives in.
+
+`pca_transform_metadata.json`'s `embedding_space_sha256` is a
+**compatibility check, not a formality**: it's the SHA-256 of the
+`embedding_space.jsonl` produced by the *same* `build_shared_space.py`
+run that wrote this transform. Anything consuming the transform should be
+built from a copy of `embedding_space.jsonl` matching that hash — an
+older or newer `embedding_space.jsonl` was standardized/PCA'd
+differently, so projecting through a mismatched transform would silently
+place a new point in the wrong space. `pca_transform.joblib` is gitignored
+(regeneratable, and large-ish — ~8MB, the full-rank 1024x1024 PCA
+components); the small metadata JSON is tracked, same as
+`variance_curve.json`.
+
+**Rule**: this transform exists to *project new data into the already-fitted
+shared space*, never to refit or alter it. Nothing in this codebase calls
+`.fit()` on the persisted scaler/PCA again — only `.transform()`.
 
 All cross-corpus output lives under `processed/shared_space/` — a sibling
 of `processed/<corpus>/`, kept structurally distinct from any single
@@ -729,9 +759,12 @@ normalized anchor text for emergent entities) is what any later reduction
 should carry through unchanged, so a point can always be traced back to
 this file, and from there back to the original corpus archive it came from.
 
-`point_role` is the universal three-way split (see "Point roles" above):
-`expression` (literature/miviludes/interviews/miviludes_criteria),
-`reference` (concept_backbone), or `emergent` (emergent_entities).
+`point_role` is the three-way split within this file (see "Point roles"
+above): `expression` (literature/miviludes/interviews/miviludes_criteria),
+`reference` (concept_backbone/structural_concepts), or `emergent`
+(emergent_entities). A fourth role, `prototype`, exists only in the
+separate `interview_prototypes.jsonl` (see below) — never pooled here,
+never counted in this file's totals.
 
 Per-point fields beyond `source_dataset`/`point_role`/`key`/`label`/
 `shared_space_vector`, all `null` where not applicable rather than given a
@@ -764,8 +797,8 @@ fabricated default:
   example plus justification/probes, not a ranked list, and
   `thesis_corpus.audit_free_listing_rank` finds even the narrowest reading
   of "rank 1 = the participant's own first claim" holds for only 11/26
-  interviews. Kept as extraction-order provenance only; see
-  `thesis_corpus.analyze_initial_exemplars` for the actual (manually
+  interviews. Kept as extraction-order provenance only; see "Interview
+  initial-exemplar prototype layer" below for the actual (manually
   reviewed) interview-side geometric analysis.
 - `mention_distribution`: emergent-entity and structural-concept points only
   (`null` elsewhere, including `concept_backbone`, which has no
@@ -782,6 +815,75 @@ into the shared space), the top 20 most-mentioned emergent entities (with
 their per-corpus mention distribution), and mean vector norm by
 `source_dataset` (flags any one dataset being pushed to the periphery or
 center relative to the others).
+
+## Interview initial-exemplar prototype layer (`propose_initial_exemplars`, `build_interview_prototype_layer`)
+
+Four kinds of data now sit alongside each other in this pipeline, easy to
+conflate but genuinely different:
+
+| | Pooled expression data | External/reference data | Emergent entities | Manually curated prototype points |
+|---|---|---|---|---|
+| Lives in | `embedding_space.jsonl` | `embedding_space.jsonl` | `embedding_space.jsonl` | `interview_prototypes.jsonl` (separate file) |
+| `point_role` | `expression` | `reference` | `emergent` | `prototype` |
+| Selected by | automatic extraction + pooling-time filters | fixed lists (WordNet / corpus-frequency ranking) | automatic mention-frequency threshold | **human review**, one per interview |
+| Vector origin | Stage 2 embedding, standardized+PCA'd with everything else | same | same | Stage 2 embedding (possibly never pooled), **projected after the fact** through the persisted transform |
+
+**`propose_initial_exemplars.py`**: for each of the 26 interviews, proposes
+a *candidate* first participant claim -- first item in the raw archive's
+own order with `attribution == "participant"` and `claim_mode !=
+"question_or_reflection"`. Addressed by a virtual key
+(`geometric_analysis_common.derive_archive_expression_keys`) resolved
+against the raw, unfiltered archive directly -- **not** checked against
+`embedding_space.jsonl` or its pooling filter, since whether an expression
+survived pooling is irrelevant to whether it's a valid candidate here.
+Writes `interviews/metadata/initial_exemplars.csv` with
+`review_status="pending"` for every row; a human then fills in
+`transcript_initial_exemplar_text` (from the real transcript),
+`exemplar_type`, and `initial_response_form` before flipping
+`review_status` to `"reviewed"` (or `"unavailable"` if no participant
+claim exists in that transcript at all).
+
+**`build_interview_prototype_layer.py`**: the actual construction step.
+
+1. Reads `initial_exemplars.csv`; **fails loudly** if any row isn't
+   `"reviewed"`/`"unavailable"`, or if a `"reviewed"` row's
+   `initial_response_form` is missing/invalid (exactly one of
+   `named_exemplar`/`descriptive_characterisation`/`mixed`/`unclear` --
+   empty is never silently read as the intentional category `"unclear"`).
+2. For each `"reviewed"` row, resolves `source_expression_key` against the
+   raw archive via the same archive-level virtual key
+   (`document_id:chunk_index:occurrence`, counted over the *unfiltered*
+   archive -- stable regardless of any pooling filter, unlike
+   `derive_interview_expression_keys`'s pooled-space version). Requires an
+   **exact match** (whitespace-normalized only) between the CSV's
+   `source_expression_label` and the resolved archive item's own text --
+   two distinct failure modes, either halting the run: the key doesn't
+   resolve at all (the archive itself changed since review), or it
+   resolves to different text (drift, needs re-verification). No fuzzy
+   matching, no nearest-neighbour substitution, ever.
+3. Loads that item's **already-computed** raw 1024-d `embedding_vector`
+   from the archive -- no re-extraction, no re-embedding, no Ollama call.
+4. Loads `pca_transform.joblib` (fails loudly, naming the missing-file fix,
+   if `build_shared_space.py` hasn't been run yet) and projects:
+   `pca.transform(scaler.transform(vector))[:, :k]`.
+5. Writes `processed/shared_space/interview_prototypes.jsonl`:
+   `source_dataset="interview_prototypes"`, `point_role="prototype"`,
+   `document_id`, `source_expression_key`, `source_expression_label`,
+   `transcript_initial_exemplar_text`, `exemplar_type`,
+   `initial_response_form`, `follow_up_examples`, `shared_space_vector`.
+
+Never touches `embedding_space.jsonl`, its point counts, or its PCA fit --
+verified by checking `embedding_space.jsonl`'s SHA-256 is unchanged before
+and after this layer is built. `interview_prototypes.jsonl` is gitignored
+(regeneratable from the archive + the reviewed CSV, which *is* tracked).
+
+`thesis_corpus.analyze_initial_exemplars` reads this layer directly (not
+`embedding_space.jsonl`'s interview points) for all interview-side
+distance/nearest-neighbour computations; `analyze_cluster_structure.py`'s
+optional `with_interview_prototypes` UMAP population (overview + this
+layer, fit fresh) is what `generate_figures.py`'s exemplar-highlight
+figure reads, since prototypes dropped by the pooling filter have no
+coordinate in the ordinary "overview" fit to look up at all.
 
 ## 3-D visualization projections (`visualize_3d`)
 
