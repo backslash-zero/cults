@@ -144,26 +144,19 @@ def dialogue_only(text):
 
 
 def format_header(record):
-    """Build a uniform header, generated from the metadata fields rather than
-    copied from each source file's own ad hoc formatting, so batch 1-3 and
-    Instagram interviews read identically."""
-    interviewee = record.get("interviewee", {})
-    age_val = interviewee.get("age", "unknown")
-    age_str = f"{age_val} years old" if isinstance(age_val, int) else f"age {age_val}"
+    """Build a uniform header line, generated from the metadata fields rather
+    than copied from each source file's own ad hoc formatting, so batch 1-3
+    and Instagram interviews read identically.
 
+    Deliberately excludes the demographics line: that's an interviewer
+    annotation about the participant, not part of the dialogue, and it
+    already appears in the Metadata itemize block above the transcript. The
+    transcript body should start directly at the interviewer's opening
+    question."""
     dt = record["date_time"]
     if record.get("date_time_precision"):
         dt = f"{dt} ({record['date_time_precision']})"
-
-    header_line = f"INTERVIEW — {dt} ({record['method']})"
-    demo_line = (
-        f"Interviewee: {age_str}, {interviewee.get('gender', 'unknown')}, "
-        f"main language {interviewee.get('main_language', 'unknown')}, "
-        f"speaking in {interviewee.get('language_spoken', 'unknown')}, "
-        f"lives in {record.get('location', 'unknown')}, "
-        f"nationality {interviewee.get('nationality', 'unknown')}."
-    )
-    return f"{header_line}\n\n{demo_line}"
+    return f"INTERVIEW — {dt} ({record['method']})"
 
 
 def bold_labels(escaped_text):
@@ -172,14 +165,8 @@ def bold_labels(escaped_text):
     return LABEL_RE.sub(lambda m: r"\textbf{%s%s:}" % (m.group(1), m.group(2)), escaped_text)
 
 
-def count_turns(text, is_instagram):
-    """Count Interviewer:/Interviewee: turns.
-
-    Batch 1-3 files open with a demographics line labeled "Interviewee:"
-    before the dialogue starts, which is not itself an answer turn — it is
-    subtracted out. Instagram files use a different "Age:, Gender:, ..."
-    header with no such label, so no offset is needed there.
-    """
+def count_turns(text):
+    """Count Interviewer:/Interviewee: turns."""
     n_interviewer = 0
     n_interviewee = 0
     for line in text.splitlines():
@@ -188,8 +175,7 @@ def count_turns(text, is_instagram):
             n_interviewer += 1
         elif INTERVIEWEE_RE.match(stripped):
             n_interviewee += 1
-    header_offset = 0 if is_instagram else 1
-    return n_interviewer, max(n_interviewee - header_offset, 0)
+    return n_interviewer, n_interviewee
 
 
 def word_count(text):
@@ -206,8 +192,7 @@ def build_interview_records():
         corrections_path = idir / "corrections.log"
 
         text = transcript_path.read_text(encoding="utf-8")
-        is_instagram = entry["batch"] == "Instagram Batch"
-        n_q, n_a = count_turns(text, is_instagram)
+        n_q, n_a = count_turns(text)
 
         translation_text = None
         if entry.get("translated") and translation_path.exists():
