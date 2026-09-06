@@ -98,45 +98,65 @@ def plot_umap_scatter(coords_path: Path, manifest_path: Path, out_dir: Path, col
                               f"d{manifest['umap_params']['min_dist']}")
 
 
-def plot_initial_exemplar_highlight(overview_coords_path: Path, overview_manifest_path: Path,
+def plot_initial_exemplar_highlight(prototype_coords_path: Path, prototype_manifest_path: Path,
                                      exemplar_summary_path: Path, out_dir: Path) -> None:
-    if not overview_coords_path.exists() or not exemplar_summary_path.exists():
-        logger.warning("Skipping initial-exemplar highlight -- missing overview UMAP or exemplar_summary.csv")
+    """Reads the "with_interview_prototypes" UMAP population directly
+    (analyze_cluster_structure.py) -- NOT "overview": several prototypes
+    (e.g. "AI cult", "Illuminati") were dropped by build_shared_space.py's
+    pooling filter and have no position in the ordinary pooled space to
+    look up at all, so this needs a fit that actually includes them."""
+    if not prototype_coords_path.exists() or not exemplar_summary_path.exists():
+        logger.warning(
+            "Skipping initial-exemplar highlight -- missing %s or exemplar_summary.csv "
+            "(run build_interview_prototype_layer.py, then analyze_cluster_structure.py, "
+            "for this figure).",
+            prototype_coords_path.name,
+        )
         return
 
-    manifest = json.loads(overview_manifest_path.read_text(encoding="utf-8"))
-    actual_checksum = gac.sha256_file(overview_coords_path)
+    manifest = json.loads(prototype_manifest_path.read_text(encoding="utf-8"))
+    actual_checksum = gac.sha256_file(prototype_coords_path)
     if actual_checksum != manifest["output_sha256"]:
-        raise SystemExit(f"{overview_coords_path} checksum mismatch against its manifest -- refusing to plot.")
+        raise SystemExit(f"{prototype_coords_path} checksum mismatch against its manifest -- refusing to plot.")
 
-    coord_by_key = {}
-    with open(overview_coords_path, encoding="utf-8") as f:
+    background_coords = []
+    proto_coord_by_document_id = {}
+    with open(prototype_coords_path, encoding="utf-8") as f:
         for line in f:
             p = json.loads(line)
-            coord_by_key[p["key"]] = p["umap_2d"]
+            if p.get("source_dataset") == "interview_prototypes":
+                document_id = p["key"].removeprefix("prototype:")
+                proto_coord_by_document_id[document_id] = p["umap_2d"]
+            else:
+                background_coords.append(p["umap_2d"])
 
-    exemplars = [r for r in read_csv_rows(exemplar_summary_path) if r.get("status") == "resolved"]
-    if not exemplars:
-        logger.warning("No resolved exemplars in %s -- skipping highlight figure.", exemplar_summary_path)
+    exemplar_type_by_document_id = {
+        r["document_id"]: r["exemplar_type"]
+        for r in read_csv_rows(exemplar_summary_path) if r.get("status") == "resolved"
+    }
+    if not proto_coord_by_document_id:
+        logger.warning("No interview_prototypes points in %s -- skipping highlight figure.", prototype_coords_path)
         return
 
-    all_coords = np.array(list(coord_by_key.values()))
+    all_coords = np.array(background_coords)
     fig, ax = plt.subplots(figsize=(9, 8))
     ax.scatter(all_coords[:, 0], all_coords[:, 1], s=2, alpha=0.15, color="#999999", linewidths=0)
 
     okabe_ito_hexes = list(gac.OKABE_ITO.values())
-    type_order = sorted({e["exemplar_type"] for e in exemplars})
+    type_order = sorted(set(exemplar_type_by_document_id.values()))
     for i, exemplar_type in enumerate(type_order):
         hue = okabe_ito_hexes[i % len(okabe_ito_hexes)]
-        subset = [e for e in exemplars if e["exemplar_type"] == exemplar_type]
-        coords = np.array([coord_by_key[e["source_expression_key"].rsplit(":", 1)[0]] for e in subset if e["source_expression_key"].rsplit(":", 1)[0] in coord_by_key])
+        coords = np.array([
+            proto_coord_by_document_id[doc_id] for doc_id, et in exemplar_type_by_document_id.items()
+            if et == exemplar_type and doc_id in proto_coord_by_document_id
+        ])
         if len(coords) == 0:
             continue
         ax.scatter(coords[:, 0], coords[:, 1], s=40, color=hue, label=exemplar_type, edgecolors="black", linewidths=0.5)
 
     ax.set_xlabel("UMAP 1")
     ax.set_ylabel("UMAP 2")
-    ax.set_title("Initial exemplars by exemplar_type (overview UMAP background)")
+    ax.set_title("Initial exemplars by exemplar_type (with_interview_prototypes UMAP background)")
     ax.legend(fontsize=7, loc="best")
     save_figure(fig, out_dir, "initial_exemplars_by_type")
 
@@ -280,10 +300,10 @@ def main() -> None:
     if "analyze_initial_exemplars" in completed and "analyze_cluster_structure" in completed:
         cs_dir = run_dir / "analyze_cluster_structure"
         ie_dir = run_dir / "analyze_initial_exemplars"
-        overview = sorted(cs_dir.glob("umap_overview_*.jsonl"))
-        if overview:
+        with_prototypes = sorted(cs_dir.glob("umap_with_interview_prototypes_*.jsonl"))
+        if with_prototypes:
             plot_initial_exemplar_highlight(
-                overview[0], overview[0].parent / f"{overview[0].stem}.manifest.json",
+                with_prototypes[0], with_prototypes[0].parent / f"{with_prototypes[0].stem}.manifest.json",
                 ie_dir / "exemplar_summary.csv", out_dir,
             )
 

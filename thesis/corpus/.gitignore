@@ -20,6 +20,8 @@ dictionaries/concept_backbone_embedded.jsonl
 dictionaries/structural_concepts_embedded.jsonl
 processed/shared_space/embedding_space.jsonl
 processed/shared_space/literature_balanced_sample.jsonl
+processed/shared_space/pca_transform.joblib
+processed/shared_space/interview_prototypes.jsonl
 
 # geometric-analysis toolkit output -- large, regeneratable from
 # embedding_space.jsonl, and qualitative-retrieval tables carry literal

@@ -1,44 +1,18 @@
-"""Geometric analysis of the manually-reviewed interview initial exemplars
-(thesis/corpus/interviews/metadata/initial_exemplars.csv) -- the
-replacement for rank-based prototype analysis, which is retired outright
-(see audit_free_listing_rank.py).
+"""Geometric analysis of the interview initial-exemplar prototype layer
+(processed/shared_space/interview_prototypes.jsonl) -- the replacement for
+rank-based prototype analysis, which is retired outright (see
+audit_free_listing_rank.py).
 
-Refuses to run unless every row's `review_status` is "reviewed" or
-"unavailable" -- a "pending" row means propose_initial_exemplars.py's
-candidate hasn't been checked against the real transcript yet, and this
-script must not treat an unreviewed guess as analytical input.
+Reads the prototype layer only -- all review-gating and virtual-key
+resolution against the raw interview archive already happened in
+build_interview_prototype_layer.py (run that first; it fails loudly on an
+unreviewed CSV row, a missing initial_response_form, or a resolution
+mismatch, so by the time this script runs, every prototype point is
+already a manually-reviewed, verified exemplar). This script only computes
+distances against the *existing* shared space (embedding_space.jsonl) --
+it never re-validates initial_exemplars.csv itself.
 
-For each "reviewed" row, resolves `source_expression_key` (the virtual
-document_id:chunk_index:occurrence key -- see
-geometric_analysis_common.derive_interview_expression_keys) against the
-*current* embedding_space.jsonl, and requires an exact match (after
-whitespace normalization only -- no fuzzy matching, no
-nearest-neighbour substitution) between the CSV's own
-`source_expression_label` (what the pipeline's label read *at review
-time*) and the resolved point's *current* label. This check is entirely
-about pipeline-representation drift -- whether the pooled space still
-contains what the reviewer actually looked at -- not about whether the
-transcript wording matches the embedded text; those are allowed to differ
-(`transcript_initial_exemplar_text` vs. `source_expression_label` are
-deliberately separate fields; see initial_exemplars.csv's own header).
-
-Two distinct failure modes, reported separately, either one halting the
-run:
-  (a) the virtual key doesn't exist in the current file at all -- most
-      likely pooling-time filtering dropped that exact expression since
-      the CSV was reviewed;
-  (b) the virtual key exists but source_expression_label doesn't match the
-      current label exactly -- possible drift, needs manual re-verification.
-
-Every "reviewed" row must also carry a valid `initial_response_form`
-(INITIAL_RESPONSE_FORMS) -- not merely "not empty", but exactly one of the
-four defined values. This is required, not optional: some opening answers
-are a feature-based characterisation (guru, group, doctrine, rules, ...)
-rather than one named exemplar, found reviewing "b3-aug18-1645" -- an
-empty/missing value here must fail loudly rather than being confused with
-the *intentional* analytic category "unclear".
-
-n~=26 throughout: every output is exploratory/descriptive only, never
+n~=25 throughout: every output is exploratory/descriptive only, never
 given an inferential-statistics treatment.
 
 Usage (from thesis/corpus/):
@@ -47,10 +21,8 @@ Usage (from thesis/corpus/):
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import logging
-import re
 
 import numpy as np
 
@@ -60,82 +32,41 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("thesis_corpus.analyze_initial_exemplars")
 
 MODULE_NAME = "analyze_initial_exemplars"
-INITIAL_EXEMPLARS_CSV_PATH = gac.CORPUS_DIR / "interviews" / "metadata" / "initial_exemplars.csv"
 NEAREST_K = 10
 CENTROID_MODES = ("full", "reduced_literature", "equal_weight")
-VALID_INITIAL_RESPONSE_FORMS = ("named_exemplar", "descriptive_characterisation", "mixed", "unclear")
-
-_WHITESPACE_RE = re.compile(r"\s+")
+SAME_VECTOR_EPSILON = 1e-9  # for detecting a prototype's own point re-appearing in the pooled interview pool
 
 
-def _normalize(text: str) -> str:
-    return _WHITESPACE_RE.sub(" ", text.strip())
-
-
-def load_initial_exemplars(path) -> list[dict]:
+def load_interview_prototypes(path) -> tuple[list[dict], np.ndarray]:
+    points, vectors = [], []
     with open(path, encoding="utf-8") as f:
-        return list(csv.DictReader(f))
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            item = json.loads(line)
+            points.append({k: v for k, v in item.items() if k != "shared_space_vector"})
+            vectors.append(item["shared_space_vector"])
+    return points, np.array(vectors, dtype=np.float64)
 
 
-def validate_review_status(rows: list[dict]) -> None:
-    pending = [r["document_id"] for r in rows if r["review_status"] not in ("reviewed", "unavailable")]
-    if pending:
-        raise SystemExit(
-            f"{len(pending)} row(s) in {INITIAL_EXEMPLARS_CSV_PATH} are not yet reviewed "
-            f"(review_status must be 'reviewed' or 'unavailable'): {pending}. "
-            "Run propose_initial_exemplars.py's output through manual review first -- "
-            "this script refuses to treat an unreviewed candidate as analytical input."
-        )
-
-
-def validate_initial_response_form(rows: list[dict]) -> None:
-    """Required for every "reviewed" row -- not merely defaulted. An
-    empty/missing value fails loudly here rather than being silently
-    treated as the intentional analytic category "unclear"; a reviewer who
-    forgot to set this must be told, not have it guessed for them.
-    "unavailable" rows are exempt -- there's nothing to classify."""
-    bad = [
-        r["document_id"] for r in rows
-        if r["review_status"] == "reviewed"
-        and r.get("initial_response_form") not in VALID_INITIAL_RESPONSE_FORMS
-    ]
-    if bad:
-        raise SystemExit(
-            f"{len(bad)} reviewed row(s) in {INITIAL_EXEMPLARS_CSV_PATH} have a missing or "
-            f"invalid initial_response_form (must be exactly one of {VALID_INITIAL_RESPONSE_FORMS}): "
-            f"{bad}. An empty value is not the same as the analytic category 'unclear' -- "
-            "set it explicitly."
-        )
-
-
-def resolve_reviewed_row(row: dict, points: list[dict], virtual_keys: dict[str, int]) -> int:
-    key = row["source_expression_key"]
-    if key not in virtual_keys:
-        raise SystemExit(
-            f"[{row['document_id']}] virtual key {key!r} does not resolve against the "
-            "current embedding_space.jsonl -- most likely pooling-time "
-            "deduplication/short-fragment filtering (build_shared_space.py) dropped this "
-            "exact expression since the CSV was reviewed. Needs manual re-selection, not "
-            "an automatic substitute."
-        )
-    index = virtual_keys[key]
-    current_label = points[index]["label"]
-    if _normalize(current_label) != _normalize(row["source_expression_label"]):
-        raise SystemExit(
-            f"[{row['document_id']}] virtual key {key!r} resolved to different text than "
-            f"reviewed -- possible drift. CSV: {row['source_expression_label']!r}, "
-            f"current: {current_label!r}. Needs manual re-verification, not a fuzzy match."
-        )
-    return index
-
-
-def nearest(query: np.ndarray, candidate_points: list[dict], candidate_vectors: np.ndarray, k: int, exclude_index: int | None = None) -> list[dict]:
+def nearest(
+    query: np.ndarray, candidate_points: list[dict], candidate_vectors: np.ndarray, k: int,
+    exclude_self: bool = False,
+) -> list[dict]:
+    """exclude_self drops any candidate numerically identical to `query` --
+    relevant when the same underlying expression could independently exist
+    in both the prototype layer and the ordinary pooled interview pool
+    (whenever a reviewed exemplar happened to also survive the pooling
+    filter): both are derived from the same raw vector through the same
+    persisted transform, so they'd be exact duplicates, not a genuine
+    nearest neighbour."""
     euclidean = gac.euclidean_distances(query, candidate_vectors)
     cosine = gac.cosine_similarities(query, candidate_vectors)
     order = np.argsort(euclidean)
     results = []
     for i in order:
-        if exclude_index is not None and i == exclude_index:
+        if exclude_self and euclidean[i] < SAME_VECTOR_EPSILON:
             continue
         results.append({
             "rank": len(results) + 1,
@@ -155,20 +86,21 @@ write_csv = gac.write_csv
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, default=None)
-    parser.add_argument("--input", type=type(INITIAL_EXEMPLARS_CSV_PATH), default=INITIAL_EXEMPLARS_CSV_PATH)
+    parser.add_argument("--prototypes", type=type(gac.INTERVIEW_PROTOTYPES_PATH), default=gac.INTERVIEW_PROTOTYPES_PATH)
     args = parser.parse_args()
 
-    logger.info("Loading %s ...", args.input)
-    rows = load_initial_exemplars(args.input)
-    validate_review_status(rows)
-    validate_initial_response_form(rows)
-    logger.info("%d rows: %d reviewed, %d unavailable", len(rows),
-                sum(1 for r in rows if r["review_status"] == "reviewed"),
-                sum(1 for r in rows if r["review_status"] == "unavailable"))
+    if not args.prototypes.exists():
+        raise SystemExit(
+            f"No prototype layer at {args.prototypes} -- run "
+            "`python -m thesis_corpus.build_interview_prototype_layer` first."
+        )
+
+    logger.info("Loading %s ...", args.prototypes)
+    prototype_points, prototype_vectors = load_interview_prototypes(args.prototypes)
+    logger.info("%d interview prototype points", len(prototype_points))
 
     logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
     shared_space = gac.load_shared_space()
-    virtual_keys = gac.derive_interview_expression_keys(shared_space.points)
 
     run_id, run_dir = gac.get_or_create_run_dir(args.run_id)
     gac.init_run_manifest(run_dir, shared_space, defaults={})
@@ -180,13 +112,8 @@ def main() -> None:
         criteria_points = [shared_space.points[i] for i in criteria_idxs]
         criteria_vectors = shared_space.vectors[criteria_idxs]
 
-        structural_idxs = gac.source_dataset_indices(shared_space.points, "structural_concepts")
-        structural_points = [shared_space.points[i] for i in structural_idxs]
-        structural_vectors = shared_space.vectors[structural_idxs]
-
-        backbone_idxs = gac.source_dataset_indices(shared_space.points, "concept_backbone")
-        backbone_points = [shared_space.points[i] for i in backbone_idxs]
-        backbone_vectors = shared_space.vectors[backbone_idxs]
+        per_source = gac.per_source_centroids_and_dispersion(shared_space)
+        combined_refs = {mode: gac.combined_expression_reference(shared_space, mode) for mode in CENTROID_MODES}
 
         lit_idxs = gac.source_dataset_indices(shared_space.points, "literature")
         lit_points = [shared_space.points[i] for i in lit_idxs]
@@ -199,36 +126,17 @@ def main() -> None:
         interview_idxs = gac.source_dataset_indices(shared_space.points, "interviews")
         interview_points_all = [shared_space.points[i] for i in interview_idxs]
         interview_vectors_all = shared_space.vectors[interview_idxs]
-        # nearest()'s exclude_index must be an index into this *subset* (0..203),
-        # not into shared_space.points (0..44324) -- the exemplar's `index` below
-        # is a full-array index, so it needs translating through this map.
-        full_to_interview_local = {full_i: local_i for local_i, full_i in enumerate(interview_idxs)}
-
-        per_source = gac.per_source_centroids_and_dispersion(shared_space)
-        combined_refs = {mode: gac.combined_expression_reference(shared_space, mode) for mode in CENTROID_MODES}
 
         criterion_distance_rows = []
         reference_distance_rows = []
         centroid_distance_rows = []
         nearest_lit_rows, nearest_miv_rows, nearest_interview_rows = [], [], []
         exemplar_summary_rows = []
-        n_unavailable = sum(1 for r in rows if r["review_status"] == "unavailable")
 
-        for row in rows:
-            if row["review_status"] == "unavailable":
-                exemplar_summary_rows.append({
-                    "document_id": row["document_id"], "exemplar_type": row.get("exemplar_type", "unclear"),
-                    "initial_response_form": row.get("initial_response_form", ""),
-                    "follow_up_examples": row.get("follow_up_examples", ""),
-                    "status": "unavailable", "notes": row.get("notes", ""),
-                })
-                continue
-
-            index = resolve_reviewed_row(row, shared_space.points, virtual_keys)
-            query = shared_space.vectors[index]
-            document_id = row["document_id"]
-            exemplar_type = row["exemplar_type"]
-            initial_response_form = row["initial_response_form"]
+        for proto, query in zip(prototype_points, prototype_vectors):
+            document_id = proto["document_id"]
+            exemplar_type = proto["exemplar_type"]
+            initial_response_form = proto["initial_response_form"]
 
             for cp, cv in zip(criteria_points, criteria_vectors):
                 euclidean = float(np.linalg.norm(query - cv))
@@ -265,8 +173,7 @@ def main() -> None:
                                           "initial_response_form": initial_response_form, **r})
 
             interview_neighbours = nearest(
-                query, interview_points_all, interview_vectors_all, NEAREST_K,
-                exclude_index=full_to_interview_local.get(index),
+                query, interview_points_all, interview_vectors_all, NEAREST_K, exclude_self=True,
             )
             if interview_neighbours:
                 nearest_doc = gac.key_document_id(interview_neighbours[0]["key"])
@@ -278,9 +185,9 @@ def main() -> None:
             exemplar_summary_rows.append({
                 "document_id": document_id, "exemplar_type": exemplar_type,
                 "initial_response_form": initial_response_form,
-                "follow_up_examples": row.get("follow_up_examples", ""),
-                "status": "resolved", "source_expression_key": row["source_expression_key"],
-                "source_expression_label": row["source_expression_label"],
+                "follow_up_examples": proto.get("follow_up_examples", ""),
+                "status": "resolved", "source_expression_key": proto["source_expression_key"],
+                "source_expression_label": proto["source_expression_label"],
             })
 
         write_csv(out_dir / "exemplar_summary.csv", exemplar_summary_rows)
@@ -292,28 +199,27 @@ def main() -> None:
         write_csv(out_dir / "nearest_other_interviews.csv", nearest_interview_rows)
 
         (out_dir / "EXPLORATORY_NOTICE.txt").write_text(
-            "n~=26 interview exemplars. Every table in this directory is exploratory/"
-            "descriptive only -- no inferential statistics, no claim of representativeness. "
-            "response_rank plays no role anywhere here; see audit_free_listing_rank.py for why.\n",
+            f"n={len(prototype_points)} interview initial-exemplar prototypes. Every table in "
+            "this directory is exploratory/descriptive only -- no inferential statistics, no "
+            "claim of representativeness. response_rank plays no role anywhere here; see "
+            "audit_free_listing_rank.py for why. These points live in a separate prototype "
+            "layer (build_interview_prototype_layer.py), not the ordinary pooled interview "
+            "expressions -- some were excluded from the pooled space by its short-fragment "
+            "filter but are legitimate here regardless.\n",
             encoding="utf-8",
         )
 
         gac.write_module_config(
             out_dir,
             input_sha256=shared_space.input_sha256,
-            initial_exemplars_csv=str(args.input),
-            n_rows=len(rows),
-            n_resolved=len(rows) - n_unavailable,
-            n_unavailable=n_unavailable,
+            prototypes_path=str(args.prototypes),
+            n_prototypes=len(prototype_points),
             nearest_k=NEAREST_K,
             centroid_modes=CENTROID_MODES,
             metric="euclidean",
             git_commit=gac.git_commit_hash(),
         )
         gac.update_run_manifest(run_dir, MODULE_NAME, "completed", output_dir=out_dir)
-    except SystemExit as e:
-        gac.update_run_manifest(run_dir, MODULE_NAME, "failed", error=str(e))
-        raise
     except Exception as e:
         gac.update_run_manifest(run_dir, MODULE_NAME, "failed", error=str(e))
         raise

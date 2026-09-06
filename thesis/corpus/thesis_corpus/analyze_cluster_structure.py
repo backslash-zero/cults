@@ -22,13 +22,18 @@ controlled comparison for both statistics; `full`/`full_sampled_pointwise`/
 `reduced_literature` are descriptive/sensitivity views.
 
 This module also owns every 2-D UMAP fit in the toolkit -- the only place
-`umap.UMAP(...).fit_transform` is ever called. Three input populations,
-saved as separate coordinate files with a manifest each (input population,
-seed, input checksum, UMAP parameters, umap-learn version, output
-checksum): "overview" (all 44,325 points), "expression_sampled" (the same
-full_sampled_pointwise subset silhouette uses), and "equal_n_diagnostic"
-(one single seeded equal_n_expression draw, never averaged across
-repetitions). generate_figures.py only ever reads these files.
+`umap.UMAP(...).fit_transform` is ever called. Input populations, saved as
+separate coordinate files with a manifest each (input population, seed,
+input checksum, UMAP parameters, umap-learn version, output checksum):
+"overview" (all 44,325 points), "expression_sampled" (the same
+full_sampled_pointwise subset silhouette uses), "equal_n_diagnostic" (one
+single seeded equal_n_expression draw, never averaged across repetitions),
+and -- only if build_interview_prototype_layer.py has already been run --
+"with_interview_prototypes" (overview plus the interview initial-exemplar
+prototype layer, fit fresh rather than reusing "overview"'s coordinates,
+since several prototypes were dropped by build_shared_space.py's pooling
+filter and have no position in the ordinary pooled space to look up at
+all). generate_figures.py only ever reads these files.
 
 Usage (from thesis/corpus/):
     python -m thesis_corpus.analyze_cluster_structure
@@ -254,10 +259,44 @@ def main() -> None:
         if args.umap_param_grid:
             param_combinations = list(dict.fromkeys(param_combinations + UMAP_PARAM_GRID))
 
+        # Optional 4th population: overview + the interview initial-exemplar
+        # prototype layer (build_interview_prototype_layer.py), if it's been
+        # built. Fit fresh rather than reusing "overview"'s coordinates --
+        # several prototypes (e.g. "AI cult", "Illuminati") were dropped by
+        # build_shared_space.py's pooling filter and have no position in the
+        # ordinary pooled space at all, so there's nothing to look up there.
+        prototypes_points_vectors = None
+        if gac.INTERVIEW_PROTOTYPES_PATH.exists():
+            proto_points, proto_vectors = [], []
+            with open(gac.INTERVIEW_PROTOTYPES_PATH, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    item = json.loads(line)
+                    proto_points.append({
+                        "key": f"prototype:{item['document_id']}",
+                        "source_dataset": item["source_dataset"],
+                        "point_role": item["point_role"],
+                        "label": item["source_expression_label"],
+                    })
+                    proto_vectors.append(item["shared_space_vector"])
+            with_prototypes_points = overview_points + proto_points
+            with_prototypes_vectors = np.concatenate([overview_vectors, np.array(proto_vectors, dtype=np.float64)], axis=0)
+            prototypes_points_vectors = (with_prototypes_points, with_prototypes_vectors)
+        else:
+            logger.warning(
+                "%s not found -- skipping the with_interview_prototypes UMAP population "
+                "(run build_interview_prototype_layer.py first if you want it).",
+                gac.INTERVIEW_PROTOTYPES_PATH,
+            )
+
         for n_neighbors, min_dist in param_combinations:
             fit_and_save_umap(out_dir, "overview", overview_points, overview_vectors, n_neighbors, min_dist, args.seed)
             fit_and_save_umap(out_dir, "expression_sampled", expr_sampled_points, expr_sampled_vectors, n_neighbors, min_dist, args.seed)
             fit_and_save_umap(out_dir, "equal_n_diagnostic", equal_n_points, equal_n_vectors, n_neighbors, min_dist, args.seed)
+            if prototypes_points_vectors is not None:
+                fit_and_save_umap(out_dir, "with_interview_prototypes", *prototypes_points_vectors, n_neighbors, min_dist, args.seed)
 
         gac.write_module_config(
             out_dir,

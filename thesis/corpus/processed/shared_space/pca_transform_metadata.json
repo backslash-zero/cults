@@ -1,0 +1,10 @@
+{
+  "k": 394,
+  "embedding_dim": 1024,
+  "variance_threshold": 0.95,
+  "variance_at_k": 0.9500826189764078,
+  "seed": 42,
+  "n_points_fit": 44325,
+  "embedding_space_sha256": "761d8fdb73d423e4fb7d21a829ee3896ea6510afb23e650e0ebb02877c87cf4e",
+  "git_commit": "2b90a5dae116fe28c6b21ab2aa02799532ed1586"
+}

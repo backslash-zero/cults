@@ -50,12 +50,13 @@ the corpus grows or the emergent-entity threshold below is adjusted):
     embedded vector/label instead of the French original, closing a
     measured language-asymmetry gap against the English-only reference
     vocabularies; French moves to a `label_fr` field. Interview items
-    additionally carry response_rank:
-    interviews open with a free-listing prompt ("what comes to mind when
-    you hear the word cult?"), and order of mention is a standard
-    cognitive-salience proxy in prototype theory (first-mentioned = most
-    prototypical) -- this is the position of the item within its own
-    document, in the order the archive already lists them (1-indexed).
+    additionally carry response_rank --
+    a 1-indexed extraction-order position, *not* a free-listing rank or a
+    cognitive-salience proxy (the interview protocol elicits a single
+    first-association example plus justification/probes, not a ranked
+    list; see thesis_corpus.audit_free_listing_rank and
+    thesis_corpus.analyze_initial_exemplars for the actual, manually
+    reviewed interview-side geometric analysis).
   - Each MIVILUDES criterion contributes ONE point (`point_role="expression"`):
     its French embedding (the official original). The English translation is
     kept only as a display label (`label_en`) on the same point, not
@@ -106,12 +107,14 @@ Usage (from thesis/corpus/):
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import logging
 import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
+import joblib
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -155,6 +158,8 @@ OUTPUT_PATH = SHARED_SPACE_DIR / "embedding_space.jsonl"
 VARIANCE_CSV_PATH = SHARED_SPACE_DIR / "variance_curve.csv"
 VARIANCE_PLOT_PATH = SHARED_SPACE_DIR / "variance_curve.png"
 VARIANCE_JSON_PATH = SHARED_SPACE_DIR / "variance_curve.json"
+PCA_TRANSFORM_PATH = SHARED_SPACE_DIR / "pca_transform.joblib"
+PCA_TRANSFORM_METADATA_PATH = SHARED_SPACE_DIR / "pca_transform_metadata.json"
 
 VARIANCE_THRESHOLD = 0.95
 EMBEDDING_DIM = 1024
@@ -175,6 +180,28 @@ _WHITESPACE_RE = re.compile(r"\s+")
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("thesis_corpus.build_shared_space")
+
+
+def _sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _git_commit_hash() -> str | None:
+    import subprocess
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=CORPUS_DIR,
+            capture_output=True, text=True, timeout=5,
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return None
 
 
 def normalize_anchor(anchor: str) -> str:
@@ -616,7 +643,8 @@ def main() -> None:
         raise SystemExit(f"Expected {EMBEDDING_DIM}-d vectors, got {vectors.shape[1]}")
 
     logger.info("Standardizing pooled matrix (zero mean, unit variance per dimension) before PCA...")
-    scaled = StandardScaler().fit_transform(vectors)
+    scaler = StandardScaler()
+    scaled = scaler.fit_transform(vectors)
 
     logger.info("Fitting full-rank PCA to get the complete explained-variance curve...")
     full_pca = PCA(random_state=args.seed)
@@ -680,9 +708,27 @@ def main() -> None:
 
     sanity_checks(points, shared_coords)
 
+    logger.info("Persisting the fitted StandardScaler + PCA (%s) ...", PCA_TRANSFORM_PATH)
+    output_sha256 = _sha256_file(OUTPUT_PATH)
+    joblib.dump({"scaler": scaler, "pca": full_pca}, PCA_TRANSFORM_PATH)
+    PCA_TRANSFORM_METADATA_PATH.write_text(
+        json.dumps({
+            "k": k,
+            "embedding_dim": EMBEDDING_DIM,
+            "variance_threshold": args.variance_threshold,
+            "variance_at_k": variance_at_k,
+            "seed": args.seed,
+            "n_points_fit": len(points),
+            "embedding_space_sha256": output_sha256,
+            "git_commit": _git_commit_hash(),
+        }, indent=2),
+        encoding="utf-8",
+    )
+
     print(f"\nDone. {len(points)} points, k={k} ({variance_at_k*100:.1f}% variance).")
     print(f"Output: {OUTPUT_PATH}")
     print(f"Variance curve: {VARIANCE_CSV_PATH}, {VARIANCE_PLOT_PATH}, {VARIANCE_JSON_PATH}")
+    print(f"Persisted transform: {PCA_TRANSFORM_PATH}, {PCA_TRANSFORM_METADATA_PATH}")
 
 
 if __name__ == "__main__":

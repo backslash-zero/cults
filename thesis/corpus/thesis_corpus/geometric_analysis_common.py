@@ -1,16 +1,24 @@
 """Shared library for the geometric-analysis toolkit
 (analyze_global_structure.py, analyze_cluster_structure.py,
-audit_free_listing_rank.py, analyze_initial_exemplars.py,
+audit_free_listing_rank.py, propose_initial_exemplars.py,
+build_interview_prototype_layer.py, analyze_initial_exemplars.py,
 analyze_criterion_neighbours.py, analyze_emergent_entities.py,
-generate_figures.py, generate_geometric_draft_report.py,
-propose_initial_exemplars.py) built on top of the shared embedding space.
+generate_figures.py, generate_geometric_draft_report.py) built on top of
+the shared embedding space.
 
 Read-only with respect to the pipeline that produced the data: never
-imports from or modifies build_shared_space.py, visualize_3d.py, or any
-file under processed/shared_space/. Does import balanced_analysis.py's
-weighted_centroid()/per_corpus_centroids() directly rather than
-reimplementing equal-corpus-weighting -- that module already is this
-toolkit's imbalance-mitigation library, just predates the rest of it.
+imports from or modifies build_shared_space.py's code, and never writes
+under processed/shared_space/ except for build_interview_prototype_layer.py's
+own interview_prototypes.jsonl (a new, separate file). Reads two of
+build_shared_space.py's own outputs there read-only: embedding_space.jsonl
+itself, and (since this session's persistence addition)
+pca_transform.joblib -- the fitted StandardScaler+PCA, needed to project
+a reviewed interview exemplar into the *existing* shared space without
+refitting it or otherwise touching embedding_space.jsonl. Does import
+balanced_analysis.py's weighted_centroid()/per_corpus_centroids() directly
+rather than reimplementing equal-corpus-weighting -- that module already
+is this toolkit's imbalance-mitigation library, just predates the rest of
+it.
 
 Every module in this toolkit shares, from here:
   - loading embedding_space.jsonl into (points, 394-D vectors) -- never a
@@ -20,14 +28,19 @@ Every module in this toolkit shares, from here:
   - versioned run directories under processed/analysis/<run-id>/<module>/,
     tied together by one RUN_MANIFEST.json per run.
   - the Okabe-Ito colour-vision-deficiency-safe categorical palette.
-  - one canonical derivation of the "document_id:chunk_index:occurrence"
-    virtual key needed to address a single interview expression point --
-    document_id:chunk_index alone is not unique per expression (a chunk
-    can yield several expressions; interviews' 230 raw expressions span
-    only 75 unique document_id:chunk_index pairs). This is the same
-    non-uniqueness build_shared_space.py's MIVILUDES French/English
-    translation join hit and was fixed for -- see that file's
-    load_miviludes_translations docstring for the full story.
+  - two virtual-key schemes, both "document_id:chunk_index:occurrence",
+    needed because document_id:chunk_index alone is not unique per
+    expression (a chunk can yield several expressions; interviews' 230 raw
+    expressions span only 75 unique document_id:chunk_index pairs -- the
+    same non-uniqueness build_shared_space.py's MIVILUDES French/English
+    translation join hit and was fixed for, see that file's
+    load_miviludes_translations docstring). `derive_interview_expression_keys`
+    counts occurrence over the *pooled* embedding_space.jsonl -- an item
+    build_shared_space.py's filters dropped has no key here at all.
+    `derive_archive_expression_keys` counts occurrence over the raw,
+    unfiltered archive instead -- stable regardless of pooling, used by
+    the initial-exemplar workflow specifically because it needs to resolve
+    short free-association answers the pooling filter routinely drops.
 
 Library only -- no CLI of its own.
 """
@@ -52,6 +65,11 @@ ANALYSIS_DIR = PROCESSED_DIR / "analysis"
 
 EMBEDDING_SPACE_PATH = SHARED_SPACE_DIR / "embedding_space.jsonl"
 LITERATURE_BALANCED_SAMPLE_PATH = SHARED_SPACE_DIR / "literature_balanced_sample.jsonl"
+PCA_TRANSFORM_PATH = SHARED_SPACE_DIR / "pca_transform.joblib"
+PCA_TRANSFORM_METADATA_PATH = SHARED_SPACE_DIR / "pca_transform_metadata.json"
+INTERVIEW_PROTOTYPES_PATH = SHARED_SPACE_DIR / "interview_prototypes.jsonl"
+INTERVIEWS_ARCHIVE_PATH = PROCESSED_DIR / "interviews" / "criterion_expressions.jsonl"
+INITIAL_EXEMPLARS_CSV_PATH = CORPUS_DIR / "interviews" / "metadata" / "initial_exemplars.csv"
 
 EXPRESSION_CORPORA = ("literature", "miviludes", "interviews")
 ALL_SOURCE_DATASETS = (
@@ -216,9 +234,16 @@ def derive_interview_expression_keys(points: list[dict]) -> dict[str, int]:
     `occurrence` counts repeats of (document_id, chunk_index) among
     interviews rows in `points`' own order. `points` MUST be in
     embedding_space.jsonl's own file order (i.e. straight from
-    load_shared_space) for this to be reproducible run to run -- both
-    propose_initial_exemplars.py and analyze_initial_exemplars.py call this
-    exact function so they can never derive the key differently.
+    load_shared_space) for this to be reproducible run to run.
+
+    This key space is specific to the *pooled* file -- an expression
+    dropped by build_shared_space.py's dedup/short-fragment filter has no
+    key here at all, since occurrence is only counted over survivors. For
+    something that needs to resolve an item regardless of whether it
+    survived pooling (e.g. the initial-exemplar workflow, which cares
+    about short free-association answers exactly the filter tends to
+    drop), use derive_archive_expression_keys on the raw archive instead --
+    see build_interview_prototype_layer.py.
 
     Returns {virtual_key: index_into_points}.
     """
@@ -233,6 +258,41 @@ def derive_interview_expression_keys(points: list[dict]) -> dict[str, int]:
         occurrence = occurrence_by_chunk[chunk]
         occurrence_by_chunk[chunk] += 1
         keys[f"{document_id}:{chunk_index}:{occurrence}"] = i
+    return keys
+
+
+def load_raw_archive(path: Path) -> list[dict]:
+    """A corpus's raw criterion_expressions.jsonl, as a flat list in its own
+    on-disk order -- every extracted expression, including ones a
+    pooling-time filter would later drop. Never mutated, never filtered
+    here; that's the caller's job if they want it."""
+    items = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            items.append(json.loads(line))
+    return items
+
+
+def derive_archive_expression_keys(archive_items: list[dict]) -> dict[str, int]:
+    """Same virtual-key construction as derive_interview_expression_keys
+    ("document_id:chunk_index:occurrence"), but over the full, unfiltered
+    raw archive in its own on-disk order, rather than the pooled/filtered
+    embedding_space.jsonl -- stable regardless of any pooling-time filter,
+    since it never depends on which items later survive. `archive_items`
+    should come straight from load_raw_archive (same order every time).
+
+    Returns {virtual_key: index_into_archive_items}.
+    """
+    occurrence_by_chunk: dict[tuple[str, int], int] = defaultdict(int)
+    keys: dict[str, int] = {}
+    for i, item in enumerate(archive_items):
+        chunk = (item["document_id"], item["chunk_index"])
+        occurrence = occurrence_by_chunk[chunk]
+        occurrence_by_chunk[chunk] += 1
+        keys[f"{item['document_id']}:{item['chunk_index']}:{occurrence}"] = i
     return keys
 
 
