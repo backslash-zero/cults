@@ -18,6 +18,12 @@ processed/miviludes/expression_translations*.jsonl
 metadata/miviludes_criteria_embedded.jsonl
 dictionaries/concept_backbone_embedded.jsonl
 dictionaries/structural_concepts_embedded.jsonl
+dictionaries/conceptnet_concepts_embedded.jsonl
+# Large intermediate caches, regeneratable from the cached ConceptNet dump
+# (~/.conceptnet_data/, outside the repo) -- conceptnet_concepts_candidates.csv
+# (the actual human-reviewable output) stays tracked.
+dictionaries/conceptnet_related_raw.jsonl
+dictionaries/conceptnet_term_degree.jsonl
 processed/shared_space/embedding_space.jsonl
 processed/shared_space/literature_balanced_sample.jsonl
 processed/shared_space/pca_transform.joblib
