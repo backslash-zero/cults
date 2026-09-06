@@ -30,6 +30,14 @@ run:
   (b) the virtual key exists but source_expression_label doesn't match the
       current label exactly -- possible drift, needs manual re-verification.
 
+Every "reviewed" row must also carry a valid `initial_response_form`
+(INITIAL_RESPONSE_FORMS) -- not merely "not empty", but exactly one of the
+four defined values. This is required, not optional: some opening answers
+are a feature-based characterisation (guru, group, doctrine, rules, ...)
+rather than one named exemplar, found reviewing "b3-aug18-1645" -- an
+empty/missing value here must fail loudly rather than being confused with
+the *intentional* analytic category "unclear".
+
 n~=26 throughout: every output is exploratory/descriptive only, never
 given an inferential-statistics treatment.
 
@@ -55,6 +63,7 @@ MODULE_NAME = "analyze_initial_exemplars"
 INITIAL_EXEMPLARS_CSV_PATH = gac.CORPUS_DIR / "interviews" / "metadata" / "initial_exemplars.csv"
 NEAREST_K = 10
 CENTROID_MODES = ("full", "reduced_literature", "equal_weight")
+VALID_INITIAL_RESPONSE_FORMS = ("named_exemplar", "descriptive_characterisation", "mixed", "unclear")
 
 _WHITESPACE_RE = re.compile(r"\s+")
 
@@ -76,6 +85,26 @@ def validate_review_status(rows: list[dict]) -> None:
             f"(review_status must be 'reviewed' or 'unavailable'): {pending}. "
             "Run propose_initial_exemplars.py's output through manual review first -- "
             "this script refuses to treat an unreviewed candidate as analytical input."
+        )
+
+
+def validate_initial_response_form(rows: list[dict]) -> None:
+    """Required for every "reviewed" row -- not merely defaulted. An
+    empty/missing value fails loudly here rather than being silently
+    treated as the intentional analytic category "unclear"; a reviewer who
+    forgot to set this must be told, not have it guessed for them.
+    "unavailable" rows are exempt -- there's nothing to classify."""
+    bad = [
+        r["document_id"] for r in rows
+        if r["review_status"] == "reviewed"
+        and r.get("initial_response_form") not in VALID_INITIAL_RESPONSE_FORMS
+    ]
+    if bad:
+        raise SystemExit(
+            f"{len(bad)} reviewed row(s) in {INITIAL_EXEMPLARS_CSV_PATH} have a missing or "
+            f"invalid initial_response_form (must be exactly one of {VALID_INITIAL_RESPONSE_FORMS}): "
+            f"{bad}. An empty value is not the same as the analytic category 'unclear' -- "
+            "set it explicitly."
         )
 
 
@@ -132,6 +161,7 @@ def main() -> None:
     logger.info("Loading %s ...", args.input)
     rows = load_initial_exemplars(args.input)
     validate_review_status(rows)
+    validate_initial_response_form(rows)
     logger.info("%d rows: %d reviewed, %d unavailable", len(rows),
                 sum(1 for r in rows if r["review_status"] == "reviewed"),
                 sum(1 for r in rows if r["review_status"] == "unavailable"))
@@ -188,6 +218,8 @@ def main() -> None:
             if row["review_status"] == "unavailable":
                 exemplar_summary_rows.append({
                     "document_id": row["document_id"], "exemplar_type": row.get("exemplar_type", "unclear"),
+                    "initial_response_form": row.get("initial_response_form", ""),
+                    "follow_up_examples": row.get("follow_up_examples", ""),
                     "status": "unavailable", "notes": row.get("notes", ""),
                 })
                 continue
@@ -196,12 +228,14 @@ def main() -> None:
             query = shared_space.vectors[index]
             document_id = row["document_id"]
             exemplar_type = row["exemplar_type"]
+            initial_response_form = row["initial_response_form"]
 
             for cp, cv in zip(criteria_points, criteria_vectors):
                 euclidean = float(np.linalg.norm(query - cv))
                 cosine = float(gac.cosine_similarities(query, cv[np.newaxis, :])[0])
                 criterion_distance_rows.append({
                     "document_id": document_id, "exemplar_type": exemplar_type,
+                    "initial_response_form": initial_response_form,
                     "criterion_key": cp["key"], "criterion_label": cp.get("label_en") or cp["label"],
                     "euclidean_distance": euclidean, "cosine_similarity": cosine,
                 })
@@ -211,6 +245,7 @@ def main() -> None:
                 euclidean = float(np.linalg.norm(query - ref_centroid))
                 reference_distance_rows.append({
                     "document_id": document_id, "exemplar_type": exemplar_type,
+                    "initial_response_form": initial_response_form,
                     "reference_dataset": ref_name, "euclidean_distance": euclidean,
                 })
 
@@ -218,13 +253,16 @@ def main() -> None:
                 euclidean = float(np.linalg.norm(query - combined_refs[mode]))
                 centroid_distance_rows.append({
                     "document_id": document_id, "exemplar_type": exemplar_type,
+                    "initial_response_form": initial_response_form,
                     "mode": mode, "euclidean_distance_to_combined_expression_centroid": euclidean,
                 })
 
             for r in nearest(query, lit_points, lit_vectors, NEAREST_K):
-                nearest_lit_rows.append({"document_id": document_id, "exemplar_type": exemplar_type, **r})
+                nearest_lit_rows.append({"document_id": document_id, "exemplar_type": exemplar_type,
+                                          "initial_response_form": initial_response_form, **r})
             for r in nearest(query, miv_points, miv_vectors, NEAREST_K):
-                nearest_miv_rows.append({"document_id": document_id, "exemplar_type": exemplar_type, **r})
+                nearest_miv_rows.append({"document_id": document_id, "exemplar_type": exemplar_type,
+                                          "initial_response_form": initial_response_form, **r})
 
             interview_neighbours = nearest(
                 query, interview_points_all, interview_vectors_all, NEAREST_K,
@@ -234,10 +272,13 @@ def main() -> None:
                 nearest_doc = gac.key_document_id(interview_neighbours[0]["key"])
                 interview_neighbours[0]["same_document_as_exemplar"] = (nearest_doc == document_id)
             for r in interview_neighbours:
-                nearest_interview_rows.append({"document_id": document_id, "exemplar_type": exemplar_type, **r})
+                nearest_interview_rows.append({"document_id": document_id, "exemplar_type": exemplar_type,
+                                                "initial_response_form": initial_response_form, **r})
 
             exemplar_summary_rows.append({
                 "document_id": document_id, "exemplar_type": exemplar_type,
+                "initial_response_form": initial_response_form,
+                "follow_up_examples": row.get("follow_up_examples", ""),
                 "status": "resolved", "source_expression_key": row["source_expression_key"],
                 "source_expression_label": row["source_expression_label"],
             })

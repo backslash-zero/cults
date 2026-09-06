@@ -25,8 +25,13 @@ Writes thesis/corpus/interviews/metadata/initial_exemplars.csv with
 checked against the original transcript
 (interviews/cleaned/<id>/transcript.txt) -- filling in
 `transcript_initial_exemplar_text` from the real wording, correcting the
-candidate if it's wrong, and setting `exemplar_type` -- before
-`review_status` can become "reviewed". analyze_initial_exemplars.py
+candidate if it's wrong, setting `exemplar_type`, and setting
+`initial_response_form` (some opening answers are a feature-based
+characterisation rather than one named exemplar -- see
+INITIAL_RESPONSE_FORMS -- with any named examples that only emerge later,
+via a follow-up probe, recorded separately in `follow_up_examples` rather
+than folded into the opening answer) -- before `review_status` can become
+"reviewed". analyze_initial_exemplars.py
 enforces that gate; this script does not.
 
 Usage (from thesis/corpus/):
@@ -53,7 +58,8 @@ OUTPUT_PATH = INTERVIEWS_DIR / "metadata" / "initial_exemplars.csv"
 CSV_FIELDS = [
     "document_id", "participant_id", "transcript_initial_exemplar_text",
     "source_expression_key", "source_expression_label", "source_chunk_index",
-    "exemplar_type", "review_status", "notes",
+    "exemplar_type", "initial_response_form", "follow_up_examples",
+    "review_status", "notes",
 ]
 EXEMPLAR_TYPES = (
     "classic_nrm_or_religious_group", "named_group_or_movement",
@@ -61,6 +67,16 @@ EXEMPLAR_TYPES = (
     "digital_or_technology", "interpersonal_or_family",
     "metaphorical_or_other", "unclear",
 )
+# Some participants' opening answer isn't a named exemplar at all -- it's a
+# feature-based characterisation (guru, group, doctrine, rules, marginal
+# religion, ...), with named examples only emerging later via a follow-up
+# probe (found reviewing "b3-aug18-1645"). initial_response_form records
+# which kind of answer this was, independently of exemplar_type (which
+# describes *what* is named, not *whether* something was named at all);
+# follow_up_examples keeps later-mentioned named groups on record without
+# folding them into the opening answer. Neither is auto-classified here --
+# both default to the reviewer's starting point, same as exemplar_type.
+INITIAL_RESPONSE_FORMS = ("named_exemplar", "descriptive_characterisation", "mixed", "unclear")
 
 
 def load_raw_archive_by_document(path: Path) -> dict[str, list[dict]]:
@@ -108,7 +124,8 @@ def propose_for_document(
             "document_id": document_id, "participant_id": participant_id,
             "transcript_initial_exemplar_text": "", "source_expression_key": "",
             "source_expression_label": "", "source_chunk_index": "",
-            "exemplar_type": "unclear", "review_status": "unavailable",
+            "exemplar_type": "unclear", "initial_response_form": "unclear", "follow_up_examples": "",
+            "review_status": "unavailable",
             "notes": "No participant claim (excluding questions/reflections) found anywhere in the raw archive for this document.",
         }
 
@@ -127,7 +144,8 @@ def propose_for_document(
                 "document_id": document_id, "participant_id": participant_id,
                 "transcript_initial_exemplar_text": "", "source_expression_key": "",
                 "source_expression_label": "", "source_chunk_index": "",
-                "exemplar_type": "unclear", "review_status": "unavailable",
+                "exemplar_type": "unclear", "initial_response_form": "unclear", "follow_up_examples": "",
+            "review_status": "unavailable",
                 "notes": (
                     f"Candidate first claim ({true_first['embedding_text']!r}, chunk "
                     f"{true_first['chunk_index']}) was filtered out of the shared space "
@@ -153,7 +171,8 @@ def propose_for_document(
         "source_expression_key": virtual_key,
         "source_expression_label": chosen["embedding_text"],
         "source_chunk_index": chosen["chunk_index"],
-        "exemplar_type": "unclear", "review_status": "pending",
+        "exemplar_type": "unclear", "initial_response_form": "unclear", "follow_up_examples": "",
+        "review_status": "pending",
         "notes": notes,
     }
 
