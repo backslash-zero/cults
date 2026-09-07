@@ -21,8 +21,10 @@ small enough for exact k-NN *and* exact silhouette. `equal_n_expression`
 controlled comparison for both statistics; `full`/`full_sampled_pointwise`/
 `reduced_literature` are descriptive/sensitivity views.
 
-This module also owns every 2-D UMAP fit in the toolkit -- the only place
-`umap.UMAP(...).fit_transform` is ever called. Input populations, saved as
+This module owns the whole-space-scale 2-D UMAP populations (fitted via
+geometric_analysis_common.fit_and_save_umap -- shared with
+generate_focused_projections.py's smaller, curated populations rather than
+each module fitting UMAP separately). Input populations, saved as
 separate coordinate files with a manifest each (input population, seed,
 input checksum, UMAP parameters, umap-learn version, output checksum):
 "overview" (all 44,325 points), "expression_sampled" (the same
@@ -46,7 +48,6 @@ import json
 import logging
 
 import numpy as np
-import umap
 from sklearn.metrics import silhouette_score
 from sklearn.neighbors import NearestNeighbors
 
@@ -154,45 +155,14 @@ def run_equal_n_bootstrap(shared_space: gac.SharedSpace, seed: int, reps: int, n
 
 
 write_csv = gac.write_csv
-
-
-def fit_and_save_umap(
-    out_dir, population_name: str, points: list[dict], vectors: np.ndarray,
-    n_neighbors: int, min_dist: float, seed: int,
-) -> None:
-    input_sha256 = gac.sha256_array(vectors)
-    logger.info(
-        "UMAP fit '%s' (n=%d, n_neighbors=%d, min_dist=%.2f)...",
-        population_name, len(points), n_neighbors, min_dist,
-    )
-    coords = umap.UMAP(
-        n_components=2, n_neighbors=n_neighbors, min_dist=min_dist,
-        random_state=seed, metric="euclidean",
-    ).fit_transform(vectors)
-
-    stem = f"umap_{population_name}_n{n_neighbors}_d{min_dist}"
-    coords_path = out_dir / f"{stem}.jsonl"
-    with open(coords_path, "w", encoding="utf-8") as f:
-        for p, coord in zip(points, coords):
-            row = {
-                "key": p["key"], "source_dataset": p["source_dataset"],
-                "point_role": p.get("point_role"), "label": p.get("label"),
-                "umap_2d": coord.tolist(),
-            }
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
-    output_sha256 = gac.sha256_file(coords_path)
-
-    manifest = {
-        "population": population_name,
-        "n_points": len(points),
-        "input_sha256": input_sha256,
-        "seed": seed,
-        "umap_params": {"n_neighbors": n_neighbors, "min_dist": min_dist, "n_components": 2, "metric": "euclidean"},
-        "umap_learn_version": umap.__version__,
-        "output_coords_path": coords_path.name,
-        "output_sha256": output_sha256,
-    }
-    (out_dir / f"{stem}.manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+# UMAP fitting/manifest logic lives in geometric_analysis_common.fit_and_save_umap
+# now (moved there so generate_focused_projections.py's ~23 additional small
+# populations share the identical implementation rather than duplicating it).
+# This module's own 4 populations pass no overlay, reproducing the original
+# output apart from additive manifest keys (n_points_fit/n_points_overlay/
+# n_points_rendered, composition, shortages, n_neighbors_requested/_used) --
+# see that function's docstring for the exact compatibility guarantee.
+fit_and_save_umap = gac.fit_and_save_umap
 
 
 def main() -> None:

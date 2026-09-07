@@ -1,26 +1,40 @@
 """Global geometric structure of the shared cross-corpus embedding space:
 per-source centroids/dispersion, a pairwise source-centroid distance
 matrix, and (separately) how the expression corpora as a whole relate to
-the two reference vocabularies and to emergent entities.
+the three reference vocabularies and to emergent entities.
 
-Two deliverables, kept in separate output files and never conflated:
+Three deliverables, kept in separate output files and never conflated:
 
-  1. Pairwise source-centroid distance matrix (7x7): computed directly
+  1. Pairwise source-centroid distance matrix (8x8): computed directly
      between individual, independently-computed source centroids --
      mode-independent, no combined/weighted intermediate involved at all.
      A corpus's own centroid/dispersion isn't an imbalance-sensitive
      statistic; only comparisons *to a combined reference* are (below).
   2. Combined-expression-centroid comparisons: distance from
-     concept_backbone / structural_concepts / emergent_entities centroids
-     to "the expression corpora as a whole", in three variants that are
-     never merged -- full (raw pooled mean), reduced_literature
-     (pooled mean using the 2,500-point literature subsample), and
-     equal_weight (literature/MIVILUDES/interview centroids averaged with
-     equal 1/3 weight, via balanced_analysis.weighted_centroid()). Plus,
-     for each expression corpus's own centroid (full and reduced_literature
-     only -- equal_weight has no single-corpus analogue), the nearest 10
-     concept_backbone terms and nearest 10 structural_concepts terms,
-     reported as two separate tables, never merged into one.
+     concept_backbone / structural_concepts / conceptnet_concepts /
+     emergent_entities centroids to "the expression corpora as a whole",
+     in three variants that are never merged -- full (raw pooled mean),
+     reduced_literature (pooled mean using the 2,500-point literature
+     subsample), and equal_weight (literature/MIVILUDES/interview
+     centroids averaged with equal 1/3 weight, via
+     balanced_analysis.weighted_centroid()). Plus, for each expression
+     corpus's own centroid (full and reduced_literature only --
+     equal_weight has no single-corpus analogue), the nearest 10 terms
+     from each of the 3 reference vocabularies (concept_backbone,
+     structural_concepts, conceptnet_concepts), one long-format table
+     tagged by `reference_dataset` -- raw retrieval, NOT adjusted for the
+     three sets' very different sizes (3,000/1,500/195).
+  3. Equal-size-controlled reference comparison (new): the same
+     combined-expression and per-corpus-centroid queries as deliverables
+     2a/2b, but nearest-k distance into each reference set after
+     down-sampling every set to the same size
+     (geometric_analysis_common.equal_size_reference_comparison,
+     n_reference = min of the 3 sizes, repeated B times, mean/std/95%-CI)
+     -- controls for pool-size bias, kept in its own file, never merged
+     with the raw retrieval table above. This controls cardinality only;
+     it is not evidence the three vocabularies are otherwise
+     interchangeable (they differ in source, curation, coverage, and
+     purpose -- see ANALYSIS_OVERVIEW.md's "Why three reference subsets").
 
 Euclidean distance is primary throughout; cosine is reported alongside as
 a sensitivity column, never primary.
@@ -46,7 +60,7 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("thesis_corpus.analyze_global_structure")
 
 MODULE_NAME = "analyze_global_structure"
-REFERENCE_LIKE_DATASETS = ("concept_backbone", "structural_concepts", "emergent_entities")
+REFERENCE_LIKE_DATASETS = ("concept_backbone", "structural_concepts", "conceptnet_concepts", "emergent_entities")
 NEAREST_TERMS_K = 10
 COMBINED_MODES = ("full", "reduced_literature", "equal_weight")
 PER_CORPUS_MODES = ("full", "reduced_literature")
@@ -108,6 +122,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, default=None)
     parser.add_argument("--seed", type=int, default=gac.DEFAULT_SEED)
+    parser.add_argument("--bootstrap-reps", type=int, default=gac.DEFAULT_BOOTSTRAP_REPS)
     args = parser.parse_args()
 
     logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
@@ -148,27 +163,73 @@ def main() -> None:
                 })
         write_csv(out_dir / "reference_to_combined_expression_centroid.csv", combined_rows)
 
-        # --- Deliverable 2b: nearest concept_backbone / structural_concepts terms to each expression-corpus centroid ---
-        logger.info("Deliverable 2b: nearest concept_backbone/structural_concepts terms to each expression-corpus centroid (full/reduced_literature)...")
-        backbone_idxs = gac.source_dataset_indices(shared_space.points, "concept_backbone")
-        backbone_points = [shared_space.points[i] for i in backbone_idxs]
-        backbone_vectors = shared_space.vectors[backbone_idxs]
+        # --- Deliverable 2b: nearest reference-vocabulary terms to each expression-corpus centroid (raw, pool-size-biased) ---
+        logger.info(
+            "Deliverable 2b: nearest %s terms to each expression-corpus centroid "
+            "(full/reduced_literature; raw retrieval, NOT size-controlled -- see equal-size version below)...",
+            ", ".join(gac.REFERENCE_VOCAB_DATASETS),
+        )
+        reference_points: dict[str, list[dict]] = {}
+        reference_vectors: dict[str, np.ndarray] = {}
+        for ref_dataset in gac.REFERENCE_VOCAB_DATASETS:
+            idxs = gac.source_dataset_indices(shared_space.points, ref_dataset)
+            reference_points[ref_dataset] = [shared_space.points[i] for i in idxs]
+            reference_vectors[ref_dataset] = shared_space.vectors[idxs]
 
-        structural_idxs = gac.source_dataset_indices(shared_space.points, "structural_concepts")
-        structural_points = [shared_space.points[i] for i in structural_idxs]
-        structural_vectors = shared_space.vectors[structural_idxs]
-
-        nearest_backbone_rows, nearest_structural_rows = [], []
+        nearest_reference_rows_raw = []
         for corpus in gac.EXPRESSION_CORPORA:
             for mode in PER_CORPUS_MODES:
                 centroid = corpus_centroid_for_mode(shared_space, corpus, mode, per_source)
-                for row in nearest_terms(centroid, backbone_points, backbone_vectors, NEAREST_TERMS_K):
-                    nearest_backbone_rows.append({"expression_corpus": corpus, "mode": mode, **row})
-                for row in nearest_terms(centroid, structural_points, structural_vectors, NEAREST_TERMS_K):
-                    nearest_structural_rows.append({"expression_corpus": corpus, "mode": mode, **row})
+                for ref_dataset in gac.REFERENCE_VOCAB_DATASETS:
+                    for row in nearest_terms(centroid, reference_points[ref_dataset], reference_vectors[ref_dataset], NEAREST_TERMS_K):
+                        nearest_reference_rows_raw.append({
+                            "expression_corpus": corpus, "mode": mode,
+                            "reference_dataset": ref_dataset, **row,
+                        })
+        write_csv(out_dir / "nearest_reference_terms_raw.csv", nearest_reference_rows_raw)
 
-        write_csv(out_dir / "nearest_concept_backbone_terms.csv", nearest_backbone_rows)
-        write_csv(out_dir / "nearest_structural_concepts_terms.csv", nearest_structural_rows)
+        # --- Deliverable 2c (new): equal-size-controlled reference comparison ---
+        # Raw nearest-term retrieval above is biased toward whichever
+        # reference set is largest (3,000/1,500/195 candidates) purely by
+        # pool size. This controls for that: every reference set is
+        # down-sampled to the same n_reference (= min across the three,
+        # currently 195) before nearest-k distance is computed, repeated
+        # gac.DEFAULT_BOOTSTRAP_REPS times. Covers both deliverable 2a's
+        # combined-expression-centroid queries and 2b's per-corpus-centroid
+        # queries -- kept in its own file, never merged with the raw table.
+        logger.info(
+            "Deliverable 2c: equal-size reference comparison (n_reference=min of the "
+            "3 reference-set sizes, B=%d reps)...", args.bootstrap_reps,
+        )
+        queries: dict[str, np.ndarray] = {}
+        query_meta: dict[str, dict] = {}
+        for corpus in gac.EXPRESSION_CORPORA:
+            for mode in PER_CORPUS_MODES:
+                key = f"corpus_centroid:{corpus}:{mode}"
+                queries[key] = corpus_centroid_for_mode(shared_space, corpus, mode, per_source)
+                query_meta[key] = {"query_type": "expression_corpus_centroid", "query_label": corpus, "mode": mode}
+        for mode in COMBINED_MODES:
+            key = f"combined_expression_centroid:{mode}"
+            queries[key] = gac.combined_expression_reference(shared_space, mode)
+            query_meta[key] = {"query_type": "combined_expression_centroid", "query_label": "combined_expression", "mode": mode}
+
+        equal_size_result = gac.equal_size_reference_comparison(
+            queries, reference_vectors, k=NEAREST_TERMS_K, seed=args.seed, reps=args.bootstrap_reps,
+        )
+        equal_size_rows = []
+        for query_key, per_reference in equal_size_result.items():
+            meta = query_meta[query_key]
+            for reference_dataset, stats in per_reference.items():
+                for distance_statistic in ("mean", "median"):
+                    summary = stats[f"nearest_k_distance_{distance_statistic}"]
+                    equal_size_rows.append({
+                        "query_key": query_key, "query_label": meta["query_label"], "query_type": meta["query_type"],
+                        "mode": meta["mode"], "reference_dataset": reference_dataset,
+                        "n_reference": stats["n_reference"], "k": stats["k"],
+                        "repetitions": args.bootstrap_reps, "seed": args.seed,
+                        "distance_statistic": distance_statistic, **summary,
+                    })
+        write_csv(out_dir / "nearest_reference_terms_equal_size.csv", equal_size_rows)
 
         gac.write_module_config(
             out_dir,
@@ -180,6 +241,8 @@ def main() -> None:
             combined_modes=COMBINED_MODES,
             per_corpus_modes=PER_CORPUS_MODES,
             nearest_terms_k=NEAREST_TERMS_K,
+            bootstrap_reps=args.bootstrap_reps,
+            reference_vocab_datasets=gac.REFERENCE_VOCAB_DATASETS,
             git_commit=gac.git_commit_hash(),
         )
         gac.update_run_manifest(run_dir, MODULE_NAME, "completed", output_dir=out_dir)

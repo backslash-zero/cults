@@ -21,6 +21,7 @@ Usage (from thesis/corpus/):
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import logging
 
@@ -83,10 +84,40 @@ def nearest(
 write_csv = gac.write_csv
 
 
+def assert_prototype_layer_current(shared_space: gac.SharedSpace) -> dict:
+    """Part 1 of the post-ConceptNet-rebuild plan: confirm (never
+    re-derive/rebuild here) that interview_prototypes.jsonl's provenance
+    matches the *current* embedding_space.jsonl. If a future pipeline
+    rebuild ever changes the PCA fit without reprojecting the prototype
+    layer, every distance this module computes against it would be
+    silently wrong -- this check turns that into a loud failure instead.
+    Returns the transform metadata dict for recording in config.json."""
+    if not gac.PCA_TRANSFORM_METADATA_PATH.exists():
+        raise SystemExit(f"Missing {gac.PCA_TRANSFORM_METADATA_PATH} -- cannot verify prototype-layer currency.")
+    metadata = json.loads(gac.PCA_TRANSFORM_METADATA_PATH.read_text(encoding="utf-8"))
+    if metadata.get("embedding_space_sha256") != shared_space.input_sha256:
+        raise SystemExit(
+            f"pca_transform_metadata.json's embedding_space_sha256 "
+            f"({metadata.get('embedding_space_sha256')}) does not match the current "
+            f"embedding_space.jsonl ({shared_space.input_sha256}) -- the shared space "
+            "was rebuilt since the persisted transform was fit. Re-run "
+            "build_shared_space.py's persistence step, then "
+            "build_interview_prototype_layer.py to reproject, before running this module."
+        )
+    logger.info(
+        "Prototype-layer currency confirmed: pca_transform_metadata.json's "
+        "embedding_space_sha256 matches the current embedding_space.jsonl (n_points_fit=%d).",
+        metadata.get("n_points_fit"),
+    )
+    return metadata
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, default=None)
     parser.add_argument("--prototypes", type=type(gac.INTERVIEW_PROTOTYPES_PATH), default=gac.INTERVIEW_PROTOTYPES_PATH)
+    parser.add_argument("--seed", type=int, default=gac.DEFAULT_SEED)
+    parser.add_argument("--bootstrap-reps", type=int, default=gac.DEFAULT_BOOTSTRAP_REPS)
     args = parser.parse_args()
 
     if not args.prototypes.exists():
@@ -101,6 +132,7 @@ def main() -> None:
 
     logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
     shared_space = gac.load_shared_space()
+    transform_metadata = assert_prototype_layer_current(shared_space)
 
     run_id, run_dir = gac.get_or_create_run_dir(args.run_id)
     gac.init_run_manifest(run_dir, shared_space, defaults={})
@@ -148,8 +180,8 @@ def main() -> None:
                     "euclidean_distance": euclidean, "cosine_similarity": cosine,
                 })
 
-            for ref_name, ref_centroid in (("structural_concepts", per_source["structural_concepts"]["centroid"]),
-                                            ("concept_backbone", per_source["concept_backbone"]["centroid"])):
+            for ref_name in gac.REFERENCE_VOCAB_DATASETS:
+                ref_centroid = per_source[ref_name]["centroid"]
                 euclidean = float(np.linalg.norm(query - ref_centroid))
                 reference_distance_rows.append({
                     "document_id": document_id, "exemplar_type": exemplar_type,
@@ -190,6 +222,71 @@ def main() -> None:
                 "source_expression_label": proto["source_expression_label"],
             })
 
+        # --- Equal-size-controlled reference comparison (Part 4) ---
+        # reference_distances.csv above is a raw centroid distance (no
+        # pool-size bias possible there -- a centroid summarizes the whole
+        # set regardless of its size). This is the k-NN-based comparison,
+        # which DOES need size control: all 25 prototypes are batched into
+        # one gac.equal_size_reference_comparison call (one shared
+        # per-repetition resample, not resampled per prototype).
+        logger.info(
+            "Equal-size reference comparison (n_reference=min of the 3 reference-set "
+            "sizes, B=%d reps, batched over all %d prototypes)...",
+            args.bootstrap_reps, len(prototype_points),
+        )
+        reference_vectors = {
+            ref_name: shared_space.vectors[gac.source_dataset_indices(shared_space.points, ref_name)]
+            for ref_name in gac.REFERENCE_VOCAB_DATASETS
+        }
+        proto_queries = {proto["document_id"]: vector for proto, vector in zip(prototype_points, prototype_vectors)}
+        equal_size_result = gac.equal_size_reference_comparison(
+            proto_queries, reference_vectors, k=NEAREST_K, seed=args.seed, reps=args.bootstrap_reps,
+        )
+        reference_comparison_equal_size_rows = []
+        proto_by_document = {p["document_id"]: p for p in prototype_points}
+        for document_id, per_reference in equal_size_result.items():
+            proto = proto_by_document[document_id]
+            for reference_dataset, stats in per_reference.items():
+                for distance_statistic in ("mean", "median"):
+                    summary = stats[f"nearest_k_distance_{distance_statistic}"]
+                    reference_comparison_equal_size_rows.append({
+                        "query_key": document_id, "query_label": document_id, "query_type": "prototype",
+                        "document_id": document_id, "exemplar_type": proto["exemplar_type"],
+                        "initial_response_form": proto["initial_response_form"],
+                        "reference_dataset": reference_dataset,
+                        "n_reference": stats["n_reference"], "k": stats["k"],
+                        "repetitions": args.bootstrap_reps, "seed": args.seed,
+                        "distance_statistic": distance_statistic, **summary,
+                    })
+        write_csv(out_dir / "reference_comparison_equal_size.csv", reference_comparison_equal_size_rows)
+
+        # interview_prototypes.jsonl (and therefore prototype_points above)
+        # structurally excludes every "unavailable" row -- build_interview_prototype_layer.py
+        # never pads or substitutes for one. That means every OTHER table in
+        # this module only ever sees the 25 resolved prototypes, and a
+        # reader inferring "0 unavailable" purely from exemplar_summary.csv's
+        # own contents would be wrong (there's nothing there to count in the
+        # first place). Read initial_exemplars.csv directly, once, to add the
+        # true unavailable/pending rows here -- exemplar_summary.csv becomes
+        # the one place this module states the complete, honest picture.
+        with open(gac.INITIAL_EXEMPLARS_CSV_PATH, encoding="utf-8") as f:
+            all_csv_rows = list(csv.DictReader(f))
+        for r in all_csv_rows:
+            if r["review_status"] != "reviewed":
+                exemplar_summary_rows.append({
+                    "document_id": r["document_id"], "exemplar_type": r.get("exemplar_type", ""),
+                    "initial_response_form": r.get("initial_response_form", ""),
+                    "follow_up_examples": "", "status": r["review_status"],
+                    "source_expression_key": "", "source_expression_label": "",
+                })
+        n_reviewed = sum(1 for r in all_csv_rows if r["review_status"] == "reviewed")
+        n_unavailable = sum(1 for r in all_csv_rows if r["review_status"] == "unavailable")
+        n_pending = sum(1 for r in all_csv_rows if r["review_status"] not in ("reviewed", "unavailable"))
+        logger.info(
+            "initial_exemplars.csv: %d reviewed, %d unavailable, %d pending (of %d total).",
+            n_reviewed, n_unavailable, n_pending, len(all_csv_rows),
+        )
+
         write_csv(out_dir / "exemplar_summary.csv", exemplar_summary_rows)
         write_csv(out_dir / "criterion_distances.csv", criterion_distance_rows)
         write_csv(out_dir / "reference_distances.csv", reference_distance_rows)
@@ -199,13 +296,16 @@ def main() -> None:
         write_csv(out_dir / "nearest_other_interviews.csv", nearest_interview_rows)
 
         (out_dir / "EXPLORATORY_NOTICE.txt").write_text(
-            f"n={len(prototype_points)} interview initial-exemplar prototypes. Every table in "
-            "this directory is exploratory/descriptive only -- no inferential statistics, no "
-            "claim of representativeness. response_rank plays no role anywhere here; see "
-            "audit_free_listing_rank.py for why. These points live in a separate prototype "
-            "layer (build_interview_prototype_layer.py), not the ordinary pooled interview "
-            "expressions -- some were excluded from the pooled space by its short-fragment "
-            "filter but are legitimate here regardless.\n",
+            f"{n_reviewed} reviewed / {n_unavailable} unavailable / {n_pending} pending "
+            f"(of {len(all_csv_rows)} interviews total, per interviews/metadata/initial_exemplars.csv). "
+            f"Only the {len(prototype_points)} reviewed rows have a geometric position (interview_prototypes.jsonl) "
+            "and appear in every other table in this directory; unavailable/pending rows appear only in "
+            "exemplar_summary.csv, with no distances computed for them. Every table here is "
+            "exploratory/descriptive only -- no inferential statistics, no claim of representativeness. "
+            "response_rank plays no role anywhere here; see audit_free_listing_rank.py for why. Reviewed "
+            "points live in a separate prototype layer (build_interview_prototype_layer.py), not the "
+            "ordinary pooled interview expressions -- some were excluded from the pooled space by its "
+            "short-fragment filter but are legitimate here regardless.\n",
             encoding="utf-8",
         )
 
@@ -217,6 +317,14 @@ def main() -> None:
             nearest_k=NEAREST_K,
             centroid_modes=CENTROID_MODES,
             metric="euclidean",
+            n_reviewed=n_reviewed,
+            n_unavailable=n_unavailable,
+            n_pending=n_pending,
+            seed=args.seed,
+            bootstrap_reps=args.bootstrap_reps,
+            reference_vocab_datasets=gac.REFERENCE_VOCAB_DATASETS,
+            transform_embedding_space_sha256=transform_metadata.get("embedding_space_sha256"),
+            transform_n_points_fit=transform_metadata.get("n_points_fit"),
             git_commit=gac.git_commit_hash(),
         )
         gac.update_run_manifest(run_dir, MODULE_NAME, "completed", output_dir=out_dir)

@@ -142,26 +142,37 @@ residual noise should be expected at this scale, not assumed absent.
 
 **Verified after embedding and rerunning** (at 600 concepts, again at the
 final 1,500, again after the duplicate/short-fragment filter, and again
-after the MIVILUDES translation fix below, but *before* the
-`conceptnet_concepts` addition — see caveat below): `structural_concepts`'
-mean nearest-expression-point distance (31.61, all 1,500) sits closer to the
-expression-to-expression baseline (29.06, sampled 1,000) than
-`concept_backbone`'s does (33.08) — structural concepts read closer to the
-expression cloud than the topic-neutral concept backbone, as intended.
-Centroid distance to the expression centroid: 16.18 (`structural_concepts`)
-vs. 16.71 (`concept_backbone`), both against `emergent_entities`' 13.19.
-These exact figures shift with *every* pooling-time change, not just ones
-that touch structural concepts or the backbone directly — standardization
-is fit jointly across the full pooled matrix before PCA, so swapping
-MIVILUDES's 732 points from French to English shifted every dimension's
-mean/variance slightly, and with it every point's coordinates, including
-literature's. The qualitative finding — structural concepts closer to
-baseline, concept backbone consistently farther out — has held at every
-stage regardless. **Caveat**: adding `conceptnet_concepts` is the latest
-such pooling-time change (below) and these exact distances have not yet
-been recomputed against it — treat them as illustrative of the pattern,
-not current numbers, until the geometrical-analysis toolkit's global-structure
-module (`analyze_global_structure.py`) reruns.
+after the MIVILUDES translation fix below): the qualitative finding —
+structural concepts closer to the expression cloud, concept backbone
+consistently farther out — has held at every pipeline stage. These exact
+figures shift with *every* pooling-time change, not just ones that touch
+structural concepts or the backbone directly — standardization is fit
+jointly across the full pooled matrix before PCA, so swapping MIVILUDES's
+732 points from French to English (or adding a new source_dataset)
+shifted every dimension's mean/variance slightly, and with it every
+point's coordinates, including literature's.
+
+**Current figures** (from `analyze_global_structure.py`'s
+`reference_to_combined_expression_centroid.csv`, run `20260907-002832`,
+against the current 44,520-point space including `conceptnet_concepts`):
+centroid distance to the combined (`full`-mode) expression centroid —
+`concept_backbone` 16.70, `structural_concepts` 16.18,
+`conceptnet_concepts` 14.92, `emergent_entities` 13.20. The pattern from
+before this addition holds: structural concepts and the new ConceptNet
+set both read closer to the expression cloud than the topic-neutral
+concept backbone, with `conceptnet_concepts` closest of the three
+reference vocabularies (unsurprising, given it was hand-pruned to
+domain-relevant terms specifically). Note this centroid comparison is
+pool-size-**un**controlled by construction (a centroid summarizes a whole
+set regardless of size) — the earlier "mean nearest-expression-point
+distance" figures reported in prior revisions of this document (31.61 /
+33.08 / 29.06 baseline) were a separate, ad-hoc diagnostic computed
+outside the toolkit and have not been recomputed against the current
+space; they are removed here rather than left stale. The toolkit's own
+equal-size-controlled nearest-term comparison
+(`nearest_reference_terms_equal_size.csv`) is the current, reproducible
+analogue — see "Why three reference subsets" and the interpretation note
+in `thesis_corpus/README.md`.
 
 ### The third reference subset: `conceptnet_concepts`
 
@@ -366,19 +377,28 @@ prose; summarized here for quick reference while planning analysis:
 
 ## What's NOT Yet Done
 
-A geometric-analysis toolkit now exists (`thesis_corpus.analyze_global_structure`,
+A geometric-analysis toolkit exists (`thesis_corpus.analyze_global_structure`,
 `analyze_cluster_structure`, `audit_free_listing_rank`,
 `propose_initial_exemplars`, `build_interview_prototype_layer`,
 `analyze_initial_exemplars`, `analyze_criterion_neighbours`,
-`analyze_emergent_entities`, `generate_figures`,
-`generate_geometric_draft_report` — see that package's own docstrings, and
-`processed/analysis/<run-id>/` for output), covering centroids/dispersion,
-k-NN/silhouette cluster structure, criterion-neighbour distances (with a
-French/English language-representation sensitivity audit), emergent-entity
-provenance, the interview initial-exemplar prototype layer (see above),
-and 2-D UMAP figures. The interview-side manual review is done: 25/26
-interviews resolved into `interview_prototypes.jsonl`, 1 unavailable (see
-above). What's still outstanding:
+`analyze_emergent_entities`, `generate_focused_projections`,
+`generate_figures`, `generate_geometric_draft_report` — see that package's
+own docstrings, and `processed/analysis/<run-id>/` for output), covering
+centroids/dispersion, k-NN/silhouette cluster structure, criterion-neighbour
+distances (French-primary, English-shared-space-sensitivity, and an
+optional raw-embedding-cosine diagnostic — three representations, never
+merged), emergent-entity provenance, the interview initial-exemplar
+prototype layer (see above), an equal-size-controlled comparison across
+the three reference vocabularies (controls for their very different
+sizes — 3,000/1,500/195 — not evidence they're otherwise interchangeable),
+and both whole-space and ~23 small, focused 2-D UMAP/PCA projections. The
+interview-side manual review is done: 25/26 interviews resolved into
+`interview_prototypes.jsonl`, 1 unavailable (see above). **All 9 modules
+have now been run end-to-end** against the current 44,520-point space
+(run `20260907-002832`) — three earlier runs
+(`review_pass1`/`smoketest5`/`test_ie_fast`) predate the `conceptnet_concepts`
+addition and are kept as superseded historical record, not deleted or
+reused. What's still outstanding:
 
 - No run's output has been interpreted or written into Results.tex yet —
   the toolkit produces tables/figures/a neutral draft report, not a

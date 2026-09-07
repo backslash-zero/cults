@@ -49,6 +49,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import logging
 import random
 import subprocess
 from collections import defaultdict
@@ -57,6 +58,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
+import umap
+
+logger = logging.getLogger("thesis_corpus.geometric_analysis_common")
 
 CORPUS_DIR = Path(__file__).resolve().parent.parent
 PROCESSED_DIR = CORPUS_DIR / "processed"
@@ -75,7 +79,17 @@ EXPRESSION_CORPORA = ("literature", "miviludes", "interviews")
 ALL_SOURCE_DATASETS = (
     "literature", "miviludes", "interviews", "miviludes_criteria",
     "concept_backbone", "structural_concepts", "emergent_entities",
+    "conceptnet_concepts",
 )
+# The three controlled-vocabulary reference term lists -- distinct from
+# analyze_global_structure.py's REFERENCE_LIKE_DATASETS (a local, 4-item
+# superset that also includes emergent_entities for centroid-only
+# comparisons, where reference-pool-size bias doesn't apply since there's
+# no k-NN retrieval involved). The one shared source of truth for "the
+# three reference vocabularies whose different sizes need controlling
+# for" (see equal_size_reference_comparison below) -- no module keeps its
+# own copy of this list.
+REFERENCE_VOCAB_DATASETS = ("concept_backbone", "structural_concepts", "conceptnet_concepts")
 
 # "full" is reserved for a statistic actually computed over every
 # applicable point -- see analyze_cluster_structure.py's
@@ -323,6 +337,87 @@ def per_source_centroids_and_dispersion(shared_space: SharedSpace) -> dict[str, 
 
 
 # ---------------------------------------------------------------------------
+# Reference-set size control (concept_backbone/structural_concepts/
+# conceptnet_concepts are 3,000/1,500/195 points -- a raw nearest-term
+# comparison across them is biased toward whichever set is largest, purely
+# by candidate-pool size, before any semantic content is considered)
+# ---------------------------------------------------------------------------
+
+def equal_size_reference_draw(
+    reference_pools: dict[str, np.ndarray],
+    seed: int,
+    n_reference: int | None = None,
+) -> dict[str, np.ndarray]:
+    """One repetition of the equal-size reference-set draw -- the
+    reference-vocabulary analogue of equal_n_expression_draw. n_reference
+    is computed at runtime as min(len(pool) for pool in reference_pools)
+    when not given explicitly -- never hardcoded, so this stays correct if
+    a reference set's size changes later (currently min(3000, 1500, 195) =
+    195). Each reference set's vectors are sampled down to n_reference via
+    simple_random_sample (reference terms have no document_id to stratify
+    by, unlike the expression corpora); whichever set already realizes
+    n_reference is used in full, unsampled."""
+    if n_reference is None:
+        n_reference = min(len(vecs) for vecs in reference_pools.values())
+    draw: dict[str, np.ndarray] = {}
+    for name, vecs in reference_pools.items():
+        idxs = simple_random_sample(list(range(len(vecs))), n_reference, seed)
+        draw[name] = vecs[idxs]
+    return draw
+
+
+def equal_size_reference_comparison(
+    queries: dict[str, np.ndarray],
+    reference_pools: dict[str, np.ndarray],
+    k: int = 10,
+    seed: int = DEFAULT_SEED,
+    reps: int = DEFAULT_BOOTSTRAP_REPS,
+) -> dict[str, dict[str, dict[str, dict]]]:
+    """Equal-size-controlled "how close is query X to reference-vocabulary
+    Y" -- the reference-vocabulary analogue of analyze_cluster_structure's
+    equal_n_expression bootstrap loop. All queries in `queries` are scored
+    against the *same* per-repetition sampled subset (one resample per
+    repetition, not per query), amortizing sampling cost across however
+    many queries a caller passes (17 criteria, 25 prototypes, thousands of
+    ranked entities).
+
+    Returns {query_key: {reference_dataset: {
+        "nearest_k_distance_mean": bootstrap_summary([...]),
+        "nearest_k_distance_median": bootstrap_summary([...]),
+    }}} -- bootstrap_summary reused verbatim for the mean/std/95%-CI
+    aggregation, never reimplemented.
+    """
+    n_reference = min(len(vecs) for vecs in reference_pools.values())
+    mean_reps: dict[str, dict[str, list[float]]] = {
+        qk: {rd: [] for rd in reference_pools} for qk in queries
+    }
+    median_reps: dict[str, dict[str, list[float]]] = {
+        qk: {rd: [] for rd in reference_pools} for qk in queries
+    }
+
+    for rep in range(reps):
+        draw = equal_size_reference_draw(reference_pools, seed=seed + rep, n_reference=n_reference)
+        for query_key, query_vector in queries.items():
+            for reference_dataset, sampled_vectors in draw.items():
+                distances = euclidean_distances(query_vector, sampled_vectors)
+                nearest_k = np.sort(distances)[:k]
+                mean_reps[query_key][reference_dataset].append(float(nearest_k.mean()))
+                median_reps[query_key][reference_dataset].append(float(np.median(nearest_k)))
+
+    result: dict[str, dict[str, dict[str, dict]]] = {}
+    for query_key in queries:
+        result[query_key] = {}
+        for reference_dataset in reference_pools:
+            result[query_key][reference_dataset] = {
+                "n_reference": n_reference,
+                "k": k,
+                "nearest_k_distance_mean": bootstrap_summary(mean_reps[query_key][reference_dataset]),
+                "nearest_k_distance_median": bootstrap_summary(median_reps[query_key][reference_dataset]),
+            }
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Expression-corpus pool + the four modes
 # ---------------------------------------------------------------------------
 
@@ -487,6 +582,217 @@ def cosine_similarities(query: np.ndarray, candidates: np.ndarray) -> np.ndarray
     query_norm = query / np.linalg.norm(query)
     candidate_norms = candidates / np.linalg.norm(candidates, axis=1, keepdims=True)
     return candidate_norms @ query_norm
+
+
+# ---------------------------------------------------------------------------
+# 2-D UMAP / PCA projections. fit_and_save_umap was originally
+# analyze_cluster_structure.py's own private helper (the only place
+# umap.UMAP(...).fit_transform was called in the toolkit) -- moved here
+# once generate_focused_projections.py needed the identical fitting/
+# manifest logic for ~23 additional small populations, so both modules
+# share one implementation rather than maintaining two copies.
+#
+# Compatibility with analyze_cluster_structure.py's pre-existing 4
+# populations (overview/expression_sampled/equal_n_diagnostic/
+# with_interview_prototypes) is preserved exactly: every field that
+# function's manifest already had keeps its name and value type
+# (`n_points`, `input_sha256`, `seed`, `umap_params.n_neighbors`, etc.);
+# everything below is additive (`n_points_fit`/`n_points_overlay`/
+# `n_points_rendered`, `composition`, `shortages`,
+# `umap_params.n_neighbors_requested`/`n_neighbors_used`). Calling this
+# with no overlay (as analyze_cluster_structure.py's own 4 populations
+# do) reproduces its original output byte-for-byte apart from these
+# additive keys.
+# ---------------------------------------------------------------------------
+
+def _population_role(point: dict) -> str:
+    """Coordinate-row grouping key for composition/rendering -- prefers an
+    explicit population_role a caller already tagged the point with
+    (generate_focused_projections.py's curated populations always do
+    this), falling back to source_dataset for populations that don't
+    (analyze_cluster_structure.py's own 4, which have no population_role
+    concept)."""
+    return point.get("population_role") or point.get("source_dataset", "unknown")
+
+
+def fit_and_save_umap(
+    out_dir: Path, population_name: str,
+    member_points: list[dict], member_vectors: np.ndarray,
+    n_neighbors: int, min_dist: float, seed: int,
+    overlay_points: list[dict] | None = None,
+    overlay_vectors: np.ndarray | None = None,
+    shortages: dict | None = None,
+) -> Path:
+    """Fits UMAP on member_vectors only. If overlay_vectors is given (e.g.
+    a corpus centroid -- not a real corpus point, never part of any fit),
+    it's embedded into the SAME fitted model via reducer.transform() after
+    fitting, so an overlay can never perturb the member embedding.
+    n_neighbors is clamped to min(n_neighbors, n_points_fit - 1) when a
+    population is smaller than requested (several focused populations,
+    e.g. a single criterion's 46-point neighbourhood, are far smaller than
+    analyze_cluster_structure.py's whole-space-scale populations); this
+    clamp only changes how many neighbours UMAP's algorithm uses
+    internally -- it never removes a member/overlay point or changes
+    n_points_fit/n_points_overlay/n_points_rendered. Fails loudly if fewer
+    than 3 points are supplied to fit on (umap-learn isn't meaningful
+    below that). `shortages` (default {}) records, verbatim from the
+    caller, any source pool that had fewer candidates than requested when
+    the population was constructed -- entirely separate from the
+    n_neighbors clamp; never inferred here.
+
+    Returns the manifest path."""
+    n_points_fit = len(member_points)
+    if n_points_fit < 3:
+        raise ValueError(f"'{population_name}': need >=3 points to fit UMAP, got {n_points_fit}")
+    n_neighbors_requested = n_neighbors
+    n_neighbors_used = min(n_neighbors_requested, n_points_fit - 1)
+
+    input_sha256 = sha256_array(member_vectors)
+    logger.info(
+        "UMAP fit '%s' (n_points_fit=%d, n_neighbors=%d->%d, min_dist=%.2f)...",
+        population_name, n_points_fit, n_neighbors_requested, n_neighbors_used, min_dist,
+    )
+    reducer = umap.UMAP(
+        n_components=2, n_neighbors=n_neighbors_used, min_dist=min_dist,
+        random_state=seed, metric="euclidean",
+    )
+    member_coords = reducer.fit_transform(member_vectors)
+
+    overlay_points = overlay_points or []
+    if overlay_vectors is not None and len(overlay_vectors):
+        overlay_coords = reducer.transform(overlay_vectors)
+    else:
+        overlay_coords = np.zeros((0, 2))
+    n_points_overlay = len(overlay_points)
+    n_points_rendered = n_points_fit + n_points_overlay
+
+    stem = f"umap_{population_name}_n{n_neighbors_used}_d{min_dist}"
+    coords_path = out_dir / f"{stem}.jsonl"
+    composition: dict[str, int] = defaultdict(int)
+    with open(coords_path, "w", encoding="utf-8") as f:
+        for p, coord in zip(member_points, member_coords):
+            role = _population_role(p)
+            composition[role] += 1
+            row = {
+                "key": p["key"], "source_dataset": p["source_dataset"],
+                "point_role": p.get("point_role"), "label": p.get("label"),
+                "population_role": p.get("population_role"),
+                "point_kind": "member",
+                "umap_2d": coord.tolist(),
+            }
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        for p, coord in zip(overlay_points, overlay_coords):
+            role = _population_role(p)
+            composition[role] += 1
+            row = {
+                "key": p["key"], "source_dataset": p.get("source_dataset"),
+                "point_role": p.get("point_role"), "label": p.get("label"),
+                "population_role": p.get("population_role"),
+                "point_kind": "centroid_overlay",
+                "umap_2d": coord.tolist(),
+            }
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    output_sha256 = sha256_file(coords_path)
+
+    manifest = {
+        "population": population_name,
+        "n_points": n_points_rendered,  # kept for backward compatibility with the pre-existing 4 populations
+        "n_points_fit": n_points_fit,
+        "n_points_overlay": n_points_overlay,
+        "n_points_rendered": n_points_rendered,
+        "composition": dict(composition),
+        "shortages": shortages or {},
+        "input_sha256": input_sha256,
+        "seed": seed,
+        "umap_params": {
+            "n_neighbors": n_neighbors_used,  # kept for backward compatibility; equals n_neighbors_used
+            "n_neighbors_requested": n_neighbors_requested,
+            "n_neighbors_used": n_neighbors_used,
+            "min_dist": min_dist, "n_components": 2, "metric": "euclidean",
+        },
+        "umap_learn_version": umap.__version__,
+        "output_coords_path": coords_path.name,
+        "output_sha256": output_sha256,
+    }
+    manifest_path = out_dir / f"{stem}.manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    return manifest_path
+
+
+def pca_2d_slice(vectors: np.ndarray) -> np.ndarray:
+    """The first 2 columns of the already-PCA'd 394-D shared_space_vector
+    -- not a fresh PCA refit. Same convention visualize_3d.py documents
+    for its own 3-D PCA output: refitting a fresh PCA on a subset would
+    return the same leading axes up to sign for no benefit, while giving
+    every population an incomparable rotation relative to every other --
+    a fixed global basis (this slice) keeps all PCA-2D populations
+    directly comparable to each other."""
+    return vectors[:, :2]
+
+
+def save_pca_projection(
+    out_dir: Path, population_name: str,
+    member_points: list[dict], member_vectors: np.ndarray,
+    overlay_points: list[dict] | None = None,
+    overlay_vectors: np.ndarray | None = None,
+    shortages: dict | None = None,
+) -> Path:
+    """PCA-2D counterpart to fit_and_save_umap -- same coordinate-row/
+    manifest shape (member/overlay, point_kind, population_role,
+    n_points_fit/n_points_overlay/n_points_rendered, composition,
+    shortages), but deterministic (no seed, no fitted model, no package
+    version) since it's a pure slice, not a fit. An overlay's PCA-2D
+    coordinate is just its own vector's first 2 columns -- no transform()
+    step needed, unlike UMAP."""
+    n_points_fit = len(member_points)
+    member_coords = pca_2d_slice(member_vectors)
+    overlay_points = overlay_points or []
+    overlay_coords = pca_2d_slice(overlay_vectors) if overlay_vectors is not None and len(overlay_vectors) else np.zeros((0, 2))
+    n_points_overlay = len(overlay_points)
+    n_points_rendered = n_points_fit + n_points_overlay
+
+    stem = f"pca_{population_name}"
+    coords_path = out_dir / f"{stem}.jsonl"
+    composition: dict[str, int] = defaultdict(int)
+    with open(coords_path, "w", encoding="utf-8") as f:
+        for p, coord in zip(member_points, member_coords):
+            composition[_population_role(p)] += 1
+            f.write(json.dumps({
+                "key": p["key"], "source_dataset": p["source_dataset"],
+                "point_role": p.get("point_role"), "label": p.get("label"),
+                "population_role": p.get("population_role"),
+                "point_kind": "member", "pca_2d": coord.tolist(),
+            }, ensure_ascii=False) + "\n")
+        for p, coord in zip(overlay_points, overlay_coords):
+            composition[_population_role(p)] += 1
+            f.write(json.dumps({
+                "key": p["key"], "source_dataset": p.get("source_dataset"),
+                "point_role": p.get("point_role"), "label": p.get("label"),
+                "population_role": p.get("population_role"),
+                "point_kind": "centroid_overlay", "pca_2d": coord.tolist(),
+            }, ensure_ascii=False) + "\n")
+    output_sha256 = sha256_file(coords_path)
+
+    manifest = {
+        "population": population_name,
+        "method": "pca_2d_slice",
+        "n_points_fit": n_points_fit,
+        "n_points_overlay": n_points_overlay,
+        "n_points_rendered": n_points_rendered,
+        "composition": dict(composition),
+        "shortages": shortages or {},
+        "source_columns": [0, 1],
+        "input_sha256": sha256_array(member_vectors),
+        "output_coords_path": coords_path.name,
+        "output_sha256": output_sha256,
+        "note": (
+            "first 2 columns of the already-PCA'd 394-D shared_space_vector; "
+            "not a fresh PCA refit -- same convention as visualize_3d.py's 3-D PCA slice."
+        ),
+    }
+    manifest_path = out_dir / f"{stem}.manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    return manifest_path
 
 
 # ---------------------------------------------------------------------------

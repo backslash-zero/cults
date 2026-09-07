@@ -1,8 +1,9 @@
 """Renders figures from a completed analysis run's saved output --
 never recomputes any statistic and never calls UMAP (analyze_cluster_structure.py
-owns every UMAP fit in this toolkit; this module only reads its saved
-coordinate files, verifying each one's checksum against its own manifest
-before plotting, rather than assuming it's untouched).
+and generate_focused_projections.py own every UMAP fit/PCA-2D slice in
+this toolkit; this module only reads their saved coordinate files,
+verifying each one's checksum against its own manifest before plotting,
+rather than assuming it's untouched).
 
 Matplotlib only (no new plotting dependency), Okabe-Ito colour-vision-
 deficiency-safe categorical palette, every figure written as both 300-DPI
@@ -56,11 +57,9 @@ def read_csv_rows(path: Path) -> list[dict]:
 # 2-D UMAP scatter (reads analyze_cluster_structure.py's saved coordinates only)
 # ---------------------------------------------------------------------------
 
-def plot_umap_scatter(coords_path: Path, manifest_path: Path, out_dir: Path, color_by: str) -> None:
+def _load_checked_coords(coords_path: Path, manifest_path: Path) -> tuple[list[dict] | None, dict | None]:
     if not coords_path.exists() or not manifest_path.exists():
-        logger.warning("Skipping UMAP figure -- missing %s or %s", coords_path.name, manifest_path.name)
-        return
-
+        return None, None
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     actual_checksum = gac.sha256_file(coords_path)
     if actual_checksum != manifest["output_sha256"]:
@@ -69,33 +68,73 @@ def plot_umap_scatter(coords_path: Path, manifest_path: Path, out_dir: Path, col
             f"checksum ({manifest['output_sha256'][:12]}... vs actual {actual_checksum[:12]}...) "
             "-- refusing to plot data that may have been altered since it was computed."
         )
-
     points = []
     with open(coords_path, encoding="utf-8") as f:
         for line in f:
             points.append(json.loads(line))
+    return points, manifest
+
+
+def plot_2d_scatter(
+    coords_path: Path, manifest_path: Path, out_dir: Path, color_by: str,
+    coord_field: str = "umap_2d", stem_prefix: str = "umap",
+) -> None:
+    """Renders one 2-D scatter from a saved coordinate file + manifest --
+    used for both analyze_cluster_structure.py's whole-space UMAP
+    populations and generate_focused_projections.py's ~23 small curated
+    populations (UMAP and PCA-2D alike; `coord_field`/`stem_prefix` select
+    which). A point_kind=="centroid_overlay" row (present only in focused
+    populations, never in analyze_cluster_structure.py's own output) is
+    drawn as a larger, black-edged marker on top of the member points --
+    same visual technique plot_initial_exemplar_highlight already uses for
+    prototypes over a greyed-out background."""
+    points, manifest = _load_checked_coords(coords_path, manifest_path)
+    if points is None:
+        logger.warning("Skipping figure -- missing %s or %s", coords_path.name, manifest_path.name)
+        return
 
     color_map = gac.SOURCE_DATASET_COLORS if color_by == "source_dataset" else gac.POINT_ROLE_COLORS
     fig, ax = plt.subplots(figsize=(9, 8))
-    groups: dict[str, list[list[float]]] = {}
-    for p in points:
-        key = p.get(color_by)
-        groups.setdefault(key, []).append(p["umap_2d"])
 
+    members = [p for p in points if p.get("point_kind", "member") == "member"]
+    overlays = [p for p in points if p.get("point_kind") == "centroid_overlay"]
+
+    groups: dict[str, list[list[float]]] = {}
+    for p in members:
+        key = p.get(color_by)
+        groups.setdefault(key, []).append(p[coord_field])
+    point_alpha = 0.5 if len(members) > 500 else 0.85
     for key, coords in groups.items():
         coords_arr = np.array(coords)
-        ax.scatter(coords_arr[:, 0], coords_arr[:, 1], s=4, alpha=0.5,
+        ax.scatter(coords_arr[:, 0], coords_arr[:, 1], s=4 if len(members) > 500 else 24, alpha=point_alpha,
                    color=color_map.get(key, "#999999"), label=key, linewidths=0)
 
-    ax.set_xlabel("UMAP 1")
-    ax.set_ylabel("UMAP 2")
-    ax.set_title(f"{manifest['population']} (n={manifest['n_points']}, "
-                 f"n_neighbors={manifest['umap_params']['n_neighbors']}, "
-                 f"min_dist={manifest['umap_params']['min_dist']})")
-    ax.legend(markerscale=4, fontsize=8, loc="best")
-    save_figure(fig, out_dir, f"umap_{manifest['population']}_by_{color_by}_"
-                              f"n{manifest['umap_params']['n_neighbors']}_"
-                              f"d{manifest['umap_params']['min_dist']}")
+    if overlays:
+        overlay_coords = np.array([p[coord_field] for p in overlays])
+        overlay_colors = [color_map.get(p.get(color_by), "#000000") for p in overlays]
+        ax.scatter(overlay_coords[:, 0], overlay_coords[:, 1], s=140, color=overlay_colors,
+                   edgecolors="black", linewidths=1.3, label="centroid", zorder=5)
+
+    axis_label = "UMAP" if coord_field == "umap_2d" else "PC"
+    ax.set_xlabel(f"{axis_label} 1")
+    ax.set_ylabel(f"{axis_label} 2")
+    n_rendered = manifest.get("n_points_rendered", manifest.get("n_points"))
+    if "umap_params" in manifest:
+        params_str = (f", n_neighbors={manifest['umap_params']['n_neighbors']}, "
+                      f"min_dist={manifest['umap_params']['min_dist']}")
+        stem_suffix = f"n{manifest['umap_params']['n_neighbors']}_d{manifest['umap_params']['min_dist']}"
+    else:
+        params_str = " (PCA-2D slice)"
+        stem_suffix = "pca"
+    ax.set_title(f"{manifest['population']} (n={n_rendered}{params_str})")
+    ax.legend(markerscale=3, fontsize=7, loc="best")
+    save_figure(fig, out_dir, f"{stem_prefix}_{manifest['population']}_by_{color_by}_{stem_suffix}")
+
+
+def plot_umap_scatter(coords_path: Path, manifest_path: Path, out_dir: Path, color_by: str) -> None:
+    """Backward-compatible name for analyze_cluster_structure.py's own 4
+    whole-space UMAP populations -- delegates to plot_2d_scatter."""
+    plot_2d_scatter(coords_path, manifest_path, out_dir, color_by, coord_field="umap_2d", stem_prefix="umap")
 
 
 def plot_initial_exemplar_highlight(prototype_coords_path: Path, prototype_manifest_path: Path,
@@ -266,8 +305,25 @@ def main() -> None:
     completed = {name for name, info in manifest["modules"].items() if info.get("status") == "completed"}
     logger.info("Run %s -- completed modules: %s", args.run_id, sorted(completed))
 
+    gac.update_run_manifest(run_dir, MODULE_NAME, "running")
     out_dir = gac.module_run_dir(run_dir, MODULE_NAME)
 
+    try:
+        _render_all(run_dir, completed, out_dir)
+    except Exception as e:
+        gac.update_run_manifest(run_dir, MODULE_NAME, "failed", error=str(e))
+        raise
+    gac.update_run_manifest(run_dir, MODULE_NAME, "completed", output_dir=out_dir)
+
+    print(f"\nDone. Figures -> {out_dir}")
+
+
+def _render_all(run_dir: Path, completed: set[str], out_dir: Path) -> None:
+    """Every figure this module renders -- pulled out of main() so it can
+    be wrapped in the same try/except-then-update_run_manifest pattern
+    every other toolkit module uses (this module previously never
+    registered itself in RUN_MANIFEST.json at all -- a pre-existing gap,
+    fixed here rather than carried forward)."""
     if "analyze_global_structure" in completed:
         gs_dir = run_dir / "analyze_global_structure"
         plot_centroid_heatmap(gs_dir / "pairwise_source_centroid_matrix.csv", out_dir)
@@ -287,7 +343,7 @@ def main() -> None:
 
     if "analyze_criterion_neighbours" in completed:
         cn_dir = run_dir / "analyze_criterion_neighbours"
-        plot_criterion_corpus_heatmap(cn_dir / "controlled_comparison_french_primary.csv", out_dir)
+        plot_criterion_corpus_heatmap(cn_dir / "controlled_comparison_french_primary_shared_space.csv", out_dir)
     else:
         logger.warning("analyze_criterion_neighbours not completed in this run -- skipping its figure.")
 
@@ -296,6 +352,23 @@ def main() -> None:
         plot_entity_provenance_bars(ee_dir / "provenance_category_counts.csv", out_dir)
     else:
         logger.warning("analyze_emergent_entities not completed in this run -- skipping its figure.")
+
+    if "generate_focused_projections" in completed:
+        fp_dir = run_dir / "generate_focused_projections"
+        umap_files = sorted(fp_dir.glob("umap_*.jsonl"))
+        pca_files = sorted(fp_dir.glob("pca_*.jsonl"))
+        logger.info("generate_focused_projections: rendering %d UMAP + %d PCA-2D coordinate files...",
+                    len(umap_files), len(pca_files))
+        for coords_path in umap_files:
+            manifest_path = coords_path.parent / f"{coords_path.stem}.manifest.json"
+            for color_by in ("source_dataset", "point_role"):
+                plot_2d_scatter(coords_path, manifest_path, out_dir, color_by, coord_field="umap_2d", stem_prefix="umap")
+        for coords_path in pca_files:
+            manifest_path = coords_path.parent / f"{coords_path.stem}.manifest.json"
+            for color_by in ("source_dataset", "point_role"):
+                plot_2d_scatter(coords_path, manifest_path, out_dir, color_by, coord_field="pca_2d", stem_prefix="pca")
+    else:
+        logger.warning("generate_focused_projections not completed in this run -- skipping its figures.")
 
     if "analyze_initial_exemplars" in completed and "analyze_cluster_structure" in completed:
         cs_dir = run_dir / "analyze_cluster_structure"
@@ -306,8 +379,6 @@ def main() -> None:
                 with_prototypes[0], with_prototypes[0].parent / f"{with_prototypes[0].stem}.manifest.json",
                 ie_dir / "exemplar_summary.csv", out_dir,
             )
-
-    print(f"\nDone. Figures -> {out_dir}")
 
 
 if __name__ == "__main__":

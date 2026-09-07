@@ -1,13 +1,18 @@
 # Shared by every module in the geometric-analysis toolkit (analyze_*.py,
-# generate_figures.py, generate_geometric_draft_report.py,
-# propose_initial_exemplars.py, geometric_analysis_common.py) -- one file
-# rather than one per script, since all of them need the identical
-# dependency set. A deliberate, small deviation from this codebase's usual
-# per-script requirements-*.txt convention.
+# audit_free_listing_rank.py, generate_figures.py,
+# generate_geometric_draft_report.py, generate_focused_projections.py,
+# propose_initial_exemplars.py, build_interview_prototype_layer.py,
+# geometric_analysis_common.py) -- one file rather than one per script,
+# since all of them need the identical dependency set (audit_free_listing_rank.py
+# and build_interview_prototype_layer.py transitively, via
+# geometric_analysis_common/their own joblib.load of pca_transform.joblib).
+# A deliberate, small deviation from this codebase's usual per-script
+# requirements-*.txt convention.
 #
-# All three packages are already used elsewhere in this codebase
+# All four packages are already used elsewhere in this codebase
 # (build_shared_space.py, visualize_3d.py) -- no new dependency introduced.
 numpy
 scikit-learn
 umap-learn
 matplotlib
+joblib

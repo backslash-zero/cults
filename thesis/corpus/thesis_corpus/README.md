@@ -891,6 +891,94 @@ layer, fit fresh) is what `generate_figures.py`'s exemplar-highlight
 figure reads, since prototypes dropped by the pooling filter have no
 coordinate in the ordinary "overview" fit to look up at all.
 
+## Geometric-analysis toolkit (`analyze_*`, `audit_*`, `generate_*`)
+
+A separate, read-only toolkit consuming `embedding_space.jsonl` (and
+`interview_prototypes.jsonl`) to actually run the geometric analysis --
+never imports from or modifies `build_shared_space.py`/`visualize_3d.py`,
+never writes anywhere but its own `processed/analysis/<run-id>/<module>/`.
+Shared conventions live in `geometric_analysis_common.py`: `ALL_SOURCE_DATASETS`/
+`REFERENCE_VOCAB_DATASETS` (the 3 controlled-vocabulary reference sets --
+`concept_backbone`/`structural_concepts`/`conceptnet_concepts`), the 4
+analysis modes (`full`/`reduced_literature`/`equal_n_expression`/
+`equal_weight`), `bootstrap_summary()` (mean/std/95%-CI), UMAP/PCA-2D
+fitting (`fit_and_save_umap`/`save_pca_projection`), and the run-directory/
+`RUN_MANIFEST.json` machinery. 9 modules: `audit_free_listing_rank`,
+`analyze_global_structure`, `analyze_cluster_structure`,
+`analyze_criterion_neighbours`, `analyze_emergent_entities`,
+`analyze_initial_exemplars`, `generate_focused_projections`,
+`generate_figures`, `generate_geometric_draft_report` (plus the
+prototype-layer support scripts documented above). See each module's own
+docstring for what it computes; two things worth calling out here since
+they cut across modules:
+
+**Reference-set size control**: `concept_backbone`/`structural_concepts`/
+`conceptnet_concepts` hold 3,000/1,500/195 terms respectively -- wildly
+different sizes that bias a raw nearest-term comparison toward whichever
+set is largest, before any semantic content is considered.
+`geometric_analysis_common.equal_size_reference_comparison()` controls for
+this: every reference set is down-sampled to the same size
+(`n_reference = min` of the three, computed at runtime -- currently 195)
+before nearest-`k` distance is computed, repeated with bootstrap mean/std/
+95%-CI (same statistical shape as `equal_n_expression`, applied to
+reference vocabularies instead of expression corpora). Used by
+`analyze_global_structure`, `analyze_initial_exemplars`,
+`analyze_emergent_entities`, and `analyze_criterion_neighbours`, each
+writing a separate `*_equal_size.csv` file, never merged with that
+module's raw/qualitative nearest-term table. **This controls cardinality
+only** -- it is not evidence the three vocabularies are otherwise
+interchangeable; they differ in source, curation method, coverage, and
+purpose (see ANALYSIS_OVERVIEW.md's "Why three reference subsets").
+
+**`generate_focused_projections.py`** (new): the whole-space UMAP
+populations `analyze_cluster_structure.py` produces (44,520/3,436/etc.
+points) are too dense to read any one specific comparison off of. This
+module instead builds ~23 small, curated point-sets -- one expression-vs-
+expression overview, one reference comparison per expression corpus, one
+prototype-layer-vs-criteria-vs-references figure, one per-criterion
+neighbourhood (x17), and one emergent-entity-vs-criteria figure -- each
+with both a fresh UMAP-2D fit and a PCA-2D projection (the first 2 columns
+of the already-PCA'd 394-D vectors, a slice never a fresh per-subset
+refit, same convention `visualize_3d.py` documents for its own 3-D PCA
+output). Every population's manifest reports `n_points_fit` (what
+UMAP/PCA actually fits on) separately from `n_points_overlay` (corpus
+centroids, embedded into the fitted layout *after* fitting via
+`reducer.transform()`, never part of the fit) and `n_points_rendered`
+(their sum) -- and a `shortages` dict for any source pool that had fewer
+usable candidates than requested, kept entirely separate from
+`fit_and_save_umap`'s own `n_neighbors` clamp for small populations (that
+clamp only changes how UMAP's algorithm behaves internally; it never
+removes a point). Reuses `analyze_criterion_neighbours`/
+`analyze_emergent_entities`'s saved output when present in the same
+run-id rather than recomputing identical nearest-neighbour searches.
+
+**Language-representation sensitivity, three ways**: the 17 MIVILUDES
+criteria are embedded French in the shared space. `analyze_criterion_neighbours.py`
+checks language sensitivity three ways, never merged: (1)
+`french_primary_shared_space` -- authoritative; (2)
+`english_sensitivity_shared_space` (new) -- the stored English criterion
+embeddings, projected into the *same* 394-D space via the persisted
+`pca_transform.joblib` (`joblib.load` + `scaler.transform`/`pca.transform`,
+exactly the technique `build_interview_prototype_layer.py` uses for the
+interview prototypes) -- same coordinates/metric/corpus vectors/controlled
+samples as French-primary, so this is now an apples-to-apples sensitivity
+check; (3) `english_raw_embedding_cosine` -- the original raw-1024-d-bge-m3
+cosine audit, kept only as an optional secondary diagnostic now that (2)
+exists. Compatibility is asserted before projecting for (2) -- dimensionality
+matches the persisted scaler, embedding model matches, all 17 vectors
+present/finite/uniquely keyed -- and any failure fails the whole module
+(not silently skipped), since a complete run requires all three
+representations.
+
+**Run history**: as of this writing, all 9 modules have been run
+end-to-end against the current 44,520-point space (`--run-id
+20260907-002832`). Three earlier runs (`review_pass1`, `smoketest5`,
+`test_ie_fast`) predate the `conceptnet_concepts` addition -- their
+`input_sha256` no longer matches `embedding_space.jsonl` and they're kept
+as superseded historical record, never overwritten or reused. A `--run-id`
+always creates a new run tree; `module_run_dir()` refuses to let a second
+run of the *same* module reuse an existing run-id's subdirectory.
+
 ## 3-D visualization projections (`visualize_3d`)
 
 `embedding_space.jsonl`'s 394 dimensions can't be plotted directly. This
