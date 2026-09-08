@@ -211,6 +211,25 @@ here. To actually run it there:
   are gitignored, so a `git pull` on Windows will **not** bring them across —
   copy them by hand (external drive, sync tool, etc.) first.
 
+## Mirroring the Stage-1 tree to the Ollama machine (`mirror_stage1`)
+
+Stage 1's output (`processed/<corpus>/documents/**`, `corpus_manifest.csv`)
+is gitignored, so the Windows/Ollama machine only ever has what was copied
+by hand — and that copy drifted (the Oxford handbook's `pages.jsonl` was
+missing there). `thesis_corpus.mirror_stage1` makes the copy explicit and
+checkable, never deleting anything on either side:
+
+```
+python -m thesis_corpus.mirror_stage1 --pack --out processed/stage1_mirror_<date>.zip   # Mac
+# copy the zip; on the other machine unzip -o it into thesis/corpus/processed/, then
+python -m thesis_corpus.mirror_stage1 --verify --manifest processed/MIRROR_MANIFEST.json
+```
+
+The zip carries `MIRROR_MANIFEST.json` (path → sha256/size for all 288
+Stage-1 files, per-corpus document lists, git commit). `--verify` reports
+missing files, hash mismatches, and local-only documents the source does not
+have, and exits non-zero unless the mirror is byte-for-byte complete.
+
 ## Extraction v2 (pilot) — conservative, verbatim-span extraction
 
 Stage 2 above is **v1**, now frozen as the developmental baseline: its

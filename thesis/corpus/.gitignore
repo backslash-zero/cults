@@ -45,3 +45,7 @@ MIVILUDES/**/*.pdf
 processed/v2/**/*.jsonl
 processed/v2/**/review/*.csv
 processed/v2/**/*.zip
+# Stage-1 mirror archives (thesis_corpus.mirror_stage1) and the manifest a
+# target machine unzips alongside them -- verbatim text, hand-copied only.
+processed/stage1_mirror_*.zip
+processed/MIRROR_MANIFEST.json
