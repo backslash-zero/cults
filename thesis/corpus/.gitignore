@@ -38,3 +38,10 @@ processed/analysis/
 
 # MIVILUDES source PDFs — same reasoning as litterature with pdfs/ above
 MIVILUDES/**/*.pdf
+
+# Extraction v2 (pilot and later full runs): every JSONL and review CSV
+# carries verbatim copyrighted excerpts / participant text. The small
+# pilot_selection.json / config.json / summary.json stay tracked.
+processed/v2/**/*.jsonl
+processed/v2/**/review/*.csv
+processed/v2/**/*.zip

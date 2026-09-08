@@ -211,6 +211,86 @@ here. To actually run it there:
   are gitignored, so a `git pull` on Windows will **not** bring them across —
   copy them by hand (external drive, sync tool, etc.) first.
 
+## Extraction v2 (pilot) — conservative, verbatim-span extraction
+
+Stage 2 above is **v1**, now frozen as the developmental baseline: its
+archives, the shared space built from them, and the retained analysis runs
+are never modified. A 100-item manual fidelity review (Sept 2026) found the
+v1 output systematically over-inclusive: the model was allowed to *derive*
+`embedding_text` from `source_quote`, and on the literature archive did so
+in 83% of rows (32% are not a substring of the source chunk at all), which
+is where every truncation, paraphrase, and model-introduced corruption in
+the review came from, alongside off-topic sentences, headings, names, and
+contextless fragments. v2 is a separate, versioned design; nothing in v1's
+code path is changed.
+
+**Design** (`extraction_v2_schema.py`, `screen_v2.py`, `text_integrity.py`):
+
+- One structured model call per chunk (`ollama_client.chat_structured`,
+  Ollama JSON-schema output, `temperature 0`, `seed 42`). The model returns
+  at most 4 `verbatim_expression`s, strongest first, each with the four
+  validation flags (`self_contained`, `cult_relevant`,
+  `textually_intelligible`, `single_coherent_expression`), `expression_kind`,
+  the v1 `claim_mode`/`epistemic_status` enums, `attribution` (now including
+  `interviewer`), `entity_anchors`, a short `relevance_note`, and a
+  chunk-level `domain_terms` list.
+- `embedding_text == verbatim_expression` is set **in code**, never by the
+  model; the span must be an exact contiguous substring of the NFC-normalised
+  chunk text (`nfc_chunk_text`, the exact model input) at recorded offsets,
+  `text_transform = "none"`. NFC is the only normalisation, and the number of
+  codepoints it changed is recorded per chunk.
+- Deterministic screening (`screen_v2.py`, docstring lists rules C1–C2 and
+  S1–S15): every model candidate is either retained or rejected with one
+  code. Hard rejections cover only what is corruption or scaffolding with high
+  confidence (U+FFFD, private-use, control characters, mojibake sequences,
+  audit-flagged cipher regions and ligature substitution, headings, page
+  furniture, standalone personal names, interviewer attribution, dangling or
+  word-cutting boundaries, > 50 words, ≤ 6-word spans without a cult-related
+  referent). Everything else (spaced accents, unusual scripts, isolated
+  capitals, NBSP, hyphen-linebreaks, possible acronyms, `long`) is a
+  non-fatal `screen_flags` entry for the reviewer.
+- `chunk_terms.jsonl` (domain terms) is a **diagnostic lexical inventory
+  only** — never an expression point, never an emergent entity, never
+  embedded or pooled.
+- Chunk pre-screen thresholds are source-configured
+  (`PRE_SCREEN_BY_SOURCE`); interviews never drop short turns on length.
+
+**Stage-1 integrity audit** (`audit_stage1_text_integrity.py`, read-only):
+scores every `pages.jsonl` per document and is the single source of the
+`document_integrity_flag`s and corrupted-region lines the pilot reads. On
+the current corpus it flags Lalich 2004 (`ligature_substitution`: Expert-font
+ligatures decode as W/V/Y — "di Y cult"), Card 2019 and Mustapha 2014
+(`cmap_cipher` / `private_use_cipher`: broken ToUnicode maps), Decoding
+Delusions (`private_use_cipher`), five documents with detached accent
+glyphs, and ten with stray control characters. None of this is OCR (no
+document was OCR'd) and none is UTF-8 handling; it enters in PDF font
+decoding at Stage 1. Output: `processed/audits/stage1_text_integrity_<date>.{csv,config.json,regions.jsonl}`.
+
+**Literature pilot** (`pilot_v2_literature.py`; ~28 chunks, one arm):
+
+```
+python -m thesis_corpus.pilot_v2_literature --stage dry-run --date-tag <date>            # Mac, no Ollama
+python -m thesis_corpus.pilot_v2_literature --stage rebuild-chunks --date-tag <date>     # Ollama host, after git pull
+python -m thesis_corpus.pilot_v2_literature --stage run --date-tag <date> --model qwen3:4b  # Ollama host
+python -m thesis_corpus.pilot_v2_literature --stage build-review --date-tag <date> [--blind]
+```
+
+Output lives under `processed/v2/literature/pilot_<date>/` (never inside
+`processed/literature/`): `pilot_selection.json`, `pilot_chunks.jsonl` (the
+exact chunk texts, hashes, flags, regions, strata), `arm_<model>/`
+(`config.json`, `model_responses.jsonl`, `expressions_v2.jsonl`,
+`rejected_candidates.jsonl`, `chunk_terms.jsonl`, `model_failures.jsonl`,
+`summary.json` with candidate/chunk reconciliation), and `review/` (the
+manual packet: `pilot_review.csv` with v1 and v2 rows side by side and all
+manual columns blank, `pilot_chunk_comparison.csv`, `validation.json`,
+`README.md`). Chunks come from the unchanged v1 chunker over the v1
+`pages.jsonl`, so each pilot chunk has an exact v1 counterpart; `--run`
+refuses to overwrite an existing arm, `--build-review` re-checks every
+retained row from scratch (span resolution, verbatim = embedding, no
+interviewer rows, no corruption, accounting) before writing anything.
+
+Tests (stdlib `unittest`, no Ollama): `python -m unittest discover -s thesis_corpus/tests -t .`
+
 ## Stage 3: reduced/downsampled JSONL for analysis (`reduce_embeddings`)
 
 `criterion_expressions.jsonl` (Stage 2's output) is a durable archive with

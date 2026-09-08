@@ -1,0 +1,87 @@
+{
+  "script": "thesis_corpus.audit_stage1_text_integrity",
+  "script_version": "1.0.0",
+  "generated_at": "2026-09-08T23:11:04.082322+00:00",
+  "git_commit": "46d0d4102d1846d31fd0a42f292a6955d92251b6",
+  "processed_root": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed",
+  "corpora": [
+    "literature",
+    "miviludes",
+    "interviews"
+  ],
+  "documents_per_corpus": {
+    "literature": 57,
+    "miviludes": 2,
+    "interviews": 26
+  },
+  "read_only": true,
+  "text_seen_by_detectors": "writer.collapse_whitespace(page_text) then unicodedata NFC -- identical to what chunking.build_chunks feeds the model, so regions match chunk lines exactly",
+  "document_flag_thresholds": {
+    "private_use_cipher_min_chars": 10,
+    "cmap_cipher_min_mixed_script_tokens": 10,
+    "cmap_cipher_min_cipher_lines": 3,
+    "ligature_substitution_min_rate_per_1k": 2.0,
+    "spaced_capital_splits_min_rate_per_1k": 0.5,
+    "detached_accents_min_rate_per_1k": 0.5
+  },
+  "cipher_line_detection": {
+    "min_letters": 10,
+    "suspicious_letter_share_threshold": 0.05,
+    "min_mixed_script_tokens": 2,
+    "rule": "line flagged if letters >= min_letters and (share >= threshold or mixed tokens >= min_mixed_script_tokens)",
+    "suspicious_blocks": "Latin Extended-B U+0180-024F, Greek U+0370-03FF, Private Use Area U+E000-F8FF",
+    "regions_written_only_for_flags": [
+      "cmap_cipher",
+      "private_use_cipher"
+    ]
+  },
+  "hard_flag_order": [
+    "replacement_chars",
+    "control_chars",
+    "mojibake",
+    "private_use_cipher",
+    "cmap_cipher",
+    "ligature_substitution",
+    "detached_accents"
+  ],
+  "flag_summary": {
+    "detached_accents": [
+      "literature/2008-the-oxford-handbook-of-new-religious-movements-1",
+      "literature/2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other",
+      "literature/buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on",
+      "literature/buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on-2123",
+      "literature/namini-and-murken-2009-self-chosen-involvement-in-new-religious-movements-nrms-w"
+    ],
+    "private_use_cipher": [
+      "literature/2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other",
+      "literature/mustapha-et-al-2014-sects-and-social-disorder"
+    ],
+    "control_chars": [
+      "literature/2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other-2081",
+      "literature/bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen",
+      "literature/buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on",
+      "literature/buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on-2123",
+      "literature/dodd-et-al-2010-do-extreme-beliefs-about-internal-states-predict-mood-swings-in",
+      "literature/dodd-et-al-2010-do-extreme-beliefs-about-internal-states-predict-mood-swings-in-2122",
+      "literature/lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i",
+      "literature/namini-and-murken-2009-self-chosen-involvement-in-new-religious-movements-nrms-w",
+      "literature/shingange-2021-african-pentecostal-mission-and-new-religious-movements-a-critica",
+      "miviludes/mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair"
+    ],
+    "cmap_cipher": [
+      "literature/card-2019-archaeology-and-new-religious-movements",
+      "literature/mustapha-et-al-2014-sects-and-social-disorder"
+    ],
+    "ligature_substitution": [
+      "literature/lalich-2004-bounded-choicetrue-believers-and-charismatic-cults"
+    ]
+  },
+  "outputs": {
+    "csv": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/audits/stage1_text_integrity_20260909.csv",
+    "regions_jsonl": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/audits/stage1_text_integrity_20260909.regions.jsonl",
+    "csv_sha256": "aa27b16bae8eaa240788d1f20f5dc027fcd3de68cafa1303735dc2c67bd8687d",
+    "regions_sha256": "46e912eef660dfea558c6f221b36171b36b77702fd3326ae6a2622a1b39a3475",
+    "rows": 85,
+    "region_rows": 11
+  }
+}

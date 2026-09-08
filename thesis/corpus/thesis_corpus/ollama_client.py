@@ -178,6 +178,62 @@ def annotate_chunk(
     raise AnnotationError(f"Model did not return valid/schema-conforming JSON: {last_error}")
 
 
+class StructuredChatResult:
+    """Raw content plus which output-constraint mode the server honoured."""
+
+    def __init__(self, content: str, structured_output_mode: str):
+        self.content = content
+        self.structured_output_mode = structured_output_mode
+
+
+def chat_structured(
+    host: str,
+    model: str,
+    system_prompt: str,
+    user_content: str,
+    json_schema: dict | None,
+    options: dict,
+    think: bool = False,
+    timeout: float = 180.0,
+) -> StructuredChatResult:
+    """Extraction-v2 chat call (additive; v1's annotate_chunk is untouched).
+
+    Sends `format` = the given JSON schema so Ollama's structured-output
+    mode constrains the generation (booleans stay booleans, enums stay
+    enums). If the server rejects a schema-valued `format` (older Ollama
+    releases accept only "json"), falls back to format="json" and reports
+    that in structured_output_mode so the run's config records which mode
+    actually ran. Raises AnnotationError on transport errors."""
+    attempts = [("json_schema", json_schema)] if json_schema else []
+    attempts.append(("json", "json"))
+    last_error: Exception | None = None
+    for mode, format_value in attempts:
+        try:
+            resp = httpx.post(
+                f"{host}/api/chat",
+                json={
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_content},
+                    ],
+                    "format": format_value,
+                    "stream": False,
+                    "think": think,
+                    "options": options,
+                },
+                timeout=timeout,
+            )
+            if resp.status_code == 400 and mode == "json_schema":
+                last_error = AnnotationError(f"server rejected schema-valued format: {resp.text[:300]}")
+                continue
+            resp.raise_for_status()
+            return StructuredChatResult(resp.json()["message"]["content"], mode)
+        except httpx.HTTPError as e:
+            raise AnnotationError(f"Ollama chat request failed: {e}") from e
+    raise AnnotationError(f"No accepted output format: {last_error}")
+
+
 class TranslationError(Exception):
     pass
 
