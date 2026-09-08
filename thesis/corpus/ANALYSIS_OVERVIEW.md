@@ -153,11 +153,11 @@ shifted every dimension's mean/variance slightly, and with it every
 point's coordinates, including literature's.
 
 **Current figures** (from `analyze_global_structure.py`'s
-`reference_to_combined_expression_centroid.csv`, run `20260908-170432`,
+`reference_to_combined_expression_centroid.csv`, run `20260908-175344`,
 against the current 44,520-point space including `conceptnet_concepts`;
-these exact figures are unchanged from the prior `20260907-002832` run,
-since the intervening data correction below touched only a single
-`attribution` metadata field, never any embedding vector):
+these exact figures are unchanged since `20260907-002832`, as neither of
+the two intervening data corrections (documented below) touched any
+embedding vector, only single metadata fields):
 centroid distance to the combined (`full`-mode) expression centroid —
 `concept_backbone` 16.70, `structural_concepts` 16.18,
 `conceptnet_concepts` 14.92, `emergent_entities` 13.20. The pattern from
@@ -440,18 +440,33 @@ additions landed:
   9), 5 nearest expressions within each corpus separately (primary) plus
   one exploratory equal-n combined retrieval (appendix-only).
 
-**All 9 modules have now been run end-to-end** against the corrected
-44,520-point space under retained run `20260908-170432` (baseline,
-unfiltered) — superseding `20260907-002832`, which (like
-`review_pass1`/`smoketest5`/`test_ie_fast`) is kept as superseded
-historical record, not deleted or reused. A second retained run,
-`20260908-171742`, holds `analyze_global_structure`/`analyze_cluster_structure`
-only, under `--epistemic-status-filter asserted_qualified`, for the
-robustness comparison described above. (A third, incomplete run-id,
-`20260908-153701`, was created mid-session before the toolkit additions
-above were finished, never treated as authoritative, and has been
-deleted rather than kept as historical record, since it was never a
-complete or valid run in the first place.) What's still outstanding:
+**A second, manual-review-driven correction** followed: the shared-anchor
+qualitative-retrieval output surfaced one interview expression
+(`document_id=b2-aug13-1840`, `chunk_index=2`, `embedding_text="Scientology
+is also a cult"`) tagged `epistemic_status=negated`; manual reading of its
+full `context_window` (`"Or maybe Scientology is also a cult, maybe? Not
+sure about it."`) found this mislabeled — the participant neither
+affirms nor denies the claim, they express uncertainty about it, so
+`speculative` is the correct tag under this project's epistemic-status
+scheme, not `negated`. Corrected by hand; shared space and interview
+prototype layer rebuilt again, again verified byte-identical
+`shared_space_vector`s for all 44,520 points. Since both `negated` and
+`speculative` are excluded by the `asserted_qualified` filter, this
+correction changed no filtered-pool membership and left every filtered
+numeric output byte-identical to before it.
+
+**All 9 modules have now been run end-to-end** against the twice-corrected
+44,520-point space under retained run `20260908-175344` (baseline,
+unfiltered) — superseding `20260908-170432` (which itself superseded
+`20260907-002832`), all kept as superseded historical record, not deleted
+or reused. A second retained run, `20260908-180406`, holds
+`analyze_global_structure`/`analyze_cluster_structure` only, under
+`--epistemic-status-filter asserted_qualified`, superseding `20260908-171742`.
+(A third, incomplete run-id, `20260908-153701`, was created mid-session
+before the toolkit additions above were finished, never treated as
+authoritative, and has been deleted rather than kept as historical
+record, since it was never a complete or valid run in the first place.)
+What's still outstanding:
 
 - No run's output has been interpreted or written into Results.tex yet —
   the toolkit produces tables/figures/a neutral draft report, not a

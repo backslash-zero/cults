@@ -308,7 +308,20 @@ def plot_criterion_composition_heatmap(composition_path: Path, out_dir: Path, ru
     source CSV (criterion_equal_n_neighbour_composition.csv). k=10 only
     (the CSV itself also has k=20; this figure picks one for readability).
     Filename, title, and a JSON sidecar all identify the same parameters
-    so this figure is never separated from its own provenance."""
+    so this figure is never separated from its own provenance.
+
+    VALIDATION NOTE (distinct from save_figure's SVG-metadata exception):
+    this PNG's own rendered title text includes `run_id`, by design (the
+    same provenance requirement that put it in the JSON sidecar). Between
+    two runs against an otherwise-identical shared space, this PNG is
+    therefore expected to differ in a small, title-sized pixel region
+    even when every analytical value (k, equal_n_candidate_count,
+    bootstrap_reps, seed, source_order) is unchanged -- confirm via the
+    two runs' own `.config.json` sidecars (every field but `run_id`
+    itself must match) rather than treating any PNG diff here as a
+    regression by default. This is unlike every other PNG this toolkit
+    produces, which carry no run-identifying text and are expected to be
+    genuinely byte-identical across runs against the same data."""
     rows = read_csv_rows(composition_path)
     rows = [r for r in rows if r.get("k") == "10"]
     if not rows:
