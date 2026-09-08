@@ -151,8 +151,10 @@ def read_jsonl(path: Path) -> list[dict]:
 
 
 def write_jsonl(path: Path, rows) -> int:
+    # newline="\n": on Windows, text mode would otherwise write "\r\n" and the
+    # file's sha256 would differ from the Mac's although every row is identical.
     n = 0
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
         for row in rows:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
             n += 1
@@ -160,7 +162,13 @@ def write_jsonl(path: Path, rows) -> int:
 
 
 def write_json(path: Path, obj) -> None:
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
+
+
+def sha256_lf_normalized(path: Path) -> str:
+    """sha256 of the file with CRLF folded to LF -- used only to diagnose a
+    mismatch as a line-ending difference rather than a content difference."""
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def model_tag(model: str) -> str:
@@ -425,8 +433,11 @@ def stage_rebuild_chunks(args, pilot_dir: Path) -> None:
     for name, key in (("pilot_chunks.jsonl", "pilot_chunks_sha256"), ("skipped_chunks.jsonl", "skipped_chunks_sha256")):
         actual = sha256_file(pilot_dir / name)
         if actual != selection[key]:
+            hint = ("line endings only (CRLF vs LF) -- update the code, this writer must emit LF"
+                    if sha256_lf_normalized(pilot_dir / name) == selection[key] else "content differs")
             (pilot_dir / name).unlink()
-            raise SystemExit(f"Rebuilt {name} sha256 {actual[:12]} != recorded {selection[key][:12]}; file removed -- do not run the pilot")
+            raise SystemExit(f"Rebuilt {name} sha256 {actual[:12]} != recorded {selection[key][:12]} ({hint}); "
+                             "file removed -- do not run the pilot")
     print(f"Rebuilt {len(chunk_rows)} chunks ({len(skipped_rows)} skipped) -> {pilot_dir / 'pilot_chunks.jsonl'}; sha256 verified against pilot_selection.json")
 
 
