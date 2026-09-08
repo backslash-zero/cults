@@ -3,13 +3,34 @@ per-source centroids/dispersion, a pairwise source-centroid distance
 matrix, and (separately) how the expression corpora as a whole relate to
 the three reference vocabularies and to emergent entities.
 
-Three deliverables, kept in separate output files and never conflated:
+Four deliverables, kept in separate output files and never conflated:
 
   1. Pairwise source-centroid distance matrix (8x8): computed directly
      between individual, independently-computed source centroids --
      mode-independent, no combined/weighted intermediate involved at all.
      A corpus's own centroid/dispersion isn't an imbalance-sensitive
      statistic; only comparisons *to a combined reference* are (below).
+     The only deliverable that respects --epistemic-status-filter
+     (default "all" = every point, unchanged from prior behaviour;
+     "asserted_qualified" restricts the three expression corpora's own
+     points to asserted/qualified epistemic status before computing their
+     centroid/dispersion/pairwise distances -- checks whether e.g. a
+     negated "X is NOT a cult" statement sitting close to an asserted
+     "X is a cult" one is distorting these numbers). Deliverables 2-4
+     below are always computed unfiltered, regardless of this flag.
+     Two sub-deliverables sit alongside it, always computing BOTH epistemic
+     slices regardless of the CLI flag (which only controls the pairwise
+     matrix itself): 1b, `source_centroid_separation_normalized.csv` --
+     `full_source_dispersion`-based normalized separation
+     (R_{A,B} = centroid distance / mean dispersion, numerator and
+     denominator always from the same slice -- an interpretive baseline for
+     "is this centroid distance large or small," not a significance test);
+     and 1c, `equal_n_dispersion.csv` -- bootstrapped dispersion under
+     equal-sized sampling, for a fair cross-corpus comparison of internal
+     breadth given literature's much larger raw point count. `dispersion`,
+     `equal_n_dispersion`, and `normalized_separation_ratio` are three
+     conceptually and terminologically distinct outputs, kept in separate
+     files, never blended into one number.
   2. Combined-expression-centroid comparisons: distance from
      concept_backbone / structural_concepts / conceptnet_concepts /
      emergent_entities centroids to "the expression corpora as a whole",
@@ -35,6 +56,26 @@ Three deliverables, kept in separate output files and never conflated:
      it is not evidence the three vocabularies are otherwise
      interchangeable (they differ in source, curation, coverage, and
      purpose -- see ANALYSIS_OVERVIEW.md's "Why three reference subsets").
+  4. Nearest actual expressions to each expression corpus's own centroid:
+     for literature/miviludes/interviews, and for both the full source and
+     an asserted+qualified-only slice of it, the 10 nearest real
+     expressions FROM THAT SAME SOURCE to its own centroid -- "what does
+     this source's center of gravity actually sound like," as opposed to
+     deliverables 1-3's cross-corpus/cross-vocabulary distances. Always
+     computes both slices, independent of --epistemic-status-filter. Each
+     row carries full provenance (document_id, chunk_index, pooled_key,
+     occurrence_key, attribution, claim_mode, epistemic_status) and the
+     raw archive's context_window, resolved via
+     geometric_analysis_common.resolve_context_windows (a strict,
+     occurrence-aware join -- a missing context_window for a row actually
+     selected here is a hard error, not a blank field; see that function's
+     own docstring for the MIVILUDES French/English-translation caveat). A
+     companion `source_centroid_nearest_expressions_diversity_audit.csv`
+     reports, per (source, epistemic_slice) group, how many distinct
+     documents and distinct expression texts appear in that top-10 -- these
+     are qualitative illustrations of what is central in the CURRENT
+     embedding representation, not the essential or definitive position of
+     a source.
 
 Euclidean distance is primary throughout; cosine is reported alongside as
 a sensitivity column, never primary.
@@ -99,23 +140,72 @@ def corpus_centroid_for_mode(shared_space: gac.SharedSpace, corpus: str, mode: s
     return lit_vectors.mean(axis=0)
 
 
-def nearest_terms(query: np.ndarray, candidate_points: list[dict], candidate_vectors: np.ndarray, k: int) -> list[dict]:
-    euclidean = gac.euclidean_distances(query, candidate_vectors)
-    cosine = gac.cosine_similarities(query, candidate_vectors)
-    order = np.argsort(euclidean)[:k]
-    return [
-        {
-            "rank": rank + 1,
-            "key": candidate_points[i]["key"],
-            "label": candidate_points[i]["label"],
-            "euclidean_distance": float(euclidean[i]),
-            "cosine_similarity": float(cosine[i]),
-        }
-        for rank, i in enumerate(order)
-    ]
-
-
 write_csv = gac.write_csv
+
+CI95_VALIDATION_ATOL = 1e-12
+
+
+def validate_equal_n_dispersion_ci95(rows: list[dict], atol: float = CI95_VALIDATION_ATOL) -> dict:
+    """Checks ci95_low <= mean <= ci95_high with a small, DOCUMENTED
+    floating-point tolerance -- validation-only, never touches the CSV
+    values themselves (no rounding/clipping/smoothing of mean/ci95_low/
+    ci95_high in the output; this function only reads rows, never mutates
+    them).
+
+    Real-world trigger: whichever expression corpus is the equal-n
+    LIMITING corpus (the smallest one, currently interviews) has every
+    bootstrap rep draw its exact same full retained set -- there is no
+    genuine sampling variation across reps for that corpus, so the only
+    "variation" in its per-rep dispersion values is floating-point
+    summation-order noise from the underlying BLAS reduction
+    (np.linalg.norm/.mean over a large matrix), typically ~1e-14 in
+    magnitude here. That can push `mean` fractionally outside its own
+    [ci95_low, ci95_high] interval -- an artifact of the exact-equality
+    edge case, not a real statistical or logical error.
+
+    Raises AssertionError if any row's violation exceeds `atol` (a real
+    invariant failure, not tolerated). Returns a diagnostic dict --
+    intended to be logged and recorded in this module's config.json,
+    never silently discarded, even when every row passes within
+    tolerance.
+    """
+    violations = []
+    for row in rows:
+        mean, ci95_low, ci95_high = row["mean_dispersion"], row["ci95_low"], row["ci95_high"]
+        low_violation = max(ci95_low - mean, 0.0)
+        high_violation = max(mean - ci95_high, 0.0)
+        if low_violation > 0.0 or high_violation > 0.0:
+            violations.append({
+                "source_dataset": row["source_dataset"], "epistemic_slice": row["epistemic_slice"],
+                "mean_dispersion": mean, "ci95_low": ci95_low, "ci95_high": ci95_high,
+                "raw_low_violation_magnitude": low_violation,
+                "raw_high_violation_magnitude": high_violation,
+                "within_documented_tolerance": low_violation <= atol and high_violation <= atol,
+            })
+    for v in violations:
+        if not v["within_documented_tolerance"]:
+            raise AssertionError(
+                f"equal_n_dispersion: ci95 bound violates mean for "
+                f"source_dataset={v['source_dataset']!r} epistemic_slice={v['epistemic_slice']!r} "
+                f"beyond the documented tolerance atol={atol} -- "
+                f"low_violation={v['raw_low_violation_magnitude']}, "
+                f"high_violation={v['raw_high_violation_magnitude']}. This is a genuine "
+                "invariant failure, not the known floating-point edge case -- investigate."
+            )
+    return {
+        "validation_atol": atol,
+        "violations": violations,
+        "explanation": (
+            "A logged violation here means ci95_low > mean or mean > ci95_high by a small "
+            "floating-point amount, not a real invariant failure once the documented tolerance "
+            "is applied. Expected specifically when source_dataset is the equal-n limiting "
+            "corpus for that epistemic_slice: every bootstrap rep then draws the exact same "
+            "full retained set, so the only apparent variation across reps is floating-point "
+            "summation-order noise from the underlying BLAS reduction, not genuine sampling "
+            "variation. CSV values (mean_dispersion/ci95_low/ci95_high) are never rounded, "
+            "clipped, or otherwise altered by this check."
+        ),
+    }
 
 
 def main() -> None:
@@ -123,7 +213,17 @@ def main() -> None:
     parser.add_argument("--run-id", type=str, default=None)
     parser.add_argument("--seed", type=int, default=gac.DEFAULT_SEED)
     parser.add_argument("--bootstrap-reps", type=int, default=gac.DEFAULT_BOOTSTRAP_REPS)
+    parser.add_argument(
+        "--epistemic-status-filter", choices=list(gac.EPISTEMIC_STATUS_FILTER_CHOICES), default="all",
+        help=(
+            "Restricts Deliverable 1's pairwise source-centroid matrix (only) "
+            "to expression points with this epistemic status; 'all' (default) "
+            "is the unfiltered, pre-existing behaviour. Deliverables 2a/2b/2c "
+            "and 4 are unaffected by this flag."
+        ),
+    )
     args = parser.parse_args()
+    epistemic_filter = gac.EPISTEMIC_STATUS_FILTER_CHOICES[args.epistemic_status_filter]
 
     logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
     shared_space = gac.load_shared_space()
@@ -136,16 +236,103 @@ def main() -> None:
 
     try:
         # --- Deliverable 1: mode-independent per-source centroids + pairwise matrix ---
-        logger.info("Deliverable 1: per-source centroids/dispersion + pairwise matrix (mode-independent)...")
+        # per_source (unfiltered "all" slice) and per_source_asserted_qualified
+        # (always computed regardless of --epistemic-status-filter) together
+        # drive per_source_centroids_dispersion.csv, which always reports BOTH
+        # slices -- this is independent of the CLI flag, which only controls
+        # which slice pairwise_source_centroid_matrix.csv uses.
+        # per_source (unfiltered) also feeds deliverables 2a/2b/2c below, which
+        # are deliberately NOT affected by --epistemic-status-filter.
+        logger.info(
+            "Deliverable 1: per-source centroids/dispersion (both epistemic slices, "
+            "always) + pairwise matrix (mode-independent, epistemic_status_filter=%s)...",
+            args.epistemic_status_filter,
+        )
         per_source = gac.per_source_centroids_and_dispersion(shared_space)
-        centroid_rows = [
-            {"source_dataset": s, "n": v["n"], "dispersion": v["dispersion"]}
-            for s, v in per_source.items()
-        ]
+        per_source_asserted_qualified = gac.per_source_centroids_and_dispersion(
+            shared_space, epistemic_status_filter=gac.EPISTEMIC_STATUS_FILTER_CHOICES["asserted_qualified"],
+        )
+        per_source_for_matrix = per_source if epistemic_filter is None else per_source_asserted_qualified
+
+        # per_source_centroids_dispersion.csv: the pre-existing "all"-slice
+        # rows keep every previously-existing value exactly (same computation
+        # as before this pass, just with epistemic_slice/median/p10/p90
+        # columns added) -- never duplicated or overwritten. A second set of
+        # rows is added for "asserted_qualified". ALL 8 source_datasets are
+        # included in both slices (not just the 3 expression corpora) -- this
+        # is a deliberate choice: it matches the filter's actual logic (which
+        # only ever touches the 3 expression corpora) and gives a directly
+        # checkable confirmation, rather than a mere assertion, that the 5
+        # status-less datasets' centroid/dispersion are unaffected by the
+        # filter -- their asserted_qualified-slice row must come out
+        # byte-identical to their all-slice row.
+        centroid_rows = []
+        for slice_name, ps in (("all", per_source), ("asserted_qualified", per_source_asserted_qualified)):
+            for s, v in ps.items():
+                centroid_rows.append({
+                    "source_dataset": s, "epistemic_slice": slice_name, "n": v["n"],
+                    "dispersion": v["dispersion"], "dispersion_median": v["dispersion_median"],
+                    "dispersion_p10": v["dispersion_p10"], "dispersion_p90": v["dispersion_p90"],
+                })
         write_csv(out_dir / "per_source_centroids_dispersion.csv", centroid_rows)
 
-        pairwise_rows = pairwise_centroid_matrix(per_source)
+        pairwise_rows = pairwise_centroid_matrix(per_source_for_matrix)
         write_csv(out_dir / "pairwise_source_centroid_matrix.csv", pairwise_rows)
+
+        # --- Deliverable 1b (new): normalized separation, full-source only ---
+        # R_{A,B} = d(centroid_A, centroid_B) / mean(D_A, D_B), both the
+        # distance and both dispersions always drawn from the SAME slice
+        # (per_source for "all", per_source_asserted_qualified for
+        # "asserted_qualified") -- never mixed across slices. This is a
+        # deterministic computation over full-source centroids/dispersions,
+        # no random draw -- reproducibility here means exact byte-identical
+        # rerun, not "under a fixed seed" (that applies to Deliverable 1c
+        # below, which IS randomised).
+        logger.info("Deliverable 1b: normalized source-centroid separation (full-source, both epistemic slices)...")
+        normalized_separation_rows = []
+        for slice_name, ps in (("all", per_source), ("asserted_qualified", per_source_asserted_qualified)):
+            for row in gac.normalized_separation(ps):
+                normalized_separation_rows.append({"epistemic_slice": slice_name, **row})
+        write_csv(out_dir / "source_centroid_separation_normalized.csv", normalized_separation_rows)
+
+        # --- Deliverable 1c (new): equal-n dispersion, bootstrapped ---
+        # Kept in a SEPARATE file from Deliverable 1b's ratio table on
+        # purpose, so it can never be misread as having been used in that
+        # ratio (it wasn't -- Deliverable 1b is full-source only; an equal-n
+        # version of the ratio itself is a distinct, more expensive
+        # deliverable not built in this pass, since it would need centroid
+        # distance AND dispersion recomputed from the same equal-n draw
+        # within each bootstrap rep).
+        logger.info(
+            "Deliverable 1c: equal-n bootstrapped dispersion (B=%d reps, both epistemic slices)...",
+            args.bootstrap_reps,
+        )
+        equal_n_dispersion_rows = []
+        for slice_name, slice_filter in (("all", None), ("asserted_qualified", gac.EPISTEMIC_STATUS_FILTER_CHOICES["asserted_qualified"])):
+            equal_n_result = gac.equal_n_dispersion(
+                shared_space, seed=args.seed, reps=args.bootstrap_reps, epistemic_status_filter=slice_filter,
+            )
+            for corpus, stats in equal_n_result.items():
+                equal_n_dispersion_rows.append({
+                    "source_dataset": corpus, "epistemic_slice": slice_name,
+                    "equal_n_draw_size": stats["n_per_draw"], "bootstrap_reps": stats["n_reps"], "seed": args.seed,
+                    "mean_dispersion": stats["mean"], "std": stats["std"],
+                    "ci95_low": stats["ci95_low"], "ci95_high": stats["ci95_high"],
+                })
+        write_csv(out_dir / "equal_n_dispersion.csv", equal_n_dispersion_rows)
+
+        equal_n_dispersion_ci95_validation = validate_equal_n_dispersion_ci95(equal_n_dispersion_rows)
+        if equal_n_dispersion_ci95_validation["violations"]:
+            logger.info(
+                "equal_n_dispersion CI95 validation: %d row(s) had a sub-tolerance "
+                "(atol=%s) ci95/mean discrepancy -- see config.json's "
+                "equal_n_dispersion_ci95_validation for details: %s",
+                len(equal_n_dispersion_ci95_validation["violations"]),
+                equal_n_dispersion_ci95_validation["validation_atol"],
+                equal_n_dispersion_ci95_validation["violations"],
+            )
+        else:
+            logger.info("equal_n_dispersion CI95 validation: all rows satisfy ci95_low <= mean <= ci95_high exactly.")
 
         # --- Deliverable 2a: reference/emergent centroids vs combined-expression reference ---
         logger.info("Deliverable 2a: reference-to-combined-expression-centroid distances (full/reduced_literature/equal_weight)...")
@@ -181,7 +368,7 @@ def main() -> None:
             for mode in PER_CORPUS_MODES:
                 centroid = corpus_centroid_for_mode(shared_space, corpus, mode, per_source)
                 for ref_dataset in gac.REFERENCE_VOCAB_DATASETS:
-                    for row in nearest_terms(centroid, reference_points[ref_dataset], reference_vectors[ref_dataset], NEAREST_TERMS_K):
+                    for row in gac.nearest_points(centroid, reference_points[ref_dataset], reference_vectors[ref_dataset], NEAREST_TERMS_K):
                         nearest_reference_rows_raw.append({
                             "expression_corpus": corpus, "mode": mode,
                             "reference_dataset": ref_dataset, **row,
@@ -231,11 +418,135 @@ def main() -> None:
                     })
         write_csv(out_dir / "nearest_reference_terms_equal_size.csv", equal_size_rows)
 
+        # --- Deliverable 4 (enriched): nearest actual expressions to each
+        # expression corpus's own centroid, raw and asserted+qualified-only.
+        # Candidates are drawn from the SAME source only (not the full
+        # expression pool) -- this answers "what does this source's own
+        # center of gravity actually sound like", a different question from
+        # deliverables 1-3's cross-corpus/cross-vocabulary distances. Always
+        # computes both epistemic slices regardless of
+        # --epistemic-status-filter (that flag only governs deliverable 1).
+        #
+        # These are qualitative illustrations of what is central in the
+        # CURRENT embedding representation of a source -- not the essential
+        # or definitive position of that source.
+        #
+        # context_window is resolved once per source (not per slice, not
+        # per row) via gac.resolve_context_windows, reused for both epistemic
+        # slices of that source. NOTE for MIVILUDES specifically: the
+        # `embedding_text` column below is the pooled point's own `label`
+        # (the ENGLISH translation actually embedded/used for this distance
+        # calculation), while `context_window` is the ORIGINAL FRENCH
+        # surrounding text from the raw archive -- a real, expected
+        # consequence of MIVILUDES being pooled by its English translation
+        # (see resolve_context_windows' own docstring), not a join defect.
+        logger.info("Deliverable 4: nearest expressions to each source's own centroid (all / asserted_qualified)...")
+        source_centroid_nearest_rows = []
+        diversity_audit_rows = []
+        context_resolutions: dict[str, gac.ContextWindowResolution] = {}
+        for corpus in gac.EXPRESSION_CORPORA:
+            context_resolutions[corpus] = gac.resolve_context_windows(shared_space, corpus)
+            if corpus == "miviludes":
+                logger.info(
+                    "MIVILUDES source_centroid_nearest_expressions rows: document provenance "
+                    "(document_id/chunk_index/context_window) retained explicitly, since the "
+                    "corpus is only %d source documents -- always inspect provenance for this "
+                    "source rather than treating any single nearest expression as representative.",
+                    len({item["document_id"] for item in context_resolutions[corpus].archive_items}),
+                )
+
+        for corpus in gac.EXPRESSION_CORPORA:
+            resolution = context_resolutions[corpus]
+            for slice_name, slice_filter in (("all", None), ("asserted_qualified", gac.EPISTEMIC_STATUS_FILTER_CHOICES["asserted_qualified"])):
+                idxs = gac.source_dataset_indices(shared_space.points, corpus, slice_filter)
+                vecs = shared_space.vectors[idxs]
+                centroid = vecs.mean(axis=0)
+                cand_points = [shared_space.points[i] for i in idxs]
+
+                # gac.nearest_points is reused for its rank/label/distance
+                # formatting, but its own return rows don't carry the
+                # original shared_space.points index (only the point's own
+                # `key`, which is NOT guaranteed globally unique) -- so the
+                # exact same argsort is replicated locally here to recover
+                # the true global index per rank, without changing
+                # nearest_points' validated contract. exclude_self=False
+                # (the default, used here) makes this equivalent by
+                # construction: nearest_points with no self-exclusion is
+                # exactly a plain argsort-and-slice.
+                euclidean = gac.euclidean_distances(centroid, vecs)
+                rank_order_local = list(np.argsort(euclidean)[:NEAREST_TERMS_K])
+                global_indices_in_rank_order = [idxs[i] for i in rank_order_local]
+                rows = gac.nearest_points(centroid, cand_points, vecs, NEAREST_TERMS_K)
+                assert len(rows) == len(global_indices_in_rank_order), (
+                    f"{corpus}/{slice_name}: nearest_points returned {len(rows)} rows but "
+                    f"the replicated argsort produced {len(global_indices_in_rank_order)} -- "
+                    "ranking mismatch, stop and investigate rather than silently zip mismatched rows."
+                )
+
+                document_ids_in_group: list[str] = []
+                embedding_texts_in_group: list[str] = []
+                for row, global_idx in zip(rows, global_indices_in_rank_order):
+                    point = shared_space.points[global_idx]
+                    pooled_key = point["key"]
+                    document_id = gac.key_document_id(pooled_key)
+                    chunk_index = gac.key_chunk_index(pooled_key)
+                    occurrence_key = resolution.occurrence_key_by_pooled_index.get(global_idx)
+                    context_window = resolution.context_window_by_pooled_index.get(global_idx)
+
+                    # Hard error, not a blank field: a selected row (one
+                    # that made it into this deliverable) with no resolved
+                    # context_window means the occurrence-aware join failed
+                    # for a row we're actually relying on -- stop and report
+                    # rather than continue silently.
+                    if context_window is None or context_window == "":
+                        raise SystemExit(
+                            f"source_centroid_nearest_expressions: missing context_window for a "
+                            f"SELECTED row -- source_dataset={corpus!r}, epistemic_slice={slice_name!r}, "
+                            f"pooled_key={pooled_key!r}, occurrence_key={occurrence_key!r}. "
+                            "This is a hard-fail per the fail-loud context-window resolution rule; "
+                            "investigate the occurrence-aware join for this source before proceeding."
+                        )
+
+                    document_ids_in_group.append(document_id)
+                    embedding_texts_in_group.append(point["label"])
+
+                    source_centroid_nearest_rows.append({
+                        "source_dataset": corpus, "epistemic_slice": slice_name, "n_in_slice": len(idxs),
+                        "rank": row["rank"], "pooled_key": pooled_key, "occurrence_key": occurrence_key,
+                        "document_id": document_id, "chunk_index": chunk_index,
+                        "embedding_text": point["label"], "context_window": context_window,
+                        "attribution": point.get("attribution"), "claim_mode": point.get("claim_mode"),
+                        "epistemic_status": point.get("epistemic_status"),
+                        "euclidean_distance": row["euclidean_distance"], "cosine_similarity": row["cosine_similarity"],
+                    })
+
+                # Diversity audit: how concentrated is this top-10 group in
+                # a single document, and does it contain duplicate/
+                # near-identical text (normalized-whitespace exact match --
+                # a pragmatic operational definition, not NLP-based
+                # near-duplicate detection).
+                normalized_texts = [" ".join(t.split()).lower() for t in embedding_texts_in_group]
+                n_unique_texts = len(set(normalized_texts))
+                diversity_audit_rows.append({
+                    "source_dataset": corpus, "epistemic_slice": slice_name,
+                    "n_rows": len(embedding_texts_in_group),
+                    "n_unique_document_ids": len(set(document_ids_in_group)),
+                    "n_unique_embedding_texts": n_unique_texts,
+                    "has_duplicate_or_near_identical_text": n_unique_texts < len(embedding_texts_in_group),
+                })
+        write_csv(out_dir / "source_centroid_nearest_expressions.csv", source_centroid_nearest_rows)
+        write_csv(out_dir / "source_centroid_nearest_expressions_diversity_audit.csv", diversity_audit_rows)
+
+        for corpus, resolution in context_resolutions.items():
+            logger.info("resolve_context_windows(%s) stats: %s", corpus, resolution.stats)
+
         gac.write_module_config(
             out_dir,
             input_sha256=shared_space.input_sha256,
             n_points=len(shared_space.points),
             per_source_n={s: v["n"] for s, v in per_source.items()},
+            per_source_n_for_matrix={s: v["n"] for s, v in per_source_for_matrix.items()},
+            epistemic_status_filter=args.epistemic_status_filter,
             seed=args.seed,
             metric="euclidean_primary_cosine_sensitivity",
             combined_modes=COMBINED_MODES,
@@ -243,6 +554,8 @@ def main() -> None:
             nearest_terms_k=NEAREST_TERMS_K,
             bootstrap_reps=args.bootstrap_reps,
             reference_vocab_datasets=gac.REFERENCE_VOCAB_DATASETS,
+            context_window_resolution_stats={c: r.stats for c, r in context_resolutions.items()},
+            equal_n_dispersion_ci95_validation=equal_n_dispersion_ci95_validation,
             git_commit=gac.git_commit_hash(),
         )
         gac.update_run_manifest(run_dir, MODULE_NAME, "completed", output_dir=out_dir)

@@ -37,9 +37,17 @@ since several prototypes were dropped by build_shared_space.py's pooling
 filter and have no position in the ordinary pooled space to look up at
 all). generate_figures.py only ever reads these files.
 
+--epistemic-status-filter (default "all") restricts every k-NN/silhouette
+pool above -- not the "overview"/"with_interview_prototypes" whole-space
+UMAP populations -- to expression points with the given epistemic status;
+"asserted_qualified" excludes contested/negated/speculative statements, as
+a check on whether e.g. a negated "X is NOT a cult" sitting geometrically
+close to an asserted "X is a cult" distorts these numbers.
+
 Usage (from thesis/corpus/):
     python -m thesis_corpus.analyze_cluster_structure
     python -m thesis_corpus.analyze_cluster_structure --umap-param-grid
+    python -m thesis_corpus.analyze_cluster_structure --epistemic-status-filter asserted_qualified
 """
 from __future__ import annotations
 
@@ -76,13 +84,14 @@ def _concat_pool(pool: dict[str, tuple[list[dict], np.ndarray]]) -> tuple[list[d
 
 def full_sampled_pointwise_pool(
     shared_space: gac.SharedSpace, sample_size: int, seed: int,
+    epistemic_status_filter: tuple[str, ...] | None = None,
 ) -> dict[str, tuple[list[dict], np.ndarray]]:
     """A reproducible uniform random sample of `sample_size` points drawn
     from the union of the three expression corpora -- NOT stratified by
     corpus, so it preserves the population's natural (imbalanced)
     composition, standing in for "full" wherever an O(n^2) exact
     computation (silhouette) is impractical at the true full scale."""
-    pool = gac.expression_pool_indices(shared_space.points)
+    pool = gac.expression_pool_indices(shared_space.points, epistemic_status_filter)
     all_indices = [i for idxs in pool.values() for i in idxs]
     sampled = gac.simple_random_sample(all_indices, sample_size, seed)
     result: dict[str, tuple[list[dict], np.ndarray]] = {c: ([], []) for c in gac.EXPRESSION_CORPORA}
@@ -131,14 +140,20 @@ def silhouette_for_pool(pool: dict[str, tuple[list[dict], np.ndarray]]) -> float
     return float(silhouette_score(vectors, labels, metric="euclidean"))
 
 
-def run_equal_n_bootstrap(shared_space: gac.SharedSpace, seed: int, reps: int, n_jobs: int) -> dict:
+def run_equal_n_bootstrap(
+    shared_space: gac.SharedSpace, seed: int, reps: int, n_jobs: int,
+    epistemic_status_filter: tuple[str, ...] | None = None,
+) -> dict:
     knn_reps: dict[int, dict[tuple[str, str], list[float]]] = {
         k: {(a, b): [] for a in gac.EXPRESSION_CORPORA for b in gac.EXPRESSION_CORPORA} for k in K_VALUES
     }
     silhouette_reps: list[float] = []
 
     for rep in range(reps):
-        draw = gac.corpus_vectors_and_points(shared_space, "equal_n_expression", seed=seed + rep)
+        draw = gac.corpus_vectors_and_points(
+            shared_space, "equal_n_expression", seed=seed + rep,
+            epistemic_status_filter=epistemic_status_filter,
+        )
         for k in K_VALUES:
             for row in knn_composition(draw, k, n_jobs):
                 knn_reps[k][(row["query_corpus"], row["neighbor_corpus"])].append(row["fraction"])
@@ -176,7 +191,19 @@ def main() -> None:
     parser.add_argument("--umap-min-dist", type=float, default=0.2)
     parser.add_argument("--umap-param-grid", action="store_true",
                          help="Additionally fit (10,0.1), (20,0.2), (50,0.3) for each population.")
+    parser.add_argument(
+        "--epistemic-status-filter", choices=list(gac.EPISTEMIC_STATUS_FILTER_CHOICES), default="all",
+        help=(
+            "Restricts every k-NN-composition/silhouette pool ('full', "
+            "'full_sampled_pointwise', 'reduced_literature', "
+            "'equal_n_expression') to expression points with this epistemic "
+            "status; 'all' (default) is the unfiltered, pre-existing "
+            "behaviour. The 'overview' and 'with_interview_prototypes' UMAP "
+            "populations (whole-space views) are deliberately never filtered."
+        ),
+    )
     args = parser.parse_args()
+    epistemic_filter = gac.EPISTEMIC_STATUS_FILTER_CHOICES[args.epistemic_status_filter]
 
     logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
     shared_space = gac.load_shared_space()
@@ -191,9 +218,13 @@ def main() -> None:
 
     try:
         pools = {
-            "full": gac.corpus_vectors_and_points(shared_space, "full"),
-            "full_sampled_pointwise": full_sampled_pointwise_pool(shared_space, args.point_sample_size, args.seed),
-            "reduced_literature": gac.corpus_vectors_and_points(shared_space, "reduced_literature"),
+            "full": gac.corpus_vectors_and_points(shared_space, "full", epistemic_status_filter=epistemic_filter),
+            "full_sampled_pointwise": full_sampled_pointwise_pool(
+                shared_space, args.point_sample_size, args.seed, epistemic_status_filter=epistemic_filter,
+            ),
+            "reduced_literature": gac.corpus_vectors_and_points(
+                shared_space, "reduced_literature", epistemic_status_filter=epistemic_filter,
+            ),
         }
 
         logger.info("k-NN composition (k=10,20) -- full / full_sampled_pointwise / reduced_literature...")
@@ -212,7 +243,10 @@ def main() -> None:
         write_csv(out_dir / "silhouette_descriptive.csv", silhouette_rows)
 
         logger.info("equal_n_expression bootstrap (B=%d) -- PRIMARY controlled comparison...", args.bootstrap_reps)
-        bootstrap = run_equal_n_bootstrap(shared_space, args.seed, args.bootstrap_reps, args.n_jobs)
+        bootstrap = run_equal_n_bootstrap(
+            shared_space, args.seed, args.bootstrap_reps, args.n_jobs,
+            epistemic_status_filter=epistemic_filter,
+        )
         write_csv(out_dir / "knn_composition_equal_n_expression.csv", bootstrap["knn_summary"])
         (out_dir / "silhouette_equal_n_expression.json").write_text(
             json.dumps(bootstrap["silhouette_summary"], indent=2), encoding="utf-8",
@@ -222,7 +256,9 @@ def main() -> None:
         overview_points = shared_space.points
         overview_vectors = shared_space.vectors
         expr_sampled_points, expr_sampled_vectors, _ = _concat_pool(pools["full_sampled_pointwise"])
-        equal_n_draw = gac.corpus_vectors_and_points(shared_space, "equal_n_expression", seed=args.seed)
+        equal_n_draw = gac.corpus_vectors_and_points(
+            shared_space, "equal_n_expression", seed=args.seed, epistemic_status_filter=epistemic_filter,
+        )
         equal_n_points, equal_n_vectors, _ = _concat_pool(equal_n_draw)
 
         param_combinations = [(args.umap_neighbors, args.umap_min_dist)]
@@ -277,6 +313,7 @@ def main() -> None:
             point_sample_size=args.point_sample_size,
             n_jobs=args.n_jobs,
             umap_param_combinations=param_combinations,
+            epistemic_status_filter=args.epistemic_status_filter,
             metric="euclidean",
             git_commit=gac.git_commit_hash(),
         )

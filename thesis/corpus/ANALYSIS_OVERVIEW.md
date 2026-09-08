@@ -153,8 +153,11 @@ shifted every dimension's mean/variance slightly, and with it every
 point's coordinates, including literature's.
 
 **Current figures** (from `analyze_global_structure.py`'s
-`reference_to_combined_expression_centroid.csv`, run `20260907-002832`,
-against the current 44,520-point space including `conceptnet_concepts`):
+`reference_to_combined_expression_centroid.csv`, run `20260908-170432`,
+against the current 44,520-point space including `conceptnet_concepts`;
+these exact figures are unchanged from the prior `20260907-002832` run,
+since the intervening data correction below touched only a single
+`attribution` metadata field, never any embedding vector):
 centroid distance to the combined (`full`-mode) expression centroid —
 `concept_backbone` 16.70, `structural_concepts` 16.18,
 `conceptnet_concepts` 14.92, `emergent_entities` 13.20. The pattern from
@@ -393,12 +396,62 @@ the three reference vocabularies (controls for their very different
 sizes — 3,000/1,500/195 — not evidence they're otherwise interchangeable),
 and both whole-space and ~23 small, focused 2-D UMAP/PCA projections. The
 interview-side manual review is done: 25/26 interviews resolved into
-`interview_prototypes.jsonl`, 1 unavailable (see above). **All 9 modules
-have now been run end-to-end** against the current 44,520-point space
-(run `20260907-002832`) — three earlier runs
-(`review_pass1`/`smoketest5`/`test_ie_fast`) predate the `conceptnet_concepts`
-addition and are kept as superseded historical record, not deleted or
-reused. What's still outstanding:
+`interview_prototypes.jsonl`, 1 unavailable (see above).
+
+Since the `20260907-002832` run, one data correction and five toolkit
+additions landed:
+
+- **Data correction**: one interview expression
+  (`b1-aug12-1231`, chunk 3 — an interviewer's paraphrased question,
+  "how it's perceived as a whole") was misattributed `attribution=participant`
+  instead of `unspecified`; corrected, and the shared space + interview
+  prototype layer rebuilt. Verified to produce byte-identical
+  `shared_space_vector`s for all 44,520 points — this correction changed
+  only that one metadata field, nothing geometric.
+- **Epistemic-status filtering**: `analyze_global_structure.py` and
+  `analyze_cluster_structure.py` gained `--epistemic-status-filter
+  {all,asserted_qualified}`, restricting the three expression corpora to
+  `asserted`/`qualified` statements only (excluding
+  `contested`/`negated`/`speculative`) — a robustness check on whether
+  e.g. a negated "X is NOT a cult" sitting close to an asserted "X is a
+  cult" was distorting proximity results. Status-less datasets
+  (reference vocabularies, `miviludes_criteria`, `emergent_entities`) are
+  provably unaffected by this filter (verified byte-identical between
+  filter settings).
+- **Dispersion and normalized separation**: `per_source_centroids_dispersion.csv`
+  now reports median/p10/p90 alongside mean, for both epistemic slices;
+  new `source_centroid_separation_normalized.csv` (centroid distance
+  relative to within-source spread — an interpretive baseline for "is
+  this distance large or small") and `equal_n_dispersion.csv`
+  (bootstrapped, equal-sized-sample dispersion, kept file-separate from
+  the ratio table).
+- **Enriched nearest-centroid-expressions**: `source_centroid_nearest_expressions.csv`
+  now carries full provenance (document/chunk/pooled/occurrence keys,
+  attribution, claim mode, epistemic status, and the raw archive's
+  `context_window`, resolved via a strict, occurrence-aware,
+  fail-loud join) plus a diversity-audit companion file.
+- **Criterion-neighbour composition**: new `criterion_equal_n_neighbour_composition.csv`
+  in `analyze_criterion_neighbours.py` — equal-n, bootstrapped source
+  composition of each of the 17 criteria's nearest neighbours (k=10,20),
+  plus a candidate heatmap figure.
+- **Shared discourse anchors**: new `shared_anchor_nearest_expressions.csv`
+  in `analyze_emergent_entities.py` — for every entity with
+  `provenance_category=="shared_all_3"` (dynamically derived, currently
+  9), 5 nearest expressions within each corpus separately (primary) plus
+  one exploratory equal-n combined retrieval (appendix-only).
+
+**All 9 modules have now been run end-to-end** against the corrected
+44,520-point space under retained run `20260908-170432` (baseline,
+unfiltered) — superseding `20260907-002832`, which (like
+`review_pass1`/`smoketest5`/`test_ie_fast`) is kept as superseded
+historical record, not deleted or reused. A second retained run,
+`20260908-171742`, holds `analyze_global_structure`/`analyze_cluster_structure`
+only, under `--epistemic-status-filter asserted_qualified`, for the
+robustness comparison described above. (A third, incomplete run-id,
+`20260908-153701`, was created mid-session before the toolkit additions
+above were finished, never treated as authoritative, and has been
+deleted rather than kept as historical record, since it was never a
+complete or valid run in the first place.) What's still outstanding:
 
 - No run's output has been interpreted or written into Results.tex yet —
   the toolkit produces tables/figures/a neutral draft report, not a

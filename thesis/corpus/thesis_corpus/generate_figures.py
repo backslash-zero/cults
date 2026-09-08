@@ -40,6 +40,31 @@ FIGURE_DPI = 300
 
 
 def save_figure(fig, out_dir: Path, stem: str) -> None:
+    """Writes both a 300-DPI PNG and an SVG.
+
+    FIGURE-VALIDATION / REGRESSION POLICY (formalized here, applies to
+    every figure this module produces, not just one deliverable):
+    deterministic data outputs -- CSV, JSON, and the raster PNG rendered
+    here -- require byte-identical comparison against a baseline, full
+    stop, same as every other output in this toolkit. Matplotlib's SVG
+    backend is the one documented exception: it embeds non-semantic,
+    run-varying metadata (a <dc:date> timestamp, and randomly-generated
+    clip-path/marker element IDs) into every SVG it writes, even when the
+    plotted content is byte-for-byte identical -- this is a property of
+    the SVG backend itself, not of anything computed in this module. So
+    for an SVG specifically: byte-level identity is NOT required; instead,
+    validate the corresponding PNG byte-identically (it has no such
+    metadata and IS required to match exactly), and treat an SVG diff as
+    acceptable ONLY when every difference is confined to a <dc:date> line
+    and clip-path/marker id="..."/xlink:href="#..." tokens -- confirm by
+    checking that the embedded base64 raster payload (the long
+    "iVBORw0KGgo..." PNG data URI matplotlib embeds inside the SVG for an
+    imshow-based heatmap) is identical, which is the actual data-bearing
+    content. Any SVG difference OUTSIDE that specific pattern is a real
+    regression, not covered by this exception, and must be treated as a
+    normal validation failure -- never silently waved through, and never
+    "fixed" by hand-editing a previously-saved SVG or by weakening PNG/CSV
+    validation elsewhere."""
     out_dir.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_dir / f"{stem}.png", dpi=FIGURE_DPI, bbox_inches="tight")
     fig.savefig(out_dir / f"{stem}.svg", bbox_inches="tight")
@@ -276,6 +301,56 @@ def plot_criterion_corpus_heatmap(controlled_path: Path, out_dir: Path) -> None:
     save_figure(fig, out_dir, "criterion_corpus_heatmap")
 
 
+def plot_criterion_composition_heatmap(composition_path: Path, out_dir: Path, run_id: str) -> None:
+    """Candidate figure for the eventual main text -- no main-text-vs-
+    appendix placement decision is made here or anywhere in the toolkit;
+    that's the researcher's call after inspecting this figure and its
+    source CSV (criterion_equal_n_neighbour_composition.csv). k=10 only
+    (the CSV itself also has k=20; this figure picks one for readability).
+    Filename, title, and a JSON sidecar all identify the same parameters
+    so this figure is never separated from its own provenance."""
+    rows = read_csv_rows(composition_path)
+    rows = [r for r in rows if r.get("k") == "10"]
+    if not rows:
+        logger.warning("Skipping criterion-composition heatmap -- missing/empty %s", composition_path)
+        return
+    criteria = sorted({r["criterion_key"] for r in rows})
+    sources = [s for s in gac.EXPRESSION_CORPORA if s in {r["source"] for r in rows}]
+    matrix = np.zeros((len(criteria), len(sources)))
+    crit_index = {c: i for i, c in enumerate(criteria)}
+    src_index = {s: i for i, s in enumerate(sources)}
+    for r in rows:
+        matrix[crit_index[r["criterion_key"]], src_index[r["source"]]] = float(r["mean_fraction"])
+
+    equal_n_candidate_count = rows[0]["equal_n_candidate_count"]
+    bootstrap_reps = rows[0]["bootstrap_reps"]
+    seed = rows[0]["seed"]
+
+    fig, ax = plt.subplots(figsize=(6, 10))
+    im = ax.imshow(matrix, cmap="Blues", aspect="auto", vmin=0, vmax=1)
+    ax.set_xticks(range(len(sources)), sources)
+    ax.set_yticks(range(len(criteria)), criteria, fontsize=6)
+    ax.set_title(
+        "Criterion neighbour composition -- CANDIDATE FIGURE\n"
+        "(equal-n bootstrapped, k=10, french_primary_shared_space,\n"
+        f"n_candidates={equal_n_candidate_count}, B={bootstrap_reps}, seed={seed}, run={run_id})",
+        fontsize=8,
+    )
+    fig.colorbar(im, ax=ax, label="Mean neighbour fraction")
+    stem = "criterion_neighbour_composition_heatmap_k10"
+    save_figure(fig, out_dir, stem)
+    (out_dir / f"{stem}.config.json").write_text(json.dumps({
+        "criterion_representation": "french_primary_shared_space",
+        "k": 10,
+        "equal_n_candidate_count": equal_n_candidate_count,
+        "bootstrap_reps": bootstrap_reps,
+        "seed": seed,
+        "source_order": sources,
+        "run_id": run_id,
+        "placement": "candidate -- main-text vs. appendix not decided by the toolkit",
+    }, indent=2), encoding="utf-8")
+
+
 def plot_entity_provenance_bars(provenance_path: Path, out_dir: Path) -> None:
     rows = read_csv_rows(provenance_path)
     if not rows:
@@ -344,6 +419,7 @@ def _render_all(run_dir: Path, completed: set[str], out_dir: Path) -> None:
     if "analyze_criterion_neighbours" in completed:
         cn_dir = run_dir / "analyze_criterion_neighbours"
         plot_criterion_corpus_heatmap(cn_dir / "controlled_comparison_french_primary_shared_space.csv", out_dir)
+        plot_criterion_composition_heatmap(cn_dir / "criterion_equal_n_neighbour_composition.csv", out_dir, run_dir.name)
     else:
         logger.warning("analyze_criterion_neighbours not completed in this run -- skipping its figure.")
 

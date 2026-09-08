@@ -97,6 +97,7 @@ logger = logging.getLogger("thesis_corpus.analyze_criterion_neighbours")
 
 MODULE_NAME = "analyze_criterion_neighbours"
 NEAREST_K = 10
+COMPOSITION_K_VALUES = (10, 20)  # criterion_neighbour_composition's k values
 EXPECTED_EMBEDDING_MODEL = "bge-m3"  # the only embedding model ever used in this pipeline
 
 LITERATURE_ARCHIVE_PATH = gac.PROCESSED_DIR / "literature" / "criterion_expressions.jsonl"
@@ -160,6 +161,117 @@ def controlled_comparison_shared_space(
                 "median_nearest10_distance_mean": median_summary["mean"], "median_nearest10_distance_std": median_summary["std"],
                 "median_nearest10_distance_ci95_low": median_summary["ci95_low"], "median_nearest10_distance_ci95_high": median_summary["ci95_high"],
             })
+    return rows
+
+
+def criterion_neighbour_composition(
+    shared_space: gac.SharedSpace, criteria_points, criteria_vectors,
+    k_values: tuple[int, ...], seed: int, reps: int,
+) -> list[dict]:
+    """Equal-n, bootstrapped source-COMPOSITION of each criterion's k
+    nearest neighbours -- the per-criterion analogue of
+    analyze_cluster_structure.knn_composition's own equal_n_expression
+    bootstrap loop, modeled directly on it, but querying with a fixed
+    criterion vector each rep instead of a pool member.
+
+    Distinct from controlled_comparison_shared_space above (which reports
+    nearest-10 DISTANCE magnitude per corpus, each corpus's own equal-sized
+    pool searched separately): this reports what FRACTION of a criterion's
+    nearest neighbours, drawn from one COMBINED equal-sized pool across all
+    three corpora, come from each source. A raw (non-equal-n) version of
+    this composition metric would be dominated by literature purely by its
+    ~97%-of-expression-points candidate-pool size, regardless of actual
+    semantic content -- exactly the bias equal-n sampling exists to
+    correct, same as analyze_cluster_structure's own headline numbers.
+
+    French-primary representation only (`criteria_points`/`criteria_vectors`
+    as loaded by main() -- authoritative elsewhere in this module already;
+    computing this against all 3 language representations would triple
+    the cost for no real gain).
+
+    Fails loudly (ValueError) if any k in k_values exceeds a rep's actual
+    equal-n candidate pool size, rather than silently truncating.
+
+    Returns rows with NO automatic categorical label (no "folk-anchored"
+    etc.) -- proportions stay continuous; criterion selection for any
+    later write-up is a human judgment call made by inspecting this table,
+    not something this function decides.
+    """
+    pool = gac.expression_pool_indices(shared_space.points)
+    max_k = max(k_values)
+
+    per_criterion_reps: dict[str, dict[int, dict[str, list[float]]]] = {
+        c["key"]: {k: {corpus: [] for corpus in gac.EXPRESSION_CORPORA} for k in k_values}
+        for c in criteria_points
+    }
+    equal_n_candidate_count: int | None = None
+
+    for rep in range(reps):
+        draw = gac.equal_n_expression_draw(shared_space.points, pool, seed + rep)
+        all_vectors_parts, all_labels_parts = [], []
+        for corpus, idxs in draw.items():
+            all_vectors_parts.append(shared_space.vectors[idxs])
+            all_labels_parts.append(np.full(len(idxs), corpus))
+        all_vectors = np.concatenate(all_vectors_parts, axis=0)
+        all_labels = np.concatenate(all_labels_parts, axis=0)
+        n_candidates = len(all_labels)
+        if equal_n_candidate_count is None:
+            equal_n_candidate_count = n_candidates
+        if max_k > n_candidates:
+            raise ValueError(
+                f"criterion_neighbour_composition: k={max_k} exceeds the equal-n candidate "
+                f"pool size ({n_candidates}) at rep {rep} -- refusing to silently truncate; "
+                "lower --bootstrap-... k or investigate why the equal-n pool shrank."
+            )
+
+        for c_point, c_vector in zip(criteria_points, criteria_vectors):
+            euclidean = gac.euclidean_distances(c_vector, all_vectors)
+            order = np.argsort(euclidean)[:max_k]
+            ordered_labels = all_labels[order]
+            for k in k_values:
+                top_k_labels = ordered_labels[:k]
+                rep_fractions = {
+                    corpus: float(np.count_nonzero(top_k_labels == corpus)) / k
+                    for corpus in gac.EXPRESSION_CORPORA
+                }
+                # Invariant: fractions must sum to 1 (within float tolerance)
+                # per (criterion, rep, k) BEFORE aggregation -- every
+                # candidate in the pool is from exactly one of the 3
+                # expression corpora, so this must hold by construction.
+                rep_sum = sum(rep_fractions.values())
+                if abs(rep_sum - 1.0) > 1e-9:
+                    raise AssertionError(
+                        f"criterion={c_point['key']} k={k} rep={rep}: source fractions sum to "
+                        f"{rep_sum}, not 1 -- stop and investigate rather than aggregate a broken rep."
+                    )
+                for corpus, fraction in rep_fractions.items():
+                    per_criterion_reps[c_point["key"]][k][corpus].append(fraction)
+
+    rows = []
+    for c_point in criteria_points:
+        for k in k_values:
+            per_corpus_summary = {
+                corpus: gac.bootstrap_summary(per_criterion_reps[c_point["key"]][k][corpus])
+                for corpus in gac.EXPRESSION_CORPORA
+            }
+            # Invariant: reported MEAN fractions must also sum to ~1
+            # (subject only to rounding) -- linearity of expectation over
+            # per-rep sums that are each exactly 1.
+            mean_sum = sum(s["mean"] for s in per_corpus_summary.values())
+            if abs(mean_sum - 1.0) > 1e-6:
+                raise AssertionError(
+                    f"criterion={c_point['key']} k={k}: mean fractions sum to {mean_sum}, not ~1."
+                )
+            for corpus, summary in per_corpus_summary.items():
+                rows.append({
+                    "criterion_key": c_point["key"],
+                    "criterion_label_fr": c_point["label"],
+                    "criterion_label_en": c_point.get("label_en") or c_point["label"],
+                    "k": k, "source": corpus,
+                    "mean_fraction": summary["mean"], "ci95_low": summary["ci95_low"], "ci95_high": summary["ci95_high"],
+                    "equal_n_candidate_count": equal_n_candidate_count,
+                    "bootstrap_reps": reps, "seed": seed,
+                })
     return rows
 
 
@@ -512,6 +624,21 @@ def main() -> None:
         gac.write_csv(out_dir / "nearest_reference_terms_raw_french_primary_shared_space.csv", ref_raw_fr)
         gac.write_csv(out_dir / "reference_comparison_equal_size_french_primary_shared_space.csv", ref_eqsize_fr)
 
+        # --- New: equal-n, bootstrapped criterion-neighbour composition ---
+        # (French-primary representation only -- see criterion_neighbour_composition's
+        # own docstring for why). A candidate figure (not a final main-text/
+        # appendix placement decision) is produced by generate_figures.py
+        # from this CSV, k=10 only.
+        logger.info(
+            "french_primary_shared_space: equal-n criterion-neighbour composition "
+            "(k=%s, B=%d)...", COMPOSITION_K_VALUES, args.bootstrap_reps,
+        )
+        composition_rows = criterion_neighbour_composition(
+            shared_space, criteria_points, criteria_vectors,
+            k_values=COMPOSITION_K_VALUES, seed=args.seed, reps=args.bootstrap_reps,
+        )
+        gac.write_csv(out_dir / "criterion_equal_n_neighbour_composition.csv", composition_rows)
+
         # === Representation 2 (new, REQUIRED): english_sensitivity_shared_space ===
         # Projects the stored English criterion embeddings into the SAME
         # 394-D space via the persisted transform -- see module docstring.
@@ -600,6 +727,14 @@ def main() -> None:
             n_criteria=len(criteria_points),
             n_language_sensitive_rows=n_sensitive,
             reference_vocab_datasets=gac.REFERENCE_VOCAB_DATASETS,
+            criterion_neighbour_composition={
+                "k_values": COMPOSITION_K_VALUES,
+                "equal_n_candidate_count": composition_rows[0]["equal_n_candidate_count"] if composition_rows else None,
+                "bootstrap_reps": args.bootstrap_reps,
+                "seed": args.seed,
+                "source_order": gac.EXPRESSION_CORPORA,
+                "criterion_representation": "french_primary_shared_space",
+            },
             language_representations=(
                 "french_primary_shared_space", "english_sensitivity_shared_space", "english_raw_embedding_cosine",
             ),

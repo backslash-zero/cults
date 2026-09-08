@@ -73,9 +73,16 @@ PCA_TRANSFORM_PATH = SHARED_SPACE_DIR / "pca_transform.joblib"
 PCA_TRANSFORM_METADATA_PATH = SHARED_SPACE_DIR / "pca_transform_metadata.json"
 INTERVIEW_PROTOTYPES_PATH = SHARED_SPACE_DIR / "interview_prototypes.jsonl"
 INTERVIEWS_ARCHIVE_PATH = PROCESSED_DIR / "interviews" / "criterion_expressions.jsonl"
+LITERATURE_ARCHIVE_PATH = PROCESSED_DIR / "literature" / "criterion_expressions.jsonl"
+MIVILUDES_ARCHIVE_PATH = PROCESSED_DIR / "miviludes" / "criterion_expressions.jsonl"
 INITIAL_EXEMPLARS_CSV_PATH = CORPUS_DIR / "interviews" / "metadata" / "initial_exemplars.csv"
 
 EXPRESSION_CORPORA = ("literature", "miviludes", "interviews")
+ARCHIVE_PATH_BY_SOURCE = {
+    "literature": LITERATURE_ARCHIVE_PATH,
+    "miviludes": MIVILUDES_ARCHIVE_PATH,
+    "interviews": INTERVIEWS_ARCHIVE_PATH,
+}
 ALL_SOURCE_DATASETS = (
     "literature", "miviludes", "interviews", "miviludes_criteria",
     "concept_backbone", "structural_concepts", "emergent_entities",
@@ -90,6 +97,20 @@ ALL_SOURCE_DATASETS = (
 # for" (see equal_size_reference_comparison below) -- no module keeps its
 # own copy of this list.
 REFERENCE_VOCAB_DATASETS = ("concept_backbone", "structural_concepts", "conceptnet_concepts")
+
+# epistemic_status is populated only on the three expression corpora
+# (literature/miviludes/interviews) -- null everywhere else (see
+# source_dataset_indices' epistemic_status_filter param below, which
+# always lets a null value through regardless of filter). "all" (None)
+# reproduces pre-filter behaviour exactly; "asserted_qualified" restricts
+# to positively-claimed statements, excluding contested/negated/
+# speculative ones -- added to check whether e.g. "X is NOT a cult"
+# (negated) sitting geometrically close to "X is a cult" (asserted) is
+# distorting proximity-based results.
+EPISTEMIC_STATUS_FILTER_CHOICES: dict[str, tuple[str, ...] | None] = {
+    "all": None,
+    "asserted_qualified": ("asserted", "qualified"),
+}
 
 # "full" is reserved for a statistic actually computed over every
 # applicable point -- see analyze_cluster_structure.py's
@@ -242,13 +263,18 @@ def key_chunk_index(key: str) -> int:
     return int(key.rsplit(":", 1)[1])
 
 
-def derive_interview_expression_keys(points: list[dict]) -> dict[str, int]:
-    """Maps each `source_dataset == "interviews"` point's position in
+def derive_pooled_expression_keys(points: list[dict], source_dataset: str) -> dict[str, int]:
+    """Maps each `source_dataset == source_dataset` point's position in
     `points` to a virtual key "document_id:chunk_index:occurrence", where
-    `occurrence` counts repeats of (document_id, chunk_index) among
-    interviews rows in `points`' own order. `points` MUST be in
+    `occurrence` counts repeats of (document_id, chunk_index) among that
+    source's rows in `points`' own order. `points` MUST be in
     embedding_space.jsonl's own file order (i.e. straight from
     load_shared_space) for this to be reproducible run to run.
+
+    Source-agnostic generalization of what was originally
+    derive_interview_expression_keys (interviews-only) -- needed once
+    literature/miviludes also needed pooled-point-to-raw-archive
+    resolution (see resolve_context_windows below), not just interviews.
 
     This key space is specific to the *pooled* file -- an expression
     dropped by build_shared_space.py's dedup/short-fragment filter has no
@@ -264,7 +290,7 @@ def derive_interview_expression_keys(points: list[dict]) -> dict[str, int]:
     occurrence_by_chunk: dict[tuple[str, int], int] = defaultdict(int)
     keys: dict[str, int] = {}
     for i, p in enumerate(points):
-        if p.get("source_dataset") != "interviews":
+        if p.get("source_dataset") != source_dataset:
             continue
         document_id = key_document_id(p["key"])
         chunk_index = key_chunk_index(p["key"])
@@ -273,6 +299,13 @@ def derive_interview_expression_keys(points: list[dict]) -> dict[str, int]:
         occurrence_by_chunk[chunk] += 1
         keys[f"{document_id}:{chunk_index}:{occurrence}"] = i
     return keys
+
+
+def derive_interview_expression_keys(points: list[dict]) -> dict[str, int]:
+    """Backward-compatible interviews-only wrapper around
+    derive_pooled_expression_keys -- kept in case anything still refers to
+    this name; no known caller as of this generalization."""
+    return derive_pooled_expression_keys(points, "interviews")
 
 
 def load_raw_archive(path: Path) -> list[dict]:
@@ -310,29 +343,171 @@ def derive_archive_expression_keys(archive_items: list[dict]) -> dict[str, int]:
     return keys
 
 
+@dataclass
+class ContextWindowResolution:
+    """Result of resolve_context_windows for one source_dataset. Built once
+    per source per module run and reused across every retrieval call for
+    that source (never rebuilt per individual row) -- callers should call
+    resolve_context_windows(shared_space, source) once, then look up
+    `.context_window_by_pooled_index`/`.occurrence_key_by_pooled_index` as
+    many times as needed."""
+    source_dataset: str
+    context_window_by_pooled_index: dict[int, str]
+    occurrence_key_by_pooled_index: dict[int, str]
+    archive_items: list[dict]
+    archive_index_by_pooled_index: dict[int, int]
+    stats: dict
+
+
+def resolve_context_windows(shared_space: "SharedSpace", source_dataset: str) -> ContextWindowResolution:
+    """Strict, occurrence-aware join from pooled `embedding_space.jsonl`
+    points back to their raw `criterion_expressions.jsonl` archive record,
+    for the one field the pooled file never carries: `context_window`.
+
+    Built once over ALL of `source_dataset`'s points in
+    `shared_space.points` (full file order, not a filtered subset --
+    occurrence-counting must match the raw archive's own deterministic
+    ordering), composing derive_pooled_expression_keys (pooled side) with
+    derive_archive_expression_keys (raw-archive side) via the shared
+    occurrence-aware virtual key "document_id:chunk_index:occurrence".
+
+    NOTE (real, expected, not a bug): for `source_dataset="miviludes"`
+    specifically, the pooled point's `label` (what was actually embedded,
+    and therefore what any distance/nearest-neighbour computation used) is
+    the ENGLISH machine translation, while the resolved `context_window`
+    from the raw archive is the original FRENCH surrounding text -- MIVILUDES
+    is pooled by its English translation with French kept only as
+    `label_fr` (see ANALYSIS_OVERVIEW.md/Methods.tex). `embedding_text` and
+    `context_window` are therefore in different languages for miviludes
+    rows, by design of the translation pipeline, not a join defect --
+    every caller of this function should say so explicitly wherever it
+    presents both fields together.
+
+    Does not raise on an unmatched pooled point by itself (the corpus-wide
+    hit rate is a diagnostic, logged via `.stats`) -- it is the CALLER's
+    job to hard-fail when a point that's actually selected for a
+    deliverable has no resolved context_window; see analyze_global_structure.py's
+    Deliverable 4 and the shared-anchor retrieval for that enforcement.
+    """
+    archive_path = ARCHIVE_PATH_BY_SOURCE[source_dataset]
+    archive_items = load_raw_archive(archive_path)
+    archive_keys = derive_archive_expression_keys(archive_items)
+    pooled_keys = derive_pooled_expression_keys(shared_space.points, source_dataset)
+
+    context_window_by_pooled_index: dict[int, str] = {}
+    occurrence_key_by_pooled_index: dict[int, str] = {}
+    archive_index_by_pooled_index: dict[int, int] = {}
+    used_archive_indices: set[int] = set()
+    unmatched = 0
+    for virtual_key, pooled_index in pooled_keys.items():
+        occurrence_key_by_pooled_index[pooled_index] = virtual_key
+        archive_index = archive_keys.get(virtual_key)
+        if archive_index is None:
+            unmatched += 1
+            continue
+        archive_index_by_pooled_index[pooled_index] = archive_index
+        used_archive_indices.add(archive_index)
+        context_window_by_pooled_index[pooled_index] = archive_items[archive_index].get("context_window", "")
+
+    # "duplicate-key count observed before occurrence-level disambiguation":
+    # how many (document_id, chunk_index) chunks needed occurrence
+    # suffixing at all (i.e. yielded >1 pooled expression), over the pooled
+    # side -- a chunk that yields exactly 1 expression never collides.
+    chunk_counts: dict[tuple[str, int], int] = defaultdict(int)
+    for p in shared_space.points:
+        if p.get("source_dataset") == source_dataset:
+            chunk_counts[(key_document_id(p["key"]), key_chunk_index(p["key"]))] += 1
+    duplicate_key_chunks = sum(1 for count in chunk_counts.values() if count > 1)
+
+    stats = {
+        "source_dataset": source_dataset,
+        "total_pooled_expressions": len(pooled_keys),
+        "total_raw_archive_expressions": len(archive_items),
+        "matched_pooled_expressions": len(context_window_by_pooled_index),
+        "unmatched_pooled_expressions": unmatched,
+        "unused_archive_expressions": len(archive_items) - len(used_archive_indices),
+        "duplicate_key_chunks_before_disambiguation": duplicate_key_chunks,
+    }
+    logger.info(
+        "resolve_context_windows(%s): %d pooled, %d archive, %d matched, %d unmatched, "
+        "%d archive items unused, %d chunks needed occurrence disambiguation.",
+        source_dataset, stats["total_pooled_expressions"], stats["total_raw_archive_expressions"],
+        stats["matched_pooled_expressions"], stats["unmatched_pooled_expressions"],
+        stats["unused_archive_expressions"], stats["duplicate_key_chunks_before_disambiguation"],
+    )
+    return ContextWindowResolution(
+        source_dataset=source_dataset,
+        context_window_by_pooled_index=context_window_by_pooled_index,
+        occurrence_key_by_pooled_index=occurrence_key_by_pooled_index,
+        archive_items=archive_items,
+        archive_index_by_pooled_index=archive_index_by_pooled_index,
+        stats=stats,
+    )
+
+
 # ---------------------------------------------------------------------------
 # Per-source centroids (mode-independent -- see analyze_global_structure.py)
 # ---------------------------------------------------------------------------
 
-def source_dataset_indices(points: list[dict], source_dataset: str) -> list[int]:
-    return [i for i, p in enumerate(points) if p["source_dataset"] == source_dataset]
+def source_dataset_indices(
+    points: list[dict], source_dataset: str,
+    epistemic_status_filter: tuple[str, ...] | None = None,
+) -> list[int]:
+    """`epistemic_status_filter`, when given, drops any point whose
+    `epistemic_status` is populated and not in the given set. A point
+    whose `epistemic_status` is null (every source_dataset except
+    literature/miviludes/interviews) always passes regardless of the
+    filter -- this is what makes it safe to pass this filter into
+    per_source_centroids_and_dispersion below without emptying out the
+    reference/emergent/criteria centroids, which have no notion of
+    epistemic status at all."""
+    idxs = [i for i, p in enumerate(points) if p["source_dataset"] == source_dataset]
+    if epistemic_status_filter is None:
+        return idxs
+    return [i for i in idxs if points[i].get("epistemic_status") in (None, *epistemic_status_filter)]
 
 
-def per_source_centroids_and_dispersion(shared_space: SharedSpace) -> dict[str, dict]:
+def per_source_centroids_and_dispersion(
+    shared_space: SharedSpace,
+    epistemic_status_filter: tuple[str, ...] | None = None,
+) -> dict[str, dict]:
     """Every source_dataset's own centroid + dispersion (mean Euclidean
     distance to own centroid), computed independently, unconditional on
     any mode -- a corpus's own centroid isn't an imbalance-sensitive
     statistic, only combined/cross-corpus comparisons are.
 
-    Returns {source_dataset: {"centroid": np.ndarray(394,), "dispersion": float, "n": int}}.
+    `epistemic_status_filter` (default None = every point, current
+    behaviour unchanged) restricts the three expression corpora's own
+    points before computing their centroid/dispersion -- see
+    source_dataset_indices. Reference/emergent/criteria sources are
+    unaffected by any filter value, since their epistemic_status is
+    always null.
+
+    `dispersion` (the mean distance to centroid) is kept as-is for backward
+    compatibility with every existing caller. `dispersion_median`,
+    `dispersion_p10`, `dispersion_p90` are an additive extension computed
+    from the same per-point distance-to-centroid array -- a distribution's
+    mean can legitimately fall outside its own [p10, p90] range under
+    skew, so callers must not assume `dispersion` is bounded by those two.
+
+    Returns {source_dataset: {"centroid": np.ndarray(394,), "dispersion": float,
+    "dispersion_median": float, "dispersion_p10": float, "dispersion_p90": float,
+    "n": int}}.
     """
     result = {}
     for source in ALL_SOURCE_DATASETS:
-        idxs = source_dataset_indices(shared_space.points, source)
+        idxs = source_dataset_indices(shared_space.points, source, epistemic_status_filter)
         vecs = shared_space.vectors[idxs]
         centroid = vecs.mean(axis=0)
-        dispersion = float(np.linalg.norm(vecs - centroid, axis=1).mean())
-        result[source] = {"centroid": centroid, "dispersion": dispersion, "n": len(idxs)}
+        distances = np.linalg.norm(vecs - centroid, axis=1)
+        result[source] = {
+            "centroid": centroid,
+            "dispersion": float(distances.mean()),
+            "dispersion_median": float(np.median(distances)),
+            "dispersion_p10": float(np.percentile(distances, 10)),
+            "dispersion_p90": float(np.percentile(distances, 90)),
+            "n": len(idxs),
+        }
     return result
 
 
@@ -421,13 +596,19 @@ def equal_size_reference_comparison(
 # Expression-corpus pool + the four modes
 # ---------------------------------------------------------------------------
 
-def expression_pool_indices(points: list[dict]) -> dict[str, list[int]]:
+def expression_pool_indices(
+    points: list[dict],
+    epistemic_status_filter: tuple[str, ...] | None = None,
+) -> dict[str, list[int]]:
     """The three expression corpora only -- literature/miviludes/interviews.
     Deliberately excludes miviludes_criteria (a fixed reference list, not a
     corpus expression) and all reference/emergent points. This is the pool
     analyze_cluster_structure.py's k-NN/silhouette and
-    analyze_criterion_neighbours.py's candidate search both require."""
-    return {c: source_dataset_indices(points, c) for c in EXPRESSION_CORPORA}
+    analyze_criterion_neighbours.py's candidate search both require.
+
+    `epistemic_status_filter` (default None = unchanged behaviour) is
+    passed straight through to source_dataset_indices for each corpus."""
+    return {c: source_dataset_indices(points, c, epistemic_status_filter) for c in EXPRESSION_CORPORA}
 
 
 def stratified_sample_by_document(points: list[dict], indices: list[int], n: int, seed: int) -> list[int]:
@@ -487,8 +668,97 @@ def equal_n_expression_draw(
     return draw
 
 
+def equal_n_dispersion(
+    shared_space: SharedSpace, seed: int, reps: int,
+    epistemic_status_filter: tuple[str, ...] | None = None,
+) -> dict[str, dict]:
+    """`equal_n_dispersion` -- semantic spread of each of the three
+    expression corpora under equal-sized sampling, for a fair cross-corpus
+    comparison of internal breadth (literature otherwise dwarfs the other
+    two). Conceptually and terminologically distinct from
+    per_source_centroids_and_dispersion's `full_source_dispersion` (no
+    resampling there) -- never blend the two into one number.
+
+    For each of `reps` repetitions: draw an equal-sized sample via
+    equal_n_expression_draw, compute each corpus's dispersion (mean
+    Euclidean distance to *that rep's own* equal-sized-sample centroid,
+    not the full-source centroid), then bootstrap_summary across reps.
+    Reuses equal_n_expression_draw/bootstrap_summary exactly -- no new
+    sampling logic.
+
+    `epistemic_status_filter` (default None) is applied once, up front, to
+    the expression pool before any draw -- so the equal-n draw size for a
+    filtered slice is the smallest *filtered* corpus size, never assumed
+    equal to the unfiltered draw size (the same pool-size auto-recompute
+    equal_n_expression_draw already provides).
+
+    Returns {corpus: {**bootstrap_summary(...), "n_per_draw": int}} for
+    corpus in EXPRESSION_CORPORA. `n_per_draw` is the same every rep (the
+    filtered pool doesn't change across reps), so it's reported once per
+    corpus rather than per rep.
+    """
+    pool = expression_pool_indices(shared_space.points, epistemic_status_filter)
+    per_corpus_reps: dict[str, list[float]] = {c: [] for c in EXPRESSION_CORPORA}
+    n_per_draw: int | None = None
+    for rep in range(reps):
+        draw = equal_n_expression_draw(shared_space.points, pool, seed + rep)
+        for corpus in EXPRESSION_CORPORA:
+            idxs = draw[corpus]
+            if n_per_draw is None:
+                n_per_draw = len(idxs)
+            vecs = shared_space.vectors[idxs]
+            centroid = vecs.mean(axis=0)
+            dispersion = float(np.linalg.norm(vecs - centroid, axis=1).mean())
+            per_corpus_reps[corpus].append(dispersion)
+    return {
+        corpus: {**bootstrap_summary(values), "n_per_draw": n_per_draw}
+        for corpus, values in per_corpus_reps.items()
+    }
+
+
+def normalized_separation(
+    per_source: dict, sources: tuple[str, ...] = EXPRESSION_CORPORA,
+) -> list[dict]:
+    """`normalized_separation_ratio` -- centroid separation relative to
+    within-source spread: R_{A,B} = d(centroid_A, centroid_B) / mean(D_A, D_B),
+    where `d` and both `D` values (mean dispersion) come from the SAME
+    `per_source` dict passed in (i.e. the same full-source slice/epistemic
+    status) -- never mix a full-source centroid distance with an
+    equal-n-sampled dispersion, or vice versa. This is the interpretive
+    baseline for "is a centroid distance of, say, 7.18 large or small
+    relative to these two sources' normal semantic breadth" -- not a
+    significance test.
+
+    Only the full-source version is built here (this is a first pass); an
+    equal-n version of this ratio would need centroid distance AND
+    dispersion recomputed from the same equal-n draw within each bootstrap
+    rep, a distinct, more expensive deliverable, not built in this pass.
+
+    For each unordered pair of `sources`. Returns a list of dicts:
+    {"source_a", "source_b", "centroid_distance", "source_a_mean_dispersion",
+    "source_b_mean_dispersion", "source_a_median_dispersion",
+    "source_b_median_dispersion", "normalized_separation_ratio"}.
+    """
+    rows = []
+    sources = list(sources)
+    for i, source_a in enumerate(sources):
+        for source_b in sources[i + 1:]:
+            a, b = per_source[source_a], per_source[source_b]
+            centroid_distance = float(np.linalg.norm(a["centroid"] - b["centroid"]))
+            mean_dispersion = (a["dispersion"] + b["dispersion"]) / 2
+            rows.append({
+                "source_a": source_a, "source_b": source_b,
+                "centroid_distance": centroid_distance,
+                "source_a_mean_dispersion": a["dispersion"], "source_b_mean_dispersion": b["dispersion"],
+                "source_a_median_dispersion": a["dispersion_median"], "source_b_median_dispersion": b["dispersion_median"],
+                "normalized_separation_ratio": centroid_distance / mean_dispersion,
+            })
+    return rows
+
+
 def corpus_vectors_and_points(
     shared_space: SharedSpace, mode: str, seed: int = DEFAULT_SEED,
+    epistemic_status_filter: tuple[str, ...] | None = None,
 ) -> dict[str, tuple[list[dict], np.ndarray]]:
     """Point-level resolution of a mode for the three expression corpora.
     Returns {corpus_name: (points, vectors)}.
@@ -502,11 +772,20 @@ def corpus_vectors_and_points(
 
     "equal_weight" has no point-level form -- see combined_expression_reference
     or balanced_analysis.weighted_centroid()/per_corpus_centroids() instead.
+
+    `epistemic_status_filter` (default None = unchanged behaviour) applies
+    to every mode, including "reduced_literature" -- that mode's literature
+    subset comes from a separate pre-built file
+    (literature_balanced_sample.jsonl), not from expression_pool_indices,
+    so it needs its own explicit filtering step here rather than inheriting
+    the filter for free; without this, a filtered call would silently leave
+    "reduced_literature"'s literature slice unfiltered while its
+    miviludes/interviews slices were filtered.
     """
     if mode not in ("full", "reduced_literature", "equal_n_expression"):
         raise ValueError(f"No point-level resolution for mode={mode!r}")
 
-    pool = expression_pool_indices(shared_space.points)
+    pool = expression_pool_indices(shared_space.points, epistemic_status_filter)
 
     if mode == "full":
         return {
@@ -516,6 +795,13 @@ def corpus_vectors_and_points(
 
     if mode == "reduced_literature":
         lit_points, lit_vectors = load_reduced_literature_points()
+        if epistemic_status_filter is not None:
+            keep = [
+                i for i, p in enumerate(lit_points)
+                if p.get("epistemic_status") in (None, *epistemic_status_filter)
+            ]
+            lit_points = [lit_points[i] for i in keep]
+            lit_vectors = lit_vectors[keep]
         result: dict[str, tuple[list[dict], np.ndarray]] = {"literature": (lit_points, lit_vectors)}
         for c in ("miviludes", "interviews"):
             idxs = pool[c]
@@ -582,6 +868,48 @@ def cosine_similarities(query: np.ndarray, candidates: np.ndarray) -> np.ndarray
     query_norm = query / np.linalg.norm(query)
     candidate_norms = candidates / np.linalg.norm(candidates, axis=1, keepdims=True)
     return candidate_norms @ query_norm
+
+
+# for detecting a query point's own vector re-appearing in the candidate
+# pool it's being compared against (e.g. an interview prototype that also
+# independently survived the ordinary pooling filter) -- both are derived
+# from the same raw vector through the same persisted transform, so they'd
+# be exact duplicates, not a genuine nearest neighbour.
+SAME_VECTOR_EPSILON = 1e-9
+
+
+def nearest_points(
+    query: np.ndarray, candidate_points: list[dict], candidate_vectors: np.ndarray,
+    k: int, exclude_self: bool = False,
+) -> list[dict]:
+    """The k nearest actual points to an arbitrary query vector (typically
+    a centroid) -- the one shared implementation for a pattern that used
+    to be duplicated (analyze_global_structure.nearest_terms,
+    analyze_initial_exemplars.nearest). `exclude_self`, when set, skips
+    any candidate numerically identical to `query` (see
+    SAME_VECTOR_EPSILON above) rather than letting a query's own point
+    count as its own nearest neighbour.
+
+    Returns a list of up to k dicts, ranked nearest-first:
+    {"rank", "key", "label", "euclidean_distance", "cosine_similarity"}.
+    """
+    euclidean = euclidean_distances(query, candidate_vectors)
+    cosine = cosine_similarities(query, candidate_vectors)
+    order = np.argsort(euclidean)
+    results: list[dict] = []
+    for i in order:
+        if exclude_self and euclidean[i] < SAME_VECTOR_EPSILON:
+            continue
+        results.append({
+            "rank": len(results) + 1,
+            "key": candidate_points[i]["key"],
+            "label": candidate_points[i]["label"],
+            "euclidean_distance": float(euclidean[i]),
+            "cosine_similarity": float(cosine[i]),
+        })
+        if len(results) == k:
+            break
+    return results
 
 
 # ---------------------------------------------------------------------------

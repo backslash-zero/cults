@@ -35,7 +35,6 @@ logger = logging.getLogger("thesis_corpus.analyze_initial_exemplars")
 MODULE_NAME = "analyze_initial_exemplars"
 NEAREST_K = 10
 CENTROID_MODES = ("full", "reduced_literature", "equal_weight")
-SAME_VECTOR_EPSILON = 1e-9  # for detecting a prototype's own point re-appearing in the pooled interview pool
 
 
 def load_interview_prototypes(path) -> tuple[list[dict], np.ndarray]:
@@ -49,36 +48,6 @@ def load_interview_prototypes(path) -> tuple[list[dict], np.ndarray]:
             points.append({k: v for k, v in item.items() if k != "shared_space_vector"})
             vectors.append(item["shared_space_vector"])
     return points, np.array(vectors, dtype=np.float64)
-
-
-def nearest(
-    query: np.ndarray, candidate_points: list[dict], candidate_vectors: np.ndarray, k: int,
-    exclude_self: bool = False,
-) -> list[dict]:
-    """exclude_self drops any candidate numerically identical to `query` --
-    relevant when the same underlying expression could independently exist
-    in both the prototype layer and the ordinary pooled interview pool
-    (whenever a reviewed exemplar happened to also survive the pooling
-    filter): both are derived from the same raw vector through the same
-    persisted transform, so they'd be exact duplicates, not a genuine
-    nearest neighbour."""
-    euclidean = gac.euclidean_distances(query, candidate_vectors)
-    cosine = gac.cosine_similarities(query, candidate_vectors)
-    order = np.argsort(euclidean)
-    results = []
-    for i in order:
-        if exclude_self and euclidean[i] < SAME_VECTOR_EPSILON:
-            continue
-        results.append({
-            "rank": len(results) + 1,
-            "key": candidate_points[i]["key"],
-            "label": candidate_points[i]["label"],
-            "euclidean_distance": float(euclidean[i]),
-            "cosine_similarity": float(cosine[i]),
-        })
-        if len(results) == k:
-            break
-    return results
 
 
 write_csv = gac.write_csv
@@ -197,14 +166,14 @@ def main() -> None:
                     "mode": mode, "euclidean_distance_to_combined_expression_centroid": euclidean,
                 })
 
-            for r in nearest(query, lit_points, lit_vectors, NEAREST_K):
+            for r in gac.nearest_points(query, lit_points, lit_vectors, NEAREST_K):
                 nearest_lit_rows.append({"document_id": document_id, "exemplar_type": exemplar_type,
                                           "initial_response_form": initial_response_form, **r})
-            for r in nearest(query, miv_points, miv_vectors, NEAREST_K):
+            for r in gac.nearest_points(query, miv_points, miv_vectors, NEAREST_K):
                 nearest_miv_rows.append({"document_id": document_id, "exemplar_type": exemplar_type,
                                           "initial_response_form": initial_response_form, **r})
 
-            interview_neighbours = nearest(
+            interview_neighbours = gac.nearest_points(
                 query, interview_points_all, interview_vectors_all, NEAREST_K, exclude_self=True,
             )
             if interview_neighbours:
