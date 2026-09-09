@@ -359,6 +359,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, required=True,
                          help="An existing run-id (this module reads other modules' output from it when present).")
+    parser.add_argument("--shared-space-dir", type=Path, default=None,
+                         help="Use a different pooled space (e.g. processed/shared_space_v2/) instead of v1's "
+                              "processed/shared_space/; also switches the run-output root to a sibling "
+                              "processed/analysis_v2/ directory so v1 and v2 runs are never mixed.")
     parser.add_argument("--seed", type=int, default=gac.DEFAULT_SEED)
     parser.add_argument("--umap-neighbors", type=int, default=20)
     parser.add_argument("--umap-min-dist", type=float, default=0.2)
@@ -367,11 +371,12 @@ def main() -> None:
     parser.add_argument("--top-entities", type=int, default=DEFAULT_TOP_ENTITIES)
     args = parser.parse_args()
 
-    logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
-    shared_space = gac.load_shared_space()
+    embedding_space_path, interview_prototypes_path, analysis_root = gac.resolve_space_paths(args.shared_space_dir)
+    logger.info("Loading %s ...", embedding_space_path)
+    shared_space = gac.load_shared_space(embedding_space_path)
     logger.info("Loaded %d points, %d-d vectors", len(shared_space.points), shared_space.vectors.shape[1])
 
-    run_dir = gac.existing_run_dir(args.run_id)
+    run_dir = gac.existing_run_dir(args.run_id, analysis_root)
     gac.init_run_manifest(run_dir, shared_space, defaults={"seed": args.seed})
     gac.update_run_manifest(run_dir, MODULE_NAME, "running")
     out_dir = gac.module_run_dir(run_dir, MODULE_NAME)
@@ -406,14 +411,14 @@ def main() -> None:
             populations_index[pop.name] = emit_population(out_dir, pop, param_combinations, args.seed)
 
         logger.info("Population 3/5: prototype_focus ...")
-        if gac.INTERVIEW_PROTOTYPES_PATH.exists():
-            prototype_points, prototype_vectors = load_interview_prototypes(gac.INTERVIEW_PROTOTYPES_PATH)
+        if interview_prototypes_path.exists():
+            prototype_points, prototype_vectors = load_interview_prototypes(interview_prototypes_path)
             pop = build_prototype_focus(prototype_points, prototype_vectors, criteria_points, criteria_vectors, reference_pools, per_source)
             populations_index[pop.name] = emit_population(out_dir, pop, param_combinations, args.seed)
         else:
             logger.warning(
                 "%s not found -- skipping prototype_focus (run build_interview_prototype_layer.py first if you want it).",
-                gac.INTERVIEW_PROTOTYPES_PATH,
+                interview_prototypes_path,
             )
 
         logger.info("Population 4/5: criterion_neighbourhood_<criterion_key> (x%d) ...", len(criteria_points))

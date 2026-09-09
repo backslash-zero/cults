@@ -1,0 +1,11 @@
+{
+  "corpus": "literature",
+  "run_tag": "20260910",
+  "embed_model": "bge-m3",
+  "expressions_in": 5741,
+  "documents_in": 53,
+  "documents_embedded": 53,
+  "records_out": 5741,
+  "complete": true,
+  "updated_at": "2026-09-09T20:28:28.693117+00:00"
+}

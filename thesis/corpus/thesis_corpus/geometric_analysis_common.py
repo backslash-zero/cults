@@ -3,8 +3,9 @@
 audit_free_listing_rank.py, propose_initial_exemplars.py,
 build_interview_prototype_layer.py, analyze_initial_exemplars.py,
 analyze_criterion_neighbours.py, analyze_emergent_entities.py,
-generate_figures.py, generate_geometric_draft_report.py) built on top of
-the shared embedding space.
+analyze_typicality.py, generate_figures.py,
+generate_geometric_draft_report.py) built on top of the shared embedding
+space.
 
 Read-only with respect to the pipeline that produced the data: never
 imports from or modifies build_shared_space.py's code, and never writes
@@ -83,6 +84,27 @@ ARCHIVE_PATH_BY_SOURCE = {
     "miviludes": MIVILUDES_ARCHIVE_PATH,
     "interviews": INTERVIEWS_ARCHIVE_PATH,
 }
+
+
+def resolve_archive_paths(shared_space: "SharedSpace") -> dict[str, Path]:
+    """Which raw per-corpus archive each expression corpus's context_window
+    (resolve_context_windows below) should be resolved against, for
+    whichever shared space was actually loaded -- never assumed to be v1's
+    fixed ARCHIVE_PATH_BY_SOURCE.
+
+    build_shared_space.py records the exact archive paths it pooled from
+    into `archive_paths` in the sidecar pca_transform_metadata.json next to
+    the space it built, from this session onward. Reads that field when
+    present; falls back to ARCHIVE_PATH_BY_SOURCE (v1's fixed paths) for a
+    metadata file that predates this field -- including v1's own, frozen
+    and never rewritten, so this fallback is not optional scaffolding."""
+    metadata_path = shared_space.input_path.parent / "pca_transform_metadata.json"
+    if metadata_path.exists():
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        archive_paths = metadata.get("archive_paths")
+        if archive_paths:
+            return {corpus: Path(path) for corpus, path in archive_paths.items()}
+    return dict(ARCHIVE_PATH_BY_SOURCE)
 ALL_SOURCE_DATASETS = (
     "literature", "miviludes", "interviews", "miviludes_criteria",
     "concept_backbone", "structural_concepts", "emergent_entities",
@@ -203,6 +225,33 @@ class SharedSpace:
     vectors: np.ndarray  # (n, 394), float64
     input_path: Path
     input_sha256: str
+
+
+def resolve_space_paths(shared_space_dir: Path | None) -> tuple[Path, Path, Path]:
+    """Which pooled space the toolkit should read, and where its run output
+    should go. `shared_space_dir=None` (every module's default) keeps v1
+    behaviour byte-for-byte unchanged: EMBEDDING_SPACE_PATH,
+    INTERVIEW_PROTOTYPES_PATH, ANALYSIS_DIR.
+
+    Passing e.g. `processed/shared_space_v2/` (the directory
+    build_shared_space.py --run-tag writes) switches all three: that
+    directory's own embedding_space.jsonl/interview_prototypes.jsonl, and a
+    sibling `processed/analysis_v2/` output root -- derived from the space
+    directory's own name (`shared_space` -> `analysis`, `shared_space_v2` ->
+    `analysis_v2`) so v1 and v2 runs can never land in the same run-id
+    directory by accident. `interview_prototypes.jsonl` is not required to
+    exist at this path (checked by each caller the same way it already
+    checks INTERVIEW_PROTOTYPES_PATH)."""
+    if shared_space_dir is None:
+        return EMBEDDING_SPACE_PATH, INTERVIEW_PROTOTYPES_PATH, ANALYSIS_DIR
+    shared_space_dir = Path(shared_space_dir)
+    suffix = shared_space_dir.name[len("shared_space"):] if shared_space_dir.name.startswith("shared_space") else f"_{shared_space_dir.name}"
+    analysis_root = PROCESSED_DIR / f"analysis{suffix}"
+    return (
+        shared_space_dir / "embedding_space.jsonl",
+        shared_space_dir / "interview_prototypes.jsonl",
+        analysis_root,
+    )
 
 
 def load_shared_space(path: Path = EMBEDDING_SPACE_PATH) -> SharedSpace:
@@ -359,10 +408,22 @@ class ContextWindowResolution:
     stats: dict
 
 
-def resolve_context_windows(shared_space: "SharedSpace", source_dataset: str) -> ContextWindowResolution:
+def resolve_context_windows(
+    shared_space: "SharedSpace", source_dataset: str, archive_path: Path | None = None,
+) -> ContextWindowResolution:
     """Strict, occurrence-aware join from pooled `embedding_space.jsonl`
     points back to their raw `criterion_expressions.jsonl` archive record,
     for the one field the pooled file never carries: `context_window`.
+
+    `archive_path` (default None): which raw archive to join against.
+    Callers should pass `resolve_archive_paths(shared_space)[source_dataset]`
+    rather than rely on the None default whenever `shared_space` might not
+    be v1's -- the default only exists for v1 callers that predate this
+    parameter, and silently joining a non-v1 shared space against v1's
+    fixed ARCHIVE_PATH_BY_SOURCE would resolve every occurrence key against
+    the wrong archive without necessarily raising (a real, previously-hit
+    bug: it can even "match" by coincidence before failing much later, or
+    not at all).
 
     Built once over ALL of `source_dataset`'s points in
     `shared_space.points` (full file order, not a filtered subset --
@@ -389,7 +450,7 @@ def resolve_context_windows(shared_space: "SharedSpace", source_dataset: str) ->
     deliverable has no resolved context_window; see analyze_global_structure.py's
     Deliverable 4 and the shared-anchor retrieval for that enforcement.
     """
-    archive_path = ARCHIVE_PATH_BY_SOURCE[source_dataset]
+    archive_path = archive_path or ARCHIVE_PATH_BY_SOURCE[source_dataset]
     archive_items = load_raw_archive(archive_path)
     archive_keys = derive_archive_expression_keys(archive_items)
     pooled_keys = derive_pooled_expression_keys(shared_space.points, source_dataset)
@@ -467,6 +528,67 @@ def source_dataset_indices(
     return [i for i in idxs if points[i].get("epistemic_status") in (None, *epistemic_status_filter)]
 
 
+def epistemic_status_subgroup_indices(points: list[dict], corpus: str) -> dict[str, list[int]]:
+    """For one expression corpus (`corpus` in EXPRESSION_CORPORA), groups
+    that corpus's own point indices by their actual `epistemic_status`
+    value -- DYNAMICALLY DISCOVERED from the data actually present for
+    this corpus, never a hardcoded set of 5. MIVILUDES currently has only
+    asserted/contested/speculative; interviews only
+    asserted/contested/negated/speculative -- both are returned exactly
+    as-is, never padded out to literature's full 5.
+
+    Insertion order = first-encountered order in `points` (i.e. the
+    embedding_space.jsonl file order), so this is deterministic run to
+    run without being alphabetical.
+
+    Fails loudly (ValueError) if the corpus ends up with zero subgroups
+    (zero points for this corpus, or every one of its points has a null
+    epistemic_status) -- shouldn't happen for any of the three expression
+    corpora, whose epistemic_status is always populated.
+
+    Returns {epistemic_status: [indices into points]}.
+    """
+    subgroups: dict[str, list[int]] = {}
+    for i in source_dataset_indices(points, corpus):
+        status = points[i].get("epistemic_status")
+        if status is None:
+            continue
+        subgroups.setdefault(status, []).append(i)
+    if not subgroups:
+        raise ValueError(
+            f"epistemic_status_subgroup_indices({corpus!r}): no subgroups found -- "
+            "either this corpus has zero points, or every point's epistemic_status is null."
+        )
+    return subgroups
+
+
+def centroid_and_dispersion_for_indices(vectors: np.ndarray, indices: list[int]) -> dict:
+    """Centroid + mean/median/p10/p90 dispersion (Euclidean distance to
+    that centroid) over one arbitrary index list into `vectors` -- the
+    per-source loop body originally inlined in
+    per_source_centroids_and_dispersion below, factored out here so any
+    OTHER grouping (an epistemic-status subgroup, a borderline pool, ...)
+    reuses the exact same computation rather than a parallel copy.
+    `indices` need not be a whole source_dataset -- it's an arbitrary
+    index list into the SAME `vectors` array the caller already has.
+
+    Returns {"centroid": np.ndarray(d,), "dispersion": float,
+    "dispersion_median": float, "dispersion_p10": float,
+    "dispersion_p90": float, "n": int}.
+    """
+    vecs = vectors[indices]
+    centroid = vecs.mean(axis=0)
+    distances = np.linalg.norm(vecs - centroid, axis=1)
+    return {
+        "centroid": centroid,
+        "dispersion": float(distances.mean()),
+        "dispersion_median": float(np.median(distances)),
+        "dispersion_p10": float(np.percentile(distances, 10)),
+        "dispersion_p90": float(np.percentile(distances, 90)),
+        "n": len(indices),
+    }
+
+
 def per_source_centroids_and_dispersion(
     shared_space: SharedSpace,
     epistemic_status_filter: tuple[str, ...] | None = None,
@@ -497,17 +619,7 @@ def per_source_centroids_and_dispersion(
     result = {}
     for source in ALL_SOURCE_DATASETS:
         idxs = source_dataset_indices(shared_space.points, source, epistemic_status_filter)
-        vecs = shared_space.vectors[idxs]
-        centroid = vecs.mean(axis=0)
-        distances = np.linalg.norm(vecs - centroid, axis=1)
-        result[source] = {
-            "centroid": centroid,
-            "dispersion": float(distances.mean()),
-            "dispersion_median": float(np.median(distances)),
-            "dispersion_p10": float(np.percentile(distances, 10)),
-            "dispersion_p90": float(np.percentile(distances, 90)),
-            "n": len(idxs),
-        }
+        result[source] = centroid_and_dispersion_for_indices(shared_space.vectors, idxs)
     return result
 
 
@@ -794,7 +906,21 @@ def corpus_vectors_and_points(
         }
 
     if mode == "reduced_literature":
-        lit_points, lit_vectors = load_reduced_literature_points()
+        # Sibling of whichever embedding_space.jsonl was actually loaded, not
+        # a hardcoded v1 path -- so a v2 (or later) shared space uses its own
+        # literature_balanced_sample.jsonl (see balanced_analysis.py
+        # --input/--output), never v1's, and the two are never mixed.
+        balanced_sample_path = shared_space.input_path.parent / "literature_balanced_sample.jsonl"
+        if not balanced_sample_path.exists():
+            raise SystemExit(
+                f"Missing: {balanced_sample_path} -- 'reduced_literature' mode needs a "
+                "literature-balanced sample built for this shared space. Run: python -m "
+                f"thesis_corpus.balanced_analysis --input {shared_space.input_path} "
+                f"--output {balanced_sample_path} --sample-size <N> (v1 used 2500 out of "
+                "35,621 literature points, ~7%; scale proportionally to this space's own "
+                "literature point count rather than reusing 2500 unchanged)."
+            )
+        lit_points, lit_vectors = load_reduced_literature_points(balanced_sample_path)
         if epistemic_status_filter is not None:
             keep = [
                 i for i, p in enumerate(lit_points)
@@ -878,19 +1004,25 @@ def cosine_similarities(query: np.ndarray, candidates: np.ndarray) -> np.ndarray
 SAME_VECTOR_EPSILON = 1e-9
 
 
-def nearest_points(
+def ranked_points(
     query: np.ndarray, candidate_points: list[dict], candidate_vectors: np.ndarray,
-    k: int, exclude_self: bool = False,
+    exclude_self: bool = False,
 ) -> list[dict]:
-    """The k nearest actual points to an arbitrary query vector (typically
-    a centroid) -- the one shared implementation for a pattern that used
-    to be duplicated (analyze_global_structure.nearest_terms,
-    analyze_initial_exemplars.nearest). `exclude_self`, when set, skips
-    any candidate numerically identical to `query` (see
-    SAME_VECTOR_EPSILON above) rather than letting a query's own point
-    count as its own nearest neighbour.
+    """Every candidate ranked ascending by Euclidean distance to an
+    arbitrary query vector (typically a centroid) -- no `k` cutoff. The
+    shared base for both nearest_points below (nearest_points(...) ==
+    ranked_points(...)[:k]) and for a "farthest" retrieval, which is just
+    the reverse of the same ranking (list(reversed(ranked_points(...)))[:k])
+    -- there is no separate "farthest_points" implementation, since
+    reversing this one ascending ranking is exactly correct and avoids a
+    second, easy-to-desync sort.
 
-    Returns a list of up to k dicts, ranked nearest-first:
+    `exclude_self`, when set, skips any candidate numerically identical to
+    `query` (see SAME_VECTOR_EPSILON above) rather than letting a query's
+    own point count as its own nearest (or farthest) neighbour.
+
+    Returns a list of len(candidate_points) (minus any excluded self-match)
+    dicts, ranked nearest-first:
     {"rank", "key", "label", "euclidean_distance", "cosine_similarity"}.
     """
     euclidean = euclidean_distances(query, candidate_vectors)
@@ -907,9 +1039,74 @@ def nearest_points(
             "euclidean_distance": float(euclidean[i]),
             "cosine_similarity": float(cosine[i]),
         })
-        if len(results) == k:
-            break
     return results
+
+
+def nearest_points(
+    query: np.ndarray, candidate_points: list[dict], candidate_vectors: np.ndarray,
+    k: int, exclude_self: bool = False,
+) -> list[dict]:
+    """The k nearest actual points to an arbitrary query vector (typically
+    a centroid) -- the one shared implementation for a pattern that used
+    to be duplicated (analyze_global_structure.nearest_terms,
+    analyze_initial_exemplars.nearest). A thin wrapper around
+    ranked_points, kept as its own function since "give me the k nearest"
+    is still by far the most common call shape in this toolkit.
+
+    Returns a list of up to k dicts, ranked nearest-first:
+    {"rank", "key", "label", "euclidean_distance", "cosine_similarity"}.
+    """
+    return ranked_points(query, candidate_points, candidate_vectors, exclude_self=exclude_self)[:k]
+
+
+def borderline_ranking(
+    points: list[dict], vectors: np.ndarray, pool_indices: list[int],
+    centroid_a: np.ndarray, centroid_b: np.ndarray,
+) -> list[dict]:
+    """Ranks every point in `pool_indices` -- the UNION POOL of exactly the
+    two groups being contrasted, never a broader or unrelated pool; it is
+    the caller's job to pass exactly that pair's own points -- by how
+    close it sits to equidistant between `centroid_a` and `centroid_b`.
+
+    `ambiguity_ratio = abs(distance_to_a - distance_to_b) / mean(distance_to_a, distance_to_b)`:
+    0 = exactly equidistant (maximally borderline), larger = more
+    decisively closer to one side. Ranked ASCENDING by ambiguity_ratio, so
+    the most borderline point is first.
+
+    `min_distance_to_either_centroid` is a DIAGNOSTIC-ONLY column, never
+    used to filter here -- a point that's borderline by ratio while far
+    from both groups' typical range stays visible in the output via this
+    column, rather than being silently dropped.
+
+    Returns one dict per pool index, ranked ascending by ambiguity_ratio:
+    {"rank", "pool_index" (the index into `points`/`vectors` this row
+    refers to -- callers use this to pull any further metadata), "key",
+    "label", "distance_to_a", "distance_to_b", "ambiguity_ratio",
+    "nominally_closer_to" ("a" or "b"), "min_distance_to_either_centroid"}.
+    """
+    pool_vectors = vectors[pool_indices]
+    distance_to_a = euclidean_distances(centroid_a, pool_vectors)
+    distance_to_b = euclidean_distances(centroid_b, pool_vectors)
+    mean_distance = (distance_to_a + distance_to_b) / 2
+    ambiguity_ratio = np.abs(distance_to_a - distance_to_b) / mean_distance
+    min_distance = np.minimum(distance_to_a, distance_to_b)
+
+    order = np.argsort(ambiguity_ratio)
+    rows: list[dict] = []
+    for rank, local_pos in enumerate(order):
+        pool_index = pool_indices[local_pos]
+        rows.append({
+            "rank": rank + 1,
+            "pool_index": pool_index,
+            "key": points[pool_index]["key"],
+            "label": points[pool_index]["label"],
+            "distance_to_a": float(distance_to_a[local_pos]),
+            "distance_to_b": float(distance_to_b[local_pos]),
+            "ambiguity_ratio": float(ambiguity_ratio[local_pos]),
+            "nominally_closer_to": "a" if distance_to_a[local_pos] <= distance_to_b[local_pos] else "b",
+            "min_distance_to_either_centroid": float(min_distance[local_pos]),
+        })
+    return rows
 
 
 # ---------------------------------------------------------------------------

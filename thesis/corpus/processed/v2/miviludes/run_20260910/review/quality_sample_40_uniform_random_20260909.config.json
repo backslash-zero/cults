@@ -1,0 +1,26 @@
+{
+  "script": "thesis_corpus.sample_v2_expressions",
+  "corpus": "miviludes",
+  "run_tag": "20260910",
+  "method": "uniform_random",
+  "n_requested": 40,
+  "n_sampled": 40,
+  "seed": 42,
+  "source_path": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/v2/miviludes/run_20260910/expressions_v2.jsonl",
+  "source_sha256": "c27c11c61155b3c08c919581ee2710c6e47bf8cd01b0a858dc21aa50ae4d1721",
+  "source_rows": 108,
+  "documents_in_source": [
+    "mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair",
+    "raw-transcript"
+  ],
+  "documents_in_source_count": 2,
+  "documents_total_in_corpus": 2,
+  "run_complete": true,
+  "per_document_row_counts_in_source": {
+    "mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair": 94,
+    "raw-transcript": 14
+  },
+  "git_commit": "265794208966820d96e0145c48549da28c51ed2b",
+  "generated_at": "2026-09-09T22:48:53.458292+00:00",
+  "note": "No automated judgement beyond the run's own judge_* columns (already model-judged, not human review); manual review columns are blank."
+}

@@ -197,9 +197,14 @@ See `generate_figures/` for the rendered scatter plots (both `umap_*` and `pca_*
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, required=True)
+    parser.add_argument("--shared-space-dir", type=Path, default=None,
+                         help="Must match whatever --shared-space-dir the run being read was itself produced "
+                              "with -- switches the run-output root searched to a sibling processed/analysis_v2/ "
+                              "directory instead of v1's processed/analysis/.")
     args = parser.parse_args()
 
-    run_dir = gac.existing_run_dir(args.run_id)
+    _, _, analysis_root = gac.resolve_space_paths(args.shared_space_dir)
+    run_dir = gac.existing_run_dir(args.run_id, analysis_root)
     manifest_path = run_dir / "RUN_MANIFEST.json"
     if not manifest_path.exists():
         raise SystemExit(f"No RUN_MANIFEST.json in {run_dir} -- this doesn't look like a toolkit run.")

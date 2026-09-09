@@ -1,5 +1,41 @@
 \chapter{Methods}
 
+Before the chapter works through each stage in detail, Figure~\ref{fig:pipeline_overview} summarises the pipeline as a whole: three source corpora are reduced to verbatim expressions, embedded, pooled together with three reference vocabularies into a single shared space, and compared geometrically.
+
+\begin{figure}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+	node distance=8mm and 12mm,
+	box/.style={draw, rounded corners, align=center, minimum height=10mm, minimum width=26mm, font=\small, fill=black!3},
+	arr/.style={-{Latex[length=2.5mm]}, thick},
+]
+	% three source corpora, stacked on the left
+	\node[box] (lit) {Scholarly\\literature};
+	\node[box, below=3mm of lit] (miv) {MIVILUDES};
+	\node[box, below=3mm of miv] (int) {Interviews};
+
+	% main pipeline, left to right
+	\node[box, right=of miv] (extract) {Extraction\\(verbatim expressions)};
+	\node[box, right=of extract] (embed) {Embedding\\(\texttt{bge-m3})};
+	\node[box, right=of embed] (space) {Shared\\cross-corpus space};
+	\node[box, right=of space] (analysis) {Geometric\\analysis};
+
+	% reference vocabularies, feeding in from below
+	\node[box, below=10mm of embed] (ref) {Reference\\vocabularies};
+
+	\draw[arr] (lit) -- (extract);
+	\draw[arr] (miv) -- (extract);
+	\draw[arr] (int) -- (extract);
+	\draw[arr] (extract) -- (embed);
+	\draw[arr] (embed) -- (space);
+	\draw[arr] (space) -- (analysis);
+	\draw[arr] (ref) -- (space);
+\end{tikzpicture}%
+}
+\caption{Overview of the methodological pipeline. The three source corpora (\ref{sec:vectorising_scholarly_work}, \ref{sec:vectorising_miviludes}) are each reduced to verbatim expressions, embedded, and pooled together with three reference vocabularies (\ref{sec:concept_backbone}, \ref{sec:structural_concepts}, \ref{sec:conceptnet_concepts}) into a single shared space (\ref{sec:shared_space}), which the Results chapter then analyses geometrically}
+\label{fig:pipeline_overview}
+\end{figure}
 
 \section{Methodological Precedents}
 
@@ -99,11 +135,11 @@ Similarly we want to do the same with named dimensions of cults, with a certaint
 \subsection{MIVILUDES}
 
 \subsubsection{Corpus}
-With the MIVIDLUES we have access to their public information on their website.
-On \cite{CommentIdentifierDerive}, we are already provided with a definition attempt of a sectarian drift as well as a list of these drifts. These both should also be extracted respectivaly.  
-On \cite{QueDitLoi}, we find the implication with the french law, and more interestingly a list of legal infractions that sectarian drifts are likely to commit. These should also be extracted.
+With the MIVILUDES we have access to their public information on their website.
+\Textcite{CommentIdentifierDerive} already provides a definition attempt of a sectarian drift, as well as a list of these drifts; both are extracted here.
+\Textcite{QueDitLoi} sets out the implications under French law, and more usefully, a list of legal infractions that sectarian drifts are likely to commit; these are extracted here as well.
 
-Addtionally the \cite{missioninterministerielledevigilanceetdeluttecontrelesderivessectairesmiviludesRapportDactiviteMiviludes2024} provides extensive information about the MIVILUDESs work.
+Additionally, \textcite{missioninterministerielledevigilanceetdeluttecontrelesderivessectairesmiviludesRapportDactiviteMiviludes2024} provides extensive information about MIVILUDES's own work.
 
 
 \subsubsection{Named cults}

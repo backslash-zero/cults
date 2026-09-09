@@ -36,7 +36,10 @@ of truth, generated into both the thesis LaTeX appendices and (via
 `thesis/corpus/scripts/sync_sanity.mjs`) the Sanity project above. It lives
 inside `./thesis` since it exists to feed that document's appendices.
 Naming conventions, the pipeline, and the update procedure are documented in
-`./thesis/corpus/README.md`.
+`./thesis/corpus/README.md`. This is separate from the thesis's actual
+in-text bibliography, `./thesis/05_Literature_and_Index/Bibliography.bib` —
+a live Zotero auto-export that gets silently overwritten; see
+`./thesis/05_Literature_and_Index/README.md` before editing it directly.
 
 # Meditations
 

@@ -1,0 +1,11 @@
+{
+  "corpus": "miviludes",
+  "run_tag": "20260910",
+  "embed_model": "bge-m3",
+  "expressions_in": 108,
+  "documents_in": 2,
+  "documents_embedded": 2,
+  "records_out": 108,
+  "complete": true,
+  "updated_at": "2026-09-09T20:28:30.850294+00:00"
+}

@@ -955,6 +955,7 @@ def main() -> None:
             "seed": args.seed,
             "n_points_fit": len(points),
             "embedding_space_sha256": output_sha256,
+            "archive_paths": {corpus: str(path) for corpus, path in corpus_archives.items()},
             "git_commit": _git_commit_hash(),
         }, indent=2),
         encoding="utf-8",

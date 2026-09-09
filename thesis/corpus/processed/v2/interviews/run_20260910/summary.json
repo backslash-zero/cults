@@ -1,0 +1,51 @@
+{
+  "corpus": "interviews",
+  "run_tag": "20260910",
+  "model": "qwen3:4b",
+  "judge_model": "qwen3:8b",
+  "documents": {
+    "done": 26
+  },
+  "chunks": {
+    "total": 80,
+    "skipped_pre_screen": 0,
+    "called": 80,
+    "model_failed": 0,
+    "model_failure_rate": 0.0
+  },
+  "candidates": {
+    "emitted": 128,
+    "screen_retained": 65,
+    "screen_rejected": 63,
+    "reconciled": true,
+    "judge_rejected_or_failed": 1,
+    "final": 64,
+    "judge_reconciled": true,
+    "final_per_called_chunk": 0.8
+  },
+  "screen_rejection_codes": {
+    "validation_flag_false": 27,
+    "span_in_transcript_header": 10,
+    "interviewer_utterance": 8,
+    "not_verbatim": 6,
+    "short_fragment_no_referent": 6,
+    "duplicate_or_overlapping_span": 2,
+    "dangling_boundary": 2,
+    "heading_or_scaffold": 1,
+    "exceeds_per_chunk_cap": 1
+  },
+  "judge": {
+    "judged_ok": 65,
+    "judge_failed": 0,
+    "acceptance_rate": 0.9846,
+    "extraction_issue_counts": {
+      "none": 64,
+      "contextless_fragment": 1
+    },
+    "label_disagreements": {
+      "epistemic_status_correct": 2
+    },
+    "better_span_pointed": 2
+  },
+  "updated_at": "2026-09-09T02:55:09.682243+00:00"
+}

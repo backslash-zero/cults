@@ -4,7 +4,7 @@
 ``We know about `cults' largely by what the media tells us, and their views have been overwhelmingly negative\autocite{vandrielPrintMediaCoverage1988, pfeiferPsychologicalFramingCults1992}'' \autocite[pp.1]{dawsonCultsNewReligious2009}
 
 
-\section{Observations}
+\section{A priori observations}
 Before any use of geometrical tools, simple statistic as well as qualitative observations of the study can be made.
 
 \subsection{Survey}
@@ -29,3 +29,40 @@ Before any use of geometrical tools, simple statistic as well as qualitative obs
 
 \subsubsection{Other notes}
 Interviewees were often unsure what the term means precisely, and sarcastic use was rarer than expected. One (Aug 22, 21:01) used "dérive dangereuse," closely echoing the sectarian-drift concept. Unexpected recurring angles included privilege, Western perspective, and masculinity. Emergent topics align with the sectarian-drift literature: distortion of consent, a central leader figure, negative connotation, and use as an outside label rather than self-description.
+
+
+\section{Global structure and cluster structure}
+Before diving into the details of the results, it is useful to provide a high-level overview of the global structure of the data and the cluster structure that emerges from the analysis.
+
+% insert pairwise centroid distance short table here, with a note that the full table is in the appendix.
+
+
+
+
+
+We need to add the definitions to the glossary or in the methodology section. Here are some key terms used in the analysis:
+
+Centroid: the mean vector of a set of points in the embedding space; the geometric centre of that set.
+
+Pairwise (centroid-distance matrix): for every pair of centroids, the Euclidean distance between them; a symmetric table showing how far apart each pair of group centres is.
+
+Euclidean distance: ordinary straight-line distance, the same idea as distance on a map,
+just in many more than two dimensions. Smaller = more similar.
+
+Cosine similarity: instead of measuring the gap between two points, this measures whether they point in the same direction from the origin, ignoring how long each vector is. It ranges from $-1$ (opposite directions) to $1$ (exactly the same direction), with 0 meaning unrelated/perpendicular directions.
+
+k-nearest-neighbour composition
+For a given point, its k nearest neighbours are simply the k closest other points in the
+space (this document uses k = 10 and k = 20).
+
+Silhouette score: A single number, in principle between $-1$ and $1$, that scores how well a proposed grouping
+(here: the three expression sources) matches the actual geometric clustering of the data – roughly, "on average, is each point closer to others in its own group than to points in other groups?" A score near 0 means the proposed groups do not correspond to distinct geometric clusters; a score near 1 would mean they line up almost perfectly with the actual shape of the data
+
+
+
+
+
+
+===
+
+\section{Feedback on the results}

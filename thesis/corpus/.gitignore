@@ -29,12 +29,22 @@ processed/shared_space/literature_balanced_sample.jsonl
 processed/shared_space/pca_transform.joblib
 processed/shared_space/interview_prototypes.jsonl
 
+# Same as processed/shared_space/ above, but for the v2 (strict-verbatim
+# extraction) shared space -- same large/regeneratable/copyrighted-excerpt
+# reasoning. pca_transform_metadata.json, variance_curve.*, and
+# analysis_config.json (small, no bulk excerpt text) stay tracked.
+processed/shared_space_v2/embedding_space.jsonl
+processed/shared_space_v2/literature_balanced_sample.jsonl
+processed/shared_space_v2/pca_transform.joblib
+processed/shared_space_v2/interview_prototypes.jsonl
+
 # geometric-analysis toolkit output -- large, regeneratable from
 # embedding_space.jsonl, and qualitative-retrieval tables carry literal
 # copyrighted excerpt text (same reasoning as criterion_expressions*.jsonl
 # above). thesis_corpus/interviews/metadata/initial_exemplars.csv is NOT
 # covered by this -- that's the durable, manually-reviewed research record.
 processed/analysis/
+processed/analysis_v2/
 
 # MIVILUDES source PDFs — same reasoning as litterature with pdfs/ above
 MIVILUDES/**/*.pdf

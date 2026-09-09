@@ -1,0 +1,11 @@
+{
+  "script": "thesis_corpus.embed_v2",
+  "corpus": "literature",
+  "run_tag": "20260910",
+  "embed_model": "bge-m3",
+  "expressions_v2_sha256": "1b5311ed8a091c06921292ec6ca683e6992d8b4c809245eda886552171e7c823",
+  "git_commit": "d69e344b61fa356ca95a25dc37339c03e085fb2d",
+  "platform": "win32",
+  "created_at": "2026-09-09T20:27:12.672662+00:00",
+  "ollama_host": "http://127.0.0.1:11434"
+}

@@ -56,6 +56,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+from pathlib import Path
 
 import numpy as np
 
@@ -220,21 +221,26 @@ def anchor_nearest_expressions(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, default=None)
+    parser.add_argument("--shared-space-dir", type=Path, default=None,
+                         help="Use a different pooled space (e.g. processed/shared_space_v2/) instead of v1's "
+                              "processed/shared_space/; also switches the run-output root to a sibling "
+                              "processed/analysis_v2/ directory so v1 and v2 runs are never mixed.")
     parser.add_argument("--seed", type=int, default=gac.DEFAULT_SEED)
     parser.add_argument("--bootstrap-reps", type=int, default=gac.DEFAULT_BOOTSTRAP_REPS)
     args = parser.parse_args()
 
-    logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
-    shared_space = gac.load_shared_space()
+    embedding_space_path, interview_prototypes_path, analysis_root = gac.resolve_space_paths(args.shared_space_dir)
+    logger.info("Loading %s ...", embedding_space_path)
+    shared_space = gac.load_shared_space(embedding_space_path)
 
-    run_id, run_dir = gac.get_or_create_run_dir(args.run_id)
+    run_id, run_dir = gac.get_or_create_run_dir(args.run_id, analysis_root)
     gac.init_run_manifest(run_dir, shared_space, defaults={})
     gac.update_run_manifest(run_dir, MODULE_NAME, "running")
     out_dir = gac.module_run_dir(run_dir, MODULE_NAME)
 
     try:
         logger.info("Ranking emergent entities (export_emergent_entities.rank_emergent_entities)...")
-        ranked = eee.rank_emergent_entities(gac.EMBEDDING_SPACE_PATH)
+        ranked = eee.rank_emergent_entities(embedding_space_path)
 
         entity_idxs = gac.source_dataset_indices(shared_space.points, "emergent_entities")
         entity_points = {shared_space.points[i]["label"]: (i, shared_space.points[i]) for i in entity_idxs}
@@ -305,35 +311,60 @@ def main() -> None:
         gac.write_csv(out_dir / "emergent_entities_full.csv", entity_rows)
 
         # --- New: shared discourse anchors (qualitative retrieval) ---
-        anchors = shared_discourse_anchors(entity_rows)
-        logger.info(
-            "Shared discourse anchors: %d entities with provenance_category=='shared_all_3': %s",
-            len(anchors), [a["entity"] for a in anchors],
-        )
-        context_resolutions = {corpus: gac.resolve_context_windows(shared_space, corpus) for corpus in gac.EXPRESSION_CORPORA}
-        for corpus, resolution in context_resolutions.items():
-            logger.info("resolve_context_windows(%s) stats: %s", corpus, resolution.stats)
+        # shared_discourse_anchors() itself still fails loudly on an empty
+        # result (its documented contract, unchanged) -- this call site is
+        # the one documented exception: a shared space with very few total
+        # emergent entities (e.g. v2's corpus, 21 total vs. v1's 3,251) can
+        # genuinely have zero entities mentioned in all three corpora at
+        # once, a verified structural fact rather than a bug signal, so this
+        # deliverable is explicitly skipped rather than aborting the whole
+        # module and losing emergent_entities_full.csv (already written above).
+        context_resolutions: dict = {}
+        anchor_equal_n_candidate_size = None
+        try:
+            anchors = shared_discourse_anchors(entity_rows)
+        except SystemExit as e:
+            logger.warning(
+                "Shared discourse anchors: skipping this deliverable -- %s "
+                "(all other deliverables below are unaffected).", e,
+            )
+            anchors = []
+            (out_dir / "shared_anchor_nearest_expressions.SKIPPED.txt").write_text(
+                f"{ANCHOR_SEMANTIC_WARNING}\n\nSkipped: {e}\n", encoding="utf-8",
+            )
+        else:
+            logger.info(
+                "Shared discourse anchors: %d entities with provenance_category=='shared_all_3': %s",
+                len(anchors), [a["entity"] for a in anchors],
+            )
+            archive_paths = gac.resolve_archive_paths(shared_space)
+            context_resolutions = {
+                corpus: gac.resolve_context_windows(shared_space, corpus, archive_paths[corpus])
+                for corpus in gac.EXPRESSION_CORPORA
+            }
+            for corpus, resolution in context_resolutions.items():
+                logger.info("resolve_context_windows(%s) stats: %s", corpus, resolution.stats)
 
-        anchor_rows, anchor_equal_n_candidate_size = anchor_nearest_expressions(
-            shared_space, anchors, entity_points, context_resolutions, seed=args.seed,
-        )
-        gac.write_csv(out_dir / "shared_anchor_nearest_expressions.csv", anchor_rows)
-        (out_dir / "shared_anchor_nearest_expressions.README.txt").write_text(
-            ANCHOR_SEMANTIC_WARNING + "\n\n"
-            f"anchor_count: {len(anchors)}\n"
-            f"anchors: {[a['entity'] for a in anchors]}\n"
-            "retrieval_scopes:\n"
-            f"  literature/miviludes/interviews: each source's FULL available expression pool "
-            f"(not equal-n-sampled), top-{ANCHOR_WITHIN_SOURCE_K} per anchor -- PRIMARY output, "
-            "what any later write-up should rely on.\n"
-            f"  overall_equal_n: ONE deterministic equal-n draw (seed={args.seed}, "
-            f"candidate_pool_size={anchor_equal_n_candidate_size}), top-{ANCHOR_OVERALL_EQUAL_N_K} "
-            "per anchor -- EXPLORATORY/APPENDIX-ONLY, not relied on in the main narrative.\n"
-            "rank ordering: Euclidean distance in the shared reduced space. cosine_similarity is "
-            "a secondary descriptive field only, never used to select or order neighbours.\n"
-            "anchor_role is left blank -- manual coding, not automated.\n",
-            encoding="utf-8",
-        )
+            anchor_rows, anchor_equal_n_candidate_size = anchor_nearest_expressions(
+                shared_space, anchors, entity_points, context_resolutions, seed=args.seed,
+            )
+            gac.write_csv(out_dir / "shared_anchor_nearest_expressions.csv", anchor_rows)
+            (out_dir / "shared_anchor_nearest_expressions.README.txt").write_text(
+                ANCHOR_SEMANTIC_WARNING + "\n\n"
+                f"anchor_count: {len(anchors)}\n"
+                f"anchors: {[a['entity'] for a in anchors]}\n"
+                "retrieval_scopes:\n"
+                f"  literature/miviludes/interviews: each source's FULL available expression pool "
+                f"(not equal-n-sampled), top-{ANCHOR_WITHIN_SOURCE_K} per anchor -- PRIMARY output, "
+                "what any later write-up should rely on.\n"
+                f"  overall_equal_n: ONE deterministic equal-n draw (seed={args.seed}, "
+                f"candidate_pool_size={anchor_equal_n_candidate_size}), top-{ANCHOR_OVERALL_EQUAL_N_K} "
+                "per anchor -- EXPLORATORY/APPENDIX-ONLY, not relied on in the main narrative.\n"
+                "rank ordering: Euclidean distance in the shared reduced space. cosine_similarity is "
+                "a secondary descriptive field only, never used to select or order neighbours.\n"
+                "anchor_role is left blank -- manual coding, not automated.\n",
+                encoding="utf-8",
+            )
 
         # --- Equal-size-controlled reference comparison (Part 4) ---
         # The per-entity nearest-term columns above are raw retrieval,
@@ -390,23 +421,31 @@ def main() -> None:
             seed=args.seed,
             bootstrap_reps=args.bootstrap_reps,
             reference_vocab_datasets=gac.REFERENCE_VOCAB_DATASETS,
-            shared_discourse_anchors={
-                "anchor_count": len(anchors),
-                "anchors": [a["entity"] for a in anchors],
-                "retrieval_scopes": {
-                    "literature": {"candidate_pool": "full_available_pool", "k": ANCHOR_WITHIN_SOURCE_K},
-                    "miviludes": {"candidate_pool": "full_available_pool", "k": ANCHOR_WITHIN_SOURCE_K},
-                    "interviews": {"candidate_pool": "full_available_pool", "k": ANCHOR_WITHIN_SOURCE_K},
-                    "overall_equal_n": {
-                        "candidate_pool": "single_deterministic_equal_n_draw",
-                        "candidate_pool_size": anchor_equal_n_candidate_size,
-                        "seed": args.seed, "k": ANCHOR_OVERALL_EQUAL_N_K,
-                        "status": "exploratory_appendix_only",
+            shared_discourse_anchors=(
+                {
+                    "anchor_count": 0,
+                    "anchors": [],
+                    "status": "skipped_empty_shared_all_3_set",
+                }
+                if not anchors else
+                {
+                    "anchor_count": len(anchors),
+                    "anchors": [a["entity"] for a in anchors],
+                    "retrieval_scopes": {
+                        "literature": {"candidate_pool": "full_available_pool", "k": ANCHOR_WITHIN_SOURCE_K},
+                        "miviludes": {"candidate_pool": "full_available_pool", "k": ANCHOR_WITHIN_SOURCE_K},
+                        "interviews": {"candidate_pool": "full_available_pool", "k": ANCHOR_WITHIN_SOURCE_K},
+                        "overall_equal_n": {
+                            "candidate_pool": "single_deterministic_equal_n_draw",
+                            "candidate_pool_size": anchor_equal_n_candidate_size,
+                            "seed": args.seed, "k": ANCHOR_OVERALL_EQUAL_N_K,
+                            "status": "exploratory_appendix_only",
+                        },
                     },
-                },
-                "rank_ordering_metric": "euclidean",
-                "cosine_similarity_role": "secondary_descriptive_only_not_used_for_selection",
-            },
+                    "rank_ordering_metric": "euclidean",
+                    "cosine_similarity_role": "secondary_descriptive_only_not_used_for_selection",
+                }
+            ),
             context_window_resolution_stats={c: r.stats for c, r in context_resolutions.items()},
             git_commit=gac.git_commit_hash(),
         )

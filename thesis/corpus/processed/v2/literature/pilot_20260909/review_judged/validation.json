@@ -1,0 +1,23 @@
+{
+  "validations": [
+    {
+      "arm": "arm_qwen3-4b",
+      "screen_retained": 32,
+      "judge": "judge_qwen3-8b",
+      "final_retained": 31,
+      "rejected": 46,
+      "responses": 28,
+      "model_failures": 0,
+      "model_failure_rate": 0.0,
+      "failure_rate_exceeds_review_blocker": false,
+      "hard_zero_problems": []
+    }
+  ],
+  "review_rows": 87,
+  "arm_row_counts": {
+    "v1": 56,
+    "v2_qwen3-4b": 31
+  },
+  "blind": false,
+  "generated_at": "2026-09-09T00:42:18.429719+00:00"
+}

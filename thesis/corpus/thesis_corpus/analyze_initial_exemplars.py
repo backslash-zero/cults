@@ -24,6 +24,7 @@ import argparse
 import csv
 import json
 import logging
+from pathlib import Path
 
 import numpy as np
 
@@ -53,20 +54,24 @@ def load_interview_prototypes(path) -> tuple[list[dict], np.ndarray]:
 write_csv = gac.write_csv
 
 
-def assert_prototype_layer_current(shared_space: gac.SharedSpace) -> dict:
+def assert_prototype_layer_current(shared_space: gac.SharedSpace, transform_metadata_path: Path) -> dict:
     """Part 1 of the post-ConceptNet-rebuild plan: confirm (never
     re-derive/rebuild here) that interview_prototypes.jsonl's provenance
     matches the *current* embedding_space.jsonl. If a future pipeline
     rebuild ever changes the PCA fit without reprojecting the prototype
     layer, every distance this module computes against it would be
     silently wrong -- this check turns that into a loud failure instead.
-    Returns the transform metadata dict for recording in config.json."""
-    if not gac.PCA_TRANSFORM_METADATA_PATH.exists():
-        raise SystemExit(f"Missing {gac.PCA_TRANSFORM_METADATA_PATH} -- cannot verify prototype-layer currency.")
-    metadata = json.loads(gac.PCA_TRANSFORM_METADATA_PATH.read_text(encoding="utf-8"))
+    `transform_metadata_path` must be the sidecar for the same space
+    `--shared-space-dir` points at (v1's by default) -- checking a v2
+    prototype layer against v1's transform metadata (or vice versa) would
+    defeat the point of this check. Returns the transform metadata dict
+    for recording in config.json."""
+    if not transform_metadata_path.exists():
+        raise SystemExit(f"Missing {transform_metadata_path} -- cannot verify prototype-layer currency.")
+    metadata = json.loads(transform_metadata_path.read_text(encoding="utf-8"))
     if metadata.get("embedding_space_sha256") != shared_space.input_sha256:
         raise SystemExit(
-            f"pca_transform_metadata.json's embedding_space_sha256 "
+            f"{transform_metadata_path.name}'s embedding_space_sha256 "
             f"({metadata.get('embedding_space_sha256')}) does not match the current "
             f"embedding_space.jsonl ({shared_space.input_sha256}) -- the shared space "
             "was rebuilt since the persisted transform was fit. Re-run "
@@ -84,26 +89,40 @@ def assert_prototype_layer_current(shared_space: gac.SharedSpace) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, default=None)
-    parser.add_argument("--prototypes", type=type(gac.INTERVIEW_PROTOTYPES_PATH), default=gac.INTERVIEW_PROTOTYPES_PATH)
+    parser.add_argument("--shared-space-dir", type=Path, default=None,
+                         help="Use a different pooled space (e.g. processed/shared_space_v2/) instead of v1's "
+                              "processed/shared_space/; also switches the run-output root to a sibling "
+                              "processed/analysis_v2/ directory so v1 and v2 runs are never mixed.")
+    parser.add_argument("--prototypes", type=type(gac.INTERVIEW_PROTOTYPES_PATH), default=None,
+                         help="Interview prototype layer to use (default: derived from --shared-space-dir -- "
+                              "v1's processed/shared_space/interview_prototypes.jsonl unless --shared-space-dir "
+                              "is given, in which case that directory's own interview_prototypes.jsonl).")
     parser.add_argument("--seed", type=int, default=gac.DEFAULT_SEED)
     parser.add_argument("--bootstrap-reps", type=int, default=gac.DEFAULT_BOOTSTRAP_REPS)
     args = parser.parse_args()
 
-    if not args.prototypes.exists():
+    embedding_space_path, default_prototypes_path, analysis_root = gac.resolve_space_paths(args.shared_space_dir)
+    prototypes_path = args.prototypes or default_prototypes_path
+
+    if not prototypes_path.exists():
         raise SystemExit(
-            f"No prototype layer at {args.prototypes} -- run "
+            f"No prototype layer at {prototypes_path} -- run "
             "`python -m thesis_corpus.build_interview_prototype_layer` first."
         )
 
-    logger.info("Loading %s ...", args.prototypes)
-    prototype_points, prototype_vectors = load_interview_prototypes(args.prototypes)
+    logger.info("Loading %s ...", prototypes_path)
+    prototype_points, prototype_vectors = load_interview_prototypes(prototypes_path)
     logger.info("%d interview prototype points", len(prototype_points))
 
-    logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
-    shared_space = gac.load_shared_space()
-    transform_metadata = assert_prototype_layer_current(shared_space)
+    logger.info("Loading %s ...", embedding_space_path)
+    shared_space = gac.load_shared_space(embedding_space_path)
+    transform_metadata_path = (
+        Path(args.shared_space_dir) / "pca_transform_metadata.json"
+        if args.shared_space_dir else gac.PCA_TRANSFORM_METADATA_PATH
+    )
+    transform_metadata = assert_prototype_layer_current(shared_space, transform_metadata_path)
 
-    run_id, run_dir = gac.get_or_create_run_dir(args.run_id)
+    run_id, run_dir = gac.get_or_create_run_dir(args.run_id, analysis_root)
     gac.init_run_manifest(run_dir, shared_space, defaults={})
     gac.update_run_manifest(run_dir, MODULE_NAME, "running")
     out_dir = gac.module_run_dir(run_dir, MODULE_NAME)
@@ -281,7 +300,7 @@ def main() -> None:
         gac.write_module_config(
             out_dir,
             input_sha256=shared_space.input_sha256,
-            prototypes_path=str(args.prototypes),
+            prototypes_path=str(prototypes_path),
             n_prototypes=len(prototype_points),
             nearest_k=NEAREST_K,
             centroid_modes=CENTROID_MODES,

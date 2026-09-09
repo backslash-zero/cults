@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+from pathlib import Path
 
 from thesis_corpus import geometric_analysis_common as gac
 
@@ -94,12 +95,17 @@ def audit(points: list[dict]) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, default=None)
+    parser.add_argument("--shared-space-dir", type=Path, default=None,
+                         help="Use a different pooled space (e.g. processed/shared_space_v2/) instead of v1's "
+                              "processed/shared_space/; also switches the run-output root to a sibling "
+                              "processed/analysis_v2/ directory so v1 and v2 runs are never mixed.")
     args = parser.parse_args()
 
-    logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
-    shared_space = gac.load_shared_space()
+    embedding_space_path, interview_prototypes_path, analysis_root = gac.resolve_space_paths(args.shared_space_dir)
+    logger.info("Loading %s ...", embedding_space_path)
+    shared_space = gac.load_shared_space(embedding_space_path)
 
-    run_id, run_dir = gac.get_or_create_run_dir(args.run_id)
+    run_id, run_dir = gac.get_or_create_run_dir(args.run_id, analysis_root)
     gac.init_run_manifest(run_dir, shared_space, defaults={})
     gac.update_run_manifest(run_dir, MODULE_NAME, "running")
     out_dir = gac.module_run_dir(run_dir, MODULE_NAME)

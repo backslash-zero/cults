@@ -85,6 +85,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+from pathlib import Path
 from collections import defaultdict
 
 import joblib
@@ -100,9 +101,6 @@ NEAREST_K = 10
 COMPOSITION_K_VALUES = (10, 20)  # criterion_neighbour_composition's k values
 EXPECTED_EMBEDDING_MODEL = "bge-m3"  # the only embedding model ever used in this pipeline
 
-LITERATURE_ARCHIVE_PATH = gac.PROCESSED_DIR / "literature" / "criterion_expressions.jsonl"
-INTERVIEWS_ARCHIVE_PATH = gac.PROCESSED_DIR / "interviews" / "criterion_expressions.jsonl"
-MIVILUDES_TRANSLATIONS_PATH = gac.PROCESSED_DIR / "miviludes" / "expression_translations_embedded.jsonl"
 CRITERIA_EMBEDDED_PATH = gac.CORPUS_DIR / "metadata" / "miviludes_criteria_embedded.jsonl"
 
 
@@ -439,9 +437,16 @@ def build_raw_sensitivity_pool(shared_space: gac.SharedSpace) -> dict[str, tuple
     their own archive's raw embedding_vector (English/mixed, unchanged by
     the MIVILUDES translation work); MIVILUDES uses its English
     translation's raw embedding_vector_en."""
-    lit_raw = load_raw_vectors_by_key(LITERATURE_ARCHIVE_PATH)
-    interviews_raw = load_raw_vectors_by_key(INTERVIEWS_ARCHIVE_PATH)
-    miviludes_raw_en = load_miviludes_english_vectors_by_key(MIVILUDES_TRANSLATIONS_PATH)
+    # Never assume v1's fixed paths -- derive from whichever shared space was
+    # actually loaded (see gac.resolve_archive_paths). The MIVILUDES
+    # translations file lives alongside its archive in both v1 and v2
+    # (expression_translations_embedded.jsonl next to criterion_expressions.jsonl),
+    # so it's derived as that sibling rather than a separate hardcoded constant.
+    archive_paths = gac.resolve_archive_paths(shared_space)
+    miviludes_translations_path = archive_paths["miviludes"].parent / "expression_translations_embedded.jsonl"
+    lit_raw = load_raw_vectors_by_key(archive_paths["literature"])
+    interviews_raw = load_raw_vectors_by_key(archive_paths["interviews"])
+    miviludes_raw_en = load_miviludes_english_vectors_by_key(miviludes_translations_path)
 
     pool: dict[str, tuple[list[dict], np.ndarray]] = {}
     missing = 0
@@ -575,14 +580,19 @@ def compare_nearest_corpus_ordering(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, default=None)
+    parser.add_argument("--shared-space-dir", type=Path, default=None,
+                         help="Use a different pooled space (e.g. processed/shared_space_v2/) instead of v1's "
+                              "processed/shared_space/; also switches the run-output root to a sibling "
+                              "processed/analysis_v2/ directory so v1 and v2 runs are never mixed.")
     parser.add_argument("--seed", type=int, default=gac.DEFAULT_SEED)
     parser.add_argument("--bootstrap-reps", type=int, default=gac.DEFAULT_BOOTSTRAP_REPS)
     args = parser.parse_args()
 
-    logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
-    shared_space = gac.load_shared_space()
+    embedding_space_path, interview_prototypes_path, analysis_root = gac.resolve_space_paths(args.shared_space_dir)
+    logger.info("Loading %s ...", embedding_space_path)
+    shared_space = gac.load_shared_space(embedding_space_path)
 
-    run_id, run_dir = gac.get_or_create_run_dir(args.run_id)
+    run_id, run_dir = gac.get_or_create_run_dir(args.run_id, analysis_root)
     gac.init_run_manifest(run_dir, shared_space, defaults={"seed": args.seed, "bootstrap_reps": args.bootstrap_reps})
     gac.update_run_manifest(run_dir, MODULE_NAME, "running")
     out_dir = gac.module_run_dir(run_dir, MODULE_NAME)
@@ -645,10 +655,12 @@ def main() -> None:
         # Any failure in this block fails the whole module (no local
         # try/except suppressing it) -- a partial run that skips this
         # representation is not an acceptable outcome of this run.
-        logger.info("Loading persisted transform (%s) for english_sensitivity_shared_space...", gac.PCA_TRANSFORM_PATH)
-        if not gac.PCA_TRANSFORM_METADATA_PATH.exists():
-            raise SystemExit(f"Missing {gac.PCA_TRANSFORM_METADATA_PATH} -- cannot verify transform currency.")
-        transform_metadata = json.loads(gac.PCA_TRANSFORM_METADATA_PATH.read_text(encoding="utf-8"))
+        pca_transform_path = embedding_space_path.parent / "pca_transform.joblib"
+        pca_transform_metadata_path = embedding_space_path.parent / "pca_transform_metadata.json"
+        logger.info("Loading persisted transform (%s) for english_sensitivity_shared_space...", pca_transform_path)
+        if not pca_transform_metadata_path.exists():
+            raise SystemExit(f"Missing {pca_transform_metadata_path} -- cannot verify transform currency.")
+        transform_metadata = json.loads(pca_transform_metadata_path.read_text(encoding="utf-8"))
         if transform_metadata.get("embedding_space_sha256") != shared_space.input_sha256:
             raise SystemExit(
                 f"pca_transform_metadata.json's embedding_space_sha256 does not match the "
@@ -660,7 +672,7 @@ def main() -> None:
         # produced locally by build_shared_space.py earlier in this same pipeline
         # (never downloaded or user-supplied), same trust boundary already accepted
         # by build_interview_prototype_layer.py for the identical artifact.
-        transform = joblib.load(gac.PCA_TRANSFORM_PATH)
+        transform = joblib.load(pca_transform_path)
         scaler, pca = transform["scaler"], transform["pca"]
         criteria_en_records = load_criteria_english_records(CRITERIA_EMBEDDED_PATH)
         assert_english_criteria_compatible(criteria_en_records, scaler)

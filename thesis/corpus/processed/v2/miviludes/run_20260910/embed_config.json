@@ -1,0 +1,11 @@
+{
+  "script": "thesis_corpus.embed_v2",
+  "corpus": "miviludes",
+  "run_tag": "20260910",
+  "embed_model": "bge-m3",
+  "expressions_v2_sha256": "c27c11c61155b3c08c919581ee2710c6e47bf8cd01b0a858dc21aa50ae4d1721",
+  "git_commit": "d69e344b61fa356ca95a25dc37339c03e085fb2d",
+  "platform": "win32",
+  "created_at": "2026-09-09T20:28:28.975817+00:00",
+  "ollama_host": "http://127.0.0.1:11434"
+}

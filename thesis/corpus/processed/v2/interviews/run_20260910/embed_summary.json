@@ -1,0 +1,11 @@
+{
+  "corpus": "interviews",
+  "run_tag": "20260910",
+  "embed_model": "bge-m3",
+  "expressions_in": 64,
+  "documents_in": 25,
+  "documents_embedded": 25,
+  "records_out": 64,
+  "complete": true,
+  "updated_at": "2026-09-09T20:28:42.117431+00:00"
+}

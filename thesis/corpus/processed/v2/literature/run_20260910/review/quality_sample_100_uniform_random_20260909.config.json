@@ -1,0 +1,28 @@
+{
+  "script": "thesis_corpus.sample_v2_expressions",
+  "corpus": "literature",
+  "run_tag": "20260910",
+  "method": "uniform_random",
+  "n_requested": 100,
+  "n_sampled": 100,
+  "seed": 42,
+  "source_path": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/v2/literature/run_20260910/expressions_v2.jsonl",
+  "source_sha256": "3d72a195955c932b0f0064add72e0eba982831fc6f30f27604527f81b185c5b5",
+  "source_rows": 769,
+  "documents_in_source": [
+    "2008-the-oxford-handbook-of-new-religious-movements-1",
+    "2016-legal-cases-new-religious-movements-and-minority-faiths",
+    "2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other"
+  ],
+  "documents_in_source_count": 3,
+  "documents_total_in_corpus": 57,
+  "run_complete": false,
+  "per_document_row_counts_in_source": {
+    "2008-the-oxford-handbook-of-new-religious-movements-1": 522,
+    "2016-legal-cases-new-religious-movements-and-minority-faiths": 2,
+    "2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other": 245
+  },
+  "git_commit": "d69e344b61fa356ca95a25dc37339c03e085fb2d",
+  "generated_at": "2026-09-09T09:38:40.848570+00:00",
+  "note": "No automated judgement beyond the run's own judge_* columns (already model-judged, not human review); manual review columns are blank."
+}

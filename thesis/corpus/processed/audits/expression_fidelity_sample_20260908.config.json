@@ -1,0 +1,108 @@
+{
+  "script": "audit_expression_fidelity_sample.py",
+  "script_version": "1.0.0",
+  "git_commit": "46d0d4102d1846d31fd0a42f292a6955d92251b6",
+  "generated_at": "2026-09-08T18:20:11.111350+00:00",
+  "seed": 42,
+  "requested_allocation": {
+    "literature": 34,
+    "miviludes": 33,
+    "interviews": 33
+  },
+  "achieved_allocation": {
+    "literature": 34,
+    "miviludes": 33,
+    "interviews": 33
+  },
+  "total_sample_size": 100,
+  "raw_archive_paths": {
+    "literature": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/literature/criterion_expressions.jsonl",
+    "miviludes": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/miviludes/criterion_expressions.jsonl",
+    "interviews": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/interviews/criterion_expressions.jsonl"
+  },
+  "diagnostics_by_source": {
+    "literature": {
+      "eligible_population": 39236,
+      "total_raw_records": 39236,
+      "population_by_status": {
+        "asserted": 38621,
+        "contested": 353,
+        "qualified": 24,
+        "speculative": 201,
+        "negated": 37
+      },
+      "requested_allocation": 34,
+      "achieved_allocation": 34,
+      "sample_by_status": {
+        "asserted": 30,
+        "contested": 1,
+        "negated": 1,
+        "qualified": 1,
+        "speculative": 1
+      }
+    },
+    "miviludes": {
+      "eligible_population": 914,
+      "total_raw_records": 914,
+      "population_by_status": {
+        "asserted": 910,
+        "contested": 2,
+        "speculative": 2
+      },
+      "requested_allocation": 33,
+      "achieved_allocation": 33,
+      "sample_by_status": {
+        "asserted": 31,
+        "contested": 1,
+        "speculative": 1
+      }
+    },
+    "interviews": {
+      "eligible_population": 230,
+      "total_raw_records": 230,
+      "population_by_status": {
+        "asserted": 211,
+        "negated": 6,
+        "speculative": 8,
+        "contested": 5
+      },
+      "requested_allocation": 33,
+      "achieved_allocation": 33,
+      "sample_by_status": {
+        "asserted": 28,
+        "contested": 1,
+        "negated": 2,
+        "speculative": 2
+      }
+    }
+  },
+  "review_sheet_columns": [
+    "sample_id",
+    "source_dataset",
+    "document_id",
+    "chunk_index",
+    "embedding_text",
+    "context_window",
+    "attribution",
+    "claim_mode",
+    "epistemic_status",
+    "raw_archive_path",
+    "raw_archive_line",
+    "expression_faithful",
+    "attribution_correct",
+    "claim_mode_correct",
+    "epistemic_status_correct",
+    "recommended_epistemic_status",
+    "reviewer_notes"
+  ],
+  "manual_review_columns_left_blank": [
+    "expression_faithful",
+    "attribution_correct",
+    "claim_mode_correct",
+    "epistemic_status_correct",
+    "recommended_epistemic_status",
+    "reviewer_notes"
+  ],
+  "csv_path": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/audits/expression_fidelity_sample_20260908.csv",
+  "readme_path": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/audits/expression_fidelity_sample_20260908.README.md"
+}

@@ -92,6 +92,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+from pathlib import Path
 
 import numpy as np
 
@@ -136,7 +137,11 @@ def corpus_centroid_for_mode(shared_space: gac.SharedSpace, corpus: str, mode: s
     reduced_literature recomputes from the 2,500-point subsample."""
     if mode == "full" or corpus != "literature":
         return per_source[corpus]["centroid"]
-    lit_points, lit_vectors = gac.load_reduced_literature_points()
+    # Sibling of whichever embedding_space.jsonl this run loaded -- never a
+    # hardcoded v1 path (see geometric_analysis_common.corpus_vectors_and_points'
+    # identical fix; kept in sync with it deliberately).
+    balanced_sample_path = shared_space.input_path.parent / "literature_balanced_sample.jsonl"
+    lit_points, lit_vectors = gac.load_reduced_literature_points(balanced_sample_path)
     return lit_vectors.mean(axis=0)
 
 
@@ -211,6 +216,10 @@ def validate_equal_n_dispersion_ci95(rows: list[dict], atol: float = CI95_VALIDA
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, default=None)
+    parser.add_argument("--shared-space-dir", type=Path, default=None,
+                         help="Use a different pooled space (e.g. processed/shared_space_v2/) instead of v1's "
+                              "processed/shared_space/; also switches the run-output root to a sibling "
+                              "processed/analysis_v2/ directory so v1 and v2 runs are never mixed.")
     parser.add_argument("--seed", type=int, default=gac.DEFAULT_SEED)
     parser.add_argument("--bootstrap-reps", type=int, default=gac.DEFAULT_BOOTSTRAP_REPS)
     parser.add_argument(
@@ -225,11 +234,12 @@ def main() -> None:
     args = parser.parse_args()
     epistemic_filter = gac.EPISTEMIC_STATUS_FILTER_CHOICES[args.epistemic_status_filter]
 
-    logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
-    shared_space = gac.load_shared_space()
+    embedding_space_path, interview_prototypes_path, analysis_root = gac.resolve_space_paths(args.shared_space_dir)
+    logger.info("Loading %s ...", embedding_space_path)
+    shared_space = gac.load_shared_space(embedding_space_path)
     logger.info("Loaded %d points, %d-d vectors", len(shared_space.points), shared_space.vectors.shape[1])
 
-    run_id, run_dir = gac.get_or_create_run_dir(args.run_id)
+    run_id, run_dir = gac.get_or_create_run_dir(args.run_id, analysis_root)
     gac.init_run_manifest(run_dir, shared_space, defaults={"seed": args.seed})
     gac.update_run_manifest(run_dir, MODULE_NAME, "running")
     out_dir = gac.module_run_dir(run_dir, MODULE_NAME)
@@ -444,8 +454,9 @@ def main() -> None:
         source_centroid_nearest_rows = []
         diversity_audit_rows = []
         context_resolutions: dict[str, gac.ContextWindowResolution] = {}
+        archive_paths = gac.resolve_archive_paths(shared_space)
         for corpus in gac.EXPRESSION_CORPORA:
-            context_resolutions[corpus] = gac.resolve_context_windows(shared_space, corpus)
+            context_resolutions[corpus] = gac.resolve_context_windows(shared_space, corpus, archive_paths[corpus])
             if corpus == "miviludes":
                 logger.info(
                     "MIVILUDES source_centroid_nearest_expressions rows: document provenance "

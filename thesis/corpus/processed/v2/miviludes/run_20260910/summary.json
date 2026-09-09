@@ -1,0 +1,52 @@
+{
+  "corpus": "miviludes",
+  "run_tag": "20260910",
+  "model": "qwen3:4b",
+  "judge_model": "qwen3:8b",
+  "documents": {
+    "done": 2
+  },
+  "chunks": {
+    "total": 126,
+    "skipped_pre_screen": 2,
+    "called": 124,
+    "model_failed": 1,
+    "model_failure_rate": 0.0081
+  },
+  "candidates": {
+    "emitted": 200,
+    "screen_retained": 119,
+    "screen_rejected": 81,
+    "reconciled": true,
+    "judge_rejected_or_failed": 11,
+    "final": 108,
+    "judge_reconciled": true,
+    "final_per_called_chunk": 0.871
+  },
+  "screen_rejection_codes": {
+    "validation_flag_false": 27,
+    "not_verbatim": 23,
+    "short_fragment_no_referent": 11,
+    "duplicate_or_overlapping_span": 9,
+    "heading_or_scaffold": 5,
+    "too_long": 4,
+    "interviewer_utterance": 1,
+    "dangling_boundary": 1
+  },
+  "judge": {
+    "judged_ok": 119,
+    "judge_failed": 0,
+    "acceptance_rate": 0.9076,
+    "extraction_issue_counts": {
+      "none": 114,
+      "heading_or_name": 3,
+      "off_topic": 2
+    },
+    "label_disagreements": {
+      "attribution_correct": 1,
+      "epistemic_status_correct": 1
+    },
+    "better_span_pointed": 6
+  },
+  "updated_at": "2026-09-09T02:50:28.640293+00:00"
+}

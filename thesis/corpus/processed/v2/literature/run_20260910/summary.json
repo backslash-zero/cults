@@ -1,0 +1,62 @@
+{
+  "corpus": "literature",
+  "run_tag": "20260910",
+  "model": "qwen3:4b",
+  "judge_model": "qwen3:8b",
+  "documents": {
+    "done": 57
+  },
+  "chunks": {
+    "total": 6260,
+    "skipped_pre_screen": 282,
+    "called": 5978,
+    "model_failed": 11,
+    "model_failure_rate": 0.0018
+  },
+  "candidates": {
+    "emitted": 10699,
+    "screen_retained": 6034,
+    "screen_rejected": 4665,
+    "reconciled": true,
+    "judge_rejected_or_failed": 293,
+    "final": 5741,
+    "judge_reconciled": true,
+    "final_per_called_chunk": 0.96
+  },
+  "screen_rejection_codes": {
+    "validation_flag_false": 2174,
+    "not_verbatim": 719,
+    "short_fragment_no_referent": 667,
+    "duplicate_or_overlapping_span": 541,
+    "exceeds_per_chunk_cap": 263,
+    "heading_or_scaffold": 82,
+    "dangling_boundary": 80,
+    "citation_dominated": 40,
+    "standalone_personal_name": 32,
+    "span_cuts_word": 31,
+    "too_long": 22,
+    "integrity_ligature_substitution": 10,
+    "interviewer_utterance": 2,
+    "meta_discourse": 2
+  },
+  "judge": {
+    "judged_ok": 6034,
+    "judge_failed": 0,
+    "acceptance_rate": 0.9514,
+    "extraction_issue_counts": {
+      "none": 5920,
+      "contextless_fragment": 60,
+      "heading_or_name": 48,
+      "off_topic": 2,
+      "truncated": 2,
+      "ocr_or_encoding_error": 2
+    },
+    "label_disagreements": {
+      "epistemic_status_correct": 67,
+      "attribution_correct": 62,
+      "claim_mode_correct": 29
+    },
+    "better_span_pointed": 161
+  },
+  "updated_at": "2026-09-09T19:47:00.387057+00:00"
+}

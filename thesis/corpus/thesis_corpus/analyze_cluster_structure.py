@@ -54,6 +54,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+from pathlib import Path
 
 import numpy as np
 from sklearn.metrics import silhouette_score
@@ -183,6 +184,10 @@ fit_and_save_umap = gac.fit_and_save_umap
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, default=None)
+    parser.add_argument("--shared-space-dir", type=Path, default=None,
+                         help="Use a different pooled space (e.g. processed/shared_space_v2/) instead of v1's "
+                              "processed/shared_space/; also switches the run-output root to a sibling "
+                              "processed/analysis_v2/ directory so v1 and v2 runs are never mixed.")
     parser.add_argument("--seed", type=int, default=gac.DEFAULT_SEED)
     parser.add_argument("--bootstrap-reps", type=int, default=gac.DEFAULT_BOOTSTRAP_REPS)
     parser.add_argument("--point-sample-size", type=int, default=gac.DEFAULT_POINT_SAMPLE_SIZE)
@@ -205,11 +210,12 @@ def main() -> None:
     args = parser.parse_args()
     epistemic_filter = gac.EPISTEMIC_STATUS_FILTER_CHOICES[args.epistemic_status_filter]
 
-    logger.info("Loading %s ...", gac.EMBEDDING_SPACE_PATH)
-    shared_space = gac.load_shared_space()
+    embedding_space_path, interview_prototypes_path, analysis_root = gac.resolve_space_paths(args.shared_space_dir)
+    logger.info("Loading %s ...", embedding_space_path)
+    shared_space = gac.load_shared_space(embedding_space_path)
     logger.info("Loaded %d points, %d-d vectors", len(shared_space.points), shared_space.vectors.shape[1])
 
-    run_id, run_dir = gac.get_or_create_run_dir(args.run_id)
+    run_id, run_dir = gac.get_or_create_run_dir(args.run_id, analysis_root)
     gac.init_run_manifest(run_dir, shared_space, defaults={
         "seed": args.seed, "bootstrap_reps": args.bootstrap_reps, "point_sample_size": args.point_sample_size,
     })
@@ -272,9 +278,9 @@ def main() -> None:
         # build_shared_space.py's pooling filter and have no position in the
         # ordinary pooled space at all, so there's nothing to look up there.
         prototypes_points_vectors = None
-        if gac.INTERVIEW_PROTOTYPES_PATH.exists():
+        if interview_prototypes_path.exists():
             proto_points, proto_vectors = [], []
-            with open(gac.INTERVIEW_PROTOTYPES_PATH, encoding="utf-8") as f:
+            with open(interview_prototypes_path, encoding="utf-8") as f:
                 for line in f:
                     line = line.strip()
                     if not line:
@@ -294,7 +300,7 @@ def main() -> None:
             logger.warning(
                 "%s not found -- skipping the with_interview_prototypes UMAP population "
                 "(run build_interview_prototype_layer.py first if you want it).",
-                gac.INTERVIEW_PROTOTYPES_PATH,
+                interview_prototypes_path,
             )
 
         for n_neighbors, min_dist in param_combinations:
