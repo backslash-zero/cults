@@ -1,0 +1,32 @@
+{
+  "judge_model": "qwen3:8b",
+  "judge_version": "1.0.0-pilot",
+  "input_expressions": 32,
+  "judged_ok": 32,
+  "judge_failed": 0,
+  "accepted": 31,
+  "rejected_by_judge": 1,
+  "reconciled": true,
+  "acceptance_rate": 0.9688,
+  "extraction_issue_counts": {
+    "none": 32
+  },
+  "false_quality_fields": {
+    "cult_relevant": 1
+  },
+  "label_disagreements": {},
+  "better_span_pointed": 0,
+  "better_span_verbatim": 0,
+  "by_stratum": {
+    "forced_audit_regression": {
+      "input": 11,
+      "accepted": 10
+    },
+    "random": {
+      "input": 21,
+      "accepted": 21
+    }
+  },
+  "started_at": "2026-09-09T00:39:52.988776+00:00",
+  "finished_at": "2026-09-09T00:41:06.500145+00:00"
+}

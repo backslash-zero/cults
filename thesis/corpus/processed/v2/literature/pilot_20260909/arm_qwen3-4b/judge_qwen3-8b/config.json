@@ -1,0 +1,20 @@
+{
+  "script": "thesis_corpus.judge_v2",
+  "judge_version": "1.0.0-pilot",
+  "judge_model": "qwen3:8b",
+  "judge_prompt_sha256": "7778d0e19ab60a5e5d6ad3eac937020fd43feace0dab2859c6b1bc32418e8d7d",
+  "ollama_host": "http://127.0.0.1:11434",
+  "options": {
+    "temperature": 0,
+    "seed": 42,
+    "num_ctx": 8192
+  },
+  "structured_output_modes_observed": {
+    "json_schema": 32
+  },
+  "decision_rule": "accept iff faithful, self_contained, cult_relevant, textually_intelligible, atomic are all true and extraction_issue == 'none'; label disagreements and better_span are recorded as judge_flags, never applied",
+  "input_expressions_sha256": "c0d97e777f7c8f5212007ec0b3fb3b4525882cc62096167296de4e16340c9135",
+  "git_commit": "4e4494859c3f00d210ee27a451ab2209d0025203",
+  "started_at": "2026-09-09T00:39:52.988776+00:00",
+  "finished_at": "2026-09-09T00:41:06.500145+00:00"
+}
