@@ -41,12 +41,28 @@ analysis run listed below stay on disk unmodified, as historical/comparison
 record, per the same never-modify-the-source discipline this file already
 documents for the archives themselves.
 
-**v2 status**: full-corpus extraction (`thesis_corpus.extract_v2`, checkpointed
-per document, resumable) is running against all three corpora as of
-2026-09-09; not yet complete, not yet embedded, and not yet pooled into a new
-shared space. Nothing in this document should be read as describing v2's
-corpus until that rebuild happens and this file is regenerated against it —
-consistent with this file's own opening instruction to regenerate after any
+**v2 status (2026-09-10)**: extraction, embedding, and pooling are done for
+all three corpora. `processed/shared_space_v2/embedding_space.jsonl` holds
+10,646 points, k=389 (95.0% variance): literature 5,741, MIVILUDES 108,
+interviews 64, MIVILUDES criteria 17, concept backbone 3,000, structural
+concepts 1,500, ConceptNet concepts 195, emergent entities 21 (v2's whole
+corpus only has 21 unique named-entity mentions total, so
+`--entity-anchor-min-mentions` was set to 1 for this build rather than v1's
+3 — otherwise only 1 entity would have survived). The interview prototype
+layer (`processed/shared_space_v2/interview_prototypes.jsonl`) carries the
+same 25 manually-reviewed exemplar selections as v1 — ported, not redone,
+since most no longer appear verbatim in v2's stricter extraction — projected
+through the new v2 transform instead of v1's. v1 confirmed byte-identical
+throughout (checked before and after every build step).
+
+**Not yet done for v2**: none of the geometric-analysis toolkit's 9 modules
+(`analyze_global_structure` etc.) have been run against `shared_space_v2`
+yet — they still default to v1's `processed/shared_space/` and need the same
+kind of path parameterization `build_shared_space.py`/
+`build_interview_prototype_layer.py` just got. Nothing in the rest of this
+document below should be read as describing v2's corpus until that toolkit
+rerun happens and this file is regenerated against it — consistent with
+this file's own opening instruction to regenerate after any
 pipeline rerun.
 
 ## Project Goals & Hypothesis

@@ -117,6 +117,13 @@ files under processed/.
 Usage (from thesis/corpus/):
     python -m thesis_corpus.build_shared_space
     python -m thesis_corpus.build_shared_space --entity-anchor-min-mentions 5
+
+    # v2 (a thesis_corpus.extract_v2 + embed_v2 run for all three corpora):
+    # writes to processed/shared_space_v2/, never touches v1's own archives
+    # or processed/shared_space/. --min-expression-words 0 because v2 already
+    # screens short fragments at extraction time with a referent test a bare
+    # word-count floor can't express (see load_corpus_points_v2's docstring).
+    python -m thesis_corpus.build_shared_space --run-tag 20260910 --min-expression-words 0
 """
 from __future__ import annotations
 
@@ -347,6 +354,127 @@ def load_corpus_points(
                 "vector": vector,
             })
     return points, {"duplicates": duplicates_removed, "short_fragments": short_fragments_removed}
+
+
+def load_corpus_points_v2(
+    corpus_name: str, path: Path, min_expression_words: int,
+) -> tuple[list[dict], dict[str, int]]:
+    """v2-archive counterpart of load_corpus_points, for a run produced by
+    thesis_corpus.extract_v2 (literature/interviews only -- MIVILUDES needs
+    load_miviludes_points_v2 below for its translation join). Unlike v1,
+    no exact-duplicate-within-document filtering: v2's own screen already
+    rejects exact duplicates within a chunk (S14); an identical short
+    named-entity mention recurring across two different chunks of the same
+    document (e.g. "la Scientologie" said twice) is real signal, not an
+    extraction artefact, so it's kept.
+
+    `min_expression_words` is accepted as a parameter (not hardcoded)
+    because v2 archives already screen short fragments at extraction time
+    with a referent test a bare word-count floor can't express (see
+    screen_v2.py's S7 -- "Tomato cult!" is 2 words but meaningful); v2 call
+    sites are expected to pass 0 so this never double-filters.
+
+    Returns (points, removal_counts) -- same {"duplicates", "short_fragments"}
+    shape as load_corpus_points for uniform logging; "duplicates" is
+    always 0 here."""
+    points = []
+    response_rank_by_document: dict[str, int] = defaultdict(int)
+    for_interviews = corpus_name == "interviews"
+    short_fragments_removed = 0
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            item = json.loads(line)
+            document_id = item["document_id"]
+            text = item["embedding_text"]
+            key = f"{document_id}:{item['chunk_index']}"
+
+            response_rank = None
+            if for_interviews:
+                response_rank_by_document[document_id] += 1
+                response_rank = response_rank_by_document[document_id]
+
+            if len(text.split()) < min_expression_words:
+                short_fragments_removed += 1
+                continue
+
+            points.append({
+                "source_dataset": corpus_name,
+                "point_role": "expression",
+                "key": key,
+                "label": text,
+                "label_fr": None,
+                "attribution": item.get("attribution"),
+                "claim_mode": item.get("claim_mode"),
+                "epistemic_status": item.get("epistemic_status"),
+                "response_rank": response_rank,
+                "vector": item["embedding_vector"],
+            })
+    return points, {"duplicates": 0, "short_fragments": short_fragments_removed}
+
+
+def load_miviludes_points_v2(
+    path: Path, translations: dict[str, dict], min_expression_words: int,
+) -> tuple[list[dict], dict[str, int]]:
+    """v2 MIVILUDES counterpart of load_corpus_points: same
+    English-translation-as-primary-vector policy as v1 (closing the same
+    measured language-asymmetry gap, Methods.tex "Language asymmetry"),
+    keyed on v2's own occurrence numbering (rebuilt here from the v2
+    archive's own read order -- independent of, and not comparable to,
+    v1's numbering over a different set of expressions). No
+    duplicate-within-document filter, same reasoning as
+    load_corpus_points_v2."""
+    points = []
+    occurrence_by_chunk: dict[tuple[str, int], int] = defaultdict(int)
+    short_fragments_removed = 0
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            item = json.loads(line)
+            document_id = item["document_id"]
+            chunk_index = item["chunk_index"]
+            text = item["embedding_text"]
+            key = f"{document_id}:{chunk_index}"
+            chunk = (document_id, chunk_index)
+            translation_key = f"{document_id}:{chunk_index}:{occurrence_by_chunk[chunk]}"
+            occurrence_by_chunk[chunk] += 1
+
+            if len(text.split()) < min_expression_words:
+                short_fragments_removed += 1
+                continue
+
+            translation = translations.get(translation_key)
+            if translation is None:
+                raise SystemExit(
+                    f"Missing translation for v2 MIVILUDES expression {translation_key} -- "
+                    "the v2 translations file doesn't cover every pooled expression. Rerun "
+                    "translate_miviludes_expressions.py against the v2 archive."
+                )
+            if translation["text_fr"] != text:
+                raise SystemExit(
+                    f"Translation mismatch for v2 MIVILUDES expression {translation_key}: "
+                    f"archive text {text!r} != translation's text_fr {translation['text_fr']!r}. "
+                    "The occurrence-based join has drifted out of sync with the v2 archive -- "
+                    "do not trust this pipeline run."
+                )
+
+            points.append({
+                "source_dataset": "miviludes",
+                "point_role": "expression",
+                "key": key,
+                "label": translation["text_en"],
+                "label_fr": translation["text_fr"],
+                "attribution": item.get("attribution"),
+                "claim_mode": item.get("claim_mode"),
+                "epistemic_status": item.get("epistemic_status"),
+                "response_rank": None,
+                "vector": translation["embedding_vector_en"],
+            })
+    return points, {"duplicates": 0, "short_fragments": short_fragments_removed}
 
 
 def _report_translation_fidelity(label: str, similarities: list[tuple[str, float]]) -> None:
@@ -627,26 +755,67 @@ def main() -> None:
     parser.add_argument("--variance-threshold", type=float, default=VARIANCE_THRESHOLD)
     parser.add_argument("--entity-anchor-min-mentions", type=int, default=ENTITY_ANCHOR_MIN_MENTIONS,
                          help="Minimum times an entity anchor must be mentioned across all corpora to get its own point.")
+    parser.add_argument("--run-tag", default=None,
+                         help="If given, pool the v2 extraction run with this tag instead of v1: reads "
+                              "processed/v2/<corpus>/run_<tag>/criterion_expressions.jsonl for each corpus and "
+                              "processed/v2/miviludes/run_<tag>/expression_translations_embedded.jsonl for the "
+                              "MIVILUDES translation join, and defaults --output-dir to "
+                              "processed/shared_space_v2/ instead of processed/shared_space/. v1's own archives "
+                              "and processed/shared_space/ are never opened for writing when this is set.")
+    parser.add_argument("--output-dir", type=Path, default=None,
+                         help="Override the output directory (default: processed/shared_space/, or "
+                              "processed/shared_space_v2/ if --run-tag is given).")
+    parser.add_argument("--min-expression-words", type=int, default=MIN_EXPRESSION_WORDS,
+                         help="Pooling-time short-expression filter (word count). v1 default is 5. v2 archives "
+                              "already screen short fragments at extraction time with a referent test a bare "
+                              "word-count floor can't express -- pass 0 for a v2 run so a short but meaningful "
+                              "item like 'Tomato cult!' isn't double-filtered.")
     args = parser.parse_args()
 
-    if not MIVILUDES_EXPRESSION_TRANSLATIONS_PATH.exists():
+    if args.run_tag:
+        v2_root = PROCESSED_DIR / "v2"
+        corpus_archives = {
+            corpus: v2_root / corpus / f"run_{args.run_tag}" / "criterion_expressions.jsonl"
+            for corpus in CORPUS_ARCHIVES
+        }
+        miviludes_translations_path = v2_root / "miviludes" / f"run_{args.run_tag}" / "expression_translations_embedded.jsonl"
+        output_dir = args.output_dir or (SHARED_SPACE_DIR.parent / "shared_space_v2")
+    else:
+        corpus_archives = CORPUS_ARCHIVES
+        miviludes_translations_path = MIVILUDES_EXPRESSION_TRANSLATIONS_PATH
+        output_dir = args.output_dir or SHARED_SPACE_DIR
+
+    output_path = output_dir / "embedding_space.jsonl"
+    variance_csv_path = output_dir / "variance_curve.csv"
+    variance_plot_path = output_dir / "variance_curve.png"
+    variance_json_path = output_dir / "variance_curve.json"
+    pca_transform_path = output_dir / "pca_transform.joblib"
+    pca_transform_metadata_path = output_dir / "pca_transform_metadata.json"
+
+    if not miviludes_translations_path.exists():
         raise SystemExit(
-            f"Missing: {MIVILUDES_EXPRESSION_TRANSLATIONS_PATH} -- run "
-            "translate_miviludes_expressions.py (on the Ollama machine), then "
-            "copy the output back to this path."
+            f"Missing: {miviludes_translations_path} -- run "
+            "translate_miviludes_expressions.py (on the Ollama machine, pointed at the matching "
+            "--source archive), then copy the output back to this path."
         )
-    miviludes_translations = load_miviludes_translations(MIVILUDES_EXPRESSION_TRANSLATIONS_PATH)
+    miviludes_translations = load_miviludes_translations(miviludes_translations_path)
     check_miviludes_expression_translation_fidelity(miviludes_translations)
 
     points: list[dict] = []
     counts: dict[str, int] = {}
     removed: dict[str, dict[str, int]] = {}
 
-    for corpus_name, path in CORPUS_ARCHIVES.items():
+    for corpus_name, path in corpus_archives.items():
         if not path.exists():
             raise SystemExit(f"Missing corpus archive: {path}")
-        translations = miviludes_translations if corpus_name == "miviludes" else None
-        new_points, removal_counts = load_corpus_points(corpus_name, path, translations)
+        if args.run_tag:
+            if corpus_name == "miviludes":
+                new_points, removal_counts = load_miviludes_points_v2(path, miviludes_translations, args.min_expression_words)
+            else:
+                new_points, removal_counts = load_corpus_points_v2(corpus_name, path, args.min_expression_words)
+        else:
+            translations = miviludes_translations if corpus_name == "miviludes" else None
+            new_points, removal_counts = load_corpus_points(corpus_name, path, translations)
         counts[corpus_name] = len(new_points)
         removed[corpus_name] = removal_counts
         points.extend(new_points)
@@ -656,7 +825,7 @@ def main() -> None:
     total_short = sum(r["short_fragments"] for r in removed.values())
     print(f"\nFiltered during pooling: {total_duplicates} exact-duplicate expressions removed "
           f"(per document, keeping first occurrence), {total_short} short fragments removed "
-          f"(under {MIN_EXPRESSION_WORDS} words). Per corpus: {removed}")
+          f"(under {args.min_expression_words} words). Per corpus: {removed}")
 
     if not MIVILUDES_CRITERIA_PATH.exists():
         raise SystemExit(f"Missing: {MIVILUDES_CRITERIA_PATH}")
@@ -695,7 +864,7 @@ def main() -> None:
     counts["conceptnet_concepts"] = len(conceptnet_concept_points)
     points.extend(conceptnet_concept_points)
 
-    emergent_entity_points = load_emergent_entities(CORPUS_ARCHIVES, args.entity_anchor_min_mentions)
+    emergent_entity_points = load_emergent_entities(corpus_archives, args.entity_anchor_min_mentions)
     counts["emergent_entities"] = len(emergent_entity_points)
     points.extend(emergent_entity_points)
 
@@ -722,8 +891,8 @@ def main() -> None:
     variance_at_k = float(cumulative_variance[k - 1])
     logger.info("%.1f%% cumulative variance at k=%d (threshold: %.0f%%)", variance_at_k * 100, k, args.variance_threshold * 100)
 
-    SHARED_SPACE_DIR.mkdir(parents=True, exist_ok=True)
-    with open(VARIANCE_CSV_PATH, "w", encoding="utf-8") as f:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    with open(variance_csv_path, "w", encoding="utf-8") as f:
         f.write("n_components,cumulative_variance\n")
         for i, v in enumerate(cumulative_variance, 1):
             f.write(f"{i},{v}\n")
@@ -738,10 +907,10 @@ def main() -> None:
     plt.title("Shared cross-corpus PCA: explained variance")
     plt.legend()
     plt.tight_layout()
-    plt.savefig(VARIANCE_PLOT_PATH, dpi=150)
+    plt.savefig(variance_plot_path, dpi=150)
     plt.close()
 
-    VARIANCE_JSON_PATH.write_text(
+    variance_json_path.write_text(
         json.dumps({
             "curve": [float(v) for v in cumulative_variance],
             "chosen_k": k,
@@ -753,8 +922,8 @@ def main() -> None:
 
     shared_coords = full_coords[:, :k]
 
-    logger.info("Writing %s ...", OUTPUT_PATH)
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+    logger.info("Writing %s ...", output_path)
+    with open(output_path, "w", encoding="utf-8") as f:
         for p, coord in zip(points, shared_coords):
             out = {
                 "source_dataset": p["source_dataset"],
@@ -774,10 +943,10 @@ def main() -> None:
 
     sanity_checks(points, shared_coords)
 
-    logger.info("Persisting the fitted StandardScaler + PCA (%s) ...", PCA_TRANSFORM_PATH)
-    output_sha256 = _sha256_file(OUTPUT_PATH)
-    joblib.dump({"scaler": scaler, "pca": full_pca}, PCA_TRANSFORM_PATH)
-    PCA_TRANSFORM_METADATA_PATH.write_text(
+    logger.info("Persisting the fitted StandardScaler + PCA (%s) ...", pca_transform_path)
+    output_sha256 = _sha256_file(output_path)
+    joblib.dump({"scaler": scaler, "pca": full_pca}, pca_transform_path)
+    pca_transform_metadata_path.write_text(
         json.dumps({
             "k": k,
             "embedding_dim": EMBEDDING_DIM,
@@ -792,9 +961,9 @@ def main() -> None:
     )
 
     print(f"\nDone. {len(points)} points, k={k} ({variance_at_k*100:.1f}% variance).")
-    print(f"Output: {OUTPUT_PATH}")
-    print(f"Variance curve: {VARIANCE_CSV_PATH}, {VARIANCE_PLOT_PATH}, {VARIANCE_JSON_PATH}")
-    print(f"Persisted transform: {PCA_TRANSFORM_PATH}, {PCA_TRANSFORM_METADATA_PATH}")
+    print(f"Output: {output_path}")
+    print(f"Variance curve: {variance_csv_path}, {variance_plot_path}, {variance_json_path}")
+    print(f"Persisted transform: {pca_transform_path}, {pca_transform_metadata_path}")
 
 
 if __name__ == "__main__":

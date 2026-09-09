@@ -126,13 +126,30 @@ def resolve_row(row: dict, archive_items: list[dict], archive_keys: dict[str, in
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--input", type=type(gac.INITIAL_EXEMPLARS_CSV_PATH), default=gac.INITIAL_EXEMPLARS_CSV_PATH)
+    parser.add_argument("--input", type=type(gac.INITIAL_EXEMPLARS_CSV_PATH), default=gac.INITIAL_EXEMPLARS_CSV_PATH,
+                         help="initial_exemplars.csv -- the manually-reviewed exemplar selections. Always the "
+                              "same file regardless of --transform/--output below: the reviewed quotes and the "
+                              "raw archive they're resolved against (below) don't change between a v1 and a v2 "
+                              "shared space, only which fitted PCA transform they get projected through.")
     parser.add_argument("--output", type=type(gac.INTERVIEW_PROTOTYPES_PATH), default=gac.INTERVIEW_PROTOTYPES_PATH)
+    parser.add_argument("--transform", type=type(gac.PCA_TRANSFORM_PATH), default=gac.PCA_TRANSFORM_PATH,
+                         help="Persisted StandardScaler+PCA to project through (default: v1's, at "
+                              "processed/shared_space/pca_transform.joblib). Pass "
+                              "processed/shared_space_v2/pca_transform.joblib to place these same "
+                              "manually-reviewed exemplars into the v2 shared space instead -- this reuses the "
+                              "existing human-reviewed selections and their already-computed embeddings "
+                              "unchanged (see resolve_row below, still resolved against the frozen v1 raw "
+                              "interview archive either way); only the coordinate system they land in changes.")
+    parser.add_argument("--transform-metadata", type=type(gac.PCA_TRANSFORM_METADATA_PATH),
+                         default=gac.PCA_TRANSFORM_METADATA_PATH,
+                         help="Metadata (k, etc.) for --transform above -- must be the sidecar produced by the "
+                              "same build_shared_space.py run that wrote --transform, never mixed with a "
+                              "different run's transform.")
     args = parser.parse_args()
 
-    if not gac.PCA_TRANSFORM_PATH.exists():
+    if not args.transform.exists():
         raise SystemExit(
-            f"No persisted transform at {gac.PCA_TRANSFORM_PATH} -- run "
+            f"No persisted transform at {args.transform} -- run "
             "`python -m thesis_corpus.build_shared_space` first (it now persists the fitted "
             "StandardScaler+PCA alongside embedding_space.jsonl)."
         )
@@ -148,14 +165,14 @@ def main() -> None:
     archive_items = gac.load_raw_archive(gac.INTERVIEWS_ARCHIVE_PATH)
     archive_keys = gac.derive_archive_expression_keys(archive_items)
 
-    logger.info("Loading persisted transform %s ...", gac.PCA_TRANSFORM_PATH)
+    logger.info("Loading persisted transform %s ...", args.transform)
     # joblib.load is pickle-based, but this file is generated locally by
     # build_shared_space.py in this same pipeline, never from an external or
     # untrusted source -- standard practice for persisting a fitted sklearn
     # transform.
-    transform = joblib.load(gac.PCA_TRANSFORM_PATH)
+    transform = joblib.load(args.transform)
     scaler, pca = transform["scaler"], transform["pca"]
-    metadata = json.loads(gac.PCA_TRANSFORM_METADATA_PATH.read_text(encoding="utf-8"))
+    metadata = json.loads(args.transform_metadata.read_text(encoding="utf-8"))
     k = metadata["k"]
 
     resolved_archive_items = []
