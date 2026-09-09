@@ -308,6 +308,34 @@ refuses to overwrite an existing arm, `--build-review` re-checks every
 retained row from scratch (span resolution, verbatim = embedding, no
 interviewer rows, no corruption, accounting) before writing anything.
 
+**Second-model judge (`judge_v2.py`)** — replaces the manual review the
+pilot was designed around (no reviewer time available). Every expression the
+deterministic screen retains is sent once more, with its full chunk and
+labels, to a *different* local model (default `qwen3:8b`) that answers the
+review sheet's questions (faithful, self-contained, cult-relevant,
+intelligible, atomic, three label checks, better-span, `extraction_issue`).
+A fixed code rule accepts only when all five quality booleans are true and
+`extraction_issue == none`; label disagreements and better-span pointers are
+recorded as `judge_flags`, never applied. Verdicts are stored and labelled
+model-judged; a judge failure rejects the expression (`judge_failed`), never
+lets it through unverified. The judge is an independent stage over an
+existing arm, one directory per judge model, so the model can be swapped
+without re-extracting:
+
+```
+python -m thesis_corpus.pilot_v2_literature --stage judge --date-tag <date> --judge-model qwen3:8b   # -> arm_*/judge_qwen3-8b/
+python -m thesis_corpus.pilot_v2_literature --stage judge --date-tag <date> --judge-model qwen3:4b   # -> arm_*/judge_qwen3-4b/ (alternative)
+python -m thesis_corpus.pilot_v2_literature --stage run ... --judge-model qwen3:8b                  # chains extraction + judge
+python -m thesis_corpus.pilot_v2_literature --stage build-review --date-tag <date> --judge judge_qwen3-8b --review-name review_judged
+python -m thesis_corpus.pilot_v2_evaluate --date-tag <date> --arm arm_qwen3-4b --judge judge_qwen3-8b --review-name review_judged
+```
+
+`pilot_v2_evaluate` writes `acceptance_report.{json,md}`: the approved
+criteria read from the judge's answers on the random stratum, yield versus
+v1, better-span/disagreement lists, and a deterministic check that each
+forced chunk's known v1 failure text did not reappear. It states what is
+model-judged; it is not human validation.
+
 Tests (stdlib `unittest`, no Ollama): `python -m unittest discover -s thesis_corpus/tests -t .`
 
 ## Stage 3: reduced/downsampled JSONL for analysis (`reduce_embeddings`)

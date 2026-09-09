@@ -20,6 +20,9 @@ Three stages, run in order:
                        rejected_candidates.jsonl, chunk_terms.jsonl,
                        model_failures.jsonl, summary.json}. Refuses to
                        overwrite an existing arm directory.
+  --stage judge        (Ollama host) second-model verification of every
+                       screen-retained expression -> arm_<tag>/judge_<model>/ (see judge_v2.py);
+                       --stage run --judge-model X chains it automatically.
   --stage build-review (Mac) independent re-check of every arm, then the
                        manual-review packet under pilot_<date>/review/.
 
@@ -114,7 +117,9 @@ REVIEW_PREFILLED_COLUMNS = [
     "review_id", "arm", "selection_stratum", "document_id", "chunk_index", "page_range", "candidate_rank",
     "expression_kind", "verbatim_expression", "embedding_text", "embedding_equals_verbatim", "context_window",
     "attribution", "claim_mode", "epistemic_status", "entity_anchors", "relevance_note", "screen_flags",
-    "chunk_integrity_score", "document_integrity_flag", "raw_archive_line",
+    "chunk_integrity_score", "document_integrity_flag", "raw_archive_line",    "judge_model", "judge_faithful", "judge_self_contained", "judge_cult_relevant", "judge_textually_intelligible",
+    "judge_atomic", "judge_attribution_correct", "judge_claim_mode_correct", "judge_epistemic_status_correct",
+    "judge_recommended_epistemic_status", "judge_better_span", "judge_extraction_issue", "judge_note",
 ]
 
 logger = logging.getLogger("thesis_corpus.pilot_v2_literature")
@@ -554,6 +559,9 @@ def stage_run(args, pilot_dir: Path) -> None:
     print(json.dumps({k: summary[k] for k in ("chunks", "candidates", "rejection_codes", "model_failure_count", "model_failure_rate")},
                      ensure_ascii=False, indent=2))
     print(f"Arm dir: {arm_dir}")
+    if getattr(args, "judge_model", None):
+        from thesis_corpus.judge_v2 import judge_arm
+        judge_arm(arm_dir, args.ollama_host, args.judge_model, timeout=max(args.timeout, 240.0))
 
 
 def build_summary(rows, todo, retained, rejected, failures, model) -> dict:
@@ -595,6 +603,65 @@ def build_summary(rows, todo, retained, rejected, failures, model) -> dict:
     }
 
 
+def resolve_arm(pilot_dir: Path, arm_name: str | None) -> Path:
+    arms = sorted(p for p in pilot_dir.glob("arm_*") if (p / "expressions_v2.jsonl").exists())
+    if arm_name:
+        arm = pilot_dir / arm_name
+        if not (arm / "expressions_v2.jsonl").exists():
+            raise SystemExit(f"{arm} has no expressions_v2.jsonl")
+        return arm
+    if len(arms) != 1:
+        raise SystemExit(f"Expected exactly one arm under {pilot_dir}, found {[a.name for a in arms]}; pass --arm")
+    return arms[0]
+
+
+SELECTED_JUDGE: str | None = None  # set from --judge; None = the single judge dir present, if any
+
+
+def judge_dir_for(arm: Path, judge_name: str | None = None) -> Path | None:
+    """The judge directory of an arm (None if the arm was not judged). With
+    several judge models run on the same arm, --judge picks one."""
+    judge_name = judge_name or SELECTED_JUDGE
+    if judge_name:
+        jd = arm / judge_name
+        if not (jd / "expressions_v2_judged.jsonl").exists():
+            raise SystemExit(f"{jd} has no expressions_v2_judged.jsonl")
+        return jd
+    dirs = sorted(p for p in arm.glob("judge_*") if (p / "expressions_v2_judged.jsonl").exists())
+    if len(dirs) > 1:
+        raise SystemExit(f"{arm} has several judge directories {[d.name for d in dirs]}; pass --judge <name>")
+    return dirs[0] if dirs else None
+
+
+def final_retained(arm: Path) -> tuple[list[dict], Path | None]:
+    """Judge-accepted expressions when the arm was judged, else the screen-retained ones."""
+    jd = judge_dir_for(arm)
+    if jd is None:
+        return read_jsonl(arm / "expressions_v2.jsonl"), None
+    return read_jsonl(jd / "expressions_v2_judged.jsonl"), jd
+
+
+def stage_judge(args, pilot_dir: Path) -> None:
+    from thesis_corpus.judge_v2 import DEFAULT_JUDGE_MODEL, judge_arm
+    arm = resolve_arm(pilot_dir, args.arm)
+    judge_arm(arm, args.ollama_host, args.judge_model or DEFAULT_JUDGE_MODEL, timeout=max(args.timeout, 240.0))
+
+
+def judge_columns(rec: dict | None) -> dict:
+    keys = ("judge_model", "judge_faithful", "judge_self_contained", "judge_cult_relevant", "judge_textually_intelligible",
+            "judge_atomic", "judge_attribution_correct", "judge_claim_mode_correct", "judge_epistemic_status_correct",
+            "judge_recommended_epistemic_status", "judge_better_span", "judge_extraction_issue", "judge_note")
+    if not rec or not rec.get("judge_verdict"):
+        return {k: "" for k in keys}
+    v = rec["judge_verdict"]
+    return {"judge_model": rec.get("judge_model", ""), "judge_faithful": v["faithful"], "judge_self_contained": v["self_contained"],
+            "judge_cult_relevant": v["cult_relevant"], "judge_textually_intelligible": v["textually_intelligible"],
+            "judge_atomic": v["atomic"], "judge_attribution_correct": v["attribution_correct"],
+            "judge_claim_mode_correct": v["claim_mode_correct"], "judge_epistemic_status_correct": v["epistemic_status_correct"],
+            "judge_recommended_epistemic_status": v["recommended_epistemic_status"], "judge_better_span": v["better_span"],
+            "judge_extraction_issue": v["extraction_issue"], "judge_note": v["reasoning_note"]}
+
+
 # ---------------------------------------------------------------------------
 # Stage: build-review (independent re-check + packet)
 # ---------------------------------------------------------------------------
@@ -602,9 +669,21 @@ def build_summary(rows, todo, retained, rejected, failures, model) -> dict:
 def validate_arm(arm_dir: Path, chunk_rows: list[dict]) -> dict:
     """Hard-zero conditions re-evaluated from scratch (never trusting the run)."""
     contexts = {(r["document_id"], r["chunk_index"]): rebuild_context(r) for r in chunk_rows}
-    retained = read_jsonl(arm_dir / "expressions_v2.jsonl")
+    screen_retained = read_jsonl(arm_dir / "expressions_v2.jsonl")
+    retained, jd = final_retained(arm_dir)
     rejected = read_jsonl(arm_dir / "rejected_candidates.jsonl")
     failures = read_jsonl(arm_dir / "model_failures.jsonl")
+    judge_problems: list[str] = []
+    if jd is not None:
+        js = json.loads((jd / "summary.json").read_text(encoding="utf-8"))
+        jrej = read_jsonl(jd / "judge_rejected.jsonl")
+        if js["input_expressions"] != len(screen_retained):
+            judge_problems.append(f"judge input {js['input_expressions']} != screen retained {len(screen_retained)}")
+        if len(retained) + len(jrej) != len(screen_retained):
+            judge_problems.append(f"judge accounting: {len(retained)} accepted + {len(jrej)} rejected != {len(screen_retained)}")
+        for rec in retained:
+            if not rec.get("judge_accepted"):
+                judge_problems.append(f"final row without judge acceptance: {rec['document_id']}:{rec['chunk_index']}#{rec['candidate_rank']}")
     responses = read_jsonl(arm_dir / "model_responses.jsonl")
     summary = json.loads((arm_dir / "summary.json").read_text(encoding="utf-8"))
     problems: list[str] = []
@@ -630,8 +709,9 @@ def validate_arm(arm_dir: Path, chunk_rows: list[dict]) -> dict:
     for resp in responses:
         if resp["error"] is None:
             emitted_from_responses += len(_parse_envelope(resp["raw_content"]).expressions)
-    if emitted_from_responses != len(retained) + len(rejected):
-        problems.append(f"accounting: {emitted_from_responses} emitted in responses != {len(retained)} retained + {len(rejected)} rejected")
+    if emitted_from_responses != len(screen_retained) + len(rejected):
+        problems.append(f"accounting: {emitted_from_responses} emitted in responses != {len(screen_retained)} screen-retained + {len(rejected)} rejected")
+    problems.extend(judge_problems)
     called = sum(1 for r in chunk_rows if not r["pre_screen_skip_code"])
     if len(responses) != called:
         problems.append(f"accounting: {len(responses)} responses != {called} called chunks")
@@ -641,7 +721,8 @@ def validate_arm(arm_dir: Path, chunk_rows: list[dict]) -> dict:
         if not any(r["document_id"] == f["document_id"] and r["chunk_index"] == f["chunk_index"] for r in responses):
             problems.append(f"failure {f} not in model_responses")
     return {
-        "arm": arm_dir.name, "retained": len(retained), "rejected": len(rejected), "responses": len(responses),
+        "arm": arm_dir.name, "screen_retained": len(screen_retained), "judge": jd.name if jd else None,
+        "final_retained": len(retained), "rejected": len(rejected), "responses": len(responses),
         "model_failures": len(failures), "model_failure_rate": summary.get("model_failure_rate"),
         "failure_rate_exceeds_review_blocker": (summary.get("model_failure_rate") or 0) > 0.03,
         "hard_zero_problems": problems,
@@ -654,7 +735,7 @@ def stage_build_review(args, pilot_dir: Path) -> None:
     arms = sorted(p for p in pilot_dir.glob("arm_*") if (p / "expressions_v2.jsonl").exists())
     if not arms:
         raise SystemExit(f"No arm_*/expressions_v2.jsonl under {pilot_dir} -- run --stage run first")
-    review_dir = pilot_dir / "review"
+    review_dir = pilot_dir / getattr(args, "review_name", "review")
     if review_dir.exists() and any(review_dir.iterdir()):
         raise SystemExit(f"Refusing to overwrite existing review packet {review_dir}")
 
@@ -675,7 +756,7 @@ def stage_build_review(args, pilot_dir: Path) -> None:
     arm_rows: dict[str, dict[tuple, list[dict]]] = {}
     for arm in arms:
         by_chunk: dict[tuple, list[dict]] = defaultdict(list)
-        for rec in read_jsonl(arm / "expressions_v2.jsonl"):
+        for rec in final_retained(arm)[0]:
             by_chunk[(rec["document_id"], rec["chunk_index"])].append(rec)
         arm_rows[arm.name] = by_chunk
 
@@ -700,6 +781,7 @@ def stage_build_review(args, pilot_dir: Path) -> None:
         rows_here: list[tuple[str, dict]] = []
         for item in v1_sample(v1_by_chunk.get(key, [])):
             rows_here.append(("v1", {
+                **judge_columns(None),
                 "candidate_rank": "", "expression_kind": "", "verbatim_expression": item["source_quote"],
                 "embedding_text": item["embedding_text"], "context_window": item["context_window"],
                 "attribution": item["attribution"], "claim_mode": item["claim_mode"], "epistemic_status": item["epistemic_status"],
@@ -718,8 +800,8 @@ def stage_build_review(args, pilot_dir: Path) -> None:
                     "verbatim_expression": rec["verbatim_expression"], "embedding_text": rec["embedding_text"],
                     "context_window": rec["context_window"], "attribution": rec["attribution"], "claim_mode": rec["claim_mode"],
                     "epistemic_status": rec["epistemic_status"], "entity_anchors": "; ".join(rec["entity_anchors"]),
-                    "relevance_note": rec["relevance_note"], "screen_flags": ";".join(rec["screen_flags"]),
-                    "raw_archive_line": "", "page_range": rec["page_range"],
+                    "relevance_note": rec["relevance_note"], "screen_flags": ";".join(rec["screen_flags"] + rec.get("judge_flags", [])),
+                    "raw_archive_line": "", "page_range": rec["page_range"], **judge_columns(rec),
                 }))
         for arm_label, payload in rows_here:
             review_rows.append({
@@ -733,6 +815,7 @@ def stage_build_review(args, pilot_dir: Path) -> None:
                 "chunk_integrity_score": crow["chunk_integrity_score"],
                 "document_integrity_flag": ";".join(crow["document_integrity_flags"]),
                 "raw_archive_line": payload["raw_archive_line"],
+                **{c: payload.get(c, "") for c in REVIEW_PREFILLED_COLUMNS if c.startswith("judge_")},
                 **{c: "" for c in MANUAL_REVIEW_COLUMNS},
             })
     for i, row in enumerate(review_rows, start=1):
@@ -771,8 +854,10 @@ def stage_build_review(args, pilot_dir: Path) -> None:
             recs = arm_rows[arm.name].get(key, [])
             label = arm.name[4:]
             row[f"v2_{label}_retained_count"] = len(recs)
-            row[f"v2_{label}_rejected_count"] = len(rejected)
-            row[f"v2_{label}_rejection_codes"] = ";".join(sorted({r["rejection_code"] for r in rejected}))
+            jd = judge_dir_for(arm)
+            jrej = [r for r in (read_jsonl(jd / "judge_rejected.jsonl") if jd else []) if (r["document_id"], r["chunk_index"]) == key]
+            row[f"v2_{label}_rejected_count"] = len(rejected) + len(jrej)
+            row[f"v2_{label}_rejection_codes"] = ";".join(sorted({r["rejection_code"] for r in rejected} | {r["rejection_code"] for r in jrej}))
             row[f"v2_{label}_texts"] = " || ".join(r["verbatim_expression"] for r in recs)
         row["missed_expression"] = ""
         row["notes"] = ""
@@ -811,6 +896,8 @@ README_TEMPLATE = """# Extraction v2 literature pilot -- manual review packet ({
 - `pilot_chunk_comparison.csv` -- one row per chunk: v1 count and texts, v2 retained/rejected counts, rejection codes, and two blank columns (`missed_expression`, `notes`) for anything clearly useful that v2 omitted.
 - `pilot_rejected_candidates.csv` -- every candidate the deterministic screen rejected, with its rejection code, the model's fields, the chunk text, and blank `rejection_correct` / `should_have_been_retained` / `reviewer_notes` columns.
 - `validation.json` -- the independent hard-zero re-check of every arm (span resolution, verbatim = embedding, no interviewer rows, no high-confidence corruption, candidate/chunk accounting).
+
+**Judge columns.** When an arm was judged by the second model, the `judge_*` columns carry that model's answers (model-judged, not human review) and the v2 rows are the judge-accepted set; judge-rejected rows are in `pilot_rejected_candidates.csv` with code `judge_rejected`.
 
 **Row budget.** v1 arm: seeded sample of at most {v1_sample} items per chunk (the full v1 list of every chunk is in the comparison file). v2 arm: {v2_sampling}.
 
@@ -852,7 +939,15 @@ def write_rejected_csv(pilot_dir: Path, arms: list[Path], out_path: Path) -> int
     chunk_rows = {(r["document_id"], r["chunk_index"]): r for r in read_jsonl(pilot_dir / "pilot_chunks.jsonl")}
     rows = []
     for arm in arms:
-        for rec in read_jsonl(arm / "rejected_candidates.jsonl"):
+        jd = judge_dir_for(arm)
+        judge_rows = []
+        if jd is not None:
+            for rec in read_jsonl(jd / "judge_rejected.jsonl"):
+                judge_rows.append({**rec, "raw_candidate": {k: rec.get(k) for k in (
+                    "verbatim_expression", "expression_kind", "attribution", "claim_mode", "epistemic_status",
+                    "self_contained", "cult_relevant", "textually_intelligible", "single_coherent_expression",
+                    "relevance_note", "entity_anchors")}, "resolved_text": rec.get("verbatim_expression")})
+        for rec in read_jsonl(arm / "rejected_candidates.jsonl") + judge_rows:
             raw = rec.get("raw_candidate") or {}
             raw = raw if isinstance(raw, dict) else {"verbatim_expression": str(raw)}
             chunk = chunk_rows.get((rec["document_id"], rec["chunk_index"]), {})
@@ -888,7 +983,7 @@ def stage_rejected_csv(args, pilot_dir: Path) -> None:
     arms = sorted(p for p in pilot_dir.glob("arm_*") if (p / "rejected_candidates.jsonl").exists())
     if not arms:
         raise SystemExit(f"No arm_*/rejected_candidates.jsonl under {pilot_dir}")
-    review_dir = pilot_dir / "review"
+    review_dir = pilot_dir / getattr(args, "review_name", "review")
     review_dir.mkdir(exist_ok=True)
     out = review_dir / "pilot_rejected_candidates.csv"
     if out.exists():
@@ -903,13 +998,20 @@ def stage_rejected_csv(args, pilot_dir: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--stage", choices=["dry-run", "rebuild-chunks", "run", "build-review", "rejected-csv"], required=True)
+    parser.add_argument("--stage", choices=["dry-run", "rebuild-chunks", "run", "judge", "build-review", "rejected-csv"], required=True)
     parser.add_argument("--date-tag", default=datetime.now(timezone.utc).strftime("%Y%m%d"))
     parser.add_argument("--pilot-root", type=Path, default=DEFAULT_PILOT_ROOT)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
     parser.add_argument("--audit-csv", type=Path, default=None, help="Stage-1 integrity audit CSV (default: latest under processed/audits/)")
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--arm-tag", default=None, help="Override the arm directory suffix (e.g. a throwaway reproducibility rerun)")
+    parser.add_argument("--judge-model", default=None,
+                        help="run: chain the second-model judge after extraction; judge: the judge model (default qwen3:8b)")
+    parser.add_argument("--arm", default=None, help="judge/build-review: arm directory name (default: the single arm present)")
+    parser.add_argument("--judge", default=None,
+                        help="build-review/rejected-csv: judge directory name inside the arm (e.g. judge_qwen3-8b) when several exist")
+    parser.add_argument("--review-name", default="review",
+                        help="build-review: name of the review directory inside the pilot dir (use a distinct name per judge)")
     parser.add_argument("--ollama-host", default="http://127.0.0.1:11434")
     parser.add_argument("--timeout", type=float, default=180.0)
     parser.add_argument("--v1-sample-per-chunk", type=int, default=2)
@@ -919,12 +1021,16 @@ def main() -> None:
     args = parser.parse_args()
 
     pilot_dir = args.pilot_root / f"pilot_{args.date_tag}"
+    global SELECTED_JUDGE
+    SELECTED_JUDGE = args.judge
     if args.stage == "dry-run":
         stage_dry_run(args, pilot_dir)
     elif args.stage == "rebuild-chunks":
         stage_rebuild_chunks(args, pilot_dir)
     elif args.stage == "run":
         stage_run(args, pilot_dir)
+    elif args.stage == "judge":
+        stage_judge(args, pilot_dir)
     elif args.stage == "rejected-csv":
         stage_rejected_csv(args, pilot_dir)
     else:
