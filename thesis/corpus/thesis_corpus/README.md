@@ -360,7 +360,12 @@ the **final archive** (judge-accepted rows with `judge_*` fields), next to
 `screen_rejected.jsonl`, `judge_rejected.jsonl`, `judge_verdicts.jsonl`,
 `chunk_terms.jsonl` (diagnostic only), `chunk_index.jsonl`, `skipped_chunks.jsonl`,
 `model_responses.jsonl`, `model_failures.jsonl`, `documents_manifest.jsonl`,
-`config.json`, `summary.json` (rewritten after every document), `run.log`.
+`config.json`, `summary.json` (rewritten after every document), `run.log`. Every log
+line while a document is extracting reports chunks called so far / total
+that will call the model, elapsed time, average seconds per chunk, chunks
+remaining, and an ETA (`extract_v2.ChunkProgress`), computed from a cheap
+pre-pass over all not-yet-done documents before the run starts, so the
+figures are accurate from the very first line rather than warming up.
 All three corpora are wired. MIVILUDES uses the literature pre-screen
 (same chunker, same 300–700-word chunks). Interviews use no length floor and
 a deterministic speaker-turn rule (`screen_v2.speaker_turns` /

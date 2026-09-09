@@ -42,8 +42,9 @@ import json
 import logging
 import re
 import sys
+import time
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from thesis_corpus import extraction_v2_schema as schema
@@ -59,6 +60,47 @@ SCRIPT_VERSION = "1.0.0"
 SUPPORTED_CORPORA = ("literature", "miviludes", "interviews")
 logger = logging.getLogger("thesis_corpus.extract_v2")
 _CODE_FENCE_RE = re.compile(r"^```(?:json)?\s*(.*?)\s*```$", re.DOTALL)
+
+
+def format_duration(seconds: float | None) -> str:
+    if seconds is None:
+        return "?"
+    return str(timedelta(seconds=int(seconds)))
+
+
+class ChunkProgress:
+    """Tracks model-calling chunks (the only slow step) across the whole
+    run, so every progress line can show chunks remaining and an ETA from
+    the observed average call time, not just which document is active."""
+
+    def __init__(self, total_callable: int, total_docs: int):
+        self.total_callable = total_callable
+        self.total_docs = total_docs
+        self.completed = 0
+        self.start = time.monotonic()
+
+    def record_called(self) -> None:
+        self.completed += 1
+
+    def _eta(self) -> tuple[float, float | None, float | None]:
+        elapsed = time.monotonic() - self.start
+        rate = self.completed / elapsed if elapsed > 0 and self.completed else None
+        remaining = max(self.total_callable - self.completed, 0)
+        eta = remaining / rate if rate else None
+        return elapsed, rate, eta
+
+    def summary(self) -> str:
+        elapsed, rate, eta = self._eta()
+        remaining = max(self.total_callable - self.completed, 0)
+        parts = [f"{self.completed}/{self.total_callable} chunks called", f"elapsed {format_duration(elapsed)}"]
+        if rate:
+            parts.append(f"{1 / rate:.1f}s/chunk avg")
+            parts.append(f"{remaining} chunks left")
+            parts.append(f"ETA {format_duration(eta)}")
+        return " | ".join(parts)
+
+    def line(self, document_id: str, chunk_index: int, doc_number: int) -> str:
+        return f"{document_id[:30]}:{chunk_index} (doc {doc_number}/{self.total_docs}) | {self.summary()}"
 
 
 def parse_envelope(raw: str) -> schema.ChunkEnvelopeV2:
@@ -191,7 +233,22 @@ def run(args, chat=None, check=None) -> Path:
     missing_audit = [d.name for d in todo if d.name not in doc_flags]
     if missing_audit:
         raise SystemExit(f"Documents absent from the Stage-1 audit {audit_csv}: {missing_audit[:5]} -- rerun the audit first")
-    logger.info("[%s] %d documents total, %d done, %d to process", args.corpus, len(all_docs), len(done), len(todo))
+
+    # Cheap pre-pass (pure functions, no model calls) so remaining-chunk and
+    # ETA figures are known from the very first log line rather than
+    # accumulating as the run goes.
+    total_chunks = total_callable = 0
+    for doc_dir in todo:
+        pre_chunks = build_chunks(doc_dir.name, read_jsonl(doc_dir / "pages.jsonl"))
+        pre_contexts = [sv.prepare_chunk(doc_dir.name, c.chunk_index, c.page_range, c.text, args.corpus,
+                                         document_integrity_flags=doc_flags[doc_dir.name],
+                                         corrupted_line_texts=frozenset(region_lines.get(doc_dir.name, ())))
+                        for c in pre_chunks]
+        total_chunks += len(pre_contexts)
+        total_callable += sum(1 for c in pre_contexts if sv.pre_screen_chunk(c, pre_screen)[0] is None)
+    logger.info("[%s] %d documents total, %d done, %d to process (%d chunks, %d will call the model, %d pre-screened out)",
+                args.corpus, len(all_docs), len(done), len(todo), total_chunks, total_callable, total_chunks - total_callable)
+    progress = ChunkProgress(total_callable, len(todo))
 
     for doc_number, doc_dir in enumerate(todo, start=1):
         document_id = doc_dir.name
@@ -216,6 +273,8 @@ def run(args, chat=None, check=None) -> Path:
                 chunk_index_rows.append(row)
                 continue
             envelope, raw, mode, error = extract_chunk(ctx, args.ollama_host, args.model, args.timeout, chat)
+            progress.record_called()
+            logger.info(progress.line(document_id, ctx.chunk_index, doc_number))
             responses.append({"document_id": document_id, "chunk_index": ctx.chunk_index, "model": args.model,
                               "structured_output_mode": mode, "raw_content": raw, "error": error})
             if envelope is None:
@@ -262,11 +321,12 @@ def run(args, chat=None, check=None) -> Path:
         with open(done_path, "a", encoding="utf-8", newline="\n") as f:
             f.write(document_id + "\n")
         write_summary(run_dir, args)
-        logger.info("[%d/%d] %s done: chunks=%d skipped=%d failed=%d emitted=%d screen_retained=%d judge_rejected=%d final=%d",
+        logger.info("[%d/%d] %s done: chunks=%d skipped=%d failed=%d emitted=%d screen_retained=%d judge_rejected=%d final=%d | %s",
                     doc_number, len(todo), document_id, len(chunks), len(skipped), len(failures),
-                    sum(r["emitted"] for r in chunk_index_rows), len(screen_retained), len(judge_rejected), len(final))
+                    sum(r["emitted"] for r in chunk_index_rows), len(screen_retained), len(judge_rejected), len(final), progress.summary())
     summary = write_summary(run_dir, args)
     print(json.dumps({k: summary[k] for k in ("documents", "chunks", "candidates", "screen_rejection_codes", "judge")}, ensure_ascii=False, indent=2))
+    print(progress.summary())
     print(f"Run dir: {run_dir}")
     return run_dir
 
