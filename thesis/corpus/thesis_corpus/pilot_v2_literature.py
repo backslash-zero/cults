@@ -793,11 +793,13 @@ def stage_build_review(args, pilot_dir: Path) -> None:
         issue_vocab=" | ".join(EXTRACTION_ISSUE_VOCAB),
         validations=json.dumps(validations, indent=2),
     )
+    n_rejected = write_rejected_csv(pilot_dir, arms, review_dir / "pilot_rejected_candidates.csv")
     (review_dir / "README.md").write_text(readme, encoding="utf-8")
     write_json(review_dir / "validation.json", {"validations": validations, "review_rows": len(review_rows),
                                                 "arm_row_counts": dict(arm_counts), "blind": args.blind,
                                                 "generated_at": datetime.now(timezone.utc).isoformat()})
     print(f"Review packet: {len(review_rows)} rows ({dict(arm_counts)}) -> {review_dir}")
+    print(f"Rejected-candidate sheet: {n_rejected} rows -> {review_dir / 'pilot_rejected_candidates.csv'}")
 
 
 README_TEMPLATE = """# Extraction v2 literature pilot -- manual review packet ({date_tag})
@@ -807,6 +809,7 @@ README_TEMPLATE = """# Extraction v2 literature pilot -- manual review packet ({
 **Files**
 - `pilot_review.csv` -- {n_rows} rows ({arm_counts}). Ordered random stratum first, then forced-regression chunks; within a stratum by document, chunk, arm, rank. Blind: {blind}.
 - `pilot_chunk_comparison.csv` -- one row per chunk: v1 count and texts, v2 retained/rejected counts, rejection codes, and two blank columns (`missed_expression`, `notes`) for anything clearly useful that v2 omitted.
+- `pilot_rejected_candidates.csv` -- every candidate the deterministic screen rejected, with its rejection code, the model's fields, the chunk text, and blank `rejection_correct` / `should_have_been_retained` / `reviewer_notes` columns.
 - `validation.json` -- the independent hard-zero re-check of every arm (span resolution, verbatim = embedding, no interviewer rows, no high-confidence corruption, candidate/chunk accounting).
 
 **Row budget.** v1 arm: seeded sample of at most {v1_sample} items per chunk (the full v1 list of every chunk is in the comparison file). v2 arm: {v2_sampling}.
@@ -830,12 +833,77 @@ README_TEMPLATE = """# Extraction v2 literature pilot -- manual review packet ({
 
 
 # ---------------------------------------------------------------------------
+# Rejected-candidate CSV (review aid; no judgement columns pre-filled)
+# ---------------------------------------------------------------------------
+
+REJECTED_CSV_COLUMNS = [
+    "rejected_id", "arm", "selection_stratum", "document_id", "chunk_index", "candidate_rank",
+    "rejection_code", "rule_detail", "model_verbatim_expression", "resolved_text", "span_start", "span_end",
+    "expression_kind", "attribution", "claim_mode", "epistemic_status",
+    "self_contained", "cult_relevant", "textually_intelligible", "single_coherent_expression",
+    "relevance_note", "entity_anchors", "context_window",
+    "rejection_correct", "should_have_been_retained", "reviewer_notes",
+]
+
+
+def write_rejected_csv(pilot_dir: Path, arms: list[Path], out_path: Path) -> int:
+    """One row per rejected candidate across the given arms, joined to its
+    chunk text. The three trailing columns are blank for the reviewer."""
+    chunk_rows = {(r["document_id"], r["chunk_index"]): r for r in read_jsonl(pilot_dir / "pilot_chunks.jsonl")}
+    rows = []
+    for arm in arms:
+        for rec in read_jsonl(arm / "rejected_candidates.jsonl"):
+            raw = rec.get("raw_candidate") or {}
+            raw = raw if isinstance(raw, dict) else {"verbatim_expression": str(raw)}
+            chunk = chunk_rows.get((rec["document_id"], rec["chunk_index"]), {})
+            anchors = raw.get("entity_anchors")
+            rows.append({
+                "rejected_id": None, "arm": f"v2_{arm.name[4:]}",
+                "selection_stratum": rec.get("selection_stratum", chunk.get("selection_stratum", "")),
+                "document_id": rec["document_id"], "chunk_index": rec["chunk_index"],
+                "candidate_rank": rec["candidate_rank"], "rejection_code": rec["rejection_code"],
+                "rule_detail": rec.get("rule_detail", ""),
+                "model_verbatim_expression": raw.get("verbatim_expression", ""),
+                "resolved_text": rec.get("resolved_text") or "",
+                "span_start": rec.get("span_start") if rec.get("span_start") is not None else "",
+                "span_end": rec.get("span_end") if rec.get("span_end") is not None else "",
+                **{k: raw.get(k, "") for k in ("expression_kind", "attribution", "claim_mode", "epistemic_status",
+                                                "self_contained", "cult_relevant", "textually_intelligible",
+                                                "single_coherent_expression", "relevance_note")},
+                "entity_anchors": "; ".join(anchors) if isinstance(anchors, list) else (anchors or ""),
+                "context_window": chunk.get("nfc_text", ""),
+                "rejection_correct": "", "should_have_been_retained": "", "reviewer_notes": "",
+            })
+    rows.sort(key=lambda r: (0 if r["selection_stratum"] == "random" else 1, r["document_id"], r["chunk_index"], r["candidate_rank"]))
+    for i, row in enumerate(rows, start=1):
+        row["rejected_id"] = i
+    with open(out_path, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=REJECTED_CSV_COLUMNS)
+        w.writeheader()
+        w.writerows(rows)
+    return len(rows)
+
+
+def stage_rejected_csv(args, pilot_dir: Path) -> None:
+    arms = sorted(p for p in pilot_dir.glob("arm_*") if (p / "rejected_candidates.jsonl").exists())
+    if not arms:
+        raise SystemExit(f"No arm_*/rejected_candidates.jsonl under {pilot_dir}")
+    review_dir = pilot_dir / "review"
+    review_dir.mkdir(exist_ok=True)
+    out = review_dir / "pilot_rejected_candidates.csv"
+    if out.exists():
+        raise SystemExit(f"Refusing to overwrite {out}")
+    n = write_rejected_csv(pilot_dir, arms, out)
+    print(f"Rejected-candidate sheet: {n} rows -> {out}")
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--stage", choices=["dry-run", "rebuild-chunks", "run", "build-review"], required=True)
+    parser.add_argument("--stage", choices=["dry-run", "rebuild-chunks", "run", "build-review", "rejected-csv"], required=True)
     parser.add_argument("--date-tag", default=datetime.now(timezone.utc).strftime("%Y%m%d"))
     parser.add_argument("--pilot-root", type=Path, default=DEFAULT_PILOT_ROOT)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
@@ -857,6 +925,8 @@ def main() -> None:
         stage_rebuild_chunks(args, pilot_dir)
     elif args.stage == "run":
         stage_run(args, pilot_dir)
+    elif args.stage == "rejected-csv":
+        stage_rejected_csv(args, pilot_dir)
     else:
         stage_build_review(args, pilot_dir)
 
