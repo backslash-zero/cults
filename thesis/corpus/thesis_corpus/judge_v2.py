@@ -34,7 +34,7 @@ from pydantic import BaseModel, ConfigDict, StrictBool, ValidationError
 
 from thesis_corpus import extraction_v2_schema as schema
 
-JUDGE_VERSION = "1.0.0-pilot"
+JUDGE_VERSION = "1.0.1"
 DEFAULT_JUDGE_MODEL = "qwen3:8b"
 JUDGE_OPTIONS = {"temperature": 0, "seed": 42, "num_ctx": 8192}
 ISSUE_VOCAB = ("none", "off_topic", "contextless_fragment", "truncated", "overlong", "multiple_claims",
@@ -62,8 +62,11 @@ Answer every field:
   associates cults, sects, sectarian drift, new religious movements, group authority or
   control, manipulation, spiritual abuse, a relevant named group or leader, or an everyday
   use of "cult". A sentence that merely contains a cult-related word but is about something
-  else is NOT relevant. Chapter titles, author names, bibliographic lines, administrative
-  or procedural statements, and sentences announcing what a chapter will do are NOT relevant.
+  else is NOT relevant. Chapter, book, article or report titles (including titles cited
+  inside a sentence or an endnote, e.g. "The Cadre Ideal: Origins and Development of a
+  Political Cult"), author names, bibliographic lines, administrative or procedural
+  statements, and sentences announcing what a chapter will do are NOT relevant: mark them
+  extraction_issue = heading_or_name.
 - textually_intelligible: no garbled characters, split words, stray symbols, detached
   accents or broken syntax.
 - atomic: one claim, definition, criterion, association or named example -- not several
@@ -153,34 +156,14 @@ def model_tag(model: str) -> str:
     return re.sub(r"[^A-Za-z0-9.]+", "-", model)
 
 
-def judge_arm(arm_dir: Path, host: str, judge_model: str, timeout: float = 240.0,
-              chat=None, check=None) -> Path:
-    """Run the judge over <arm_dir>/expressions_v2.jsonl. `chat`/`check` are
-    injectable for tests; default to ollama_client.chat_structured / check_available."""
-    from thesis_corpus.ollama_client import AnnotationError, chat_structured, check_available, OllamaUnavailableError
+def judge_records(records: list[dict], host: str, judge_model: str, timeout: float = 240.0,
+                  chat=None, progress_prefix: str = "") -> dict:
+    """Judge a list of screen-retained records. Returns
+    {"verdict_rows", "accepted", "rejected", "modes"}; every input record ends
+    up in exactly one of accepted / rejected. `chat` is injectable for tests."""
+    from thesis_corpus.ollama_client import AnnotationError, chat_structured
     chat = chat or chat_structured
-    check = check or check_available
-    from thesis_corpus.pilot_v2_literature import read_jsonl, write_jsonl, write_json, git_commit_hash, sha256_file
-
-    expressions_path = arm_dir / "expressions_v2.jsonl"
-    if not expressions_path.exists():
-        raise SystemExit(f"{expressions_path} missing -- run the extraction arm first")
-    judge_dir = arm_dir / f"judge_{model_tag(judge_model)}"
-    if judge_dir.exists():
-        raise SystemExit(f"Refusing to overwrite existing judge directory {judge_dir}")
-    try:
-        check(host)
-    except OllamaUnavailableError as e:
-        raise SystemExit(str(e))
-
-    records = read_jsonl(expressions_path)
-    judge_dir.mkdir(parents=True)
-    log_handler = logging.FileHandler(judge_dir / "judge.log", encoding="utf-8")
-    logger.addHandler(log_handler)
-    logger.setLevel(logging.INFO)
-    started = datetime.now(timezone.utc)
     json_schema = judge_json_schema()
-
     verdict_rows, accepted, rejected, modes = [], [], [], Counter()
     for i, record in enumerate(records, start=1):
         key = f"{record['document_id']}:{record['chunk_index']}#{record['candidate_rank']}"
@@ -207,11 +190,10 @@ def judge_arm(arm_dir: Path, host: str, judge_model: str, timeout: float = 240.0
             row.update({"accepted": False, "verdict": None})
             verdict_rows.append(row)
             rejected.append({**record, "rejection_code": "judge_failed", "rule_detail": error, "judge_verdict": None})
-            logger.error("[%d/%d] %s judge failure after retry: %s", i, len(records), key, error)
+            logger.error("%s[%d/%d] %s judge failure after retry: %s", progress_prefix, i, len(records), key, error)
             continue
         modes[mode] += 1
         ok = judge_accepts(verdict)
-        # A better_span must itself be verbatim to be worth recording.
         better_span_verbatim = bool(verdict.better_span) and verdict.better_span in record["context_window"]
         row.update({"accepted": ok, "verdict": verdict.model_dump(), "better_span_verbatim": better_span_verbatim})
         verdict_rows.append(row)
@@ -224,20 +206,21 @@ def judge_arm(arm_dir: Path, host: str, judge_model: str, timeout: float = 240.0
             failed = [f for f in JUDGE_BOOL_FIELDS if not getattr(verdict, f)]
             detail = f"issue={verdict.extraction_issue}; false={','.join(failed) or '-'}; note={verdict.reasoning_note}"
             rejected.append({**judged, "rejection_code": "judge_rejected", "rule_detail": detail})
-        logger.info("[%d/%d] %s -> %s (issue=%s)", i, len(records), key, "accept" if ok else "reject", verdict.extraction_issue)
+        logger.info("%s[%d/%d] %s -> %s (issue=%s)", progress_prefix, i, len(records), key,
+                    "accept" if ok else "reject", verdict.extraction_issue)
+    return {"verdict_rows": verdict_rows, "accepted": accepted, "rejected": rejected, "modes": modes}
 
-    write_jsonl(judge_dir / "judge_verdicts.jsonl", verdict_rows)
-    write_jsonl(judge_dir / "expressions_v2_judged.jsonl", accepted)
-    write_jsonl(judge_dir / "judge_rejected.jsonl", rejected)
-    finished = datetime.now(timezone.utc)
+
+def judge_summary(records_n: int, verdict_rows: list[dict], accepted: list[dict], rejected: list[dict],
+                  judge_model: str, started, finished) -> dict:
     ok_rows = [r for r in verdict_rows if r["judge_status"] == "ok"]
-    summary = {
+    return {
         "judge_model": judge_model, "judge_version": JUDGE_VERSION,
-        "input_expressions": len(records), "judged_ok": len(ok_rows),
-        "judge_failed": len(records) - len(ok_rows), "accepted": len(accepted),
+        "input_expressions": records_n, "judged_ok": len(ok_rows),
+        "judge_failed": records_n - len(ok_rows), "accepted": len(accepted),
         "rejected_by_judge": sum(1 for r in rejected if r["rejection_code"] == "judge_rejected"),
-        "reconciled": len(accepted) + len(rejected) == len(records),
-        "acceptance_rate": round(len(accepted) / len(records), 4) if records else None,
+        "reconciled": len(accepted) + len(rejected) == records_n,
+        "acceptance_rate": round(len(accepted) / records_n, 4) if records_n else None,
         "extraction_issue_counts": dict(Counter(r["verdict"]["extraction_issue"] for r in ok_rows)),
         "false_quality_fields": dict(Counter(f for r in ok_rows for f in JUDGE_BOOL_FIELDS if not r["verdict"][f])),
         "label_disagreements": dict(Counter(f for r in ok_rows for f in JUDGE_LABEL_FIELDS if not r["verdict"][f])),
@@ -249,6 +232,41 @@ def judge_arm(arm_dir: Path, host: str, judge_model: str, timeout: float = 240.0
             for s in sorted({r["selection_stratum"] for r in verdict_rows if r["selection_stratum"]})},
         "started_at": started.isoformat(), "finished_at": finished.isoformat(),
     }
+
+
+def judge_arm(arm_dir: Path, host: str, judge_model: str, timeout: float = 240.0,
+              chat=None, check=None) -> Path:
+    """Run the judge over <arm_dir>/expressions_v2.jsonl (pilot arms). `chat`/`check`
+    are injectable for tests; default to ollama_client.chat_structured / check_available."""
+    from thesis_corpus.ollama_client import check_available, OllamaUnavailableError
+    check = check or check_available
+    from thesis_corpus.pilot_v2_literature import read_jsonl, write_jsonl, write_json, git_commit_hash, sha256_file
+
+    expressions_path = arm_dir / "expressions_v2.jsonl"
+    if not expressions_path.exists():
+        raise SystemExit(f"{expressions_path} missing -- run the extraction arm first")
+    judge_dir = arm_dir / f"judge_{model_tag(judge_model)}"
+    if judge_dir.exists():
+        raise SystemExit(f"Refusing to overwrite existing judge directory {judge_dir}")
+    try:
+        check(host)
+    except OllamaUnavailableError as e:
+        raise SystemExit(str(e))
+
+    records = read_jsonl(expressions_path)
+    judge_dir.mkdir(parents=True)
+    log_handler = logging.FileHandler(judge_dir / "judge.log", encoding="utf-8")
+    logger.addHandler(log_handler)
+    logger.setLevel(logging.INFO)
+    started = datetime.now(timezone.utc)
+    result = judge_records(records, host, judge_model, timeout=timeout, chat=chat)
+    verdict_rows, accepted, rejected, modes = result["verdict_rows"], result["accepted"], result["rejected"], result["modes"]
+    finished = datetime.now(timezone.utc)
+
+    write_jsonl(judge_dir / "judge_verdicts.jsonl", verdict_rows)
+    write_jsonl(judge_dir / "expressions_v2_judged.jsonl", accepted)
+    write_jsonl(judge_dir / "judge_rejected.jsonl", rejected)
+    summary = judge_summary(len(records), verdict_rows, accepted, rejected, judge_model, started, finished)
     write_json(judge_dir / "summary.json", summary)
     write_json(judge_dir / "config.json", {
         "script": "thesis_corpus.judge_v2", "judge_version": JUDGE_VERSION, "judge_model": judge_model,

@@ -336,6 +336,34 @@ v1, better-span/disagreement lists, and a deterministic check that each
 forced chunk's known v1 failure text did not reappear. It states what is
 model-judged; it is not human validation.
 
+**Two rules added after the judged pilot (2026-09-09):** a Title-Cased
+span with a Title-Cased subtitle after a colon (a cited work title such as
+"The Cadre Ideal: Origins and Development of a Political Cult") is rejected
+as `heading_or_scaffold` regardless of tag; and the single approved text
+transform, `screen_v2.fold_newlines`, folds a PDF line break inside a span to
+one space in `embedding_text` (`text_transform = "newline_to_space"`), with
+`verbatim_expression` unchanged.
+
+**Full-corpus run (`extract_v2.py`)** — the production runner: every
+document, every chunk, extraction → screen → judge, checkpointed per
+document (`documents_done.txt`), resumable by rerunning the same command,
+and refusing to resume into a run whose model / prompt / screening / audit
+differ. Judge model is a flag (`--judge-model ''` skips judging).
+
+```
+python -m thesis_corpus.extract_v2 --corpus literature --run-tag <tag> --model qwen3:4b --judge-model qwen3:8b --limit 3   # smoke test
+python -m thesis_corpus.extract_v2 --corpus literature --run-tag <tag> --model qwen3:4b --judge-model qwen3:8b             # resume / full
+```
+
+Output under `processed/v2/<corpus>/run_<tag>/`: `expressions_v2.jsonl` is
+the **final archive** (judge-accepted rows with `judge_*` fields), next to
+`screen_rejected.jsonl`, `judge_rejected.jsonl`, `judge_verdicts.jsonl`,
+`chunk_terms.jsonl` (diagnostic only), `chunk_index.jsonl`, `skipped_chunks.jsonl`,
+`model_responses.jsonl`, `model_failures.jsonl`, `documents_manifest.jsonl`,
+`config.json`, `summary.json` (rewritten after every document), `run.log`.
+Only literature is wired so far; MIVILUDES and interviews need their own
+pre-screen thresholds and the deterministic speaker-turn handling first.
+
 Tests (stdlib `unittest`, no Ollama): `python -m unittest discover -s thesis_corpus/tests -t .`
 
 ## Stage 3: reduced/downsampled JSONL for analysis (`reduce_embeddings`)

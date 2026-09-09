@@ -21,7 +21,10 @@ Candidate screen (after the model call):
 Text model: `raw_text` is the chunker's output; `nfc_text` (NFC of raw)
 is what the model saw and the only matching target; a verbatim expression
 is an exact contiguous substring of `nfc_text` at [span_start, span_end).
-No repair, no transliteration, no rewriting anywhere in this module.
+No repair, no transliteration, no rewriting anywhere in this module. The
+single approved transform is fold_newlines() (a PDF line break inside a span
+becomes one space in embedding_text, recorded as text_transform =
+"newline_to_space"); verbatim_expression always keeps the source bytes.
 """
 from __future__ import annotations
 
@@ -266,6 +269,15 @@ def is_title_case(text: str) -> bool:
     return all(t[0].isupper() for t in content) and tokens[0][0].isupper()
 
 
+def is_subtitled_title(text: str) -> bool:
+    if ":" not in text or text.count(":") != 1:
+        return False
+    head, tail = (part.strip() for part in text.split(":", 1))
+    if not head or not tail or re.search(r"[.!?;]$", text):
+        return False
+    return is_title_case(head) and is_title_case(tail)
+
+
 def is_all_caps(text: str) -> bool:
     letters = [c for c in text if c.isalpha()]
     return len(letters) >= 2 and all(c.isupper() for c in letters)
@@ -387,6 +399,11 @@ def screen_candidate(cand: schema.CandidateV2, ctx: ChunkContext) -> ScreenOutco
         return ScreenOutcome("heading_or_scaffold", "heading keyword", span=span, text=text)
     if _PAGE_FURNITURE_RE.match(stripped):
         return ScreenOutcome("heading_or_scaffold", "page furniture", span=span, text=text)
+    # A work title with a subtitle -- "The Cadre Ideal: Origins and Development of a
+    # Political Cult" -- is Title Case on both sides of a colon. Named groups never
+    # take this shape, so it rejects regardless of tag or domain term.
+    if is_subtitled_title(stripped):
+        return ScreenOutcome("heading_or_scaffold", "title with subtitle", span=span, text=text)
     # S11 -- checked before the title-case heading branch so a bare
     # "Lorne L. Dawson" gets the name code, not the heading code.
     if (2 <= len(tokens) <= schema.NAME_MAX_TOKENS and not hit and not tagged_named
@@ -495,16 +512,30 @@ def _rejected_record(ctx: ChunkContext, rank: int, raw, code: str, detail: str,
     }
 
 
+_NEWLINE_RUN_RE = re.compile(r"[ \t]*\n+[ \t]*")
+
+
+def fold_newlines(text: str) -> tuple[str, str]:
+    """The one approved text transform (2026-09-09): a PDF line break inside a
+    span becomes a single space for embedding. Returns (embedding_text,
+    text_transform) with text_transform "none" when nothing changed. The
+    verbatim span is never altered; a hyphen before the break is kept as is
+    ("re-\nligious" -> "re- ligious") and stays flagged contains_hyphen_linebreak."""
+    folded = _NEWLINE_RUN_RE.sub(" ", text)
+    return (folded, "newline_to_space") if folded != text else (text, "none")
+
+
 def _retained_record(ctx: ChunkContext, rank: int, cand: schema.CandidateV2, outcome: ScreenOutcome) -> dict:
     start, end = outcome.span
+    embedding_text, transform = fold_newlines(outcome.text)
     return {
         "document_id": ctx.document_id,
         "chunk_index": ctx.chunk_index,
         "page_range": ctx.page_range,
         "candidate_rank": rank,
         "verbatim_expression": outcome.text,
-        "embedding_text": outcome.text,
-        "text_transform": "none",
+        "embedding_text": embedding_text,
+        "text_transform": transform,
         "span_start": start,
         "span_end": end,
         "nfc_chunk_sha256": ctx.nfc_sha256,
@@ -559,10 +590,11 @@ def screen_domain_terms(terms: list, ctx: ChunkContext) -> tuple[list[str], list
 def recheck_retained_record(record: dict, ctx: ChunkContext) -> list[str]:
     """Hard-zero conditions on a retained row, evaluated from scratch."""
     problems = []
-    if record["embedding_text"] != record["verbatim_expression"]:
-        problems.append("embedding_text != verbatim_expression")
-    if record["text_transform"] != "none":
-        problems.append("text_transform != none")
+    expected_embedding, expected_transform = fold_newlines(record["verbatim_expression"])
+    if record["embedding_text"] != expected_embedding:
+        problems.append("embedding_text is not the verbatim span (with line breaks folded)")
+    if record["text_transform"] != expected_transform:
+        problems.append(f"text_transform {record['text_transform']!r} != expected {expected_transform!r}")
     if ctx.nfc_text[record["span_start"]:record["span_end"]] != record["verbatim_expression"]:
         problems.append("span does not resolve to verbatim_expression")
     if record["nfc_chunk_sha256"] != ctx.nfc_sha256:
