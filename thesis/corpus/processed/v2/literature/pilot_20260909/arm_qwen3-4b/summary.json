@@ -1,0 +1,351 @@
+{
+  "model": "qwen3:4b",
+  "chunks": {
+    "selected": 28,
+    "skipped_pre_screen": 0,
+    "called": 28,
+    "annotated": 28,
+    "model_failed": 0,
+    "reconciled": true
+  },
+  "candidates": {
+    "emitted": 78,
+    "retained": 32,
+    "rejected": 46,
+    "reconciled": true
+  },
+  "rejection_codes": {
+    "validation_flag_false": 36,
+    "dangling_boundary": 5,
+    "short_fragment_no_referent": 3,
+    "not_verbatim": 2
+  },
+  "screen_flags_on_retained": {
+    "possible_heading_or_acronym": 3
+  },
+  "expression_kinds_retained": {
+    "claim": 6,
+    "example_or_named_group": 13,
+    "association_or_framing": 8,
+    "definition": 3,
+    "criterion": 2
+  },
+  "model_failure_count": 0,
+  "model_failure_rate": 0.0,
+  "model_failure_rate_review_blocker_threshold": 0.03,
+  "retained_from_failed_chunks": 0,
+  "per_chunk": [
+    {
+      "document_id": "2008-the-oxford-handbook-of-new-religious-movements-1",
+      "chunk_index": 33,
+      "v1": 6,
+      "v2_retained": 1,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "2008-the-oxford-handbook-of-new-religious-movements-1",
+      "chunk_index": 114,
+      "v1": 7,
+      "v2_retained": 0,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "2008-the-oxford-handbook-of-new-religious-movements-1",
+      "chunk_index": 194,
+      "v1": 7,
+      "v2_retained": 2,
+      "v2_rejected": 0,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    },
+    {
+      "document_id": "2008-the-oxford-handbook-of-new-religious-movements-1",
+      "chunk_index": 411,
+      "v1": 3,
+      "v2_retained": 1,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "card-2019-archaeology-and-new-religious-movements",
+      "chunk_index": 1,
+      "v1": 5,
+      "v2_retained": 0,
+      "v2_rejected": 0,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    },
+    {
+      "document_id": "clarke-2004-encyclopedia-of-new-religious-movements",
+      "chunk_index": 120,
+      "v1": 9,
+      "v2_retained": 2,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "clarke-2004-encyclopedia-of-new-religious-movements",
+      "chunk_index": 496,
+      "v1": 7,
+      "v2_retained": 2,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "clarke-2004-encyclopedia-of-new-religious-movements",
+      "chunk_index": 585,
+      "v1": 12,
+      "v2_retained": 2,
+      "v2_rejected": 1,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    },
+    {
+      "document_id": "clarke-2004-encyclopedia-of-new-religious-movements",
+      "chunk_index": 605,
+      "v1": 10,
+      "v2_retained": 3,
+      "v2_rejected": 1,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america",
+      "chunk_index": 3,
+      "v1": 17,
+      "v2_retained": 1,
+      "v2_rejected": 1,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america",
+      "chunk_index": 8,
+      "v1": 17,
+      "v2_retained": 0,
+      "v2_rejected": 1,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america",
+      "chunk_index": 105,
+      "v1": 11,
+      "v2_retained": 1,
+      "v2_rejected": 0,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    },
+    {
+      "document_id": "davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america",
+      "chunk_index": 130,
+      "v1": 3,
+      "v2_retained": 1,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "dawson-2009-cults-and-new-religious-movements-a-reader",
+      "chunk_index": 37,
+      "v1": 10,
+      "v2_retained": 0,
+      "v2_rejected": 28,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "dawson-2009-cults-and-new-religious-movements-a-reader",
+      "chunk_index": 39,
+      "v1": 7,
+      "v2_retained": 1,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "dawson-2009-cults-and-new-religious-movements-a-reader",
+      "chunk_index": 133,
+      "v1": 18,
+      "v2_retained": 0,
+      "v2_rejected": 0,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    },
+    {
+      "document_id": "dawson-2009-cults-and-new-religious-movements-a-reader",
+      "chunk_index": 135,
+      "v1": 10,
+      "v2_retained": 1,
+      "v2_rejected": 0,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    },
+    {
+      "document_id": "dawson-2009-cults-and-new-religious-movements-a-reader",
+      "chunk_index": 197,
+      "v1": 23,
+      "v2_retained": 3,
+      "v2_rejected": 1,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "lalich-2004-bounded-choicetrue-believers-and-charismatic-cults",
+      "chunk_index": 53,
+      "v1": 11,
+      "v2_retained": 2,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "lalich-2004-bounded-choicetrue-believers-and-charismatic-cults",
+      "chunk_index": 179,
+      "v1": 12,
+      "v2_retained": 0,
+      "v2_rejected": 5,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "lalich-2004-bounded-choicetrue-believers-and-charismatic-cults",
+      "chunk_index": 213,
+      "v1": 19,
+      "v2_retained": 1,
+      "v2_rejected": 1,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    },
+    {
+      "document_id": "lalich-2004-bounded-choicetrue-believers-and-charismatic-cults",
+      "chunk_index": 216,
+      "v1": 24,
+      "v2_retained": 0,
+      "v2_rejected": 2,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "lalich-2004-bounded-choicetrue-believers-and-charismatic-cults",
+      "chunk_index": 239,
+      "v1": 5,
+      "v2_retained": 1,
+      "v2_rejected": 0,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    },
+    {
+      "document_id": "melton-2014-encyclopedic-handbook-of-cults-in-america",
+      "chunk_index": 10,
+      "v1": 10,
+      "v2_retained": 2,
+      "v2_rejected": 0,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    },
+    {
+      "document_id": "richardson-2018-definitions-of-cult-from-sociological-technical-to-popular-negat",
+      "chunk_index": 3,
+      "v1": 17,
+      "v2_retained": 2,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "richardson-2018-definitions-of-cult-from-sociological-technical-to-popular-negat",
+      "chunk_index": 4,
+      "v1": 17,
+      "v2_retained": 1,
+      "v2_rejected": 5,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "richardson-2018-definitions-of-cult-from-sociological-technical-to-popular-negat",
+      "chunk_index": 5,
+      "v1": 10,
+      "v2_retained": 1,
+      "v2_rejected": 0,
+      "stratum": "random",
+      "skipped": false
+    },
+    {
+      "document_id": "tomkins-2010-the-clapham-sect-how-wilberforce-s-circle-transformed-britain",
+      "chunk_index": 131,
+      "v1": 3,
+      "v2_retained": 1,
+      "v2_rejected": 0,
+      "stratum": "forced_audit_regression",
+      "skipped": false
+    }
+  ],
+  "per_document": {
+    "lalich-2004-bounded-choicetrue-believers-and-charismatic-cults": {
+      "chunks": 5,
+      "v1": 71,
+      "v2_retained": 4,
+      "v2_rejected": 8
+    },
+    "2008-the-oxford-handbook-of-new-religious-movements-1": {
+      "chunks": 4,
+      "v1": 23,
+      "v2_retained": 4,
+      "v2_rejected": 0
+    },
+    "dawson-2009-cults-and-new-religious-movements-a-reader": {
+      "chunks": 5,
+      "v1": 68,
+      "v2_retained": 5,
+      "v2_rejected": 29
+    },
+    "davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america": {
+      "chunks": 4,
+      "v1": 48,
+      "v2_retained": 3,
+      "v2_rejected": 2
+    },
+    "melton-2014-encyclopedic-handbook-of-cults-in-america": {
+      "chunks": 1,
+      "v1": 10,
+      "v2_retained": 2,
+      "v2_rejected": 0
+    },
+    "tomkins-2010-the-clapham-sect-how-wilberforce-s-circle-transformed-britain": {
+      "chunks": 1,
+      "v1": 3,
+      "v2_retained": 1,
+      "v2_rejected": 0
+    },
+    "clarke-2004-encyclopedia-of-new-religious-movements": {
+      "chunks": 4,
+      "v1": 38,
+      "v2_retained": 9,
+      "v2_rejected": 2
+    },
+    "card-2019-archaeology-and-new-religious-movements": {
+      "chunks": 1,
+      "v1": 5,
+      "v2_retained": 0,
+      "v2_rejected": 0
+    },
+    "richardson-2018-definitions-of-cult-from-sociological-technical-to-popular-negat": {
+      "chunks": 3,
+      "v1": 44,
+      "v2_retained": 4,
+      "v2_rejected": 5
+    }
+  },
+  "retained_per_called_chunk": 1.143,
+  "v1_items_on_called_chunks": 310,
+  "started_at": "2026-09-08T23:54:01.175705+00:00",
+  "finished_at": "2026-09-08T23:56:39.072546+00:00"
+}

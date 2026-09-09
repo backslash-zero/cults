@@ -1,0 +1,56 @@
+2026-09-09 01:56:42,707 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:56:42,707 INFO [1/28] lalich-2004-bounded-choicetrue-believers:213 relevance=relevant emitted=2 retained=1 rejected=1 terms=12 mode=json_schema
+2026-09-09 01:56:46,528 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:56:46,528 INFO [2/28] 2008-the-oxford-handbook-of-new-religiou:194 relevance=relevant emitted=2 retained=2 rejected=0 terms=21 mode=json_schema
+2026-09-09 01:56:47,294 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:56:47,295 INFO [3/28] dawson-2009-cults-and-new-religious-move:133 relevance=not_relevant emitted=0 retained=0 rejected=0 terms=0 mode=json_schema
+2026-09-09 01:56:49,187 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:56:49,187 INFO [4/28] dawson-2009-cults-and-new-religious-move:135 relevance=relevant emitted=1 retained=1 rejected=0 terms=3 mode=json_schema
+2026-09-09 01:56:51,052 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:56:51,053 INFO [5/28] davis-and-hankins-2002-new-religious-mov:105 relevance=relevant emitted=1 retained=1 rejected=0 terms=6 mode=json_schema
+2026-09-09 01:56:54,491 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:56:54,492 INFO [6/28] melton-2014-encyclopedic-handbook-of-cul:10 relevance=relevant emitted=2 retained=2 rejected=0 terms=16 mode=json_schema
+2026-09-09 01:56:56,530 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:56:56,531 INFO [7/28] tomkins-2010-the-clapham-sect-how-wilber:131 relevance=relevant emitted=1 retained=1 rejected=0 terms=8 mode=json_schema
+2026-09-09 01:57:31,982 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:57:31,983 INFO [8/28] clarke-2004-encyclopedia-of-new-religiou:585 relevance=relevant emitted=3 retained=2 rejected=1 terms=15 mode=json_schema
+2026-09-09 01:57:35,214 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:57:35,214 INFO [9/28] lalich-2004-bounded-choicetrue-believers:239 relevance=relevant emitted=1 retained=1 rejected=0 terms=14 mode=json_schema
+2026-09-09 01:57:36,531 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:57:36,532 INFO [10/28] card-2019-archaeology-and-new-religious-:1 relevance=not_relevant emitted=0 retained=0 rejected=0 terms=11 mode=json_schema
+2026-09-09 01:57:39,741 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:57:39,743 INFO [11/28] richardson-2018-definitions-of-cult-from:3 relevance=relevant emitted=2 retained=2 rejected=0 terms=11 mode=json_schema
+2026-09-09 01:57:47,846 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:57:47,847 INFO [12/28] richardson-2018-definitions-of-cult-from:4 relevance=relevant emitted=6 retained=1 rejected=5 terms=37 mode=json_schema
+2026-09-09 01:57:50,349 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:57:50,352 INFO [13/28] richardson-2018-definitions-of-cult-from:5 relevance=relevant emitted=1 retained=1 rejected=0 terms=14 mode=json_schema
+2026-09-09 01:58:22,618 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:22,619 INFO [14/28] dawson-2009-cults-and-new-religious-move:37 relevance=relevant emitted=28 retained=0 rejected=28 terms=27 mode=json_schema
+2026-09-09 01:58:25,099 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:25,099 INFO [15/28] dawson-2009-cults-and-new-religious-move:39 relevance=relevant emitted=1 retained=1 rejected=0 terms=15 mode=json_schema
+2026-09-09 01:58:30,902 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:30,903 INFO [16/28] dawson-2009-cults-and-new-religious-move:197 relevance=relevant emitted=4 retained=3 rejected=1 terms=20 mode=json_schema
+2026-09-09 01:58:34,177 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:34,178 INFO [17/28] lalich-2004-bounded-choicetrue-believers:53 relevance=relevant emitted=2 retained=2 rejected=0 terms=15 mode=json_schema
+2026-09-09 01:58:40,460 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:40,460 INFO [18/28] lalich-2004-bounded-choicetrue-believers:179 relevance=relevant emitted=5 retained=0 rejected=5 terms=12 mode=json_schema
+2026-09-09 01:58:43,605 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:43,606 INFO [19/28] lalich-2004-bounded-choicetrue-believers:216 relevance=relevant emitted=2 retained=0 rejected=2 terms=10 mode=json_schema
+2026-09-09 01:58:47,441 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:47,441 INFO [20/28] 2008-the-oxford-handbook-of-new-religiou:33 relevance=relevant emitted=1 retained=1 rejected=0 terms=27 mode=json_schema
+2026-09-09 01:58:48,101 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:48,102 INFO [21/28] 2008-the-oxford-handbook-of-new-religiou:114 relevance=not_relevant emitted=0 retained=0 rejected=0 terms=0 mode=json_schema
+2026-09-09 01:58:50,050 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:50,050 INFO [22/28] 2008-the-oxford-handbook-of-new-religiou:411 relevance=relevant emitted=1 retained=1 rejected=0 terms=8 mode=json_schema
+2026-09-09 01:58:53,012 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:53,013 INFO [23/28] davis-and-hankins-2002-new-religious-mov:3 relevance=relevant emitted=2 retained=1 rejected=1 terms=10 mode=json_schema
+2026-09-09 01:58:55,209 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:55,210 INFO [24/28] davis-and-hankins-2002-new-religious-mov:8 relevance=relevant emitted=1 retained=0 rejected=1 terms=12 mode=json_schema
+2026-09-09 01:58:57,867 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:58:57,867 INFO [25/28] davis-and-hankins-2002-new-religious-mov:130 relevance=relevant emitted=1 retained=1 rejected=0 terms=19 mode=json_schema
+2026-09-09 01:59:01,286 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:59:01,287 INFO [26/28] clarke-2004-encyclopedia-of-new-religiou:120 relevance=relevant emitted=2 retained=2 rejected=0 terms=9 mode=json_schema
+2026-09-09 01:59:05,025 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:59:05,026 INFO [27/28] clarke-2004-encyclopedia-of-new-religiou:496 relevance=relevant emitted=2 retained=2 rejected=0 terms=17 mode=json_schema
+2026-09-09 01:59:10,253 INFO HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-09-09 01:59:10,254 INFO [28/28] clarke-2004-encyclopedia-of-new-religiou:605 relevance=relevant emitted=4 retained=3 rejected=1 terms=12 mode=json_schema
