@@ -56,7 +56,7 @@ from thesis_corpus.pilot_v2_literature import (
 )
 
 SCRIPT_VERSION = "1.0.0"
-SUPPORTED_CORPORA = ("literature",)  # miviludes / interviews need their own pre-screen + speaker handling first
+SUPPORTED_CORPORA = ("literature", "miviludes", "interviews")
 logger = logging.getLogger("thesis_corpus.extract_v2")
 _CODE_FENCE_RE = re.compile(r"^```(?:json)?\s*(.*?)\s*```$", re.DOTALL)
 

@@ -17,6 +17,9 @@ Candidate screen (after the model call):
   S11 standalone_personal_name        S12 interviewer_utterance
   S13 citation_dominated              S14 duplicate_or_overlapping_span
   S15 exceeds_per_chunk_cap
+Interviews only (transcript_rule, before S6): span_includes_speaker_label,
+  span_crosses_speaker_turn, span_in_transcript_header; the speaker label of the
+  turn sets attribution (interviewer -> S12 rejects), the model never overrides it.
 
 Text model: `raw_text` is the chunker's output; `nfc_text` (NFC of raw)
 is what the model saw and the only matching target; a verbatim expression
@@ -72,6 +75,11 @@ _TRAILING_PUNCT_RE = re.compile(r"[.!?\"”»’')\]]+$")
 # or an initial (L., J). All-caps tokens (CIA, ISKCON) are acronyms, not names.
 _NAME_TOKEN_RE = re.compile(r"^(?:[A-ZÀ-Ý][a-zà-ÿ'’\-]+|[A-Z]\.?)$")
 _LEXICON = frozenset(schema.DOMAIN_LEXICON)
+# Interview transcripts: line-initial speaker labels ("Interviewer:", "Interviewer :",
+# "Interviewee:", "Interview Notes:"). Everything before the first Interviewer label is
+# the transcript header (date line, demographics), never speech.
+_SPEAKER_LABEL_RE = re.compile(r"^(Interviewer|Interviewee|Interview Notes)\s*:", re.MULTILINE | re.IGNORECASE)
+_SPEAKER_ROLE = {"interviewer": "interviewer", "interviewee": "participant", "interview notes": "notes"}
 
 
 @dataclass
@@ -312,6 +320,42 @@ def _unbalanced(text: str) -> bool:
 # Candidate screen
 # ---------------------------------------------------------------------------
 
+def speaker_turns(nfc_text: str) -> list[tuple[int, int, str]]:
+    """(start, end, role) segments of an interview chunk: 'header' before the
+    first Interviewer label, then one segment per label until the next label.
+    Roles: interviewer | participant | notes | header."""
+    labels = list(_SPEAKER_LABEL_RE.finditer(nfc_text))
+    if not labels:
+        return [(0, len(nfc_text), "header")]
+    first_interviewer = next((m for m in labels if m.group(1).lower() == "interviewer"), None)
+    turns: list[tuple[int, int, str]] = []
+    boundary = first_interviewer.start() if first_interviewer else labels[0].start()
+    if boundary > 0:
+        turns.append((0, boundary, "header"))
+    active = [m for m in labels if m.start() >= boundary]
+    for i, m in enumerate(active):
+        end = active[i + 1].start() if i + 1 < len(active) else len(nfc_text)
+        turns.append((m.start(), end, _SPEAKER_ROLE[m.group(1).lower()]))
+    return turns
+
+
+def transcript_rule(ctx: "ChunkContext", start: int, end: int, text: str) -> tuple[str | None, str, str | None]:
+    """Interview-only. Returns (rejection_code, detail, forced_attribution).
+    The transcript decides who spoke; the model never overrides it."""
+    if _SPEAKER_LABEL_RE.search(text):
+        return "span_includes_speaker_label", "", None
+    overlapping = [(s, e, role) for s, e, role in speaker_turns(ctx.nfc_text) if start < e and end > s]
+    roles = {role for _, _, role in overlapping}
+    if len(overlapping) > 1:
+        return "span_crosses_speaker_turn", f"spans {sorted(roles)}", None
+    role = overlapping[0][2] if overlapping else "header"
+    if role == "header":
+        return "span_in_transcript_header", "", None
+    if role in ("interviewer", "notes"):
+        return None, "", "interviewer"
+    return None, "", "participant"
+
+
 @dataclass
 class ScreenOutcome:
     rejection_code: str | None
@@ -319,6 +363,7 @@ class ScreenOutcome:
     flags: list[str] = field(default_factory=list)
     span: tuple[int, int] | None = None
     text: str | None = None
+    attribution_override: str | None = None
 
 
 def screen_candidate(cand: schema.CandidateV2, ctx: ChunkContext) -> ScreenOutcome:
@@ -339,6 +384,14 @@ def screen_candidate(cand: schema.CandidateV2, ctx: ChunkContext) -> ScreenOutco
     # S5
     if (start > 0 and ctx.nfc_text[start - 1].isalnum()) or (end < len(ctx.nfc_text) and ctx.nfc_text[end].isalnum()):
         return ScreenOutcome("span_cuts_word", "alphanumeric character adjacent to span boundary", span=span, text=text)
+
+    # Interviews: deterministic speaker-turn tagging (plan step 3; never overridden by the model)
+    attribution_override = None
+    if ctx.source == "interviews":
+        code, detail, attribution_override = transcript_rule(ctx, start, end, text)
+        if code:
+            return ScreenOutcome(code, detail, span=span, text=text)
+    effective_attribution = attribution_override or cand.attribution
 
     # S6
     tokens = _tokens(text)
@@ -428,16 +481,19 @@ def screen_candidate(cand: schema.CandidateV2, ctx: ChunkContext) -> ScreenOutco
     if _META_DISCOURSE_RE.search(stripped):
         return ScreenOutcome("meta_discourse", "", span=span, text=text)
 
-    # S12
-    if cand.attribution == "interviewer":
-        return ScreenOutcome("interviewer_utterance", "", span=span, text=text)
+    # S12 (transcript-derived attribution wins on interviews)
+    if effective_attribution == "interviewer":
+        return ScreenOutcome("interviewer_utterance", "transcript speaker turn" if attribution_override else "model attribution",
+                             span=span, text=text)
 
     # S13
     citation_chars = sum(len(m.group(0)) for m in _CITATION_RE.finditer(text))
     if len(text) and citation_chars / len(text) > schema.CITATION_DOMINANCE_SHARE:
         return ScreenOutcome("citation_dominated", f"{citation_chars}/{len(text)} chars", span=span, text=text)
 
-    return ScreenOutcome(None, "", flags=flags, span=span, text=text)
+    if attribution_override and attribution_override != cand.attribution:
+        flags.append("attribution_from_transcript")
+    return ScreenOutcome(None, "", flags=flags, span=span, text=text, attribution_override=attribution_override)
 
 
 # ---------------------------------------------------------------------------
@@ -543,7 +599,9 @@ def _retained_record(ctx: ChunkContext, rank: int, cand: schema.CandidateV2, out
         "nfc_changed_codepoints": ctx.nfc_changed_codepoints,
         "context_window": ctx.nfc_text,
         "expression_kind": cand.expression_kind,
-        "attribution": cand.attribution,
+        "attribution": outcome.attribution_override or cand.attribution,
+        "attribution_source": "transcript" if outcome.attribution_override else "model",
+        "model_attribution": cand.attribution,
         "claim_mode": cand.claim_mode,
         "epistemic_status": cand.epistemic_status,
         "entity_anchors": list(cand.entity_anchors),

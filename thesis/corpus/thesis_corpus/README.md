@@ -361,8 +361,29 @@ the **final archive** (judge-accepted rows with `judge_*` fields), next to
 `chunk_terms.jsonl` (diagnostic only), `chunk_index.jsonl`, `skipped_chunks.jsonl`,
 `model_responses.jsonl`, `model_failures.jsonl`, `documents_manifest.jsonl`,
 `config.json`, `summary.json` (rewritten after every document), `run.log`.
-Only literature is wired so far; MIVILUDES and interviews need their own
-pre-screen thresholds and the deterministic speaker-turn handling first.
+All three corpora are wired. MIVILUDES uses the literature pre-screen
+(same chunker, same 300–700-word chunks). Interviews use no length floor and
+a deterministic speaker-turn rule (`screen_v2.speaker_turns` /
+`transcript_rule`): the transcript's own `Interviewer:` / `Interviewee:` /
+`Interview Notes:` labels decide who spoke — a span in an interviewer turn
+or in the notes is attributed `interviewer` and rejected whatever the model
+said, a span in a participant turn is attributed `participant`
+(`attribution_source = "transcript"`, the model's label kept as
+`model_attribution`), spans crossing a turn boundary, containing a speaker
+label, or lying in the transcript header are rejected.
+
+**Embedding (`embed_v2.py`)** — reads a run's final `expressions_v2.jsonl`,
+embeds `embedding_text` and the unique `entity_anchors` with `bge-m3`
+(`ollama_client.embed_texts`, as v1 did), and writes
+`run_<tag>/criterion_expressions.jsonl` in v1's field layout (`source_quote`
+= the verbatim span) plus every v2 field, so `build_shared_space`,
+`reduce_embeddings`, `translate_miviludes_expressions` and the toolkit can
+read it with a path change. Checkpointed per document, resumable, refuses a
+different embed model or a changed source file:
+
+```
+python -m thesis_corpus.embed_v2 --corpus literature --run-tag <tag>
+```
 
 Tests (stdlib `unittest`, no Ollama): `python -m unittest discover -s thesis_corpus/tests -t .`
 

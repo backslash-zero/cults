@@ -55,7 +55,9 @@ CITATION_DOMINANCE_SHARE = 0.40
 # never be dropped on length (min_chunk_words=None disables C1).
 PRE_SCREEN_BY_SOURCE: dict[str, dict] = {
     "literature": {"min_chunk_words": 40, "bibliography_line_share": 0.6, "bibliography_min_lines": 3},
-    "miviludes": {"min_chunk_words": None, "bibliography_line_share": 0.6, "bibliography_min_lines": 3},  # to be set at migration
+    # MIVILUDES: the same chunker (300-700-word chunks of a 123-page report plus one
+    # plain-text document), so the literature floor applies; set at migration 2026-09-09.
+    "miviludes": {"min_chunk_words": 40, "bibliography_line_share": 0.6, "bibliography_min_lines": 3},
     "interviews": {"min_chunk_words": None, "bibliography_line_share": None, "bibliography_min_lines": None},
 }
 
