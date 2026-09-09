@@ -273,8 +273,14 @@ def user_message(document_id: str, page_range: list[int], chunk_index: int, nfc_
     )
 
 
-def screening_constants() -> dict:
-    """Everything a run's config.json records so a reader can reproduce the screen."""
+def screening_constants(corpus: str | None = None) -> dict:
+    """Everything a run's config.json records so a reader can reproduce the
+    screen. `corpus`, when given, narrows `pre_screen_by_source` to that
+    corpus's own settings only -- this dict feeds extract_v2's resume-identity
+    check, and embedding every corpus's settings there made an unrelated
+    corpus's threshold change (e.g. tuning MIVILUDES) wrongly invalidate an
+    already-running literature run's checkpoint. Omit `corpus` (e.g. for
+    documentation/inspection) to get the full table as before."""
     return {
         "extraction_version": EXTRACTION_VERSION,
         "prompt_sha256": PROMPT_SHA256,
@@ -286,7 +292,7 @@ def screening_constants() -> dict:
         "title_case_max_words": TITLE_CASE_MAX_WORDS,
         "name_max_tokens": NAME_MAX_TOKENS,
         "citation_dominance_share": CITATION_DOMINANCE_SHARE,
-        "pre_screen_by_source": PRE_SCREEN_BY_SOURCE,
+        "pre_screen_by_source": PRE_SCREEN_BY_SOURCE if corpus is None else {corpus: PRE_SCREEN_BY_SOURCE[corpus]},
         "domain_lexicon": list(DOMAIN_LEXICON),
         "dangling_start_words": list(DANGLING_START_WORDS),
         "dangling_end_words": list(DANGLING_END_WORDS),

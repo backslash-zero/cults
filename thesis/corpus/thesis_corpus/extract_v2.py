@@ -163,7 +163,7 @@ def run_config(args, audit_prov: dict, pre_screen: dict) -> dict:
         "script": "thesis_corpus.extract_v2", "script_version": SCRIPT_VERSION, "corpus": args.corpus,
         "model": args.model, "judge_model": args.judge_model, "judge_version": judge_v2.JUDGE_VERSION,
         "judge_prompt_sha256": judge_v2.JUDGE_PROMPT_SHA256, "judge_options": judge_v2.JUDGE_OPTIONS,
-        "screening": schema.screening_constants(), "pre_screen_config": pre_screen,
+        "screening": schema.screening_constants(args.corpus), "pre_screen_config": pre_screen,
         "stage1_audit": audit_prov, "text_transform_policy": "newline_to_space (screen_v2.fold_newlines); verbatim_expression untouched",
     }
 
