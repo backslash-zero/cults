@@ -13,6 +13,42 @@ same inverted pattern as `miviludes_criteria`'s `label`/`label_en`. See
 "Known Limitations" below for the translation-fidelity numbers and known
 residual noise.
 
+## Extraction pipeline v2 — status
+
+**Everything below in this file describes the first-generation (v1) archive
+and the shared space built from it.** A 100-item manual fidelity review
+(2026-09-08) found the v1 pipeline systematically over-inclusive — expressions
+paraphrased, mistranslated, or truncated relative to their source, headings
+and citations extracted as though they were claims, interviewer questions
+occasionally mislabelled as participant statements. The extraction pipeline
+was redesigned around a strict verbatim-span rule (the model returns only an
+exact substring of the source chunk; a deterministic code layer, not a
+further model call, screens it), a Stage-1 text-integrity audit (broken PDF
+font/character-map corruption, found to enter before any model ever sees the
+text), deterministic interview speaker-turn attribution, and — since full
+manual review of a corpus this size was not feasible on this thesis's
+timeline — a second, independently-prompted local model that verifies every
+retained expression against the same criteria a human reviewer would apply
+("model-judged", never treated as a substitute for human review). Full design
+and rationale: `thesis/03_Content/3_Methods.tex`, "Revising the Extraction
+Pipeline" (`sec:extraction_v2`). Implementation and usage:
+`thesis_corpus/README.md`'s "Extraction v2" sections
+(`text_integrity.py`/`audit_stage1_text_integrity.py`, `screen_v2.py`,
+`judge_v2.py`, `extract_v2.py`, `embed_v2.py`, `sample_v2_expressions.py`).
+
+**v1 is frozen** — its archives, this shared space, and every retained
+analysis run listed below stay on disk unmodified, as historical/comparison
+record, per the same never-modify-the-source discipline this file already
+documents for the archives themselves.
+
+**v2 status**: full-corpus extraction (`thesis_corpus.extract_v2`, checkpointed
+per document, resumable) is running against all three corpora as of
+2026-09-09; not yet complete, not yet embedded, and not yet pooled into a new
+shared space. Nothing in this document should be read as describing v2's
+corpus until that rebuild happens and this file is regenerated against it —
+consistent with this file's own opening instruction to regenerate after any
+pipeline rerun.
+
 ## Project Goals & Hypothesis
 
 This research investigates the criteria through which particular objects,
