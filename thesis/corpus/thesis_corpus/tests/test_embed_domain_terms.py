@@ -32,6 +32,14 @@ class TestLooksLikeNamedEntity(unittest.TestCase):
         # doesn't start capitalized.
         self.assertTrue(edt.looks_like_named_entity("eBay-style recruitment"))
 
+    def test_pure_numbers_and_punctuation_fail(self):
+        # str.islower() is False when there are no cased characters at all
+        # -- "2004", "11", "---" would otherwise slip through as if they
+        # were capitalized proper nouns (found directly in a real v2
+        # sample: bare years/page numbers passing the old filter).
+        for term in ["2004", "11", "1958", "---", "42"]:
+            self.assertFalse(edt.looks_like_named_entity(term), term)
+
 
 class TestCollectCandidateTerms(unittest.TestCase):
     def _write_chunk_terms(self, rows: list[dict]) -> Path:

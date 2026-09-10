@@ -87,12 +87,13 @@ the corpus grows or the emergent-entity threshold below is adjusted):
     hand-reviewed, kept subset is ever embedded/pooled (see
     filter_conceptnet_concepts.py) -- the 1,150 rows flagged as generic hub
     words during manual review never leave the candidates CSV.
-  - Each emergent entity mentioned at least `--entity-anchor-min-mentions`
-    times across all three corpora contributes ONE point
-    (`point_role="emergent"`): a per-unique (normalized) entity-anchor
-    embedding already computed in Stage 2 (`entity_anchor_vectors`), never
-    before pooled into any space. Gives named entities/dimensions (e.g.
-    "Scientology", "charismatic leader") an actual position relative to
+  - Each named-entity-shaped anchor (see `looks_like_named_entity`) that
+    clears its own corpus's `--entity-anchor-min-mentions[-<corpus>]`
+    threshold contributes ONE point (`point_role="emergent"`): a
+    per-unique (normalized) entity-anchor embedding already computed in
+    Stage 2 (`entity_anchor_vectors`) or, for v2 runs, embed_domain_terms.py's
+    broader domain_terms pass. Gives named entities (e.g. "Scientology",
+    "Heaven's Gate") an actual position relative to
     corpus expressions and the concept backbone. Carries
     `mention_distribution` (per-corpus mention counts) as provenance
     metadata, not used in the PCA fit.
@@ -117,6 +118,8 @@ files under processed/.
 Usage (from thesis/corpus/):
     python -m thesis_corpus.build_shared_space
     python -m thesis_corpus.build_shared_space --entity-anchor-min-mentions 5
+    python -m thesis_corpus.build_shared_space --run-tag 20260910 --entity-anchor-min-mentions 8 \
+        --entity-anchor-min-mentions-miviludes 2 --entity-anchor-min-mentions-interviews 1
 
     # v2 (a thesis_corpus.extract_v2 + embed_v2 run for all three corpora):
     # writes to processed/shared_space_v2/, never touches v1's own archives
@@ -128,6 +131,7 @@ Usage (from thesis/corpus/):
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import logging
@@ -158,6 +162,7 @@ CORPUS_ARCHIVES = {
     "miviludes": PROCESSED_DIR / "miviludes" / "criterion_expressions.jsonl",
     "interviews": PROCESSED_DIR / "interviews" / "criterion_expressions.jsonl",
 }
+LITERATURE_METADATA_PATH = CORPUS_DIR / "metadata" / "literature.csv"
 MIVILUDES_CRITERIA_PATH = CORPUS_DIR / "metadata" / "miviludes_criteria_embedded.jsonl"
 CONCEPT_BACKBONE_PATH = CORPUS_DIR / "dictionaries" / "concept_backbone_embedded.jsonl"
 # Produced by extract_structural_concepts.py + embedding on the Windows/Ollama
@@ -236,6 +241,74 @@ def normalize_anchor(anchor: str) -> str:
     -- so "Charismatic  Leader" and "charismatic leader" merge to the same
     entity rather than becoming two near-duplicate points."""
     return _WHITESPACE_RE.sub(" ", anchor.strip().lower())
+
+
+def looks_like_named_entity(term: str) -> bool:
+    """A term that is NOT all-lowercase, in the source text's own casing, is
+    empirically almost always a genuine proper noun (a named group, leader,
+    place, or acronym) rather than generic domain vocabulary -- checked
+    directly against real v1/v2 entity_anchors and domain_terms samples
+    (see embed_domain_terms.py's module docstring for the data). Applied
+    to BOTH entity_anchors (below) and domain_terms (embed_domain_terms.py)
+    -- entity_anchors had no type filtering at all before this, which is
+    exactly why v1's top entities included non-entities like "charismatic
+    leader", "cults", "religion", "church", "followers".
+
+    str.islower() is False for a string with no cased characters at all
+    (e.g. "2004", "11", punctuation-only) -- caught directly in a v2
+    sample, where bare years/page numbers were passing this filter as if
+    they were capitalized proper nouns. Requiring at least one actual
+    letter closes that hole.
+
+    Deliberately simple and auditable rather than another model call; does
+    not catch every false positive (a cited scholar's capitalized surname,
+    a book/journal title, a document-section label like "Part 3" still
+    pass) -- see ANALYSIS_OVERVIEW.md's Known Limitations for what this
+    does and does not guarantee."""
+    return any(c.isalpha() for c in term) and not term.islower()
+
+
+_AUTHOR_NAME_SPLIT_RE = re.compile(r";| and ")
+_AUTHOR_ED_SUFFIX_RE = re.compile(r"\s*\(eds?\.?\)\s*$", re.IGNORECASE)
+
+
+def load_cited_author_surnames(metadata_path: Path = LITERATURE_METADATA_PATH) -> set[str]:
+    """Surnames of the literature corpus's OWN 57 source documents' authors
+    (metadata/literature.csv's `authors` column, "Surname, First Name(s)"
+    per author, multiple authors split on ";"/" and "), normalized the same
+    way as entity anchors. Checked directly against real candidate-entity
+    counts: bare author surnames from in-text citations (e.g. "(Richardson
+    1985)") were among the single highest-mention "entities" in the whole
+    pool -- "richardson" alone had 47 mentions, more than most genuine
+    named cult groups -- precisely because this is a small, tightly
+    self-citing field where these 57 authors' names recur constantly
+    across each other's work. A frequency threshold alone cannot separate
+    that from a genuinely important, frequently-discussed group, since
+    both patterns look identical: a capitalized word mentioned often.
+
+    This is a real fix for self-citation within THIS corpus's own author
+    list, not a general citation detector -- externally-cited classical
+    theorists who are not themselves corpus authors (checked directly:
+    "weber", "freud", "wallis" all still pass with real mention counts)
+    are a separate, NOT-yet-fixed source of the same problem, flagged in
+    ANALYSIS_OVERVIEW.md's Known Limitations rather than silently
+    swallowed here -- building a general in-text citation detector would
+    need access to the raw chunk text domain_terms mentions don't carry,
+    a larger undertaking than this targeted, data-derived fix."""
+    if not metadata_path.exists():
+        return set()
+    surnames: set[str] = set()
+    with open(metadata_path, encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            authors = row.get("authors") or ""
+            for part in _AUTHOR_NAME_SPLIT_RE.split(authors):
+                part = _AUTHOR_ED_SUFFIX_RE.sub("", part.strip()).strip()
+                if not part:
+                    continue
+                surname = part.split(",")[0].strip()
+                if surname:
+                    surnames.add(normalize_anchor(surname))
+    return surnames
 
 
 def load_corpus_points(
@@ -688,10 +761,15 @@ def load_domain_term_entity_mentions(
     (mention counts) and term_vectors_path (which raw strings are eligible)
     are cross-referenced here so a term present in the former but absent
     from the latter -- filtered out as generic vocabulary, or simply not
-    yet embedded -- is silently skipped, not an error. Returns raw
-    (un-normalized) term -> mention count and term -> vector, mirroring
-    entity_anchors' own raw-string convention; normalization happens where
-    entity_anchors' does, in load_emergent_entities below."""
+    yet embedded -- is silently skipped, not an error. Re-applies
+    looks_like_named_entity() here too (not just trusting term_vectors_path
+    membership) so a fix to that filter takes effect immediately at
+    rebuild time even against a domain_term_vectors.jsonl embedded under
+    an older/looser version of it, with no need to re-run the (expensive,
+    Ollama-hosted) embedding step. Returns raw (un-normalized) term ->
+    mention count and term -> vector, mirroring entity_anchors' own
+    raw-string convention; normalization happens where entity_anchors'
+    does, in load_emergent_entities below."""
     if not term_vectors_path.exists():
         return Counter(), {}
     vectors: dict[str, list[float]] = {}
@@ -701,7 +779,8 @@ def load_domain_term_entity_mentions(
             if not line:
                 continue
             row = json.loads(line)
-            vectors[row["term"]] = row["vector"]
+            if looks_like_named_entity(row["term"]):
+                vectors[row["term"]] = row["vector"]
 
     mentions: Counter[str] = Counter()
     with open(chunk_terms_path, encoding="utf-8") as f:
@@ -717,16 +796,27 @@ def load_domain_term_entity_mentions(
 
 
 def load_emergent_entities(
-    archive_paths: dict[str, Path], min_mentions: int,
+    archive_paths: dict[str, Path], min_mentions_by_corpus: dict[str, int],
     domain_term_paths: dict[str, tuple[Path, Path]] | None = None,
+    cited_author_surnames: set[str] | None = None,
 ) -> list[dict]:
-    """Pools one point per unique (normalized) entity anchor mentioned at
-    least `min_mentions` times across all three corpus archives, using the
-    per-anchor embedding Stage 2 already computed (entity_anchor_vectors) --
-    never before pooled into any space. First-seen vector per normalized
-    anchor is kept (the embedding is a function of the literal anchor text
-    alone, so occurrences of the same normalized string carry equivalent
-    vectors modulo casing/whitespace, already normalized away here).
+    """Pools one point per unique (normalized) entity anchor that clears ITS
+    OWN corpus's mention threshold in at least one corpus it appears in
+    (see `min_mentions_by_corpus` below), using the per-anchor embedding
+    Stage 2 already computed (entity_anchor_vectors) -- never before pooled
+    into any space. First-seen vector per normalized anchor is kept (the
+    embedding is a function of the literal anchor text alone, so
+    occurrences of the same normalized string carry equivalent vectors
+    modulo casing/whitespace, already normalized away here).
+
+    Only entity_anchors/domain_terms that look_like_named_entity() (see
+    above) are pooled at all -- entity_anchors previously had NO type
+    filtering, which is why v1's top-mentioned "entities" included
+    "charismatic leader", "cults", "religion", "church", "followers":
+    frequent, but not named things. This does not catch every false
+    positive (a frequently-cited scholar's capitalized surname still
+    passes) -- see this module's own printed diagnostics and
+    ANALYSIS_OVERVIEW.md's Known Limitations.
 
     These are "emergent entities" (`point_role="emergent"`): named
     entities/groups/concepts mentioned BY the corpora themselves, as
@@ -739,6 +829,27 @@ def load_emergent_entities(
     overwhelmingly mentioned in one corpus can be told apart from one
     mentioned evenly across all three.
 
+    `min_mentions_by_corpus` (`{corpus: threshold}`) is deliberately PER
+    CORPUS rather than one global number applied to the cross-corpus sum:
+    literature is large and citation-heavy (a name mentioned a handful of
+    times is plausibly just a cited scholar, not a recurring discourse
+    object), while miviludes/interviews are small and tightly curated
+    (a single mention there is comparatively far more likely to be
+    deliberate). An anchor qualifies if ANY corpus it appears in meets or
+    exceeds THAT corpus's own threshold -- so e.g. "Ku Klux Klan" (3
+    mentions, all interviews) can qualify via interviews' low bar even
+    though it would never clear literature's much higher one on its own;
+    once included, its full mention_distribution across all corpora is
+    still reported regardless of which corpus triggered inclusion.
+
+    `cited_author_surnames`, if given, drops any candidate normalizing to
+    one of these strings before it ever reaches the mention count/vector
+    pools -- see load_cited_author_surnames' docstring for why (in-text
+    academic citations pass looks_like_named_entity() just as easily as a
+    genuine named group does; a mention-count threshold cannot tell them
+    apart, but a bare surname matching one of THIS corpus's own 57
+    authors can be ruled out directly).
+
     `domain_term_paths`, if given, adds a second, broader mention source
     per corpus (`{corpus: (chunk_terms_path, term_vectors_path)}` --
     see load_domain_term_entity_mentions above and embed_domain_terms.py).
@@ -747,6 +858,7 @@ def load_emergent_entities(
     an already judge-verified expression span, so it is preferred, not
     merely first-seen) -- mention counts from both sources are always
     combined regardless of which vector is kept."""
+    cited_author_surnames = cited_author_surnames or set()
     vector_by_anchor: dict[str, list[float]] = {}
     mentions_by_corpus: dict[str, Counter[str]] = defaultdict(Counter)
 
@@ -759,8 +871,10 @@ def load_emergent_entities(
                 item = json.loads(line)
                 raw_vectors = item.get("entity_anchor_vectors") or {}
                 for raw_anchor, vector in raw_vectors.items():
+                    if not looks_like_named_entity(raw_anchor):
+                        continue
                     key = normalize_anchor(raw_anchor)
-                    if not key:
+                    if not key or key in cited_author_surnames:
                         continue
                     mentions_by_corpus[corpus_name][key] += 1
                     vector_by_anchor.setdefault(key, vector)
@@ -772,7 +886,7 @@ def load_emergent_entities(
             domain_mentions, domain_vectors = load_domain_term_entity_mentions(chunk_terms_path, term_vectors_path)
             for raw_term, count in domain_mentions.items():
                 key = normalize_anchor(raw_term)
-                if not key:
+                if not key or key in cited_author_surnames:
                     continue
                 mentions_by_corpus[corpus_name][key] += count
                 vector_by_anchor.setdefault(key, domain_vectors[raw_term])
@@ -784,14 +898,20 @@ def load_emergent_entities(
     def distribution_for(anchor: str) -> dict[str, int]:
         return {corpus_name: mentions_by_corpus[corpus_name].get(anchor, 0) for corpus_name in archive_paths}
 
-    print(f"\nEmergent entities: {len(total_mentions)} unique (normalized) across all corpora; "
-          f"top 20 by mention count:")
+    def clears_some_corpus_threshold(anchor: str) -> bool:
+        return any(
+            mentions_by_corpus[corpus_name].get(anchor, 0) >= min_mentions_by_corpus[corpus_name]
+            for corpus_name in archive_paths
+        )
+
+    print(f"\nEmergent entities: {len(total_mentions)} unique (normalized, named-entity-shaped) "
+          f"across all corpora; per-corpus min-mentions thresholds: {min_mentions_by_corpus}; top 20 by mention count:")
     for anchor, count in total_mentions.most_common(20):
         print(f"  {anchor}: {count} total mentions -- {distribution_for(anchor)}")
 
     points = []
     for anchor, count in total_mentions.items():
-        if count < min_mentions:
+        if not clears_some_corpus_threshold(anchor):
             continue
         points.append({
             "source_dataset": "emergent_entities",
@@ -819,7 +939,16 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--variance-threshold", type=float, default=VARIANCE_THRESHOLD)
     parser.add_argument("--entity-anchor-min-mentions", type=int, default=ENTITY_ANCHOR_MIN_MENTIONS,
-                         help="Minimum times an entity anchor must be mentioned across all corpora to get its own point.")
+                         help="Default minimum per-corpus mention count for an entity anchor to get its own "
+                              "point, used for any corpus without its own --entity-anchor-min-mentions-<corpus> "
+                              "override below. An anchor qualifies if it clears ANY ONE corpus's own threshold "
+                              "(see load_emergent_entities) -- this is deliberately per corpus, not a single "
+                              "threshold on the cross-corpus mention sum, since literature's citation-heavy "
+                              "volume makes a given mention count far less indicative of a genuine recurring "
+                              "entity than the same count in miviludes/interviews' much smaller, curated text.")
+    parser.add_argument("--entity-anchor-min-mentions-literature", type=int, default=None)
+    parser.add_argument("--entity-anchor-min-mentions-miviludes", type=int, default=None)
+    parser.add_argument("--entity-anchor-min-mentions-interviews", type=int, default=None)
     parser.add_argument("--run-tag", default=None,
                          help="If given, pool the v2 extraction run with this tag instead of v1: reads "
                               "processed/v2/<corpus>/run_<tag>/criterion_expressions.jsonl for each corpus and "
@@ -935,7 +1064,16 @@ def main() -> None:
             corpus: (path.parent / "chunk_terms.jsonl", path.parent / "domain_term_vectors.jsonl")
             for corpus, path in corpus_archives.items()
         }
-    emergent_entity_points = load_emergent_entities(corpus_archives, args.entity_anchor_min_mentions, domain_term_paths)
+    min_mentions_by_corpus = {
+        corpus: (getattr(args, f"entity_anchor_min_mentions_{corpus}") or args.entity_anchor_min_mentions)
+        for corpus in corpus_archives
+    }
+    cited_author_surnames = load_cited_author_surnames()
+    logger.info("%d cited-author surnames loaded from %s (excluded from emergent entities)",
+                len(cited_author_surnames), LITERATURE_METADATA_PATH)
+    emergent_entity_points = load_emergent_entities(
+        corpus_archives, min_mentions_by_corpus, domain_term_paths, cited_author_surnames,
+    )
     counts["emergent_entities"] = len(emergent_entity_points)
     points.extend(emergent_entity_points)
 

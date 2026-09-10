@@ -62,6 +62,11 @@ processed/v2/**/documents_done.txt
 # or participant text -- and is the durable input build_shared_space.py's emergent-entities
 # pooling depends on, so it stays tracked like pilot_selection.json/config.json/summary.json.
 !processed/v2/**/domain_term_vectors.jsonl
+# ...except literature's own copy, which re-exceeds GitHub's 100MB file limit on its own
+# (34k+ candidate terms x 1024-d vectors, ~465MB) -- kept as a local-only, regeneratable
+# artifact (rerun embed_domain_terms.py --corpus literature) like embedding_space.jsonl
+# and friends above, never committed.
+processed/v2/literature/**/domain_term_vectors.jsonl
 # Stage-1 mirror archives (thesis_corpus.mirror_stage1) and the manifest a
 # target machine unzips alongside them -- verbatim text, hand-copied only.
 processed/stage1_mirror_*.zip

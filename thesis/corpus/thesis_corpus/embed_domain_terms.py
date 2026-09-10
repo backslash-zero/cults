@@ -59,6 +59,7 @@ from pathlib import Path
 
 from tqdm import tqdm
 
+from thesis_corpus.build_shared_space import looks_like_named_entity
 from thesis_corpus.ollama_client import EmbeddingError, OllamaUnavailableError, check_available, embed_texts
 from thesis_corpus.pilot_v2_literature import PROCESSED_ROOT, git_commit_hash, write_json
 
@@ -68,16 +69,6 @@ EMBED_CHUNK_SIZE = 200  # terms per write/checkpoint, independent of ollama_clie
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("thesis_corpus.embed_domain_terms")
-
-
-def looks_like_named_entity(term: str) -> bool:
-    """domain_terms are stored verbatim, in the source text's own casing.
-    A term that is NOT all-lowercase is, empirically, almost always a
-    genuine proper noun (a named group, leader, place, or acronym) rather
-    than generic domain vocabulary -- see this module's docstring for the
-    data check this is based on. Deliberately simple and auditable rather
-    than another model call."""
-    return not term.islower()
 
 
 def collect_candidate_terms(chunk_terms_path: Path) -> Counter[str]:

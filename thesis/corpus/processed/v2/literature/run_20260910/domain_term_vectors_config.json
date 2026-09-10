@@ -1,0 +1,8 @@
+{
+  "script": "thesis_corpus.embed_domain_terms",
+  "corpus": "literature",
+  "run_tag": "20260910",
+  "embed_model": "bge-m3",
+  "filter": "not term.islower()",
+  "git_commit": "9256a154a1d2977117a331fadbe8f68de0dbb8b1"
+}
