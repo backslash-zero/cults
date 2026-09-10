@@ -6,17 +6,27 @@
 % as-is. Covers the SECOND-generation ("v2") corpus and shared space --
 % see thesis/corpus/ANALYSIS_OVERVIEW.md's "Extraction pipeline v2" section
 % and thesis/03_Content/3_Methods.tex's "Revising the Extraction Pipeline"
-% for why v2 exists at all. The predecessor document,
+% for why v2 exists at all. The predecessor v1 document,
 % thesis/04_Appendix/Geometric_Analysis_Draft/geometric_analysis_report.tex,
-% covers the frozen, still-on-disk v1 run and is kept for comparison, not
-% superseded.
+% covers the frozen, still-on-disk v1 run and is kept for comparison.
 %
-% Unlike the v1 document, this one DOES include a labelled "Possible
-% interpretations" section and a plain-language summary, at the
-% researcher's explicit request. Both are kept visibly, structurally
-% separate from the descriptive-fact sections that precede them, and are
-% explicitly flagged throughout as provisional readings for the researcher
-% to argue with -- not the thesis's settled Results-chapter conclusions.
+% This is a full rewrite of the first v2 report (which covered run
+% 20260909-224215). That run's emergent-entities layer turned out to be
+% badly under-powered -- 21 entities total, mostly single-mention noise,
+% zero shared across all three corpora -- traced to a real bug (entity
+% extraction only looked inside already-kept expressions) rather than a
+% genuine property of the corpus. This report covers the corrected run
+% (20260910-010254): entities are now also pulled from a broader,
+% previously-unused extraction field, filtered for named-entity shape,
+% and cross-checked against this corpus's own cited-author list. Where
+% useful, this document shows the before/after directly rather than
+% hiding the correction.
+%
+% Includes a labelled "Possible interpretations" section and a plain-
+% language summary, at the researcher's explicit request -- kept visibly,
+% structurally separate from the descriptive-fact sections and flagged
+% throughout as provisional readings for the researcher to argue with,
+% not the thesis's settled Results-chapter conclusions.
 % Compile directly: pdflatex geometric_analysis_report_v2.tex
 % ------------------------------------------------------------------
 
@@ -42,12 +52,17 @@
    \noindent\small\textbf{#1.}\ \ignorespaces}
   {\par\vspace{3pt}\noindent{\color{noteline}\rule{\linewidth}{0.6pt}}\vspace{6pt}\par}
 
-\definecolor{interpback}{RGB}{255,248,235}
 \definecolor{interpline}{RGB}{180,140,60}
 \newenvironment{interpbox}[1][Possible interpretation]
   {\par\vspace{6pt}\noindent{\color{interpline}\rule{\linewidth}{0.8pt}}\par\vspace{3pt}
    \noindent\small\textcolor{interpline}{\textbf{#1.}}\ \ignorespaces}
   {\par\vspace{3pt}\noindent{\color{interpline}\rule{\linewidth}{0.8pt}}\vspace{6pt}\par}
+
+\definecolor{fixline}{RGB}{60,140,90}
+\newenvironment{fixbox}[1][What was fixed]
+  {\par\vspace{6pt}\noindent{\color{fixline}\rule{\linewidth}{0.8pt}}\par\vspace{3pt}
+   \noindent\small\textcolor{fixline}{\textbf{#1.}}\ \ignorespaces}
+  {\par\vspace{3pt}\noindent{\color{fixline}\rule{\linewidth}{0.8pt}}\vspace{6pt}\par}
 
 \newcommand{\jargon}[1]{\textbf{#1}}
 
@@ -55,26 +70,24 @@
 \large Working report -- draft base material for the Results chapter,\\
 with a first attempt at interpretation}
 \author{Prepared for C\'elestin Meunier's thesis project}
-\date{Covers run \texttt{20260909-224215}, generated 2026-09-10}
+\date{Covers run \texttt{20260910-010254}, generated 2026-09-10}
 
 \begin{document}
 \maketitle
 
 \begin{plainbox}[How to read this document]
-This is still not a finished Results chapter, and the descriptive
-sections below (Sections~\ref{sec:stages}--\ref{sec:honesty}) report
-numbers, not arguments, exactly as the predecessor v1 document did.
-What is new here, at the researcher's request, is
-Section~\ref{sec:interpretation}: a first, explicitly provisional pass
-at what these patterns \emph{might} mean. That section is kept
-structurally separate and visually marked (a tan box, like this one is
-blue) throughout, precisely so a reader can tell at a glance which
-sentences are geometric fact and which are a reading of that fact that
-the researcher is free to revise, argue with, or reject outright before
-anything becomes actual thesis prose. Nowhere in this document is
-geometric proximity treated as evidence that any group, practice, or
-person \emph{is} or \emph{is not} "a cult" -- that distinction is kept
-explicit everywhere it matters.
+This is still not a finished Results chapter. Sections~\ref{sec:stages}--\ref{sec:honesty}
+report numbers, not arguments. Section~\ref{sec:interpretation} is a first,
+explicitly provisional pass at what these patterns \emph{might} mean, kept
+structurally separate and visually marked (a tan box) throughout so a
+reader can tell at a glance which sentences are geometric fact and which
+are a reading of that fact the researcher is free to revise or reject.
+Green boxes mark a specific, checkable methodological correction made
+during this run, with what was wrong and how it was verified fixed --
+included because the correction itself is informative about how much to
+trust a "count of named things" figure in general. Nowhere in this
+document is geometric proximity treated as evidence that any group,
+practice, or person \emph{is} or \emph{is not} "a cult."
 \end{plainbox}
 
 \tableofcontents
@@ -84,53 +97,32 @@ explicit everywhere it matters.
 \label{sec:short}
 % ============================================================
 
-For a reader who wants the gist before the detail. Every claim below is
-unpacked, with numbers and caveats, later in this document.
-
 \begin{itemize}[leftmargin=1.4em]
-  \item \textbf{The corpus got much smaller, on purpose.} A manual
-  fidelity check of the first extraction pipeline (v1) found it was
-  pulling out paraphrases, mistranslations, and non-claims (headings,
-  citations) as if they were genuine statements about cults. The
-  pipeline was rebuilt around a strict "must be an exact quote"
-  rule plus a second model that independently checks every candidate.
-  The result: far fewer expressions survive (literature alone dropped
-  from 39,236 to 5,741 -- an 85\% cut), but the ones that remain are
-  verbatim and checked. This document is about that smaller, stricter
-  dataset.
-  \item \textbf{The three sources still barely form separate
-  clusters} -- same conclusion as v1's run, at a similarly-near-zero
-  silhouette score. Literature, the French government's MIVILUDES
-  reports, and interview responses overlap substantially rather than
-  occupying clearly separate regions of the space.
-  \item \textbf{But something changed in how the three sources relate
-  to each other.} In v1, the three corpora's average positions pointed
-  in almost unrelated directions (cosine similarities near zero). In
-  v2, literature, MIVILUDES, and interviews all point in a
-  \emph{noticeably similar} direction (cosine similarities of
-  0.52--0.64). One plausible reading, spelled out with its own caveats
-  in Section~\ref{sec:interpretation}, is that stripping out noise
-  (paraphrase drift, boilerplate, mislabelled non-claims) left a
-  cleaner signal of what these three sources have in common when they
-  talk about cults -- but a much smaller sample size can itself produce
-  a tidier-looking average almost by chance, so this is not read as
-  settled here.
-  \item \textbf{Named things (people, specific groups) tend to sit at
-  the edge of their own corpus's "typical" region; generic statements
-  about cults/sects sit near the centre.} A new module run for the
-  first time this session (Section~\ref{sec:typicality}) found this
-  pattern in all three corpora.
-  \item \textbf{One genuine, small data-quality finding}: a
-  97-year-old interviewee's transcribed answer, "Sept?", is almost
-  certainly a mishearing of the French word \emph{secte} (cult) as
-  \emph{sept} (seven) -- not a substantive answer -- yet it passed every
-  automated quality check. It is one point out of 10,646 in the whole
-  space; not large enough to change any result, but worth being honest
-  about (Section~\ref{sec:spotcheck}).
-  \item \textbf{The interviews corpus is now so small (64 expressions)
-  that no single named entity is mentioned by all three corpora at
-  once} -- a real structural fact about this run's data, not a bug
-  (Section~\ref{sec:entities}).
+  \item \textbf{The corpus got much smaller, on purpose} (same as the
+  first v2 pass): a stricter, judge-verified extraction pipeline cut
+  literature from 39,236 to 5,741 expressions, trading quantity for
+  verified fidelity.
+  \item \textbf{The three sources still barely form separate geometric
+  clusters} -- silhouette near zero, same conclusion as before.
+  \item \textbf{A real bug was found and fixed in how "emergent
+  entities" (named groups/leaders the corpora talk about) were counted.}
+  The first v2 pass found only 21 entities, almost all mentioned exactly
+  once, zero shared across all three corpora. That was not a fact about
+  the corpus -- it was because entity extraction only looked inside
+  expressions that survived the strict extraction filter, silently
+  discarding named-entity mentions sitting in text that didn't. Fixed,
+  this run finds \textbf{753} entities, including \textbf{3 mentioned by
+  all three corpora at once} ("New Age," Jehovah's Witnesses in French,
+  and the Order of the Solar Temple) and \textbf{55 mentioned only in
+  interviews} (up from 0). Full story in Section~\ref{sec:entities}.
+  \item \textbf{Named things still sit at the edge of their own corpus's
+  "typical" region; generic statements sit near the centre} -- same
+  pattern as before, unaffected by the entity fix (it concerns ordinary
+  expressions, not the entity layer).
+  \item \textbf{The "Sept?" data-quality finding from the first pass
+  still stands} -- one interview response, almost certainly a mishearing
+  of \emph{secte} as \emph{sept}, passing every automated check. Still
+  1 point out of the space; still not large enough to change any result.
 \end{itemize}
 
 % ============================================================
@@ -140,33 +132,18 @@ unpacked, with numbers and caveats, later in this document.
 
 \subsection{Why a second pass at all}
 A 100-item manual fidelity review of the first extraction pipeline
-(2026-09-08) found it systematically over-inclusive: expressions that
-paraphrased, mistranslated, or truncated their source; document
-headings and bibliography citations pulled out as if they were claims;
-occasional interviewer questions mislabelled as participant statements.
-The pipeline (\jargon{v2}) was rebuilt around a strict verbatim-span
-rule -- the extraction model may only return an exact substring of the
-source text, checked by a deterministic code layer, not another model
-call -- plus a Stage-1 text-integrity audit for broken PDF
-character-encoding, deterministic (not model-guessed) interview
-speaker-turn attribution, and a second, independently-prompted local
-model that judges every retained candidate against the same criteria a
-human reviewer would use. This "judge" model is described everywhere
-in this document as \emph{model-judged}, never as a substitute for
-human review. Full design rationale is in
-\texttt{thesis/03\_Content/3\_Methods.tex}, section "Revising the
-Extraction Pipeline"; v1's own archives, shared space, and every
-retained run are left untouched on disk as a frozen historical
-comparison point, not deleted or overwritten.
+(2026-09-08) found it systematically over-inclusive: paraphrased or
+mistranslated expressions, document headings and bibliography citations
+extracted as though they were claims, occasional interviewer questions
+mislabelled as participant statements. The pipeline (\jargon{v2}) was
+rebuilt around a strict verbatim-span rule plus a second, independently-
+prompted model that judges every retained candidate the way a human
+reviewer would ("model-judged," never a substitute for human review).
+v1's own archives and every retained run stay frozen on disk, untouched.
 
-\subsection{Stage 1 -- The same three corpora, re-extracted}
-The underlying source documents are the same three corpora as v1 (57
-scholarly works, 2 MIVILUDES documents, 26 interview transcripts) --
-nothing was added or removed at the document level. What changed is
-how expressions were pulled out of them (previous subsection).
-
-\subsection{Stage 2 -- A much smaller, stricter set of expressions}
-Running the v2 pipeline end-to-end on all three corpora produced:
+\subsection{Stage 1--2 -- Same three corpora, far fewer expressions}
+Same underlying documents as v1 (57 scholarly works, 2 MIVILUDES
+documents, 26 interview transcripts); far stricter extraction:
 
 \begin{table}[h!]
 \centering
@@ -179,180 +156,111 @@ MIVILUDES & 914 & 108 & $-88.2\%$ \\
 interviews & 230 & 64 & $-72.2\%$ \\
 \bottomrule
 \end{tabular}
-\caption{Expression counts, v1's over-inclusive pipeline versus v2's
-strict verbatim pipeline, same underlying documents.}
 \end{table}
 
-This is not a case of "different data" -- it is the same documents,
-screened far more strictly. Section~\ref{sec:spotcheck} reports this
-session's own quality check on a random sample of the v2 output.
-
-\subsection{Stage 3 -- The same three reference vocabularies}
-The three background word-lists (concept backbone, structural concepts,
-ConceptNet-generalised concepts) are unchanged from v1 -- they were
-built independently of either extraction pipeline and are reused as-is
-(see the v1 document, Section 2, for how each was built).
-
-\subsection{Stage 4 -- Far fewer emergent entities}
-With a much smaller corpus, far fewer named things are mentioned often
-enough to count as an \jargon{emergent entity}. v1 required at least 3
-mentions and still found 3,251 entities; applying the same threshold to
-v2 would have left only 1 entity, so the threshold was lowered to
-\textbf{1 mention} for this run -- an explicit, logged design decision,
-not a silent change. This produced \textbf{21} emergent entities (see
-Section~\ref{sec:entities}).
+\subsection{Stage 3--4 -- Reference vocabularies unchanged; emergent entities, twice}
+The three reference vocabularies (concept backbone, structural concepts,
+ConceptNet-generalised concepts) are unchanged from v1, reused as-is.
+Emergent entities were built \emph{twice} this session -- the first
+attempt undercounted badly; see Section~\ref{sec:entities} for the full
+story and the fix.
 
 \subsection{Stage 5 -- One shared geometric space, rebuilt}
-The same pooling procedure as v1 (embed everything with the same
-model, standardize, then PCA down to the smallest dimensionality that
-keeps 95\% of the variance) was re-run on the v2 expressions plus the
-17 MIVILUDES criteria and the three (unchanged) reference vocabularies.
-This left \textbf{10,646} points, compressed to \textbf{389} dimensions
-(95.0\% variance kept) -- a much smaller space than v1's 44,520 points
-in 394 dimensions, but built the same way.
+Same pooling procedure as v1: embed everything with the same model,
+standardize, PCA down to the smallest dimensionality keeping 95\% of the
+variance. With the corrected, much larger emergent-entities layer, this
+run's space holds \textbf{11,378} points, compressed to \textbf{393}
+dimensions (95.0\% variance kept) -- up from the first v2 pass's 10,646
+points/389 dimensions, entirely due to the extra 732 entity points now
+correctly included.
 
 \subsection{Stage 6 -- The interview "first impression" layer: ported, not redone}
-25 of the 26 interviews' manually-verified opening-prompt exemplars no
-longer appear verbatim in v2's much stricter extraction (checked
-directly). Rather than lowering standards to force them back in, the
-existing, already-human-verified selections and their embeddings were
-kept exactly as they were and simply projected through the new v2
-coordinate system instead of v1's. This is the same "port, don't redo"
-principle used elsewhere in this project: the embedding of a quote is a
-property of its own words, not of which pipeline version happened to be
-running when someone selected it.
+Unchanged from the first v2 pass: the 25 manually-verified interview
+opening-prompt exemplars are re-projected through this run's transform
+rather than re-selected -- the embedding of a quote is a property of its
+own words, not of which build happened to be running.
 
-\subsection{Stage 7 -- Rechecking whether the equal-$n$ correction still makes sense}
-Because v2's corpus is so much smaller, it was worth explicitly
-rechecking whether the same correction used throughout v1 for
-literature's dominance still applies. It does: literature is
-\textbf{97.09\%} of v2's expression points (versus 97.44\% in v1 --
-essentially unchanged), so the same equal-size/equal-$n$ bootstrap
-correction used throughout is still necessary and is used unchanged.
-What does change is the absolute size of that equal-$n$ draw: v1 could
-draw 204 points per source (matching the smallest, interviews); v2 can
-only draw \textbf{64} (its own new smallest source). The correction
-logic is identical; the numbers it produces this run rest on a smaller,
-noisier sample, and confidence intervals reported below should be read
-with that in mind.
+\subsection{Stage 7 -- The equal-$n$ correction still applies, at a smaller scale}
+Unchanged finding from the first v2 pass: literature is still
+\textbf{97.09\%} of expression points (the emergent-entities fix does
+not touch expression counts), so the same equal-$n$/equal-size
+corrections are still necessary and still used, drawing 64 points per
+source (down from v1's 204).
 
-\subsection{Stage 8 -- Running the toolkit against v2, and a spot-check}
-The same reusable analysis toolkit used for v1 -- now parameterized to
-point at either shared space via a single \texttt{--shared-space-dir}
-flag rather than hardcoded v1 paths -- was rerun end-to-end against the
-v2 space (run \texttt{20260909-224215}, covered by this document), plus
-a tenth module, \texttt{analyze\_typicality}, run for the first time
-this session (Section~\ref{sec:typicality}). One module,
-\texttt{analyze\_emergent\_entities}, encountered a genuinely empty
-result for its "entities mentioned by all three corpora" deliverable
-(Section~\ref{sec:entities}) -- fixed to log and skip that one
-deliverable explicitly rather than aborting the whole module, since an
-empty result here is a real fact about this run's small corpus, not an
-error to paper over. Separately, a fresh manual/automated spot-check
-was run on the retained v2 output itself (Section~\ref{sec:spotcheck}).
+\subsection{Stage 8 -- Two toolkit runs, one throwaway}
+The reusable 10-module analysis toolkit was run against this shared
+space twice this session: once against the (bugged) 21-entity space,
+and again -- covered by this document -- after the fix, against the
+corrected 753-entity space (run \texttt{20260910-010254}). The first
+run's own report is not being kept as a separate document; this report
+supersedes it. A fresh spot-check sample (Section~\ref{sec:spotcheck})
+was drawn from the retained v2 extraction output before either toolkit
+run and is unaffected by the entity-layer fix (it concerns expression
+extraction, not entities).
 
 % ============================================================
 \section{Key ideas, explained in plain language}
 \label{sec:jargon}
 % ============================================================
 
-Unchanged from the v1 document -- included here again so this document
-is self-contained. Skip if already familiar with embeddings and
-dimensionality reduction.
+Unchanged from earlier documents -- included again so this one is
+self-contained. Skip if already familiar.
 
-\subsection{Embeddings and vector spaces}
-An \jargon{embedding} is what you get when a piece of text is fed
-through a trained language model and converted into a long list of
-numbers -- a \jargon{vector} (1,024 numbers, here). Texts with similar
-meaning end up as nearby lists of numbers: "a group led by a
-controlling figure" and "an authoritarian leader dominates the members"
-would land close together; the same phrase and "the recipe calls for
-two eggs" would land far apart. A collection of such vectors is a
-\jargon{vector space} or \jargon{embedding space}; because "nearby in
-the numbers" tracks "similar in meaning," geometric ideas -- distance,
-direction, clustering -- become tools for studying meaning.
+\subsection{Embeddings, distance, and similarity}
+An \jargon{embedding} converts a piece of text into a long list of
+numbers (a \jargon{vector}, 1,024 numbers here) such that similar
+meanings end up as nearby vectors. \jargon{Euclidean distance} is
+ordinary straight-line distance in that many-dimensional space (smaller
+= more similar). \jargon{Cosine similarity} instead measures whether two
+vectors point in the same \emph{direction} from the origin, ignoring
+length ($-1$ opposite, $1$ identical direction, $0$ unrelated). Both are
+always reported side by side.
 
-\subsection{Distance and similarity}
-\begin{itemize}[leftmargin=1.4em]
-  \item \jargon{Euclidean distance}: ordinary straight-line distance,
-  just in many more than two dimensions. Smaller = more similar.
-  \item \jargon{Cosine similarity}: whether two points point in the
-  \emph{same direction} from the origin, ignoring vector length. Ranges
-  $-1$ (opposite) to $1$ (identical direction), $0$ meaning unrelated.
-\end{itemize}
-Both are always reported side by side, never collapsed into one number.
+\subsection{Centroid, standardization, and PCA}
+A \jargon{centroid} is a group of points' average position -- literature's
+"average position," MIVILUDES's, and so on. Every dimension was
+\jargon{standardized} before pooling so no source dominates purely
+because its raw numbers are larger. \jargon{PCA} then compresses the
+1,024-number description of each point down to the smallest number of
+dimensions keeping 95\% of the original variation -- 393 dimensions this
+run. Every distance/similarity number below is computed in this
+393-dimensional space.
 
-\subsection{Centroid}
-The \jargon{centroid} of a group of points is their average position --
-a stand-in for "the centre of gravity" of, say, everything the
-literature corpus says, so whole-source comparisons reduce to one
-number (the distance between two centroids) instead of comparing every
-point pair.
+\subsection{UMAP, k-NN composition, and silhouette}
+\jargon{UMAP} produces an approximate, readable 2-D layout purely for
+visualisation -- not itself evidence. A point's \jargon{k nearest
+neighbours} are the $k$ closest other points ($k{=}10,20$ here);
+averaging their source-composition over many points asks how much
+different sources overlap versus occupy separate regions. \jargon{Silhouette}
+scores (roughly $-1$ to $1$) how well a proposed grouping matches the
+data's actual geometric clustering; near 0 means the groups don't
+correspond to distinct clusters.
 
-\subsection{Standardization and PCA (dimensionality reduction)}
-Every dimension of every vector was \jargon{standardized} before
-pooling, so no single source dominates purely because its raw numbers
-happen to be larger. \jargon{PCA} then compresses the 1,024-number
-description of each point down to the smallest number of dimensions
-that still keeps 95\% of the original variation -- 389 dimensions this
-run. Every distance and similarity number below is computed in this
-389-dimensional space, not the original 1,024.
+\subsection{Bootstrap confidence intervals; equal-size/equal-$n$ comparisons}
+"Mean, 95\% CI [low, high]" comes from \jargon{bootstrap resampling}:
+repeating a measurement 100 times on randomly resampled subsets. The
+three expression sources (5,741/108/64 this run) and the three reference
+vocabularies (3,000/1,500/195) are wildly different sizes; an
+\jargon{equal-size-controlled} comparison down-samples every set to the
+smallest before comparing, controlling for pool-size bias specifically
+-- not evidence the sets are otherwise interchangeable.
 
-\subsection{UMAP and 2-D pictures}
-389 dimensions cannot be drawn on a page. \jargon{UMAP} produces a
-readable (if approximate) 2-D layout purely for visualisation, trying
-to preserve which points were close/far in the real space. A plain 2-D
-\jargon{PCA slice} (the first two principal components) is shown
-alongside for the same reason two projections of a 3-D object each show
-something the other misses. Neither picture is itself evidence -- the
-real numbers come from the full 389-dimensional space.
+\subsection{Typicality and "borderline" points}
+A point's \jargon{typicality} is simply how close it sits to its own
+group's centroid -- close = "typical," far = "atypical," a purely
+geometric fact about this space under this model, not a claim about
+cognitive prototypicality or real-world category membership. A
+\jargon{borderline} point between groups $A$/$B$ is one whose distances
+to each centroid are nearly equal.
 
-\subsection{k-nearest-neighbour composition}
-A point's \jargon{k nearest neighbours} are the $k$ closest other
-points ($k=10, 20$ here). Averaging their source-composition over many
-points from a given source asks "how much do these sources actually
-overlap, versus sitting in their own separate regions?"
-
-\subsection{Silhouette score}
-A number, roughly $-1$ to $1$, scoring how well a proposed grouping
-(the three expression sources) matches the data's actual geometric
-clustering. Near 0: the groups do not correspond to distinct clusters.
-Near 1: they line up almost perfectly with the data's real shape.
-
-\subsection{Bootstrap resampling and confidence intervals}
-Figures reported as "mean, 95\% CI [low, high]" come from
-\jargon{bootstrap resampling}: repeating a measurement many times (100
-here) on randomly resampled subsets, then looking at how much the
-answer varies. A narrow interval means the measurement is stable; a
-wide one means it is noisier than it looks.
-
-\subsection{"Point role" versus "source dataset"}
-\jargon{source\_dataset}: which of the eight underlying datasets a
-point came from. \jargon{point\_role}: a coarser grouping into
-\textbf{expression} (an actual claim), \textbf{reference} (background
-vocabulary, not a claim), or \textbf{emergent} (a named thing the
-corpora mention). Figures are generally shown coloured both ways.
-
-\subsection{"Equal-size-controlled" and "equal-$n$" comparisons}
-The three sources are wildly different in size (5,741 / 108 / 64 this
-run), and the three reference vocabularies are too (3,000 / 1,500 /
-195). A raw "which is nearest, on average" comparison is biased simply
-by pool size. An \jargon{equal-size-controlled} comparison down-samples
-every set to the smallest before comparing. This controls for
-\emph{one} bias (size) only -- not evidence the sets are otherwise
-interchangeable.
-
-\subsection{Typicality and "borderline" points (new this run)}
-\label{sec:jargon_typicality}
-A point's \jargon{typicality}, in this document, is nothing more than
-\emph{how close it sits to its own group's centroid}. Close = "typical"
-of that group's average position in the space; far = "atypical." A
-\jargon{borderline} point, between two groups $A$ and $B$, is one whose
-distance to $A$'s centroid and to $B$'s centroid are nearly equal --
-geometrically in-between, not evidence that the underlying claim is
-genuinely ambiguous or disputed in meaning. Both notions describe
-\emph{this embedding space, under this model, this run} -- not
-cognitive prototypicality or real-world category membership.
+\subsection{"Point role," "source dataset," and provenance categories}
+\jargon{source\_dataset}: which of the eight underlying datasets a point
+came from. \jargon{point\_role}: expression / reference / emergent.
+Every emergent entity also carries a \jargon{provenance category} --
+\texttt{literature\_only}, \texttt{miviludes\_only},
+\texttt{interviews\_only}, \texttt{shared\_2\_corpora}, or
+\texttt{shared\_all\_3} -- describing only which corpora mention it, not
+any normative claim about the entity itself.
 
 % ============================================================
 \section{The datasets pooled into the shared space}
@@ -365,476 +273,360 @@ cognitive prototypicality or real-world category membership.
 \toprule
 \textbf{Source} & \textbf{Points} & \textbf{Role} & \textbf{What it is} \\
 \midrule
-literature & 5{,}741 & expression & Claims/definitions, strict-verbatim extraction, from 57 scholarly works \\
-miviludes & 108 & expression & Claims, strict-verbatim extraction, from 2 MIVILUDES documents \\
-interviews & 64 & expression & Claims, strict-verbatim extraction, from 26 interview transcripts \\
-miviludes\_criteria & 17 & expression & MIVILUDES's own official 17 sectarian-drift criteria (unchanged from v1) \\
-concept\_backbone & 3{,}000 & reference & Topic-neutral general English concepts (unchanged from v1) \\
-structural\_concepts & 1{,}500 & reference & Generic structural/relational vocabulary (unchanged from v1) \\
-conceptnet\_concepts & 195 & reference & Hand-reviewed ConceptNet generalisation (unchanged from v1) \\
-emergent\_entities & 21 & emergent & Named things mentioned $\geq$1 time (threshold lowered from v1's 3; see Stage~4) \\
+literature & 5{,}741 & expression & Strict-verbatim extraction, 57 scholarly works \\
+miviludes & 108 & expression & Strict-verbatim extraction, 2 MIVILUDES documents \\
+interviews & 64 & expression & Strict-verbatim extraction, 26 interview transcripts \\
+miviludes\_criteria & 17 & expression & MIVILUDES's 17 official sectarian-drift criteria (unchanged) \\
+concept\_backbone & 3{,}000 & reference & Topic-neutral WordNet-derived concepts (unchanged) \\
+structural\_concepts & 1{,}500 & reference & Corpus-mined structural/relational vocabulary (unchanged) \\
+conceptnet\_concepts & 195 & reference & Hand-reviewed ConceptNet generalisation (unchanged) \\
+emergent\_entities & \textbf{753} & emergent & Named entities, corrected this run -- see Section~\ref{sec:entities} \\
 \bottomrule
 \end{tabularx}
-\caption{The eight sources pooled into the 10{,}646-point, 389-dimensional v2 shared space.}
+\caption{The eight sources pooled into the 11{,}378-point, 393-dimensional v2 shared space.}
 \end{table}
 
-A ninth, separate layer -- the 25 ported interview prototypes
-(\texttt{point\_role="prototype"}) -- sits in the same coordinate
-system but is not part of the 10,646-point count or the PCA fit itself
-(Stage~6 above).
+A ninth, separate layer -- 25 ported interview prototypes -- sits in the
+same coordinate system but is not part of this count or the PCA fit.
 
 % ============================================================
 \section{Spot-check: is this run's data trustworthy?}
 \label{sec:spotcheck}
 % ============================================================
 
-Before writing up any result from this run, a fresh random sample was
-drawn from each corpus's final, judge-accepted output (100 literature,
-40 MIVILUDES, 30 interview expressions; seed 42; full methodology and
-config in \texttt{processed/audits/v2\_spotcheck\_20260909.md} and the
-sample files themselves under each corpus's own \texttt{review/}
-folder). Two things were checked: an automated pass (does every sampled
-expression's text actually occur verbatim in its own recorded context;
-does the judge model's own faithfulness/extraction-issue flags line up
-with acceptance), and an independent read of a subset of rows by the
-researcher's assistant.
-
-\textbf{Automated pass}: 0 of 170 sampled rows failed the verbatim
-check; 0 had a judge-flagged faithfulness or extraction-issue problem.
-This mostly confirms the judge model's own labels are internally
-consistent -- expected, since the sampled file only contains
-judge-accepted rows -- rather than an independent signal on its own.
-
-\textbf{Independent read}: literature and MIVILUDES rows read as
-expected throughout -- correctly attributed claims/definitions/named
-groups, sensible claim-mode and epistemic-status tags. One literature
-row's expression looked, at first glance, unrelated to the printed
-context; the full context window (an encyclopedia source, one entry
-ending and the next beginning mid-chunk) shows the expression is
-genuinely present verbatim -- a reading artefact from truncating a long
-context window for a quick look, not an extraction error.
+Carried over unchanged from the first v2 pass -- this concerns expression
+extraction quality, not the entity-layer fix below, so it does not need
+repeating. A fresh random sample was drawn from each corpus's final,
+judge-accepted output (100 literature, 40 MIVILUDES, 30 interview
+expressions; seed 42; full methodology in
+\texttt{processed/audits/v2\_spotcheck\_20260909.md}). Automated checks
+found 0 verbatim/faithfulness failures across 170 sampled rows. An
+independent read found expressions correctly attributed and sensibly
+tagged throughout, with one genuine, small finding:
 
 \begin{plainbox}[One genuine finding: "Sept?"]
-v2's shared-space build deliberately does not filter by a minimum word
-count (\texttt{--min-expression-words 0}), because a plain word count
-cannot distinguish a meaningful short item ("Tomato cult!", "Illuminati",
-"Gourou") from a meaningless fragment. Checking every $\leq$2-word
-expression across all three corpora (1,132 literature, 7 MIVILUDES, 17
-interviews) confirms this worked as intended in all but one case: 16 of
-17 short interview items are genuine named entities or associations.
-
-The exception, interview \texttt{b3-aug23-1213} (participant, age 97):
-asked in French "\emph{Quand je te dis le mot secte à quoi tu
-penses?}" ("When I say the word `secte' [cult], what do you think
-of?"), the participant answered \textbf{"Sept?"} ("seven?") -- almost
-certainly a mishearing of \emph{secte} as \emph{sept}, not a
-substantive response. The judge model scored it faithful,
-self-contained, cult-relevant, and atomic, correctly noting it \emph{is}
-a direct quote from the transcript -- true, but the string itself
-carries no propositional content about cults, so it embeds wherever
-"Sept?" alone happens to land, not wherever a genuine response would.
-Scale: 1 of 10,646 points (0.01\% of the whole space; 1.6\% of the
-interviews corpus). Left in place, unmodified, as an explicit, logged
-limitation rather than a silent unilateral exclusion -- consistent with
-how the \texttt{--min-expression-words}/\texttt{--entity-anchor-min-mentions}
-threshold choices elsewhere in this project were surfaced rather than
-decided silently.
+Interview \texttt{b3-aug23-1213} (participant, age 97), asked in French
+"\emph{Quand je te dis le mot secte à quoi tu penses?}" ("When I say the
+word `secte' [cult], what do you think of?"), answered \textbf{"Sept?"}
+("seven?") -- almost certainly a mishearing of \emph{secte} as
+\emph{sept}, not a substantive response. The judge model scored it
+faithful/self-contained/cult-relevant/atomic, correctly noting it is a
+genuine transcript quote -- true, but the string carries no propositional
+content about cults. Scale: 1 of 11,378 points (0.01\%). Left in place,
+unmodified, as an explicit, logged limitation.
 \end{plainbox}
 
 % ============================================================
-\section{What the analysis toolkit found}
-\label{sec:results}
-% ============================================================
-
-Ten modules were run against the v2 space in run \texttt{20260909-224215}
-(nine carried over from v1, plus \texttt{analyze\_typicality}, new this
-session). Each subsection covers one module.
-
-\subsection{Sanity check: can interview extraction order stand in for what people think of first?}
-\jargon{Module: \texttt{audit\_free\_listing\_rank}}
-
-Same check as v1, same verdict: \textbf{not usable}. The narrowest
-reading -- "rank 1 lands on the participant's own first claim, not the
-interviewer's question" -- holds for 18 of 25 documents (72.0\%), up
-from v1's 42.3\% (11/26) but still far from a guarantee, and the
-underlying structural problem is unchanged: participants were asked for
-one example and then questioned about that same example, not asked to
-list several items in ranked order. \texttt{response\_rank} plays no
-role anywhere else in this report; interview-side "first impression"
-evidence comes exclusively from the manually-ported initial-exemplar
-layer (Section~\ref{sec:exemplars}).
-
-\subsection{Global structure: how far apart are the sources, overall?}
-\jargon{Module: \texttt{analyze\_global\_structure}}
-
-\begin{table}[h!]
-\centering
-\small
-\begin{tabular}{llrrrr}
-\toprule
-& & \multicolumn{2}{c}{v1} & \multicolumn{2}{c}{v2} \\
-Source A & Source B & Euclidean & Cosine & Euclidean & Cosine \\
-\midrule
-literature & miviludes & 7.18 & $-0.04$ & 8.07 & $0.52$ \\
-literature & interviews & 9.97 & $0.04$ & 8.19 & $0.64$ \\
-miviludes & interviews & 12.25 & $-0.06$ & 12.07 & $0.26$ \\
-literature & miviludes\_criteria & 13.94 & $-0.26$ & 14.52 & $0.17$ \\
-miviludes & miviludes\_criteria & 10.89 & $0.57$ & 12.16 & $0.51$ \\
-interviews & miviludes\_criteria & 17.64 & $-0.15$ & 17.68 & $-0.02$ \\
-\bottomrule
-\end{tabular}
-\caption{Selected pairwise centroid distances, v1 versus v2. Full 8$\times$8 v2 matrix in \texttt{pairwise\_source\_centroid\_matrix.csv}.}
-\end{table}
-
-Euclidean distances barely moved. Cosine similarities moved a great
-deal, for every pair of the three expression corpora: from
-near-zero/slightly negative in v1 to solidly positive (0.26--0.64) in
-v2. In plain terms, the three corpora's \emph{average positions}
-already sat about as far apart as before, but now point in noticeably
-more similar \emph{directions} from the origin than they did under the
-old, noisier extraction. (What this might mean, and what it might not,
-is picked up in Section~\ref{sec:interpretation}.)
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/pairwise_source_centroid_heatmap.png}
-\caption{Heatmap of pairwise centroid distances across all eight v2 sources.}
-\end{figure}
-
-Distance from each of the three reference vocabularies and the
-emergent-entities set to the combined-expression centroid ("full"
-variant; two other variants exist, never merged with this one):
-concept\_backbone 16.29 (v1: 16.70), structural\_concepts 15.93 (v1:
-16.18), conceptnet\_concepts 14.80 (v1: 14.92), emergent\_entities 10.22
-(v1: 13.20). The ordering is unchanged from v1 (emergent entities
-closest, concept backbone furthest), but emergent\_entities' own
-distance shrank the most of the four -- plausibly a direct consequence
-of the entity set itself shrinking from 3,251 to 21 (Section~\ref{sec:entities}).
-
-\subsection{Cluster structure: do the three sources actually separate?}
-\label{sec:cluster}
-\jargon{Module: \texttt{analyze\_cluster\_structure}}
-
-Same equal-$n$ bootstrapped design as v1, now drawing 64 points per
-source (v1: 204) per Stage~7's discussion above.
-
-\begin{table}[h!]
-\centering
-\small
-\begin{tabular}{lllrr}
-\toprule
-$k$ & Query source & Neighbour source & v1 mean [95\% CI] & v2 mean [95\% CI] \\
-\midrule
-10 & literature & literature  & 0.316 [0.283, 0.350] & 0.283 [0.225, 0.339] \\
-10 & literature & miviludes   & 0.307 [0.273, 0.338] & 0.285 [0.230, 0.338] \\
-10 & literature & interviews  & 0.378 [0.347, 0.413] & 0.432 [0.373, 0.495] \\
-10 & miviludes  & literature  & 0.112 [0.089, 0.137] & 0.136 [0.086, 0.173] \\
-10 & miviludes  & miviludes   & 0.674 [0.641, 0.720] & 0.613 [0.562, 0.670] \\
-10 & miviludes  & interviews  & 0.213 [0.183, 0.241] & 0.252 [0.210, 0.295] \\
-10 & interviews & literature  & 0.057 [0.043, 0.074] & 0.156 [0.105, 0.213] \\
-10 & interviews & miviludes   & 0.088 [0.072, 0.104] & 0.147 [0.113, 0.170] \\
-10 & interviews & interviews  & 0.855 [0.837, 0.875] & 0.697 [0.644, 0.752] \\
-\bottomrule
-\end{tabular}
-\caption{k-NN neighbour composition (equal-$n$, $k=10$), v1 versus v2.}
-\end{table}
-
-Every source is less self-clustering in v2 than in v1: interviews drop
-from 85.5\% to 69.7\% self-neighbours, MIVILUDES from 67.4\% to 61.3\%,
-literature from 31.6\% to 28.3\%. The $k=20$ table (same CSV) shows the
-same pattern. Silhouette for the three-source grouping: \textbf{0.0130}
-(95\% CI [0.0095, 0.0164]) -- v1: 0.019 [0.017, 0.022]. Both are very
-close to zero; the conclusion "the three sources overlap substantially
-rather than forming three separate clusters" is unchanged from v1.
-Whether the \emph{drop} in self-clustering reflects something real
-about the stricter extraction, or is simply noisier estimation from a
-much smaller equal-$n$ draw (Stage~7), is taken up in
-Section~\ref{sec:interpretation} -- it is not resolved by this table
-alone.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/knn_composition_equal_n_k10.png}
-\caption{k-NN neighbour composition at $k=10$, equal-$n$ sampling, v2.}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/umap_overview_by_source_dataset_n20_d0.2.png}
-\caption{Whole-space UMAP overview, coloured by source dataset. At
-10{,}646 points this is a much less dense picture than v1's 44{,}520-point
-equivalent, but is still an exploratory reading aid, not evidence in
-itself.}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/umap_overview_by_point_role_n20_d0.2.png}
-\caption{The same UMAP layout, coloured by point role instead of source dataset.}
-\end{figure}
-
-\subsection{Criterion neighbours: what sits near MIVILUDES's 17 official criteria?}
-\jargon{Module: \texttt{analyze\_criterion\_neighbours}}
-
-Same three-representation design as v1 (French-original, projected
-English translation, raw English cosine -- never merged).
-
-\begin{plainbox}[Language sensitivity result]
-Comparing which corpus is nearest to each of the 17 criteria,
-French-original versus projected-English-translation (both in the same
-389-D shared space): \textbf{3 of 17} criteria change which corpus is
-nearest (v1: \textbf{0 of 17}). Comparing against the simpler raw-cosine
-diagnostic: \textbf{4 of 17} differ (v1: \textbf{1 of 17}). In plain
-terms, the choice of language representation matters \emph{more} for
-v2's smaller corpus than it did for v1's -- consistent with a smaller
-candidate pool being more sensitive to exactly which few points happen
-to be nearest.
-\end{plainbox}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/criterion_corpus_heatmap.png}
-\caption{Heatmap of each of the 17 MIVILUDES criteria against the three
-expression corpora (French-primary representation, v2).}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/criterion_neighbour_composition_heatmap_k10.png}
-\caption{Equal-$n$, bootstrapped $k$=10 neighbour composition per
-criterion -- a size-controlled companion to the raw heatmap above, new
-this run.}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{figures/umap_criterion_neighbourhood_crit-authoritarian-opaque-group_by_source_dataset_n20_d0.2.png}
-\caption{Focused UMAP neighbourhood around the "authoritarian, opaque
-group" criterion, v2, coloured by source dataset. One of 17 such
-per-criterion figures generated this run.}
-\end{figure}
-
-\subsection{Interview initial exemplars: what do people say first?}
-\label{sec:exemplars}
-\jargon{Module: \texttt{analyze\_initial\_exemplars}}
-
-The ported prototype layer (Stage~6), unchanged in content from v1 --
-same 25 resolved / 1 unavailable interviews, same manually-verified
-quotes -- now measured against the v2 space instead of v1's.
-
-\begin{table}[h!]
-\centering
-\small
-\begin{tabular}{lrr}
-\toprule
-Exemplar type & v1 count & v2 count (same quotes) \\
-\midrule
-unclear (incl.\ 1 unavailable) & 12 & 12 \\
-classic\_nrm\_or\_religious\_group & 4 & 5 \\
-named\_group\_or\_movement & 3 & 3 \\
-metaphorical\_or\_other & 2 & 2 \\
-mixed & 2 & 2 \\
-digital\_or\_technology & 1 & 1 \\
-organisation\_or\_institution & 1 & 1 \\
-\bottomrule
-\end{tabular}
-\caption{Distribution of the 26 interviews' opening responses by
-descriptive type -- unchanged (the underlying quotes were ported, not
-re-coded); v1's own count for classic\_nrm\_or\_religious\_group was
-listed as 4 with one further "unclear" case since reclassified. Counts
-shown here are this run's own \texttt{exemplar\_summary.csv}.}
-\end{table}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.75\textwidth]{figures/initial_exemplars_by_type.png}
-\caption{Interview opening responses grouped by exemplar type, v2.}
-\end{figure}
-
-\begin{plainbox}[Scope of this evidence]
-Unchanged from v1: this is exploratory, descriptive evidence from a
-small convenience sample -- not a representative survey, not a basis
-for statistical inference. 25 of 26 interviews resolved into a usable
-geometric position; one had no qualifying opening claim anywhere in its
-transcript (a genuine absence, not a filtering artefact).
-\end{plainbox}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/umap_with_interview_prototypes_by_point_role_n20_d0.2.png}
-\caption{Whole-space v2 UMAP with the 25 resolved interview-prototype
-points overlaid, coloured by point role.}
-\end{figure}
-
-\subsection{Emergent entities: what named things does the corpus talk about?}
+\section{Emergent entities: found, broken, and fixed}
 \label{sec:entities}
-\jargon{Module: \texttt{analyze\_emergent\_entities}}
+% ============================================================
+
+This section gets its own, expanded treatment because the correction
+made here is the main methodological story of this run, and because
+understanding \emph{why} it was wrong is useful for judging how much to
+trust the corrected number.
+
+\subsection{What went wrong}
+
+The first v2 toolkit run found only \textbf{21} emergent entities --
+20 literature-only, 1 miviludes-only, 0 interviews-only, 0 shared by any
+two or three corpora -- almost all mentioned exactly once. This looked
+implausible on inspection: several of the 21 were not really named
+entities at all ("leadership," "desert," "post-Soviet remaking of
+identities" -- generic phrases, not named things), and the corpus was
+known independently (Section~\ref{sec:spotcheck}, the miviludes/interviews
+domain\_terms counts below) to discuss dozens of well-known groups by
+name.
+
+\begin{fixbox}[Root cause]
+Entities were being extracted only from \texttt{entity\_anchors}, a
+field the extraction model fills in \emph{only for expressions that
+already survived} the strict verbatim+judge screening
+(\texttt{extraction\_v2\_schema.py}: "named groups, leaders, movements
+mentioned \textbf{in the span}"). Since that screening now keeps only
+14--28\% of what v1 kept per corpus, roughly 75--85\% of named-entity
+mentions sitting inside now-rejected spans were silently discarded --
+even when the surrounding text discussing that entity was perfectly
+legitimate, just not judged a standalone \emph{claim} worth keeping.
+
+The fix uses a second field the extraction model already produces but
+that was never wired into the shared space: \texttt{domain\_terms} --
+"cult-related concepts or named groups that appear in the text, even if
+no expression around them is worth keeping." Checked directly: literature
+alone has 52{,}179 unique \texttt{domain\_terms} (100{,}031 mentions)
+against the 20 \texttt{entity\_anchors}-only entities previously used.
+\end{fixbox}
+
+\subsection{Getting to a clean list: two more problems, found and fixed}
+
+\texttt{domain\_terms} is a much broader net than \texttt{entity\_anchors}
+-- it mixes genuine named entities ("Scientology," "Heaven's Gate") with
+generic domain vocabulary ("cults," "brainwashing," "mind control") that
+already has its own home in the structural\_concepts/concept\_backbone
+reference vocabularies. Two further checks against real data were needed
+before the result was trustworthy:
+
+\begin{fixbox}[Casing filter, and a bug in it]
+Checked directly: \texttt{domain\_terms} terms in their original,
+un-lowercased casing split cleanly -- capitalized terms are almost
+entirely genuine named entities (ISKCON, Branch Davidians, UNADFI);
+all-lowercase terms are almost entirely generic vocabulary
+(secularization, deprogramming, mind control). A simple "not all
+lowercase" filter was applied to \emph{both} \texttt{domain\_terms} and
+(newly) \texttt{entity\_anchors} -- the latter had never had any type
+filtering at all, which is exactly why v1's top-mentioned "entity" was
+"charismatic leader" (3,417 mentions, 2nd highest overall) and why v2's
+first pass still let "leadership"/"desert" through. One bug found in the
+filter itself: Python's \texttt{str.islower()} is \texttt{False} for a
+string with \emph{no} cased characters at all, so bare years and page
+numbers ("2004," "11") were passing as if capitalized. Fixed by requiring
+at least one actual letter.
+\end{fixbox}
+
+\begin{fixbox}[Cited-author contamination]
+Even after the casing fix, the single largest remaining source of noise
+in literature was bare surnames of \emph{this corpus's own cited
+authors} -- academic citations like "(Richardson 1985)" leave a bare
+capitalized surname in the text, indistinguishable by casing or frequency
+alone from a genuine named entity. Checked directly: "richardson" alone
+had 47 mentions (more than most real cult groups); "barker" 34;
+"anthony" 28. A frequency threshold cannot separate self-citation from a
+genuinely important recurring entity -- both look identical (a
+capitalized word mentioned often). Fixed with a targeted, data-derived
+stop-list: every author surname is read directly from
+\texttt{metadata/literature.csv} (the corpus's own 57-document
+bibliography, 90 unique surnames) and excluded -- no hardcoded name
+list, automatically correct if the corpus grows. \textbf{Not} fixed:
+externally-cited classical theorists who are not themselves corpus
+authors ("weber," "freud," "wallis" all still pass) -- flagged as a
+known residual limitation, not silently hidden.
+\end{fixbox}
+
+\subsection{Per-corpus, not global, mention thresholds}
+
+A single mention-count threshold applied to the cross-corpus total would
+still favour literature's citation-heavy volume unfairly: a name
+mentioned a handful of times there is plausibly just a citation, while
+the same count in MIVILUDES/interviews' much smaller, curated text is
+comparatively far more likely to be deliberate. This run uses
+\textbf{per-corpus} thresholds -- literature $\geq 10$, MIVILUDES $\geq 3$,
+interviews $\geq 1$ -- and an entity qualifies if it clears \emph{any
+one} corpus's own threshold.
+
+\subsection{The result}
 
 \begin{table}[h!]
 \centering
 \begin{tabular}{lrr}
 \toprule
-Provenance category & v1 count (of 3{,}251) & v2 count (of 21) \\
+Provenance category & First v2 pass (buggy) & This run (fixed) \\
 \midrule
-literature\_only & 3{,}111 & 20 \\
-shared\_2\_corpora & 81 & 0 \\
-miviludes\_only & 48 & 1 \\
-shared\_all\_3 & 9 & 0 \\
-interviews\_only & 2 & 0 \\
+literature\_only & 20 & 603 \\
+miviludes\_only & 1 & 26 \\
+interviews\_only & 0 & 55 \\
+shared\_2\_corpora & 0 & 66 \\
+shared\_all\_3 & 0 & 3 \\
+\midrule
+\textbf{Total} & \textbf{21} & \textbf{753} \\
 \bottomrule
 \end{tabular}
-\caption{Which corpora mention each emergent entity, v1 versus v2.}
+\caption{Emergent-entity counts, before and after the fix.}
 \end{table}
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/entity_provenance_categories.png}
-\caption{v2 emergent entities grouped by which corpus/corpora mention them.}
+\caption{Emergent entities grouped by which corpus/corpora mention them, this run.}
 \end{figure}
 
-\begin{plainbox}[A genuinely empty result, not a bug]
-v2's 21 emergent entities are each mentioned in exactly \emph{one}
-corpus -- zero shared between any two, let alone all three. This
-toolkit's "shared discourse anchor" deliverable (retrieving nearest
-expressions around entities mentioned by all three corpora) is built to
-fail loudly on an empty result, precisely so an empty result never
-gets silently treated as "zero anchors found, nothing to see." Direct
-inspection of every one of the 21 entities' own mention counts confirms
-this is real: with only 21 entities total (versus v1's 3,251) and
-interviews contributing just 64 expressions, there simply are not
-enough independent mentions left for any name to surface in all three
-sources by chance. The module was adjusted to log this explicitly and
-skip only that one deliverable, rather than aborting the whole module
-and losing its other outputs.
+Top entities by total mentions are now entirely genuine named
+groups/movements: NRMs (685), Scientology (299), New Age (270), Heaven's
+Gate (268), Unification Church (250), Jehovah's Witnesses (211), Branch
+Davidians (159), Jonestown (156), Solar Temple (136), ISKCON (123),
+Children of God (118), Theosophy (109), Aum Shinrikyo (103), Satanism
+(95), Soka Gakkai (86) -- contrast v1's top entities, which included
+"charismatic leader" (2nd highest) and bare generic nouns ("cults,"
+"religion," "church," "followers").
+
+\textbf{The 3 entities mentioned by all three corpora}: "new age" (270
+total: 259 literature, 9 miviludes, 2 interviews), "témoins de jéhovah"
+(French for Jehovah's Witnesses; 9 total: 1/7/1), and "ordre du temple
+solaire" (French for Order of the Solar Temple; 4 total: 2/1/1). Their
+nearest-neighbour expressions per corpus (full retrieval, not equal-$n$
+sampled) read sensibly: literature's nearest neighbours to "new age" are
+literally "New Age" mentions; to "témoins de jéhovah," "Jehovah's
+Witnesses" mentions -- a direct cross-language match, not a coincidence
+of the embedding space. Full tables in
+\texttt{analyze\_emergent\_entities/shared\_anchor\_nearest\_expressions.csv}.
+
+\textbf{55 entities are now interviews-only} (up from 0): Netflix, "AI
+cult," Blue \"Oyster Cult, Raëlism, "Tomato cult," "Wild Wild Country,"
+Richard Branson, and others -- genuine, previously entirely invisible
+signal about what interviewees personally associate with the topic,
+distinct from what the literature or MIVILUDES discuss.
+
+\begin{plainbox}[This is not a solved problem]
+Manual spot-checking the top-N table above and the shared-anchor
+retrieval found no remaining obvious false positives, but the underlying
+filters (casing + frequency + a corpus-author stop-list) are not a
+general citation detector, and the residual externally-cited-theorist
+gap noted above is real. Treat this as a substantially improved,
+still-not-fully-vetted candidate list -- the same posture as every other
+automated extraction step in this project -- not a hand-verified named-entity list.
 \end{plainbox}
 
-As in v1, this module deliberately does \textbf{not} classify any
-entity as "genuinely a cult" versus "mainstream" or apply any other
-normative label -- it reports who talks about what, not who is right.
+As before, this module does \textbf{not} classify any entity as
+"genuinely a cult" versus "mainstream" or apply any other normative
+label -- it reports who talks about what, not who is right.
 
-\subsection{Typicality and borderline points (new this run)}
-\label{sec:typicality}
-\jargon{Module: \texttt{analyze\_typicality}}
+% ============================================================
+\section{What the rest of the toolkit found}
+\label{sec:results}
+% ============================================================
 
-Run for the first time this session (see
-Section~\ref{sec:jargon_typicality} for what "typicality" and
-"borderline" mean here). For each corpus, the 10 points closest to
-their own corpus centroid ("typical") and the 10 furthest
-("atypical") were retrieved; separately, for every pair of corpora (and
-every pair of epistemic-status groups within a corpus), every point in
-that pair's pool was ranked by how close its distance to each side's
-centroid is to being exactly equal ("borderline").
+The other nine modules are materially unaffected by the entity-layer
+fix (they concern expressions, not emergent entities) -- numbers shift
+slightly because the shared space grew by 732 points, but conclusions
+are unchanged from the first v2 pass. Summarised here; see the first v2
+report or the run's own CSVs for full detail.
+
+\subsection{Free-listing rank audit}
+Same verdict: \textbf{not usable}. Narrow check ("rank 1 is the
+participant's own first claim"): 18/25 documents (72.0\%).
+\texttt{response\_rank} plays no role anywhere in this report.
+
+\subsection{Global structure}
+Selected pairwise centroid distances (full 8$\times$8 matrix in the
+run's own CSV):
 
 \begin{table}[h!]
 \centering
 \small
-\begin{tabular}{lll}
+\begin{tabular}{llrr}
 \toprule
-Corpus & Most typical (rank 1) & Most atypical (rank 1) \\
+Source A & Source B & Euclidean & Cosine \\
 \midrule
-literature & "This is Christianity." & "Jose Silva" \\
-miviludes & "sectarian deviations" & "Scientology" \\
-interviews & "the cult" & "Gourou" \\
-\bottomrule
+literature & miviludes & 8.00 & 0.50 \\
+literature & interviews & 8.14 & 0.60 \\
+miviludes & interviews & 11.98 & 0.22 \\
+literature & miviludes\_criteria & 14.44 & 0.14 \\
+miviludes & miviludes\_criteria & 12.10 & 0.51 \\
+literature & emergent\_entities & 11.30 & 0.53 \\
 \end{tabular}
-\caption{The single most typical and most atypical expression per
-corpus, by distance to that corpus's own centroid.}
 \end{table}
 
-A clear pattern recurs across all three corpora's full top-10 lists
-(full tables in \texttt{typicality\_by\_corpus.csv}): the
-\textbf{most atypical} items are almost always \emph{specific named
-things} -- a person's name ("Jose Silva," "Asahara"), a specific named
-group ("Scientology," "Jehovah's Witnesses," "International Church of
-Good News"), a specific school system ("Steiner-Waldorf schools") --
-while the \textbf{most typical} items are short, generic statements
-using the corpus's own core vocabulary directly ("sectarian
-deviations," "the cult," "This is Christianity.," "of a sectarian
-drift"). (What this might suggest is picked up in
-Section~\ref{sec:interpretation}.)
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/pairwise_source_centroid_heatmap.png}
+\caption{Heatmap of pairwise centroid distances across all eight v2 sources, this run.}
+\end{figure}
 
-The cross-corpus borderline check found, for example, that the single
-most-equidistant point between literature and interviews is the phrase
-"He uses the word cult to `designate those movements that appear to
-re[\ldots]'" (distance to both centroids: 30.88, to four decimal
-places identical) -- while between MIVILUDES and interviews, the most
-equidistant point is a French interview question about "des sectes
-actuelles" (current-day sects). Full ranked tables (11,826 rows for the
-three cross-corpus pairs combined) are in
-\texttt{borderline\_cross\_epistemology.csv}; a matching
-\texttt{borderline\_cross\_status\_within\_corpus.csv} covers
-asserted/speculative/contested pairs within each corpus. No figure
-accompanies this module this run -- these tables read most naturally as
-tables, not pictures.
+Essentially unchanged from the first v2 pass's numbers (cosine
+similarities between the three expression corpora remain solidly
+positive, 0.22--0.60, versus v1's near-zero/negative values) --
+consistent with the entity-layer fix affecting the emergent\_entities
+centroid specifically (it moved: distance to the combined-expression
+centroid is now 11.30, versus the first pass's 10.22, since the entity
+set itself grew nearly 36-fold and now includes a much wider spread of
+entities) without materially changing the three expression corpora's own
+relationship to each other.
 
-\subsection{Focused projections: readable, curated pictures}
-\jargon{Module: \texttt{generate\_focused\_projections}}
+\subsection{Cluster structure}
+Silhouette (equal-$n$, $k{=}10$): \textbf{0.0130} (95\% CI
+[0.0096, 0.0164]) -- indistinguishable from the first v2 pass's 0.0130.
+The three sources still overlap substantially rather than forming
+separate clusters.
 
-Same design as v1: small, curated point-sets around a specific
-question (one MIVILUDES criterion's neighbourhood, the interview
-prototypes against everything else, the emergent-entity region, \ldots),
-each projected both via a fresh UMAP fit and the same fixed PCA basis
-used everywhere else. 23 such focused populations were generated this
-run (v1: 22), from 46 points (a single criterion's neighbourhood) up to
-5,095 (the largest reference-vocabulary comparison). Every rendered
-figure notes \texttt{n\_points\_fit} versus \texttt{n\_points\_overlay}
-separately; see \texttt{generate\_focused\_projections/config.json} for
-the full list.
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/knn_composition_equal_n_k10.png}
+\caption{k-NN neighbour composition at $k=10$, equal-$n$ sampling, this run.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/umap_overview_by_source_dataset_n20_d0.2.png}
+\caption{Whole-space UMAP overview, coloured by source dataset, this run (11{,}378 points).}
+\end{figure}
+
+\subsection{Criterion neighbours}
+Language-representation sensitivity: French-original vs.\ projected
+English translation, \textbf{3 of 17} criteria change nearest corpus;
+vs.\ raw cosine, \textbf{4 of 17} -- unchanged from the first v2 pass.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/criterion_corpus_heatmap.png}
+\caption{Heatmap of each of the 17 MIVILUDES criteria against the three expression corpora, this run.}
+\end{figure}
+
+\subsection{Interview initial exemplars}
+Unchanged: same 25 resolved/1 unavailable interviews, same
+manually-verified quotes, re-measured against this run's space.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/initial_exemplars_by_type.png}
+\caption{Interview opening responses grouped by exemplar type, this run.}
+\end{figure}
+
+\subsection{Typicality and borderline points}
+Unaffected by the entity fix (concerns ordinary expressions). Same
+pattern as before: the most atypical items per corpus are specific named
+things (literature: "Jose Silva," "Asahara was born Matsumoto Chizuo in
+1955"; miviludes: "Steiner-Waldorf schools," "Scientology"; interviews:
+"Gourou," "Jehovah's Witnesses"), while the most typical are generic
+statements ("This is Christianity.," "sectarian deviations," "the
+cult").
+
+\subsection{Focused projections}
+23 curated populations generated this run, including a new
+\texttt{emergent\_entity\_focus} population (95 points, up from the
+first pass's 55 -- top 50 entities plus overlay context) now genuinely
+worth looking at:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/umap_emergent_entity_focus_by_source_dataset_n20_d0.2.png}
+\caption{Focused UMAP of the top 50 emergent entities (plus neighbourhood context), coloured by source dataset -- the first version of this figure worth showing, now that the entity layer has real content.}
+\end{figure}
 
 % ============================================================
 \section{Honesty notes -- what these numbers do not show}
 \label{sec:honesty}
 % ============================================================
 
-Collected in one place, since they matter for how any of this gets
-written up. Several are unchanged from the v1 document; new ones are
-marked.
-
 \begin{itemize}[leftmargin=1.4em]
-  \item \textbf{Corpus imbalance persists.} Literature is 97.09\% of
-  all v2 expression points (v1: 97.44\%) -- essentially unchanged, and
-  still requires the equal-$n$/equal-size corrections used throughout.
-  \item \textbf{(New) The equal-$n$ draw shrank from 204 to 64 points.}
-  The correction logic is unchanged and still necessary, but every
-  bootstrapped confidence interval in this document rests on a smaller,
-  noisier sample than the equivalent v1 number.
-  \item \textbf{MIVILUDES is still two documents, now with only 108
-  expressions surviving strict extraction.} Treat MIVILUDES's results
-  as one influential operational framework's own text, read very
-  closely -- not a representative sample of French state framing in
-  general, and now an even smaller textual base than v1's already-small one.
-  \item \textbf{The interview sample is a convenience sample, now with
-  only 64 surviving expressions.} Exploratory prototype evidence, not a
-  representative survey of lay usage -- and now the smallest of the
-  three corpora by a wide margin.
+  \item \textbf{Corpus imbalance persists}: literature is 97.09\% of
+  expression points; equal-$n$/equal-size corrections remain necessary
+  and are used throughout.
+  \item \textbf{The equal-$n$ draw is 64 points}, not v1's 204 --
+  every bootstrapped CI in this document rests on a smaller sample.
+  \item \textbf{The entity-layer fix is a substantial improvement, not a
+  finished, hand-verified list.} Casing + per-corpus frequency + a
+  corpus-author stop-list catches most noise; externally-cited classical
+  theorists not among this corpus's own 57 authors are a known,
+  unfixed residual (Section~\ref{sec:entities}).
+  \item \textbf{French/English entity variants do not automatically
+  merge.} "Scientology" (English) and "la scientologie" (French) are
+  normalized and counted as separate entities unless the exact same
+  string recurs -- so a genuinely shared concept can undercount as
+  \texttt{shared\_all\_3} if each corpus happens to use a different-language
+  form. The 3 \texttt{shared\_all\_3} entities found are a floor, not a ceiling.
+  \item \textbf{MIVILUDES is still two documents}, 108 expressions.
+  \item \textbf{The interview sample is a convenience sample}, 64
+  expressions across 26 people.
   \item \textbf{\texttt{response\_rank} is still not usable} as a
-  "first thing they thought of" signal -- only the ported
-  initial-exemplar layer should be used for interview-side "first
-  impression" claims.
-  \item \textbf{(New) Zero entities are mentioned by all three corpora
-  at once.} A real structural fact about this run's much smaller
-  corpus (Section~\ref{sec:entities}), not a bug and not evidence that
-  the three sources talk about nothing in common -- centroid-level and
-  criterion-level comparisons above still find real relationships
-  between the sources even though no single named entity happens to
-  cross all three.
-  \item \textbf{(New) One point ("Sept?") carries essentially no
-  propositional content} despite passing every automated quality check
-  (Section~\ref{sec:spotcheck}). Scale is negligible (1/10,646) but the
-  case is real.
+  "first thing they thought of" signal.
+  \item \textbf{One point ("Sept?") carries no propositional content}
+  despite passing every automated check -- 1/11,378, negligible scale,
+  real case.
   \item \textbf{Equal-size-controlled comparisons control for pool size
-  only.} Still not evidence the three reference vocabularies are
-  otherwise interchangeable.
-  \item \textbf{2-D pictures are a reading aid, not evidence.} The real
-  numbers come from the full 389-dimensional space.
-  \item \textbf{Three language representations of the MIVILUDES
-  criteria are kept separate on purpose}, and matter \emph{more} for
-  v2 than they did for v1 (Section~\ref{sec:results}, criterion
-  neighbours) -- never averaged together.
-  \item \textbf{("New") Typicality/borderline scores are purely
-  geometric}, about this space under this model this run -- not a
-  claim about cognitive prototypicality, real-world category
-  membership, or genuine conceptual ambiguity (Section~\ref{sec:jargon_typicality}).
+  only.}
+  \item \textbf{2-D pictures are a reading aid, not evidence.}
+  \item \textbf{Typicality/borderline scores are purely geometric}, not
+  a claim about cognitive prototypicality or real-world category
+  membership.
 \end{itemize}
 
 % ============================================================
@@ -843,134 +635,78 @@ marked.
 % ============================================================
 
 \begin{plainbox}[Read this box before the rest of this section]
-Everything above this point is descriptive: what was measured, and what
-came out. Everything in this section is a \emph{reading} of that
-description -- provisional, argued for rather than proven, and offered
-because it was explicitly asked for as a first pass, not because the
-geometric evidence alone settles any of it. Each interpretation below
-is marked with its own tan box and paired with the specific fact it is
-reading, plus at least one reason it might be wrong. None of this
-should be copied into the thesis's Results chapter as a conclusion
-without the researcher independently deciding it holds up.
+Everything above this point is descriptive. Everything here is a
+provisional \emph{reading} of that description, offered because it was
+explicitly requested as a first pass -- not proof. Each is paired with a
+reason it might be wrong.
 \end{plainbox}
 
-\begin{interpbox}[On the corpora "pointing the same direction" in v2]
-Section~\ref{sec:results}'s global-structure numbers show cosine
-similarities between the three corpora's centroids jumping from
-near-zero/negative in v1 to solidly positive (0.26--0.64) in v2. One
-reading: v1's over-inclusive extraction pulled in enough noise
-(paraphrase drift, headings, off-topic bibliography text) that each
-corpus's average position was itself noisy and only weakly related to
-what that corpus was actually saying about cults; v2's stricter,
-verified extraction may be giving a cleaner signal of real overlap in
-how these three very different sources actually talk about the topic.
-\textbf{Why this might be wrong}: cosine similarity between two
-centroids is also mechanically sensitive to how many points went into
-each average and how much they vary -- a smaller, more homogeneous
-sample (v2's) can produce a tidier-looking centroid almost by
-construction, regardless of whether the underlying overlap in meaning
-actually grew. Distinguishing "cleaner signal" from "smaller-sample
-artefact" would need something this run does not provide, e.g.\
-resampling v1's own corpus down to v2's size and checking whether its
-cosine similarities move the same way.
+\begin{interpbox}[On what the entity fix itself shows]
+The gap between 21 and 753 entities -- a 36-fold difference from a
+methodology bug, not a change in the underlying corpus -- is itself
+informative: it demonstrates how sensitive a "count of named things"
+statistic is to exactly which extraction field it draws from, and by
+extension how much scrutiny any single such count deserves before being
+treated as evidence about what a corpus "really" emphasizes. One
+reading: this argues for treating any single emergent-entity number in
+this thesis (this run's 753 included) as provisional pending further
+cross-checks, not as a finished census. \textbf{Why this might overstate
+the point}: the specific bug found here (only extracting entities from
+already-kept expressions) is a one-off implementation gap tied to this
+particular two-field extraction schema, not evidence that the corrected
+753-entity count itself is still substantially incomplete -- the fix
+targeted a known, specific mechanism, not a general suspicion.
 \end{interpbox}
 
-\begin{interpbox}[On self-clustering \emph{dropping} for every source in v2]
-Section~\ref{sec:cluster}'s k-NN table shows every source less
-self-clustering in v2 than in v1, most sharply for interviews (85.5\%
-$\to$ 69.7\%). One reading: with a much smaller equal-$n$ draw (64 vs.\
-204 points), each source's own "cloud" is thinner and more easily
-pierced by a handful of near neighbours from elsewhere, so \emph{some}
-of this drop is close to a guaranteed side-effect of Stage~7's
-shrinking sample size, not a genuine change in overlap. A second,
-not-mutually-exclusive reading: if v1's extraction retained near-duplicate
-paraphrases and boilerplate within each source (exactly what the
-fidelity review that motivated v2 found), those duplicates would have
-artificially inflated \emph{within-source} self-similarity in v1 --
-so some of the drop could be v1 overstating self-clustering, not v2
-understating it. \textbf{Why either might be wrong}: both silhouette
-scores stay near zero regardless, so under either reading the headline
-conclusion -- the three sources substantially overlap rather than
-forming clean clusters -- does not change; what is genuinely uncertain
-is only the size of the \emph{difference} between v1 and v2 on this
-specific, sample-size-sensitive statistic.
+\begin{interpbox}[On the 3 shared\_all\_3 entities]
+"New Age," Jehovah's Witnesses, and the Order of the Solar Temple being
+the only entities mentioned by all three corpora -- an academic
+literature review, a French state agency's operational report, and 26
+lay interviews -- is a narrow but suggestive overlap: two are specific,
+well-known, historically prominent named groups (one linked to a mass
+murder-suicide, the Solar Temple), and one is a broad, loosely-bounded
+movement label. One reading: what these three very differently-motivated
+sources agree is worth naming at all skews toward either extremely
+notorious specific cases or extremely broad umbrella categories, with
+comparatively little shared middle ground. \textbf{Why this might be
+wrong}: with only 3 data points, and given the previous interpbox's
+point about French/English variants not auto-merging, this could easily
+be undercounting genuinely shared entities that happen to be phrased
+differently per corpus (e.g., Scientology is very likely discussed by
+all three under different exact strings) -- 3 is a floor, and the
+pattern reading above is built on a small, possibly incomplete sample.
 \end{interpbox}
 
-\begin{interpbox}[On named entities sitting at the "atypical" edge]
-Section~\ref{sec:typicality} found, in all three corpora, that the most
-atypical items (furthest from their own corpus centroid) are specific
-named people or groups, while the most typical items are generic
-cult/sect vocabulary. One reading: a corpus centroid is, in effect, an
-average over a lot of generic descriptive and evaluative language, so
-it should be geometrically closest to more of that same generic
-language and furthest from any one idiosyncratic proper name, which by
-definition carries lexical content specific to itself rather than
-shared with most other expressions in the corpus. On this reading the
-pattern says more about how averaging text embeddings behaves than
-about which named things are "more" or "less" central to cult
-discourse. \textbf{Why this might be wrong, or at least incomplete}:
-if it were purely a name-versus-generic-language artefact, it should
-apply equally to \emph{every} named entity regardless of how central or
-fringe that entity is to the corpus's own concerns -- checking whether
-frequently-discussed named groups (e.g.\ Scientology, mentioned
-repeatedly across the literature) are systematically less atypical
-than one-off names would help separate a pure lexical-averaging effect
-from one that also tracks how much attention a given named thing
-actually receives; this run's typicality module was not set up to
-answer that finer question.
-\end{interpbox}
-
-\begin{interpbox}[On language-representation sensitivity getting worse in v2]
-Section~\ref{sec:results}'s criterion-neighbours module found more
-criteria change their "nearest corpus" answer under a different
-language representation in v2 (3--4 of 17) than in v1 (0--1 of 17).
-One reading: with literature down to 5,741 points and MIVILUDES down to
-108, the candidate pool feeding each "nearest corpus" decision is much
-smaller, so a handful of individual points shifting position under a
-different embedding of the same French text is more likely to actually
-flip which corpus comes out nearest -- a direct, expected consequence
-of a much smaller corpus, not evidence that v2's translations are
-somehow less reliable than v1's. \textbf{Why this might be wrong}: it
-is also possible the specific criteria whose ranking flips are ones
-sitting in a genuinely contested region of the space regardless of
-corpus size, in which case the increase in flips reflects something
-substantive about those particular criteria rather than sample size
-alone -- Section~\ref{sec:results}'s table of which criteria flipped
-would be the place to check this by re-reading which specific criteria
-recur across both v1 and v2's flip lists, which this document has not
-done.
+\begin{interpbox}[On 55 interviews-only entities appearing for the first time]
+The first v2 pass found zero interview-specific entities; this run finds
+55 (Netflix, "AI cult," Blue \"Oyster Cult, Richard Branson, "Tomato
+cult," and others), none overlapping literature or MIVILUDES. One
+reading: lay interviewees' spontaneous associations with "cult" draw on
+a genuinely different reference set than either academic literature or
+state institutional framing -- pop culture, personal media consumption,
+loose/metaphorical usage -- rather than simply being a smaller, noisier
+version of the same discourse. \textbf{Why this might be wrong}: at
+min-mentions$\geq$1 for interviews, a single interviewee's one-off
+remark is enough to create an entity, so some of these 55 may be
+idiosyncratic to one person rather than any kind of shared "interview
+discourse" pattern -- the count says these entities are
+\emph{interview-exclusive}, not that they are \emph{common} within
+interviews.
 \end{interpbox}
 
 % ============================================================
 \section{Using this document to write the Results chapter}
 % ============================================================
 
-Sections~\ref{sec:stages}--\ref{sec:honesty} are deliberately
-descriptive, exactly as the v1 document was. Section~\ref{sec:interpretation}
-is new: a first, explicitly provisional pass at interpretation,
-requested for this iteration specifically, and kept visually and
-structurally separate from the descriptive material throughout so a
-reader (or the researcher, coming back to this later) can tell which
-sentences are geometric fact and which are one possible reading of that
-fact. It does not itself answer the thesis's actual question --
-whether the three sources converge on recurring criteria, whether
-"cult" fragments into genuinely different things across academic,
-institutional, and everyday discourse, or what kind of category each
-source implicitly treats it as -- and is not a substitute for the
-researcher independently deciding whether each interpretive box holds
-up before any of it becomes actual thesis prose.
-
-Concretely, as raw material for that chapter, this document supplies:
-the same kind of plain-language glossary as the v1 document (now
-including typicality/borderline); the current v2 numbers for global
-structure, cluster structure, criterion neighbours, interview exemplars,
-emergent entities, and typicality, each set directly alongside its v1
-counterpart where that comparison is meaningful; a curated set of
-figures (embedded here, plus the full \texttt{generate\_figures/}
-output in \texttt{processed/analysis\_v2/20260909-224215/} for anything
-not shown above); an explicit list of what these numbers do not license
-concluding; and, new this time, a first attempt at interpretation with
-its own stated reasons it might be wrong -- offered as a starting point
-for argument, not a finished answer.
+Section~\ref{sec:entities} is unusually long for a "results" report
+because the correction it documents is itself a methodologically
+relevant fact -- how a bug in a two-field extraction schema silently
+discarded most named-entity signal, and what three independent,
+data-checked fixes (casing filter, a filter bug, a corpus-derived
+stop-list) it took to recover it, is exactly the kind of thing a
+Methods chapter should be candid about. Section~\ref{sec:interpretation}
+remains a first, provisional pass, kept structurally separate from
+descriptive fact throughout, offered as a starting point for argument,
+not a finished answer.
 
 \end{document}

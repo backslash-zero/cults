@@ -1,15 +1,15 @@
 {
-  "k": 389,
+  "k": 393,
   "embedding_dim": 1024,
   "variance_threshold": 0.95,
-  "variance_at_k": 0.950214675912486,
+  "variance_at_k": 0.9502073017161976,
   "seed": 42,
-  "n_points_fit": 10646,
-  "embedding_space_sha256": "4aa9c4a97856bc1a584f7dc2498610aac7aa931e368da8c0876e32d0d86a29c3",
+  "n_points_fit": 11378,
+  "embedding_space_sha256": "5134c72ab453a02bf5306d358061e267595d5c82fc56319de3e6d86727f3da0a",
   "archive_paths": {
     "literature": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/v2/literature/run_20260910/criterion_expressions.jsonl",
     "miviludes": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/v2/miviludes/run_20260910/criterion_expressions.jsonl",
     "interviews": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/v2/interviews/run_20260910/criterion_expressions.jsonl"
   },
-  "git_commit": "265794208966820d96e0145c48549da28c51ed2b"
+  "git_commit": "dc98cdda36bd0bb8045150492d624ca91cfff04c"
 }
