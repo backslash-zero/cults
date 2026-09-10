@@ -675,7 +675,51 @@ def load_conceptnet_concepts_points(path: Path) -> list[dict]:
     return points
 
 
-def load_emergent_entities(archive_paths: dict[str, Path], min_mentions: int) -> list[dict]:
+def load_domain_term_entity_mentions(
+    chunk_terms_path: Path, term_vectors_path: Path,
+) -> tuple[Counter[str], dict[str, list[float]]]:
+    """Second, broader source of entity-anchor candidates: domain_terms
+    (see embed_domain_terms.py's docstring for the full rationale) --
+    every cult-related concept or named group the extractor saw in a chunk,
+    whether or not a keeper expression survived around it, screened and
+    written to chunk_terms.jsonl at extraction time. term_vectors_path
+    (embed_domain_terms.py's output) holds only the subset that both looks
+    like a named entity and has actually been embedded; chunk_terms.jsonl
+    (mention counts) and term_vectors_path (which raw strings are eligible)
+    are cross-referenced here so a term present in the former but absent
+    from the latter -- filtered out as generic vocabulary, or simply not
+    yet embedded -- is silently skipped, not an error. Returns raw
+    (un-normalized) term -> mention count and term -> vector, mirroring
+    entity_anchors' own raw-string convention; normalization happens where
+    entity_anchors' does, in load_emergent_entities below."""
+    if not term_vectors_path.exists():
+        return Counter(), {}
+    vectors: dict[str, list[float]] = {}
+    with open(term_vectors_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            row = json.loads(line)
+            vectors[row["term"]] = row["vector"]
+
+    mentions: Counter[str] = Counter()
+    with open(chunk_terms_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            row = json.loads(line)
+            for term in row.get("domain_terms", []):
+                if term in vectors:
+                    mentions[term] += 1
+    return mentions, vectors
+
+
+def load_emergent_entities(
+    archive_paths: dict[str, Path], min_mentions: int,
+    domain_term_paths: dict[str, tuple[Path, Path]] | None = None,
+) -> list[dict]:
     """Pools one point per unique (normalized) entity anchor mentioned at
     least `min_mentions` times across all three corpus archives, using the
     per-anchor embedding Stage 2 already computed (entity_anchor_vectors) --
@@ -693,7 +737,16 @@ def load_emergent_entities(archive_paths: dict[str, Path], min_mentions: int) ->
     count (e.g. {"literature": 820, "miviludes": 15, "interviews": 12}) --
     provenance metadata only, not used in the PCA fit, so an anchor
     overwhelmingly mentioned in one corpus can be told apart from one
-    mentioned evenly across all three."""
+    mentioned evenly across all three.
+
+    `domain_term_paths`, if given, adds a second, broader mention source
+    per corpus (`{corpus: (chunk_terms_path, term_vectors_path)}` --
+    see load_domain_term_entity_mentions above and embed_domain_terms.py).
+    Where a normalized anchor has both an entity_anchors vector and a
+    domain_terms vector, the entity_anchors one wins (it comes from inside
+    an already judge-verified expression span, so it is preferred, not
+    merely first-seen) -- mention counts from both sources are always
+    combined regardless of which vector is kept."""
     vector_by_anchor: dict[str, list[float]] = {}
     mentions_by_corpus: dict[str, Counter[str]] = defaultdict(Counter)
 
@@ -711,6 +764,18 @@ def load_emergent_entities(archive_paths: dict[str, Path], min_mentions: int) ->
                         continue
                     mentions_by_corpus[corpus_name][key] += 1
                     vector_by_anchor.setdefault(key, vector)
+
+    if domain_term_paths:
+        for corpus_name, (chunk_terms_path, term_vectors_path) in domain_term_paths.items():
+            if not chunk_terms_path.exists():
+                continue
+            domain_mentions, domain_vectors = load_domain_term_entity_mentions(chunk_terms_path, term_vectors_path)
+            for raw_term, count in domain_mentions.items():
+                key = normalize_anchor(raw_term)
+                if not key:
+                    continue
+                mentions_by_corpus[corpus_name][key] += count
+                vector_by_anchor.setdefault(key, domain_vectors[raw_term])
 
     total_mentions: Counter[str] = Counter()
     for corpus_counts in mentions_by_corpus.values():
@@ -864,7 +929,13 @@ def main() -> None:
     counts["conceptnet_concepts"] = len(conceptnet_concept_points)
     points.extend(conceptnet_concept_points)
 
-    emergent_entity_points = load_emergent_entities(corpus_archives, args.entity_anchor_min_mentions)
+    domain_term_paths = None
+    if args.run_tag:
+        domain_term_paths = {
+            corpus: (path.parent / "chunk_terms.jsonl", path.parent / "domain_term_vectors.jsonl")
+            for corpus, path in corpus_archives.items()
+        }
+    emergent_entity_points = load_emergent_entities(corpus_archives, args.entity_anchor_min_mentions, domain_term_paths)
     counts["emergent_entities"] = len(emergent_entity_points)
     points.extend(emergent_entity_points)
 
