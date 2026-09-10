@@ -548,6 +548,30 @@ def main() -> None:
         write_csv(out_dir / "source_centroid_nearest_expressions.csv", source_centroid_nearest_rows)
         write_csv(out_dir / "source_centroid_nearest_expressions_diversity_audit.csv", diversity_audit_rows)
 
+        # --- Deliverable 4b: nearest EMERGENT ENTITIES to each source's own
+        # (all-status) centroid -- the entity-layer counterpart to
+        # Deliverable 4 above, same "what's actually central to this
+        # source's centroid" question, answered against the entity pool
+        # instead of the expression pool. No context_window resolution
+        # needed here (entities aren't tied to one archive occurrence the
+        # way an expression is), so this is a much shorter block than
+        # Deliverable 4 -- a straight gac.nearest_points call per corpus.
+        logger.info("Deliverable 4b: nearest emergent entities to each source's own centroid...")
+        entity_idxs = gac.source_dataset_indices(shared_space.points, "emergent_entities")
+        entity_points = [shared_space.points[i] for i in entity_idxs]
+        entity_vectors = shared_space.vectors[entity_idxs]
+        source_centroid_nearest_entity_rows = []
+        for corpus in gac.EXPRESSION_CORPORA:
+            centroid = per_source[corpus]["centroid"]
+            rows = gac.nearest_points(centroid, entity_points, entity_vectors, NEAREST_TERMS_K)
+            for row in rows:
+                source_centroid_nearest_entity_rows.append({
+                    "source_dataset": corpus, "rank": row["rank"],
+                    "entity_key": row["key"], "entity_label": row["label"],
+                    "euclidean_distance": row["euclidean_distance"], "cosine_similarity": row["cosine_similarity"],
+                })
+        write_csv(out_dir / "source_centroid_nearest_entities.csv", source_centroid_nearest_entity_rows)
+
         for corpus, resolution in context_resolutions.items():
             logger.info("resolve_context_windows(%s) stats: %s", corpus, resolution.stats)
 

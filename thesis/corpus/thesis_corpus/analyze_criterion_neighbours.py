@@ -98,6 +98,7 @@ logger = logging.getLogger("thesis_corpus.analyze_criterion_neighbours")
 
 MODULE_NAME = "analyze_criterion_neighbours"
 NEAREST_K = 10
+NEAREST_K_ENTITIES = 5  # top-N emergent entities per criterion, for the compact report table/mini-map
 COMPOSITION_K_VALUES = (10, 20)  # criterion_neighbour_composition's k values
 EXPECTED_EMBEDDING_MODEL = "bge-m3"  # the only embedding model ever used in this pipeline
 
@@ -604,6 +605,23 @@ def main() -> None:
         criteria_points_by_key = {p["key"]: p for p in criteria_points}
         full_pool = gac.corpus_vectors_and_points(shared_space, "full")
         per_source = gac.per_source_centroids_and_dispersion(shared_space)
+
+        # Nearest EMERGENT ENTITIES per criterion -- deliberately a separate
+        # pool/output from full_pool above, never merged into it: full_pool
+        # is documented throughout this module as "exactly the three
+        # expression corpora, never reference/emergent points," an
+        # invariant several other deliverables (language-sensitivity
+        # comparison, controlled comparison) depend on. qualitative_retrieval
+        # is generic over any {label: (points, vectors)} pool, so this reuses
+        # it unchanged rather than writing a second retrieval function.
+        entity_idxs = gac.source_dataset_indices(shared_space.points, "emergent_entities")
+        entity_pool = {
+            "emergent_entities": ([shared_space.points[i] for i in entity_idxs], shared_space.vectors[entity_idxs]),
+        }
+        logger.info("french_primary_shared_space: nearest emergent entities per criterion (top-%d)...", NEAREST_K_ENTITIES)
+        qual_rows_entities = qualitative_retrieval(criteria_points, criteria_vectors, entity_pool, "french_primary_shared_space")
+        qual_rows_entities = [r for r in qual_rows_entities if r["rank"] <= NEAREST_K_ENTITIES]
+        gac.write_csv(out_dir / "qualitative_retrieval_entities.csv", qual_rows_entities)
         reference_pools = {
             ref_dataset: (
                 [shared_space.points[i] for i in gac.source_dataset_indices(shared_space.points, ref_dataset)],

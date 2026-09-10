@@ -380,6 +380,161 @@ def plot_entity_provenance_bars(provenance_path: Path, out_dir: Path) -> None:
     save_figure(fig, out_dir, "entity_provenance_categories")
 
 
+# ---------------------------------------------------------------------------
+# Entity topology / Voronoi / publication-date figures
+# ---------------------------------------------------------------------------
+
+def plot_voronoi_diagram(coords_path: Path, manifest_path: Path, out_dir: Path) -> None:
+    """Entities as a grey scatter + Voronoi cells built from the overlay
+    (seed) points -- reads the SAME coordinate files
+    generate_voronoi_projections.py writes via gac.fit_and_save_umap
+    (member=entities, overlay=one strategy's seeds), same checksum-verified
+    load as plot_2d_scatter. scipy.spatial.Voronoi needs >=4 seeds for a
+    2-D diagram; fewer (e.g. the 3-corpus-centroid strategy) gets seed
+    markers only, no cell boundaries, rather than an error."""
+    from scipy.spatial import Voronoi, voronoi_plot_2d
+
+    points, manifest = _load_checked_coords(coords_path, manifest_path)
+    if points is None:
+        logger.warning("Skipping Voronoi figure -- missing %s or %s", coords_path.name, manifest_path.name)
+        return
+    members = [p for p in points if p.get("point_kind", "member") == "member"]
+    seeds = [p for p in points if p.get("point_kind") == "centroid_overlay"]
+    if not seeds:
+        logger.warning("Skipping Voronoi figure for %s -- no seed/overlay points found.", manifest["population"])
+        return
+
+    member_coords = np.array([p["umap_2d"] for p in members])
+    seed_coords = np.array([p["umap_2d"] for p in seeds])
+
+    fig, ax = plt.subplots(figsize=(9, 8))
+    ax.scatter(member_coords[:, 0], member_coords[:, 1], s=8, alpha=0.5,
+               color="#888888", linewidths=0, label="entity", zorder=1)
+
+    if len(seed_coords) >= 4:
+        vor = Voronoi(seed_coords)
+        voronoi_plot_2d(vor, ax=ax, show_points=False, show_vertices=False,
+                         line_colors="black", line_width=1.2, line_alpha=0.8)
+    else:
+        logger.info("%s: only %d seeds (<4) -- seed markers only, no Voronoi cells (scipy needs >=4).",
+                     manifest["population"], len(seed_coords))
+
+    ax.scatter(seed_coords[:, 0], seed_coords[:, 1], s=160, color="#d62728",
+               edgecolors="black", linewidths=1.3, label="seed", zorder=5, marker="*")
+    for p, coord in zip(seeds, seed_coords):
+        ax.annotate(str(p.get("label", ""))[:30], coord, fontsize=6, alpha=0.8, zorder=6)
+
+    # A seed reached via reducer.transform() into a manifold it wasn't
+    # fitted on can land far outside the entity cloud (a known UMAP
+    # out-of-sample-transform behaviour) -- clip the view to the entities'
+    # own bounding box (+10% padding) so the figure doesn't shrink every
+    # entity into one corner to make room for a stray seed.
+    pad_x = (member_coords[:, 0].max() - member_coords[:, 0].min()) * 0.1
+    pad_y = (member_coords[:, 1].max() - member_coords[:, 1].min()) * 0.1
+    ax.set_xlim(member_coords[:, 0].min() - pad_x, member_coords[:, 0].max() + pad_x)
+    ax.set_ylim(member_coords[:, 1].min() - pad_y, member_coords[:, 1].max() + pad_y)
+
+    ax.set_xlabel("UMAP 1")
+    ax.set_ylabel("UMAP 2")
+    ax.set_title(f"{manifest['population']} (n_entities={len(members)}, n_seeds={len(seeds)})")
+    ax.legend(fontsize=8, loc="best")
+    # manifest['population'] is already "voronoi_<strategy>_seeded" (the
+    # population_name generate_voronoi_projections.py passed to
+    # fit_and_save_umap) -- don't double-prefix it.
+    save_figure(fig, out_dir, manifest["population"])
+
+
+def plot_entity_clusters(coords_path: Path, manifest_path: Path, clusters_csv_path: Path, out_dir: Path) -> None:
+    """Colours the entity 2-D layout (any of generate_voronoi_projections.py's
+    3 coordinate files' member points -- numerically identical across all
+    three, see that module's own docstring) by
+    analyze_entity_topology.py's HDBSCAN cluster_id -- a qualitative
+    colormap (cluster count varies run to run), not the fixed
+    source_dataset/point_role palette plot_2d_scatter uses."""
+    points, manifest = _load_checked_coords(coords_path, manifest_path)
+    if points is None:
+        logger.warning("Skipping entity-cluster figure -- missing %s or %s", coords_path.name, manifest_path.name)
+        return
+    cluster_rows = read_csv_rows(clusters_csv_path)
+    if not cluster_rows:
+        logger.warning("Skipping entity-cluster figure -- missing/empty %s", clusters_csv_path)
+        return
+    cluster_by_key = {r["key"]: int(r["cluster_id"]) for r in cluster_rows}
+
+    members = [p for p in points if p.get("point_kind", "member") == "member"]
+    coords = np.array([p["umap_2d"] for p in members])
+    cluster_ids = np.array([cluster_by_key.get(p["key"], -1) for p in members])
+
+    fig, ax = plt.subplots(figsize=(9, 8))
+    noise_mask = cluster_ids == -1
+    ax.scatter(coords[noise_mask, 0], coords[noise_mask, 1], s=6, alpha=0.35,
+               color="#bbbbbb", linewidths=0, label="noise (no cluster)")
+
+    non_noise_ids = sorted(set(cluster_ids[~noise_mask].tolist()))
+    cmap = plt.get_cmap("tab20")
+    for i, cluster_id in enumerate(non_noise_ids):
+        mask = cluster_ids == cluster_id
+        ax.scatter(coords[mask, 0], coords[mask, 1], s=18, alpha=0.85, color=cmap(i % 20), linewidths=0)
+
+    ax.set_xlabel("UMAP 1")
+    ax.set_ylabel("UMAP 2")
+    ax.set_title(f"Emergent entities coloured by HDBSCAN cluster "
+                 f"({len(non_noise_ids)} clusters, {int(noise_mask.sum())} noise)")
+    ax.legend(fontsize=8, loc="best")
+    save_figure(fig, out_dir, "entity_clusters_umap")
+
+
+def plot_gap_heatmap(gap_grid_path: Path, out_dir: Path) -> None:
+    rows = read_csv_rows(gap_grid_path)
+    if not rows:
+        logger.warning("Skipping gap heatmap -- missing/empty %s", gap_grid_path)
+        return
+    bins_x = max(int(r["cell_x"]) for r in rows) + 1
+    bins_y = max(int(r["cell_y"]) for r in rows) + 1
+    grid = np.full((bins_y, bins_x), np.nan)
+    gap_cells: list[tuple[int, int]] = []
+    for r in rows:
+        i, j = int(r["cell_x"]), int(r["cell_y"])
+        if r["inside_convex_hull"] == "True":
+            grid[j, i] = int(r["count"])
+        if r["is_gap"] == "True":
+            gap_cells.append((i, j))
+
+    fig, ax = plt.subplots(figsize=(8, 7))
+    im = ax.imshow(grid, origin="lower", cmap="YlOrRd", aspect="auto")
+    fig.colorbar(im, ax=ax, label="entities per cell")
+    if gap_cells:
+        gap_xs, gap_ys = zip(*gap_cells)
+        ax.scatter(gap_xs, gap_ys, marker="x", color="blue", s=40, label="gap (inside hull, empty)")
+    ax.set_xlabel("grid cell (x)")
+    ax.set_ylabel("grid cell (y)")
+    ax.set_title("Entity density grid -- candidate coverage gaps marked")
+    ax.legend(fontsize=8)
+    save_figure(fig, out_dir, "entity_gap_heatmap")
+
+
+def plot_year_vs_distance(year_distance_csv: Path, out_dir: Path) -> None:
+    rows = read_csv_rows(year_distance_csv)
+    if not rows:
+        logger.warning("Skipping year-vs-distance figure -- missing/empty %s", year_distance_csv)
+        return
+    years = np.array([int(r["year"]) for r in rows])
+    distances = np.array([float(r["distance_to_literature_centroid"]) for r in rows])
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.scatter(years, distances, s=10, alpha=0.25,
+               color=gac.SOURCE_DATASET_COLORS.get("literature", "#1f77b4"), linewidths=0)
+    unique_years = sorted(set(years.tolist()))
+    year_means = [distances[years == y].mean() for y in unique_years]
+    ax.plot(unique_years, year_means, color="black", linewidth=1.5, label="per-year mean")
+
+    ax.set_xlabel("Publication year")
+    ax.set_ylabel("Distance to literature's own centroid")
+    ax.set_title("Literature: publication year vs. distance to own centroid")
+    ax.legend(fontsize=8)
+    save_figure(fig, out_dir, "publication_year_vs_distance")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-id", type=str, required=True)
@@ -463,6 +618,28 @@ def _render_all(run_dir: Path, completed: set[str], out_dir: Path) -> None:
                 plot_2d_scatter(coords_path, manifest_path, out_dir, color_by, coord_field="pca_2d", stem_prefix="pca")
     else:
         logger.warning("generate_focused_projections not completed in this run -- skipping its figures.")
+
+    if "generate_voronoi_projections" in completed:
+        vp_dir = run_dir / "generate_voronoi_projections"
+        for coords_path in sorted(vp_dir.glob("umap_voronoi_*.jsonl")):
+            manifest_path = coords_path.parent / f"{coords_path.stem}.manifest.json"
+            plot_voronoi_diagram(coords_path, manifest_path, out_dir)
+        plot_gap_heatmap(vp_dir / "entity_gap_grid.csv", out_dir)
+        if "analyze_entity_topology" in completed:
+            criteria_seeded = sorted(vp_dir.glob("umap_voronoi_criteria_seeded_*.jsonl"))
+            if criteria_seeded:
+                coords_path = criteria_seeded[0]
+                manifest_path = coords_path.parent / f"{coords_path.stem}.manifest.json"
+                plot_entity_clusters(coords_path, manifest_path,
+                                      run_dir / "analyze_entity_topology" / "entity_clusters.csv", out_dir)
+    else:
+        logger.warning("generate_voronoi_projections not completed in this run -- skipping its figures.")
+
+    if "analyze_publication_date" in completed:
+        pd_dir = run_dir / "analyze_publication_date"
+        plot_year_vs_distance(pd_dir / "year_distance_by_point.csv", out_dir)
+    else:
+        logger.warning("analyze_publication_date not completed in this run -- skipping its figure.")
 
     if "analyze_initial_exemplars" in completed and "analyze_cluster_structure" in completed:
         cs_dir = run_dir / "analyze_cluster_structure"

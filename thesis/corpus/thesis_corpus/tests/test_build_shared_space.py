@@ -1,9 +1,11 @@
 """Unit tests for build_shared_space.py's emergent-entity quality filters:
-looks_like_named_entity, normalize_anchor, and load_cited_author_surnames.
+looks_like_named_entity, normalize_anchor, load_cited_author_surnames, and
+the manual-exclusion mechanism in load_corpus_points_v2.
 
 Run from thesis/corpus/:  python -m unittest thesis_corpus.tests.test_build_shared_space -v
 """
 import csv
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -79,6 +81,51 @@ class TestLoadCitedAuthorSurnames(unittest.TestCase):
         finally:
             path.unlink()
         self.assertEqual(surnames, set())
+
+
+class TestManualExclusion(unittest.TestCase):
+    def _write_archive(self, rows: list[dict]) -> Path:
+        tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".jsonl", delete=False, encoding="utf-8")
+        for row in rows:
+            tmp.write(json.dumps(row) + "\n")
+        tmp.close()
+        return Path(tmp.name)
+
+    def test_manually_excluded_key_dropped_and_counted(self):
+        # "b3-aug23-1213:0" is the real, permanently-excluded "Sept?" case
+        # (see MANUALLY_EXCLUDED_POOLED_KEYS's own docstring) -- this test
+        # exercises the general mechanism using that real key, rather than
+        # inventing a synthetic one, so it doubles as a regression check
+        # that this specific exclusion stays wired up.
+        self.assertIn("b3-aug23-1213:0", bss.MANUALLY_EXCLUDED_POOLED_KEYS)
+        path = self._write_archive([
+            {"document_id": "b3-aug23-1213", "chunk_index": 0, "embedding_text": "Sept?",
+             "embedding_vector": [0.1, 0.2], "attribution": "participant",
+             "claim_mode": "question_or_reflection", "epistemic_status": "speculative"},
+            {"document_id": "b3-aug23-1213", "chunk_index": 1, "embedding_text": "Charles Manson",
+             "embedding_vector": [0.3, 0.4], "attribution": "participant",
+             "claim_mode": "direct_statement", "epistemic_status": "asserted"},
+        ])
+        try:
+            points, removal_counts = bss.load_corpus_points_v2("interviews", path, min_expression_words=0)
+        finally:
+            path.unlink()
+        self.assertEqual(len(points), 1)
+        self.assertEqual(points[0]["key"], "b3-aug23-1213:1")
+        self.assertEqual(removal_counts["manually_excluded"], 1)
+
+    def test_no_exclusions_when_key_absent(self):
+        path = self._write_archive([
+            {"document_id": "other-interview", "chunk_index": 0, "embedding_text": "Scientology",
+             "embedding_vector": [0.1, 0.2], "attribution": "participant",
+             "claim_mode": "direct_statement", "epistemic_status": "asserted"},
+        ])
+        try:
+            points, removal_counts = bss.load_corpus_points_v2("interviews", path, min_expression_words=0)
+        finally:
+            path.unlink()
+        self.assertEqual(len(points), 1)
+        self.assertEqual(removal_counts["manually_excluded"], 0)
 
 
 if __name__ == "__main__":

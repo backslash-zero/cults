@@ -210,6 +210,8 @@ def build_criterion_neighbourhood(
     expression_pool: dict[str, tuple[list[dict], np.ndarray]],
     reference_pools: dict[str, tuple[list[dict], np.ndarray]],
     run_dir: Path,
+    entity_points: list[dict] | None = None,
+    entity_vectors: np.ndarray | None = None,
 ) -> FocusedPopulation:
     criterion_key = criterion_point["key"]
     member_points = [_tagged_point(criterion_point, "criterion_query")]
@@ -267,6 +269,32 @@ def build_criterion_neighbourhood(
                 member_vectors.append(ref_vectors[i][np.newaxis, :])
         if n_available < NEAREST_K_REFERENCE_CRITERION:
             shortages[f"nearest_reference:{ref_name}"] = {"requested": NEAREST_K_REFERENCE_CRITERION, "available": n_available}
+
+    # Nearest EMERGENT ENTITIES -- reuses analyze_criterion_neighbours.py's
+    # saved qualitative_retrieval_entities.csv (added alongside the
+    # expression retrieval above) when present; falls back to a local
+    # nearest-neighbour search the same way the expression/reference
+    # blocks above do, so this mini-map still renders even if that CSV
+    # is missing for some older run.
+    if entity_points is not None and entity_vectors is not None and len(entity_points):
+        entity_csv = run_dir / "analyze_criterion_neighbours" / "qualitative_retrieval_entities.csv"
+        entity_rows = [r for r in _read_csv_rows(entity_csv) if r.get("criterion_key") == criterion_key]
+        entity_points_by_key = {p["key"]: (p, v) for p, v in zip(entity_points, entity_vectors)}
+        rows_for_entities = sorted(entity_rows, key=lambda r: int(r["rank"]))[:NEAREST_K_REFERENCE_CRITERION] if entity_rows else []
+        if rows_for_entities:
+            n_available = len(rows_for_entities)
+            for r in rows_for_entities:
+                p, v = entity_points_by_key[r["neighbor_key"]]
+                member_points.append(_tagged_point(p, "nearest_entity"))
+                member_vectors.append(v[np.newaxis, :])
+        else:
+            n_available = min(NEAREST_K_REFERENCE_CRITERION, len(entity_points))
+            nearest_idx = _nearest_indices(criterion_vector, entity_vectors, n_available)
+            for i in nearest_idx:
+                member_points.append(_tagged_point(entity_points[i], "nearest_entity"))
+                member_vectors.append(entity_vectors[i][np.newaxis, :])
+        if n_available < NEAREST_K_REFERENCE_CRITERION:
+            shortages["nearest_entity"] = {"requested": NEAREST_K_REFERENCE_CRITERION, "available": n_available}
 
     return FocusedPopulation(
         name=f"criterion_neighbourhood_{criterion_key}",
@@ -398,6 +426,9 @@ def main() -> None:
         criteria_points = [shared_space.points[i] for i in criteria_idxs]
         criteria_vectors = shared_space.vectors[criteria_idxs]
         expression_pool = gac.corpus_vectors_and_points(shared_space, "full")
+        entity_idxs = gac.source_dataset_indices(shared_space.points, "emergent_entities")
+        entity_points_all = [shared_space.points[i] for i in entity_idxs]
+        entity_vectors_all = shared_space.vectors[entity_idxs]
 
         populations_index: dict[str, dict] = {}
 
@@ -424,7 +455,10 @@ def main() -> None:
         logger.info("Population 4/5: criterion_neighbourhood_<criterion_key> (x%d) ...", len(criteria_points))
         points_by_key = {p["key"]: (p, v) for p, v in zip(shared_space.points, shared_space.vectors)}
         for c_point, c_vector in zip(criteria_points, criteria_vectors):
-            pop = build_criterion_neighbourhood(points_by_key, c_point, c_vector, expression_pool, reference_pools, run_dir)
+            pop = build_criterion_neighbourhood(
+                points_by_key, c_point, c_vector, expression_pool, reference_pools, run_dir,
+                entity_points=entity_points_all, entity_vectors=entity_vectors_all,
+            )
             populations_index[pop.name] = emit_population(out_dir, pop, param_combinations, args.seed)
 
         logger.info("Population 5/5: emergent_entity_focus (top %d) ...", args.top_entities)

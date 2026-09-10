@@ -70,7 +70,7 @@
 \large Working report -- draft base material for the Results chapter,\\
 with a first attempt at interpretation}
 \author{Prepared for C\'elestin Meunier's thesis project}
-\date{Covers run \texttt{20260910-010254}, generated 2026-09-10}
+\date{Covers run \texttt{20260910-101829}, generated 2026-09-10}
 
 \begin{document}
 \maketitle
@@ -119,10 +119,28 @@ practice, or person \emph{is} or \emph{is not} "a cult."
   "typical" region; generic statements sit near the centre} -- same
   pattern as before, unaffected by the entity fix (it concerns ordinary
   expressions, not the entity layer).
-  \item \textbf{The "Sept?" data-quality finding from the first pass
-  still stands} -- one interview response, almost certainly a mishearing
-  of \emph{secte} as \emph{sept}, passing every automated check. Still
-  1 point out of the space; still not large enough to change any result.
+  \item \textbf{"Sept?" has been manually removed from the data} at the
+  researcher's explicit instruction (Section~\ref{sec:spotcheck}) -- not
+  just flagged as before. Excluded at pooling time, never by editing the
+  raw extraction archive.
+  \item \textbf{New this run: where is the entity layer dense, where is
+  it empty, and does that matter?} HDBSCAN clustering (the real,
+  393-dimensional space, never a 2-D projection) finds \textbf{49}
+  density-based clusters among the 753 entities, with \textbf{514} left
+  as noise (not unimportant -- just not sitting inside a dense
+  neighbourhood at this threshold). A density/gap map over a 2-D
+  projection flags \textbf{9 of 167} in-bounds grid cells as candidate
+  coverage gaps. Full story in Section~\ref{sec:topology}.
+  \item \textbf{Three ways to partition that space (Voronoi), tried and
+  compared, not just one chosen in advance.} Only one of the three
+  worked as a legible 2-D picture -- and the reason why is itself an
+  informative, honestly-reported finding, not hidden. Section~\ref{sec:voronoi}.
+  \item \textbf{New this run: literature's publication year barely
+  correlates with where a document's expressions sit} (Spearman
+  $\rho=-0.064$, statistically significant at this sample size but a
+  very weak effect) \textbf{-- and the single nearest MIVILUDES criterion
+  to literature's "centre of gravity" is the same one in every one of the
+  three publication-year periods checked.} Section~\ref{sec:pubdate}.
 \end{itemize}
 
 % ============================================================
@@ -169,10 +187,11 @@ story and the fix.
 Same pooling procedure as v1: embed everything with the same model,
 standardize, PCA down to the smallest dimensionality keeping 95\% of the
 variance. With the corrected, much larger emergent-entities layer, this
-run's space holds \textbf{11,378} points, compressed to \textbf{393}
+run's space holds \textbf{11,377} points, compressed to \textbf{393}
 dimensions (95.0\% variance kept) -- up from the first v2 pass's 10,646
-points/389 dimensions, entirely due to the extra 732 entity points now
-correctly included.
+points/389 dimensions, mostly due to the extra 732 entity points now
+correctly included, minus the single "Sept?" point manually excluded
+this run (Section~\ref{sec:spotcheck}).
 
 \subsection{Stage 6 -- The interview "first impression" layer: ported, not redone}
 Unchanged from the first v2 pass: the 25 manually-verified interview
@@ -283,7 +302,7 @@ conceptnet\_concepts & 195 & reference & Hand-reviewed ConceptNet generalisation
 emergent\_entities & \textbf{753} & emergent & Named entities, corrected this run -- see Section~\ref{sec:entities} \\
 \bottomrule
 \end{tabularx}
-\caption{The eight sources pooled into the 11{,}378-point, 393-dimensional v2 shared space.}
+\caption{The eight sources pooled into the 11{,}377-point, 393-dimensional v2 shared space.}
 \end{table}
 
 A ninth, separate layer -- 25 ported interview prototypes -- sits in the
@@ -312,8 +331,18 @@ word `secte' [cult], what do you think of?"), answered \textbf{"Sept?"}
 \emph{sept}, not a substantive response. The judge model scored it
 faithful/self-contained/cult-relevant/atomic, correctly noting it is a
 genuine transcript quote -- true, but the string carries no propositional
-content about cults. Scale: 1 of 11,378 points (0.01\%). Left in place,
-unmodified, as an explicit, logged limitation.
+content about cults. Scale: 1 of 11,378 points (0.01\%).
+
+\textbf{Update, this run}: at the researcher's explicit instruction, this
+point has been manually removed from the shared space -- not merely
+flagged. The removal is a single, individually-documented exclusion
+applied at pooling time (\texttt{MANUALLY\_EXCLUDED\_POOLED\_KEYS} in
+\texttt{build\_shared\_space.py}, keyed \texttt{"b3-aug23-1213:0"}), never
+by editing the raw extraction archive -- the archive itself stays a
+complete, honest record of what the pipeline actually produced,
+imperfections included; only the pooled analysis space excludes this one
+point. The space now holds 11,377 points, not 11,378. No other result in
+this document changed detectably from this single point's removal.
 \end{plainbox}
 
 % ============================================================
@@ -480,6 +509,165 @@ As before, this module does \textbf{not} classify any entity as
 label -- it reports who talks about what, not who is right.
 
 % ============================================================
+\section{Entity topology: clusters, density, gaps, centrality}
+\label{sec:topology}
+% ============================================================
+
+New this run. Three questions about the 753 emergent entities
+specifically, all answered in the REAL 393-dimensional space (never a
+2-D projection -- pictures come after, as a reading aid, not the
+evidence itself): do they form dense clusters or sit scattered; how
+locally dense is each entity's own neighbourhood; and how central or
+peripheral is an entity/cluster relative to the space's overall "centre
+of gravity" (the same equal-corpus-weighted grand centroid framing used
+throughout this project, applied here to entities the way
+\texttt{analyze\_typicality.py} already applies it to ordinary
+expressions).
+
+\begin{plainbox}[Governing principle]
+Cluster membership, local density, and centrality are purely geometric
+facts about this embedding space under this model. A "dense cluster" of
+entities is not itself evidence those entities are conceptually similar
+in any deeper sense than "their extracted-context embeddings landed near
+each other"; an HDBSCAN "noise" label does not mean an entity is
+unimportant, only that it did not sit inside a density-defined cluster
+at the chosen threshold.
+\end{plainbox}
+
+\texttt{sklearn.cluster.HDBSCAN} (density-based -- no pre-specified
+cluster count, and points that don't sit in a dense neighbourhood are
+left as explicit "noise" rather than force-assigned) finds
+\textbf{49 clusters} among the 753 entities, at a minimum cluster size of
+3; \textbf{514 entities (68\%)} are noise at this threshold.
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{p{0.9cm}p{0.6cm}p{2.1cm}p{9.5cm}}
+\toprule
+Cluster & Size & Dist.\ to grand centroid & Members \\
+\midrule
+\multicolumn{4}{l}{\textit{Most central (closest to the space's overall "centre of gravity")}} \\
+14 & 6 & 20.53 & dérives sectaires; jugendsekten; les dérives sectaires; sects; sekte; une secte. \\
+31 & 14 & 20.92 & center for studies on new religions; new age; new age movement; new religious movement(s); \ldots \\
+22 & 10 & 21.90 & church of satan; satan; satanic; satanism; satanist(s); the cult of satan; \ldots \\
+\multicolumn{4}{l}{\textit{Most peripheral}} \\
+46 & 6 & 31.56 & catholic; catholic church; catholicism; catholics; roman catholic (church) \\
+8 & 3 & 31.65 & clapham; clapham sect; the clapham sect \\
+19 & 3 & 32.23 & moonie; moonies; the moonies \\
+35 & 3 & 33.26 & california; los angeles; san francisco \\
+34 & 4 & 33.32 & jehovah's witnesses; les témoins de jéhovah; témoins de jéhovah; zeugen jehovas \\
+\bottomrule
+\end{tabular}
+\caption{Most central and most peripheral entity clusters, by distance
+from the cluster's own member-centroid to the space's grand centroid.
+Full 49-cluster table in \texttt{analyze\_entity\_topology/cluster\_summary.csv}.}
+\end{table}
+
+Read qualitatively (see Section~\ref{sec:interpretation} for a more
+careful reading): the most central clusters are generic, multilingual
+core vocabulary for the topic itself (sect/secte/sekte, "new
+religious movement," Satanism-adjacent terms); the most peripheral are
+specific named groups and, oddly, a cluster of three unrelated
+California place names -- flagged here as a likely artefact (entities
+co-occurring in discussion of California-based groups, not a
+meaningful "cult entity" cluster on its own terms) rather than a
+finding, consistent with this project's practice of not smoothing over
+a plausible artefact just because it is a small one.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/entity_clusters_umap.png}
+\caption{The 753 entities, 2-D UMAP projection, coloured by HDBSCAN
+cluster (grey = noise). A reading aid only -- cluster membership itself
+comes from the real 393-D space above, not from this picture; shown here
+because the 2-D layout visually confirms the same compact, well-separated
+groupings the high-dimensional clustering found, a useful cross-check.}
+\end{figure}
+
+\textbf{Coverage gaps}: binning that same 2-D layout into a 15$\times$15
+grid over its own bounding box and counting entities per cell finds
+\textbf{9 of 167} in-hull cells (cells inside the entities' own convex
+hull, i.e.\ genuinely surrounded by data rather than just empty space at
+the edge of the picture) with zero entities -- candidate coverage gaps:
+regions of "entity space" that sit between occupied areas without any
+named thing of their own.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/entity_gap_heatmap.png}
+\caption{Entity count per grid cell (2-D UMAP layout); blue $\times$
+marks a candidate gap (inside the entities' convex hull, zero entities).}
+\end{figure}
+
+% ============================================================
+\section{Voronoi regions: three seed strategies, tried and compared}
+\label{sec:voronoi}
+% ============================================================
+
+"Try a few different seed strategies and see what happens," per the
+researcher's own framing, rather than picking one in advance. All three
+tessellations are fit on the exact same 2-D UMAP layout of the 753
+entities (verified byte-identical member coordinates across all three
+runs, since \texttt{umap-learn} is deterministic given a fixed seed) --
+only the \emph{seed points} a Voronoi diagram is built from differ:
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{Criteria-seeded}: the 17 MIVILUDES criteria.
+  \item \textbf{Corpus-centroid-seeded}: the 3 corpus centroids.
+  \item \textbf{Cluster-centroid-seeded}: the 49 HDBSCAN cluster centroids
+  from Section~\ref{sec:topology}.
+\end{itemize}
+
+\begin{plainbox}[What actually happened -- reported honestly, not smoothed over]
+Only the \textbf{cluster-centroid-seeded} strategy produced a legible 2-D
+tessellation (Figure~\ref{fig:voronoi-cluster}). The other two collapsed:
+all 17 criteria, and separately all 3 corpus centroids, land compressed
+into one small corner of the 2-D layout, far from the bulk of the entity
+cloud (Figures~\ref{fig:voronoi-criteria}--\ref{fig:voronoi-corpus}). This
+is a real, understood, and reportable cause: cluster centroids are
+computed directly from the SAME entity vectors UMAP was fit on (an
+"in-distribution" query), while the criteria and corpus centroids come
+from an entirely different, unrelated point population and only enter the
+2-D layout afterward, via \texttt{reducer.transform()} -- a well-documented
+UMAP limitation (out-of-sample points can be compressed into an
+unrepresentative region of the fitted manifold), not evidence that the 17
+criteria or the 3 corpora are somehow geometrically confused with each
+other. The underlying HIGH-DIMENSIONAL retrieval this document relies on
+elsewhere (nearest entities to each criterion, Section~\ref{sec:tables};
+nearest entities to each corpus centroid) is computed directly in the
+real 393-D space and is entirely unaffected by this 2-D projection
+artefact -- only this specific 2-D picture is.
+\end{plainbox}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/voronoi_cluster_centroid_seeded.png}
+\caption{Cluster-centroid-seeded Voronoi tessellation -- the one strategy
+that produced a legible partition, since its seeds are drawn from the
+same population the 2-D layout was fit on.}
+\label{fig:voronoi-cluster}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/voronoi_criteria_seeded.png}
+\caption{Criteria-seeded attempt -- all 17 criteria compress into one
+corner under UMAP's out-of-sample transform; included for honesty about
+what was tried, not because it is a useful reading aid on its own.}
+\label{fig:voronoi-criteria}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/voronoi_corpus_centroid_seeded.png}
+\caption{Corpus-centroid-seeded attempt -- same compression, worse still
+with only 3 seeds (scipy needs $\geq$4 points for a 2-D Voronoi diagram at
+all, so no cell boundaries are drawn here, seed positions only).}
+\label{fig:voronoi-corpus}
+\end{figure}
+
+% ============================================================
 \section{What the rest of the toolkit found}
 \label{sec:results}
 % ============================================================
@@ -546,7 +734,7 @@ separate clusters.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/umap_overview_by_source_dataset_n20_d0.2.png}
-\caption{Whole-space UMAP overview, coloured by source dataset, this run (11{,}378 points).}
+\caption{Whole-space UMAP overview, coloured by source dataset, this run (11{,}377 points).}
 \end{figure}
 
 \subsection{Criterion neighbours}
@@ -559,6 +747,72 @@ vs.\ raw cosine, \textbf{4 of 17} -- unchanged from the first v2 pass.
 \includegraphics[width=0.85\textwidth]{figures/criterion_corpus_heatmap.png}
 \caption{Heatmap of each of the 17 MIVILUDES criteria against the three expression corpora, this run.}
 \end{figure}
+
+\subsection{Per-criterion and per-centroid tables: nearest expressions and entities}
+\label{sec:tables}
+
+New this run. \texttt{analyze\_criterion\_neighbours.py}'s existing
+per-criterion nearest-expression retrieval now has a nearest-\emph{entity}
+companion (top-5 per criterion, same 393-D space, computed directly --
+unaffected by Section~\ref{sec:voronoi}'s 2-D projection issue). One
+example of all 17:
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{ll}
+\toprule
+Rank & Nearest entity \\
+\midrule
+1 & thought reform and the psychology of totalism \\
+2 & brainwashing \\
+3 & phénomène d'emprise mentale \\
+4 & silva mind control \\
+5 & spiritism \\
+\bottomrule
+\end{tabular}
+\caption{Nearest entities to \emph{crit-mental-destabilization} ("mental
+destabilization") -- one of 17 criteria's own tables, full set in
+\texttt{analyze\_criterion\_neighbours/qualitative\_retrieval\_entities.csv}.
+Each criterion's existing per-criterion focused-projection mini-map
+(\texttt{generate\_focused\_projections.py}) now overlays these nearest
+entities alongside the pre-existing nearest expressions and reference
+terms, one picture per criterion, 17 total, not reproduced individually
+here for space.}
+\end{table}
+
+The same treatment was applied to \textbf{centroids}, both kinds asked
+for: the 3 corpus centroids, and the cluster centroids from
+Section~\ref{sec:topology}.
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Corpus centroid & Rank 1 nearest entity & (French items are the corpus's own vocabulary) \\
+\midrule
+literature & une secte. & -- \\
+miviludes & une secte. & -- \\
+interviews & une secte. & -- \\
+\bottomrule
+\end{tabular}
+\caption{Nearest entity to each of the 3 corpus centroids -- the generic
+French phrase "une secte." (roughly "a sect.") ranks \#1 for
+\emph{all three} corpora's own centroid, ahead of any specific named
+group. Full top-10-per-corpus table in
+\texttt{analyze\_global\_structure/source\_centroid\_nearest\_entities.csv}.}
+\end{table}
+
+For the 49 entity clusters, the same nearest-expression/nearest-entity
+retrieval was run against the 10 largest clusters' own member centroids
+(by size, a different ordering from Section~\ref{sec:topology}'s
+centrality ranking -- kept deliberately separate, since "biggest" and
+"most central" needn't agree). The largest cluster's own nearest
+expressions read, unsurprisingly, as direct restatements of its members'
+own vocabulary ("New Religions," "New Religious Movement(s)," \ldots) --
+full table in
+\texttt{analyze\_entity\_topology/cluster\_centroid\_nearest\_\{expressions,entities\}.csv}.
 
 \subsection{Interview initial exemplars}
 Unchanged: same 25 resolved/1 unavailable interviews, same
@@ -592,6 +846,59 @@ worth looking at:
 \end{figure}
 
 % ============================================================
+\section{Publication-date effects (literature only)}
+\label{sec:pubdate}
+% ============================================================
+
+New this run. Literature-only: MIVILUDES has no usable per-document year
+(only a \texttt{.bib} file's \texttt{date = \{2024\}} for one of its 2
+source documents, nothing structured); interviews have real collection
+dates but all within one narrow month, not a multi-year span. Year comes
+directly from each literature \texttt{document\_id} (e.g.\
+\texttt{clarke-2004-encyclopedia-of-new-religious-movements}) -- the
+corpus's own bibliography CSV uses an unrelated Zotero citekey with no
+join back to the pipeline's document IDs, so this document-id extraction
+is the only way to recover year at all; verified \textbf{5,741/5,741}
+(100\%) literature points have an extractable year this way.
+
+\begin{plainbox}[Governing principle]
+A correlation or period-centroid shift here is a geometric fact about
+extracted-expression embeddings by publication year; it is not, by
+itself, evidence of a causal trend in scholarly opinion, a claim about
+which period's literature is "more correct," or a claim that generalizes
+beyond this specific 57-document sample.
+\end{plainbox}
+
+\textbf{Correlation}: Spearman rank correlation between publication year
+and a point's distance to literature's own centroid: $\rho=-0.064$,
+$p<0.0001$ (n=5,741). Statistically significant at this sample size, but
+a very weak effect -- publication year explains almost none of the
+variation in how "typical" a literature expression is of literature's own
+centre of gravity.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/publication_year_vs_distance.png}
+\caption{Literature: publication year vs.\ distance to literature's own
+centroid, one point per expression, with the per-year mean overlaid.}
+\end{figure}
+
+\textbf{Period drift}: splitting literature into year terciles using the
+corpus's own distribution (never a fixed calendar grid) gives early
+(2001--2004, n=2,556), mid (2006--2009, n=1,634), and late (2010--2023,
+n=1,551) -- an uneven split by point count (a handful of large early
+reference works dominate "early"), flagged as a limitation below, not
+hidden. Pairwise period-centroid cosine similarities stay high (0.91--0.96)
+-- the three periods' average positions are not dramatically different
+from each other. Most notably: the single nearest MIVILUDES criterion to
+each period's own centroid is \textbf{the same criterion in all three
+periods} -- \emph{Le changement radical de comportement} ("radical
+behaviour change") -- with distance ranging only 29.07--29.58 across the
+2001--2023 span. On this specific measure, literature's closest
+alignment to MIVILUDES's official framework has not shifted detectably
+over more than two decades.
+
+% ============================================================
 \section{Honesty notes -- what these numbers do not show}
 \label{sec:honesty}
 % ============================================================
@@ -614,19 +921,47 @@ worth looking at:
   \texttt{shared\_all\_3} if each corpus happens to use a different-language
   form. The 3 \texttt{shared\_all\_3} entities found are a floor, not a ceiling.
   \item \textbf{MIVILUDES is still two documents}, 108 expressions.
-  \item \textbf{The interview sample is a convenience sample}, 64
-  expressions across 26 people.
+  \item \textbf{The interview sample is a convenience sample}, 63 pooled
+  expressions (64 extracted, 1 manually excluded -- "Sept?," below)
+  across 26 people.
   \item \textbf{\texttt{response\_rank} is still not usable} as a
   "first thing they thought of" signal.
-  \item \textbf{One point ("Sept?") carries no propositional content}
-  despite passing every automated check -- 1/11,378, negligible scale,
-  real case.
+  \item \textbf{One point ("Sept?") passed every automated check despite
+  carrying no propositional content} -- manually excluded this run
+  (Section~\ref{sec:spotcheck}); was 1/11,378, negligible scale either
+  way, but a real, documented case of automated checks not catching
+  everything.
   \item \textbf{Equal-size-controlled comparisons control for pool size
   only.}
-  \item \textbf{2-D pictures are a reading aid, not evidence.}
+  \item \textbf{2-D pictures are a reading aid, not evidence} -- and this
+  run found a concrete case of that mattering: Section~\ref{sec:voronoi}'s
+  criteria-seeded and corpus-centroid-seeded Voronoi diagrams failed to
+  render usefully, purely as an artefact of projecting out-of-sample
+  points into an already-fitted UMAP manifold, with no bearing on the
+  underlying high-dimensional retrieval this document relies on elsewhere.
   \item \textbf{Typicality/borderline scores are purely geometric}, not
   a claim about cognitive prototypicality or real-world category
-  membership.
+  membership -- the same applies to Section~\ref{sec:topology}'s
+  cluster/centrality scores.
+  \item \textbf{HDBSCAN leaves most entities (68\%, 514/753) as "noise"}
+  at the threshold used (min\_cluster\_size=3) -- expected for a
+  heterogeneous set of named things, not evidence those entities are
+  unimportant, but a real limit on how much of the entity layer the
+  cluster-based analyses (Section~\ref{sec:topology}'s summary table,
+  the cluster-centroid-seeded Voronoi diagram) actually speak to.
+  \item \textbf{One cluster ("california; los angeles; san francisco")
+  looks like a co-occurrence artefact}, not a meaningful "cult entity"
+  grouping -- reported as a likely artefact in Section~\ref{sec:topology}
+  rather than smoothed over.
+  \item \textbf{The publication-year terciles are size-imbalanced}
+  (2,556/1,634/1,551 points) by construction of splitting on the actual
+  year distribution rather than a fixed calendar grid -- the "early"
+  period is dominated by a handful of large early reference works, not an
+  equal sample of early-period scholarship.
+  \item \textbf{The year/distance correlation is real but very weak}
+  ($\rho=-0.064$): statistically significant at n=5,741, but publication
+  year explains almost none of the actual variation -- reported as "a
+  detectable but small effect," not "years matter a lot."
 \end{itemize}
 
 % ============================================================
@@ -694,6 +1029,64 @@ discourse" pattern -- the count says these entities are
 interviews.
 \end{interpbox}
 
+\begin{interpbox}[On generic vocabulary sitting central, specific groups sitting peripheral]
+Section~\ref{sec:topology}'s most-central entity clusters are generic,
+often multilingual core terms for the topic itself (sect/secte/sekte,
+"new religious movement"); the most peripheral are highly specific named
+groups (the Clapham Sect, the Moonies, Jehovah's Witnesses in four
+languages). One reading: this mirrors exactly the same pattern
+Section~\ref{sec:results}'s typicality analysis already found for
+ordinary \emph{expressions} (generic statements sit near a corpus's
+centroid, named specifics sit at the edge) -- suggesting it is a general
+property of how this embedding space organizes "generic descriptive
+language" versus "a specific proper noun," not something particular to
+entities. \textbf{Why this might be incomplete}: a generic term's
+centrality could also partly reflect that MANY different corpus passages
+independently produced very similar entity strings for it (e.g.\
+"secte"/"sects"/"sekte" are near-synonyms across languages, pulling their
+shared region toward the centre by sheer repetition), which is a
+different mechanism from "genuinely more prototypical" -- this run's
+data does not distinguish the two explanations from each other.
+\end{interpbox}
+
+\begin{interpbox}[On the Voronoi comparison's own methodological lesson]
+Only the cluster-centroid-seeded strategy worked as a 2-D picture; the
+externally-imposed criteria and corpus-centroid seeds did not. One
+reading: this is itself a small, generalizable methodological point worth
+carrying into other parts of the analysis toolkit -- any time this
+project projects an "external" reference point (a criterion, a centroid,
+a prototype) into a 2-D layout it was not part of fitting, the same
+compression risk applies, and should be checked for, not assumed away.
+Several existing focused-projection figures elsewhere in this toolkit
+already do exactly this (overlaying criteria/centroids on a UMAP fit to
+something else) and may be silently affected without this specific
+failure mode having been checked for them. \textbf{Why this might
+overstate the point}: several of those existing figures fit UMAP on a
+population that already INCLUDES the criteria/centroids as members
+(rather than fitting on entities-only and transforming criteria in
+afterward, as this module does) -- which sidesteps the specific
+out-of-sample mechanism identified here -- so this concern needs
+checking on a per-figure basis, not assumed to generalize.
+\end{interpbox}
+
+\begin{interpbox}[On the flat publication-year finding]
+The nearest MIVILUDES criterion to literature's own centroid is
+identical across all three publication-year periods, and the
+year/distance correlation is real but weak. One reading: this is mild
+evidence against a "the academic conversation about cults has
+fundamentally reoriented since 2001" narrative, at least along this
+specific geometric measure -- the topic's centre of gravity, relative to
+MIVILUDES's own framework, looks similar in 2001--2004 and 2010--2023.
+\textbf{Why this might be wrong, or at least incomplete}: this is a
+single aggregate measure (whole-corpus centroid position) that could
+easily mask real, opposing shifts in different sub-literatures (e.g.\ a
+genuine rise in discussion of digital/online radicalization, offset by a
+genuine decline in discussion of 1970s-80s "classic" NRMs, netting out to
+a similar overall centroid) -- distinguishing "nothing changed" from
+"several things changed and cancelled out in aggregate" would need a
+finer-grained, topic-level analysis this run does not attempt.
+\end{interpbox}
+
 % ============================================================
 \section{Using this document to write the Results chapter}
 % ============================================================
@@ -704,9 +1097,18 @@ relevant fact -- how a bug in a two-field extraction schema silently
 discarded most named-entity signal, and what three independent,
 data-checked fixes (casing filter, a filter bug, a corpus-derived
 stop-list) it took to recover it, is exactly the kind of thing a
-Methods chapter should be candid about. Section~\ref{sec:interpretation}
-remains a first, provisional pass, kept structurally separate from
-descriptive fact throughout, offered as a starting point for argument,
-not a finished answer.
+Methods chapter should be candid about. Sections~\ref{sec:topology}--\ref{sec:pubdate}
+are new this run, built at the researcher's request to see whether a
+spatial/topological reading of the entity layer, several different
+ways of partitioning it, and a publication-date check would surface
+anything the earlier, purely tabular analyses did not -- the honest
+answer is "partially": the entity-cluster and gap analyses produced
+real, checkable structure, one of three Voronoi strategies worked as a
+picture (and the other two's failure is itself informative,
+Section~\ref{sec:voronoi}), and the publication-date check came back
+mostly flat. Section~\ref{sec:interpretation} remains a first,
+provisional pass, kept structurally separate from descriptive fact
+throughout, offered as a starting point for argument, not a finished
+answer.
 
 \end{document}

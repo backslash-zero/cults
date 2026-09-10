@@ -177,6 +177,30 @@ STRUCTURAL_CONCEPTS_PATH = CORPUS_DIR / "dictionaries" / "structural_concepts_em
 # Windows/Ollama machine (see filter_conceptnet_concepts.py's docstring
 # for the exact command). Only the 195 rows kept on review are embedded.
 CONCEPTNET_CONCEPTS_PATH = CORPUS_DIR / "dictionaries" / "conceptnet_concepts_embedded.jsonl"
+
+# Manual, explicitly-logged exclusions at POOLING time -- never applied by
+# editing a source archive (this codebase's "never modify the source, only
+# write new files" convention holds for these too). Keyed by
+# "document_id:chunk_index" (v2's own pooled_key format), same set applies
+# regardless of which corpus/run-tag is being pooled. Add a new entry only
+# for a specific, individually-verified case; this is not a general noise
+# filter.
+#
+# "b3-aug23-1213:0" ("Sept?"): interview b3-aug23-1213, chunk 0. A 97-year-old
+# French participant asked "Quand je te dis le mot secte a quoi tu penses?"
+# ("When I say the word 'secte' [cult], what do you think of?") answered
+# "Sept?" ("seven?") -- verified via the full context_window
+# (processed/audits/v2_spotcheck_20260909.md) to be almost certainly a
+# mishearing of "secte" as "sept", not a substantive response. It passed
+# every automated quality check (judge model scored it faithful/
+# self-contained/cult-relevant/atomic, correctly noting it IS a genuine
+# transcript quote) precisely because the check for "is this attributed
+# correctly and quoted verbatim" cannot detect "this string carries no
+# propositional content about cults". Excluded on the researcher's explicit
+# instruction after manual review, not by an automated rule.
+MANUALLY_EXCLUDED_POOLED_KEYS = {
+    "b3-aug23-1213:0",
+}
 # Produced by translate_miviludes_expressions.py on the Ollama machine (see
 # thesis_corpus/README.md) -- translates MIVILUDES's own expressions to
 # English so they're embedded on the same footing as the English-only
@@ -447,13 +471,16 @@ def load_corpus_points_v2(
     screen_v2.py's S7 -- "Tomato cult!" is 2 words but meaningful); v2 call
     sites are expected to pass 0 so this never double-filters.
 
-    Returns (points, removal_counts) -- same {"duplicates", "short_fragments"}
-    shape as load_corpus_points for uniform logging; "duplicates" is
-    always 0 here."""
+    Returns (points, removal_counts) -- {"duplicates", "short_fragments",
+    "manually_excluded"}; "duplicates" is always 0 here.
+    `MANUALLY_EXCLUDED_POOLED_KEYS` (see its own docstring above) is
+    applied here too, at pooling time -- the source archive itself is
+    never edited."""
     points = []
     response_rank_by_document: dict[str, int] = defaultdict(int)
     for_interviews = corpus_name == "interviews"
     short_fragments_removed = 0
+    manually_excluded = 0
     with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
@@ -468,6 +495,10 @@ def load_corpus_points_v2(
             if for_interviews:
                 response_rank_by_document[document_id] += 1
                 response_rank = response_rank_by_document[document_id]
+
+            if key in MANUALLY_EXCLUDED_POOLED_KEYS:
+                manually_excluded += 1
+                continue
 
             if len(text.split()) < min_expression_words:
                 short_fragments_removed += 1
@@ -485,7 +516,7 @@ def load_corpus_points_v2(
                 "response_rank": response_rank,
                 "vector": item["embedding_vector"],
             })
-    return points, {"duplicates": 0, "short_fragments": short_fragments_removed}
+    return points, {"duplicates": 0, "short_fragments": short_fragments_removed, "manually_excluded": manually_excluded}
 
 
 def load_miviludes_points_v2(
@@ -1014,12 +1045,17 @@ def main() -> None:
         removed[corpus_name] = removal_counts
         points.extend(new_points)
 
-    logger.info("Filtered during pooling (duplicates / short fragments, per corpus): %s", removed)
+    logger.info("Filtered during pooling (duplicates / short fragments / manual exclusions, per corpus): %s", removed)
     total_duplicates = sum(r["duplicates"] for r in removed.values())
     total_short = sum(r["short_fragments"] for r in removed.values())
+    # v1's load_corpus_points doesn't have manual exclusions (no known cases
+    # there yet) and so doesn't return this key -- .get(..., 0) keeps this
+    # summary safe for both v1 and v2 runs rather than assuming the key exists.
+    total_manually_excluded = sum(r.get("manually_excluded", 0) for r in removed.values())
     print(f"\nFiltered during pooling: {total_duplicates} exact-duplicate expressions removed "
           f"(per document, keeping first occurrence), {total_short} short fragments removed "
-          f"(under {args.min_expression_words} words). Per corpus: {removed}")
+          f"(under {args.min_expression_words} words), {total_manually_excluded} manually excluded "
+          f"(see MANUALLY_EXCLUDED_POOLED_KEYS). Per corpus: {removed}")
 
     if not MIVILUDES_CRITERIA_PATH.exists():
         raise SystemExit(f"Missing: {MIVILUDES_CRITERIA_PATH}")
