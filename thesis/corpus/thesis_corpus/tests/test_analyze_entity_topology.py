@@ -161,5 +161,44 @@ class TestClusterCentroidNearestRows(unittest.TestCase):
         self.assertEqual(len({r["cluster_id"] for r in rows}), 1)
 
 
+class TestClusterCorpusCoverageRows(unittest.TestCase):
+    def test_flags_corpus_absent_from_a_cluster(self):
+        points = [
+            _point("k1", "Scientology", mention_distribution={"literature": 5, "miviludes": 0, "interviews": 2}),
+            _point("k2", "Heaven's Gate", mention_distribution={"literature": 3, "miviludes": 0, "interviews": 0}),
+            _point("k3", "Jonestown", mention_distribution={"literature": 4, "miviludes": 1, "interviews": 0}),
+        ]
+        labels = np.array([0, 0, 1])  # k1/k2 in cluster 0, k3 alone in cluster 1
+        rows = aet.cluster_corpus_coverage_rows(points, labels, ("literature", "miviludes", "interviews"))
+        by_cluster = {r["cluster_id"]: r for r in rows}
+
+        # Cluster 0: literature covers both members, interviews covers only
+        # k1, miviludes covers neither -> miviludes_absent should be True.
+        self.assertEqual(by_cluster[0]["literature_member_count"], 2)
+        self.assertEqual(by_cluster[0]["interviews_member_count"], 1)
+        self.assertEqual(by_cluster[0]["miviludes_member_count"], 0)
+        self.assertTrue(by_cluster[0]["miviludes_absent"])
+        self.assertFalse(by_cluster[0]["literature_absent"])
+        self.assertFalse(by_cluster[0]["interviews_absent"])
+
+        # Cluster 1: only k3, literature+miviludes present, interviews absent.
+        self.assertTrue(by_cluster[1]["interviews_absent"])
+        self.assertFalse(by_cluster[1]["literature_absent"])
+        self.assertFalse(by_cluster[1]["miviludes_absent"])
+
+    def test_noise_points_excluded(self):
+        points = [_point("k1", "e1", mention_distribution={"literature": 1}), _point("k2", "e2", mention_distribution={"literature": 1})]
+        labels = np.array([-1, -1])
+        rows = aet.cluster_corpus_coverage_rows(points, labels, ("literature",))
+        self.assertEqual(rows, [])
+
+    def test_missing_mention_distribution_treated_as_zero(self):
+        points = [_point("k1", "e1")]  # no mention_distribution key at all
+        labels = np.array([0])
+        rows = aet.cluster_corpus_coverage_rows(points, labels, ("literature", "interviews"))
+        self.assertTrue(rows[0]["literature_absent"])
+        self.assertTrue(rows[0]["interviews_absent"])
+
+
 if __name__ == "__main__":
     unittest.main()

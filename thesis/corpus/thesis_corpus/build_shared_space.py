@@ -296,29 +296,56 @@ _AUTHOR_NAME_SPLIT_RE = re.compile(r";| and ")
 _AUTHOR_ED_SUFFIX_RE = re.compile(r"\s*\(eds?\.?\)\s*$", re.IGNORECASE)
 
 
+def _extract_surname(author_name: str) -> str:
+    """metadata/literature.csv's `authors` column mixes two formats,
+    checked directly against the actual file rather than assumed: 10 of
+    68 rows use "Surname, First Name(s)" (comma-separated, surname
+    first), but 58 of 68 use plain "First Middle Last" with NO comma at
+    all (e.g. "Susan J. Palmer") -- a real bug, found and fixed here,
+    where the original comma-only extraction (`part.split(",")[0]`)
+    silently returned the ENTIRE name ("susan j. palmer") for every
+    no-comma row instead of the bare surname ("palmer"), so the
+    resulting stop-list never matched a real in-text citation's bare
+    surname for the large majority of authors -- caught only because
+    analyze_cross_corpus_gaps.py's independent per-corpus clustering
+    surfaced "palmer; turner; weber" as a real cluster of cited-author
+    surnames that should have been filtered out. If a comma is present,
+    everything before the first one is taken as-is (already correct for
+    that format); otherwise the LAST whitespace-separated token is taken
+    as the surname, which correctly handles a middle initial or middle
+    name ("James T. Richardson" -> "Richardson") and keeps a hyphenated
+    compound surname intact as one token ("Danièle Hervieu-Léger" ->
+    "Hervieu-Léger", since a hyphen is not a whitespace boundary)."""
+    if "," in author_name:
+        return author_name.split(",")[0].strip()
+    tokens = author_name.split()
+    return tokens[-1] if tokens else ""
+
+
 def load_cited_author_surnames(metadata_path: Path = LITERATURE_METADATA_PATH) -> set[str]:
     """Surnames of the literature corpus's OWN 57 source documents' authors
-    (metadata/literature.csv's `authors` column, "Surname, First Name(s)"
-    per author, multiple authors split on ";"/" and "), normalized the same
-    way as entity anchors. Checked directly against real candidate-entity
-    counts: bare author surnames from in-text citations (e.g. "(Richardson
-    1985)") were among the single highest-mention "entities" in the whole
-    pool -- "richardson" alone had 47 mentions, more than most genuine
-    named cult groups -- precisely because this is a small, tightly
-    self-citing field where these 57 authors' names recur constantly
-    across each other's work. A frequency threshold alone cannot separate
-    that from a genuinely important, frequently-discussed group, since
-    both patterns look identical: a capitalized word mentioned often.
+    (metadata/literature.csv's `authors` column, multiple authors per row
+    split on ";"/" and ", each parsed by _extract_surname above),
+    normalized the same way as entity anchors. Checked directly against
+    real candidate-entity counts: bare author surnames from in-text
+    citations (e.g. "(Richardson 1985)") were among the single highest-
+    mention "entities" in the whole pool -- "richardson" alone had 47
+    mentions, more than most genuine named cult groups -- precisely
+    because this is a small, tightly self-citing field where these 57
+    authors' names recur constantly across each other's work. A
+    frequency threshold alone cannot separate that from a genuinely
+    important, frequently-discussed group, since both patterns look
+    identical: a capitalized word mentioned often.
 
     This is a real fix for self-citation within THIS corpus's own author
     list, not a general citation detector -- externally-cited classical
     theorists who are not themselves corpus authors (checked directly:
-    "weber", "freud", "wallis" all still pass with real mention counts)
-    are a separate, NOT-yet-fixed source of the same problem, flagged in
-    ANALYSIS_OVERVIEW.md's Known Limitations rather than silently
-    swallowed here -- building a general in-text citation detector would
-    need access to the raw chunk text domain_terms mentions don't carry,
-    a larger undertaking than this targeted, data-derived fix."""
+    "weber", "freud" still pass with real mention counts) remain a
+    separate, NOT-yet-fixed source of the same problem, documented as
+    such rather than silently swallowed here -- building a general
+    in-text citation detector would need access to the raw chunk text
+    domain_terms mentions don't carry, a larger undertaking than this
+    targeted, data-derived fix."""
     if not metadata_path.exists():
         return set()
     surnames: set[str] = set()
@@ -329,7 +356,7 @@ def load_cited_author_surnames(metadata_path: Path = LITERATURE_METADATA_PATH) -
                 part = _AUTHOR_ED_SUFFIX_RE.sub("", part.strip()).strip()
                 if not part:
                     continue
-                surname = part.split(",")[0].strip()
+                surname = _extract_surname(part)
                 if surname:
                     surnames.add(normalize_anchor(surname))
     return surnames
@@ -860,6 +887,20 @@ def load_emergent_entities(
     overwhelmingly mentioned in one corpus can be told apart from one
     mentioned evenly across all three.
 
+    Each point also carries `epistemic_status_distribution`: a count of
+    how many of its mentions came from an expression tagged
+    asserted/negated/speculative/contested/qualified -- entities were
+    previously pooled with NO regard to epistemic status at all, so a
+    name mentioned only to be denied ("X is NOT a cult") and one asserted
+    outright were indistinguishable at the entity level; this recovers
+    that distinction without changing which entities qualify or how they
+    rank. Only entity_anchors-sourced mentions carry a real per-mention
+    epistemic_status (read from that mention's own parent expression);
+    domain_terms is chunk-level and has no expression-level stance
+    concept at all, so every domain_terms-sourced mention falls into an
+    explicit "unknown" bucket rather than being guessed at or silently
+    folded into "asserted".
+
     `min_mentions_by_corpus` (`{corpus: threshold}`) is deliberately PER
     CORPUS rather than one global number applied to the cross-corpus sum:
     literature is large and citation-heavy (a name mentioned a handful of
@@ -892,6 +933,7 @@ def load_emergent_entities(
     cited_author_surnames = cited_author_surnames or set()
     vector_by_anchor: dict[str, list[float]] = {}
     mentions_by_corpus: dict[str, Counter[str]] = defaultdict(Counter)
+    epistemic_counts_by_anchor: dict[str, Counter[str]] = defaultdict(Counter)
 
     for corpus_name, path in archive_paths.items():
         with open(path, encoding="utf-8") as f:
@@ -900,6 +942,7 @@ def load_emergent_entities(
                 if not line:
                     continue
                 item = json.loads(line)
+                epistemic_status = item.get("epistemic_status") or "unknown"
                 raw_vectors = item.get("entity_anchor_vectors") or {}
                 for raw_anchor, vector in raw_vectors.items():
                     if not looks_like_named_entity(raw_anchor):
@@ -908,6 +951,7 @@ def load_emergent_entities(
                     if not key or key in cited_author_surnames:
                         continue
                     mentions_by_corpus[corpus_name][key] += 1
+                    epistemic_counts_by_anchor[key][epistemic_status] += 1
                     vector_by_anchor.setdefault(key, vector)
 
     if domain_term_paths:
@@ -920,6 +964,10 @@ def load_emergent_entities(
                 if not key or key in cited_author_surnames:
                     continue
                 mentions_by_corpus[corpus_name][key] += count
+                # domain_terms is chunk-level -- no per-mention expression
+                # to read an epistemic_status from, so this contribution
+                # is explicit "unknown", never guessed as "asserted".
+                epistemic_counts_by_anchor[key]["unknown"] += count
                 vector_by_anchor.setdefault(key, domain_vectors[raw_term])
 
     total_mentions: Counter[str] = Counter()
@@ -950,9 +998,39 @@ def load_emergent_entities(
             "key": anchor,
             "label": anchor,
             "mention_distribution": distribution_for(anchor),
+            "epistemic_status_distribution": dict(epistemic_counts_by_anchor[anchor]),
             "vector": vector_by_anchor[anchor],
         })
     return points
+
+
+def serialize_point_for_output(point: dict, coord: np.ndarray) -> dict:
+    """The exact, explicit field allowlist written to embedding_space.jsonl
+    for one point -- deliberately explicit rather than dumping `point`
+    as-is, so every pooling function's internal working fields (e.g.
+    load_corpus_points_v2's response_rank_by_document bookkeeping) never
+    leak into the shared space by accident. This is also, precisely
+    because it's explicit, the one place a newly-added point field (e.g.
+    epistemic_status_distribution, added after mention_distribution) can
+    be forgotten and silently dropped -- caught once already this way;
+    factored out into its own function specifically so a unit test can
+    catch it again for any future field, rather than relying on a human
+    remembering to update this list every time a loader gains a new key."""
+    return {
+        "source_dataset": point["source_dataset"],
+        "point_role": point["point_role"],
+        "key": point["key"],
+        "label": point["label"],
+        "label_en": point.get("label_en"),
+        "label_fr": point.get("label_fr"),
+        "attribution": point.get("attribution"),
+        "claim_mode": point.get("claim_mode"),
+        "epistemic_status": point.get("epistemic_status"),
+        "response_rank": point.get("response_rank"),
+        "mention_distribution": point.get("mention_distribution"),
+        "epistemic_status_distribution": point.get("epistemic_status_distribution"),
+        "shared_space_vector": coord.tolist(),
+    }
 
 
 def sanity_checks(points: list[dict], coords: np.ndarray) -> None:
@@ -1170,21 +1248,7 @@ def main() -> None:
     logger.info("Writing %s ...", output_path)
     with open(output_path, "w", encoding="utf-8") as f:
         for p, coord in zip(points, shared_coords):
-            out = {
-                "source_dataset": p["source_dataset"],
-                "point_role": p["point_role"],
-                "key": p["key"],
-                "label": p["label"],
-                "label_en": p.get("label_en"),
-                "label_fr": p.get("label_fr"),
-                "attribution": p.get("attribution"),
-                "claim_mode": p.get("claim_mode"),
-                "epistemic_status": p.get("epistemic_status"),
-                "response_rank": p.get("response_rank"),
-                "mention_distribution": p.get("mention_distribution"),
-                "shared_space_vector": coord.tolist(),
-            }
-            f.write(json.dumps(out, ensure_ascii=False) + "\n")
+            f.write(json.dumps(serialize_point_for_output(p, coord), ensure_ascii=False) + "\n")
 
     sanity_checks(points, shared_coords)
 

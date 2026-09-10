@@ -46,6 +46,12 @@ processed/shared_space_v2/interview_prototypes.jsonl
 processed/analysis/
 processed/analysis_v2/
 
+# qa_interview_entity_trace.py's own output -- a QA aid, not a thesis
+# deliverable, and its CSV/PDF embed verbatim participant interview text
+# (same reasoning as criterion_expressions*.jsonl above), so it stays out
+# of git same as the raw interview archive it's traced from.
+processed/qa/
+
 # MIVILUDES source PDFs — same reasoning as litterature with pdfs/ above
 MIVILUDES/**/*.pdf
 

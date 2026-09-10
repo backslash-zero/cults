@@ -149,6 +149,41 @@ def cluster_summary_rows(points: list[dict], vectors: np.ndarray, labels: np.nda
     return rows
 
 
+def cluster_corpus_coverage_rows(points: list[dict], labels: np.ndarray, corpora: tuple[str, ...]) -> list[dict]:
+    """Lightweight cross-corpus coverage check on the EXISTING unified
+    clusters above -- reuses each entity's own already-computed
+    mention_distribution (build_shared_space.py's load_emergent_entities),
+    no new clustering. For each cluster, per corpus: how many of its
+    member entities that corpus mentions at all (mention_distribution
+    strictly > 0), and whether the corpus has zero presence in the
+    cluster at all -- a candidate "this region has no corpus X presence"
+    finding, cheap because it reuses data already on disk.
+
+    This only sees EXACT entity overlap: if literature and interviews
+    each discuss the SAME normalized entity, that entity's own
+    mention_distribution already reflects both, and a cluster containing
+    it reads as covered by both. It does NOT catch a corpus discussing a
+    geometrically nearby but lexically different entity (e.g.
+    literature's "Peoples Temple" vs. an interview's "Jonestown") -- that
+    broader, proximity-based question is what
+    analyze_cross_corpus_gaps.py's separate, per-corpus clustering
+    answers instead; the two are deliberately not merged into one
+    output."""
+    rows = []
+    for cluster_id in sorted(set(labels) - {-1}):
+        member_idxs = [i for i, label in enumerate(labels) if label == cluster_id]
+        row: dict = {"cluster_id": int(cluster_id), "size": len(member_idxs)}
+        for corpus in corpora:
+            covered = sum(
+                1 for i in member_idxs
+                if (points[i].get("mention_distribution") or {}).get(corpus, 0) > 0
+            )
+            row[f"{corpus}_member_count"] = covered
+            row[f"{corpus}_absent"] = covered == 0
+        rows.append(row)
+    return rows
+
+
 def cluster_centroid_nearest_rows(
     points: list[dict], vectors: np.ndarray, labels: np.ndarray,
     candidate_points: list[dict], candidate_vectors: np.ndarray,
@@ -234,6 +269,15 @@ def main() -> None:
 
         summary_rows = cluster_summary_rows(entity_points, entity_vectors, labels, centroid)
         gac.write_csv(out_dir / "cluster_summary.csv", summary_rows)
+
+        logger.info("Cross-corpus coverage per cluster (lightweight, reuses existing mention_distribution)...")
+        coverage_rows = cluster_corpus_coverage_rows(entity_points, labels, gac.EXPRESSION_CORPORA)
+        gac.write_csv(out_dir / "cluster_corpus_coverage.csv", coverage_rows)
+        absent_counts = {
+            corpus: sum(1 for r in coverage_rows if r[f"{corpus}_absent"])
+            for corpus in gac.EXPRESSION_CORPORA
+        }
+        logger.info("Clusters with zero presence, per corpus: %s (of %d clusters)", absent_counts, len(coverage_rows))
 
         logger.info("Nearest expressions/entities per cluster centroid (top-%d largest clusters)...",
                     TOP_N_CLUSTERS_FOR_RETRIEVAL)
