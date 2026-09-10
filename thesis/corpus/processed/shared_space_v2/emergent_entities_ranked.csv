@@ -1,0 +1,754 @@
+rank,entity,total_mentions,literature,miviludes,interviews
+1,nrms,685,685,0,0
+2,scientology,299,296,0,3
+3,new age,270,259,9,2
+4,heaven's gate,268,268,0,0
+5,unification church,250,250,0,0
+6,jehovah's witnesses,211,208,0,3
+7,new religious movements,195,195,0,0
+8,branch davidians,159,159,0,0
+9,jonestown,156,156,0,0
+10,solar temple,136,136,0,0
+11,church of scientology,133,132,0,1
+12,peoples temple,129,129,0,0
+13,nrm,126,126,0,0
+14,iskcon,123,122,1,0
+15,children of god,118,116,0,2
+16,new age movement,110,110,0,0
+17,theosophy,109,109,0,0
+18,aum shinrikyo,103,103,0,0
+19,dwp,99,99,0,0
+20,satanism,95,95,0,0
+21,buddhism,94,94,0,0
+22,the family,92,92,0,0
+23,hare krishna,91,90,1,0
+24,wicca,89,89,0,0
+25,christianity,89,89,0,0
+26,waco,89,89,0,0
+27,soka gakkai,86,86,0,0
+28,wilberforce,82,82,0,0
+29,osho,80,79,0,1
+30,transcendental meditation,75,75,0,0
+31,mormons,75,73,0,2
+32,sufi,73,73,0,0
+33,applewhite,73,73,0,0
+34,christian,70,69,0,1
+35,christian science,68,68,0,0
+36,islam,67,67,0,0
+37,david koresh,67,67,0,0
+38,falun gong,66,66,0,0
+39,united states,63,63,0,0
+40,next level,62,62,0,0
+41,acm,61,60,1,0
+42,miviludes,61,7,54,0
+43,theosophical society,60,60,0,0
+44,l. ron hubbard,60,59,1,0
+45,jim jones,60,60,0,0
+46,brahma kumaris,59,59,0,0
+47,moonies,57,56,0,1
+48,internet,56,53,3,0
+49,rajneesh,56,56,0,0
+50,buddhist,52,52,0,0
+51,clapham sect,52,52,0,0
+52,jesus,51,51,0,0
+53,nettles,51,51,0,0
+54,international society for krishna consciousness,50,50,0,0
+55,the unification church,50,50,0,0
+56,church of satan,49,49,0,0
+57,church universal and triumphant,49,49,0,0
+58,lifton,49,49,0,0
+59,new thought,49,49,0,0
+60,dixon,49,49,0,0
+61,dianetics,48,48,0,0
+62,bible,48,47,1,0
+63,spiritualism,47,47,0,0
+64,new york,47,47,0,0
+65,richardson,47,47,0,0
+66,sufism,46,46,0,0
+67,divine light mission,45,45,0,0
+68,cult awareness network,45,45,0,0
+69,fbi,45,45,0,0
+70,holy spirit,45,45,0,0
+71,aum shinrikyˆ o,45,45,0,0
+72,rajneeshpuram,42,42,0,0
+73,france,41,41,0,0
+74,church,41,41,0,0
+75,can,41,41,0,0
+76,the family international,41,41,0,0
+77,cults,40,40,0,0
+78,new religions,40,40,0,0
+79,branch davidian,40,40,0,0
+80,london,39,39,0,0
+81,satan,39,38,0,1
+82,do,39,39,0,0
+83,nation of islam,39,39,0,0
+84,earth first!,39,39,0,0
+85,paganism,38,38,0,0
+86,roman catholic church,37,37,0,0
+87,catholic church,37,35,0,2
+88,elohim,37,36,1,0
+89,aum,37,37,0,0
+90,god,37,37,0,0
+91,neo-paganism,37,37,0,0
+92,california,37,37,0,0
+93,hindu,36,36,0,0
+94,jews,36,35,0,1
+95,christ,36,36,0,0
+96,hinduism,36,36,0,0
+97,shakers,35,35,0,0
+98,singer,35,35,0,0
+99,bromley,35,35,0,0
+100,japan,35,35,0,0
+101,new religious movements (nrms),35,35,0,0
+102,germany,35,35,0,0
+103,pentecostal,34,34,0,0
+104,eckankar,34,34,0,0
+105,barker,34,34,0,0
+106,gurdjieff,33,32,1,0
+107,sun myung moon,33,33,0,0
+108,ti,33,33,0,0
+109,american family foundation,33,33,0,0
+110,nichiren shoshu,33,33,0,0
+111,wiccan,32,32,0,0
+112,starhawk,31,31,0,0
+113,the church of scientology,31,31,0,0
+114,ots,31,31,0,0
+115,sathya sai baba,31,31,0,0
+116,thornton,31,31,0,0
+117,cesnur,30,30,0,0
+118,ascended masters,30,30,0,0
+119,mormonism,30,30,0,0
+120,christian identity,30,30,0,0
+121,sierra leone,30,30,0,0
+122,alice bailey,29,29,0,0
+123,pagan,29,29,0,0
+124,krishna consciousness,29,29,0,0
+125,great white brotherhood,29,29,0,0
+126,armageddon,29,29,0,0
+127,theosophical,29,29,0,0
+128,sea org,29,29,0,0
+129,worldwide church of god,28,28,0,0
+130,anthony,28,28,0,0
+131,damanhur,28,28,0,0
+132,temple of set,28,28,0,0
+133,zen,28,28,0,0
+134,first amendment,28,28,0,0
+135,sahaja yoga,28,28,0,0
+136,anthroposophy,28,28,0,0
+137,new religious movement,28,28,0,0
+138,clapham,28,28,0,0
+139,wiccans,27,27,0,0
+140,zablocki,27,27,0,0
+141,raelians,27,27,0,0
+142,order of the solar temple,27,27,0,0
+143,ku klux klan,27,24,0,3
+144,pentecostalism,26,26,0,0
+145,aetherius society,26,26,0,0
+146,maharishi mahesh yogi,26,26,0,0
+147,hare krishna movement,26,26,0,0
+148,russia,26,26,0,0
+149,brainwashing,26,26,0,0
+150,human potential movement,26,26,0,0
+151,buddha,26,26,0,0
+152,catholic,26,25,0,1
+153,davidians,26,26,0,0
+154,ufos,25,25,0,0
+155,church of all worlds,25,25,0,0
+156,tm,25,25,0,0
+157,scientologists,25,25,0,0
+158,charles manson,25,22,0,3
+159,jesus movement,25,25,0,0
+160,hare krishnas,25,24,0,1
+161,arcane school,25,25,0,0
+162,anti-cult movement,25,25,0,0
+163,nova religio,24,24,0,0
+164,canada,24,23,1,0
+165,schein,24,24,0,0
+166,rudolf steiner,24,23,1,0
+167,hubbard,24,24,0,0
+168,osama bin laden,24,24,0,0
+169,di mambro,24,24,0,0
+170,rajneesh movement,24,24,0,0
+171,macaulay,24,24,0,0
+172,europe,23,22,1,0
+173,tenrikyo,23,23,0,0
+174,stark,23,23,0,0
+175,manson family,23,22,0,1
+176,belgium,23,23,0,0
+177,cff,23,23,0,0
+178,family,23,23,0,0
+179,judaism,23,23,0,0
+180,mormon,23,23,0,0
+181,quakers,23,23,0,0
+182,second vatican council,23,23,0,0
+183,joseph smith,23,23,0,0
+184,jewish,23,23,0,0
+185,koresh,22,22,0,0
+186,witchcraft,22,22,0,0
+187,satanists,22,21,0,1
+188,millennialism,22,22,0,0
+189,church of jesus christ of latter-day saints,22,21,0,1
+190,david berg,22,22,0,0
+191,ufo religions,21,21,0,0
+192,china,21,21,0,0
+193,religion,21,21,0,0
+194,robbins,21,21,0,0
+195,seventh-day adventists,21,21,0,0
+196,findhorn,21,21,0,0
+197,osho movement,21,21,0,0
+198,aleister crowley,21,21,0,0
+199,assemblies of god,21,21,0,0
+200,evangelical christianity,20,20,0,0
+201,catholicism,20,20,0,0
+202,weber,20,20,0,0
+203,cultic studies journal,20,20,0,0
+204,inform,20,20,0,0
+205,cia,20,19,0,1
+206,los angeles,20,20,0,0
+207,atlantis,20,20,0,0
+208,trinity,20,20,0,0
+209,goddess,20,20,0,0
+210,opus dei,20,20,0,0
+211,asahara,20,20,0,0
+212,cags,20,20,0,0
+213,elan vital,20,20,0,0
+214,muhammad,20,20,0,0
+215,qur'an,20,20,0,0
+216,umbanda,20,20,0,0
+217,brazil,20,20,0,0
+218,aum shinriky ō,20,20,0,0
+219,u.s.,19,19,0,0
+220,latter-day saints,19,19,0,0
+221,giddens,19,19,0,0
+222,max weber,19,19,0,0
+223,shinto,19,19,0,0
+224,hermetic order of the golden dawn,19,19,0,0
+225,australia,19,19,0,0
+226,satanic,19,19,0,0
+227,taliban,19,19,0,0
+228,gerald gardner,19,19,0,0
+229,glastonbury,19,19,0,0
+230,batf,19,19,0,0
+231,the children of god,19,19,0,0
+232,moses,19,19,0,0
+233,the two,19,19,0,0
+234,taoism,19,19,0,0
+235,guyana,19,19,0,0
+236,democratic workers party,19,19,0,0
+237,friends of the western buddhist order,19,19,0,0
+238,soka gakkai international,19,19,0,0
+239,toronto blessing,19,19,0,0
+240,dion fortune,19,19,0,0
+241,mungiki,19,19,0,0
+242,party,19,19,0,0
+243,sects,18,18,0,0
+244,rodney stark,18,18,0,0
+245,beckford,18,18,0,0
+246,krishna,18,18,0,0
+247,unificationist movement,18,18,0,0
+248,reverend moon,18,18,0,0
+249,mount carmel,18,18,0,0
+250,muslim,18,17,0,1
+251,lotus sutra,18,18,0,0
+252,dramatic denouements,18,18,0,0
+253,synanon,18,18,0,0
+254,david,18,18,0,0
+255,roman catholic,18,18,0,0
+256,cambridge,18,18,0,0
+257,church of england,18,18,0,0
+258,age of aquarius,18,18,0,0
+259,african independent churches,18,18,0,0
+260,india,18,18,0,0
+261,clarkson,18,18,0,0
+262,sidi,18,18,0,0
+263,moonie,17,17,0,0
+264,black muslims,17,17,0,0
+265,tibetan buddhism,17,17,0,0
+266,sant mat,17,17,0,0
+267,new testament,17,17,0,0
+268,bainbridge,17,17,0,0
+269,galanter,17,17,0,0
+270,england,17,17,0,0
+271,david bromley,17,17,0,0
+272,islamism,17,17,0,0
+273,melton,17,17,0,0
+274,sai baba,17,17,0,0
+275,unificationism,17,17,0,0
+276,chicago,17,17,0,0
+277,jesus christ,17,17,0,0
+278,texas,17,17,0,0
+279,transcendentalism,17,17,0,0
+280,hannah more,17,17,0,0
+281,the clapham sect,17,17,0,0
+282,people's temple,16,16,0,0
+283,subud,16,16,0,0
+284,the way international,16,16,0,0
+285,campbell,16,16,0,0
+286,wallis,16,16,0,0
+287,dalai lama,16,16,0,0
+288,united kingdom,16,16,0,0
+289,freecog,16,16,0,0
+290,atf,16,16,0,0
+291,nichiren,16,16,0,0
+292,muslim brotherhood,16,16,0,0
+293,seventh-day adventism,16,16,0,0
+294,luc jouret,16,16,0,0
+295,rosicrucianism,16,16,0,0
+296,class,16,16,0,0
+297,ecthr,16,16,0,0
+298,nigeria,16,16,0,0
+299,john,16,16,0,0
+300,shamanism,16,16,0,0
+301,divine principle,16,16,0,0
+302,bhagwan shree rajneesh,16,16,0,0
+303,malcolm x,16,16,0,0
+304,moses david,16,16,0,0
+305,kabbalah,16,16,0,0
+306,engaged buddhism,16,16,0,0
+307,elijah muhammad,16,16,0,0
+308,vissarionovtsy,16,16,0,0
+309,john thornton,16,16,0,0
+310,bava gor,16,16,0,0
+311,bhagwan rajneesh,15,15,0,0
+312,baptists,15,15,0,0
+313,self-realization fellowship,15,15,0,0
+314,roy wallis,15,15,0,0
+315,operating thetan,15,15,0,0
+316,movement for the restoration of the ten commandments,15,15,0,0
+317,japanese,15,15,0,0
+318,the peoples temple,15,15,0,0
+319,irs,15,15,0,0
+320,ordo templi orientis,15,15,0,0
+321,antichrist,15,15,0,0
+322,dsm-iv,15,15,0,0
+323,freud,15,15,0,0
+324,lemuria,15,15,0,0
+325,yoruba,15,15,0,0
+326,the branch davidians,15,15,0,0
+327,blavatsky,15,15,0,0
+328,joseph di mambro,15,15,0,0
+329,oxford,15,15,0,0
+330,fair,15,15,0,0
+331,goddess movement,15,15,0,0
+332,unadfi,15,8,7,0
+333,findhorn community,15,15,0,0
+334,nrs,15,15,0,0
+335,margaret singer,15,14,1,0
+336,identity movement,15,15,0,0
+337,tarot,15,15,0,0
+338,candomblé,15,15,0,0
+339,manson,15,15,0,0
+340,sangharakshita,15,15,0,0
+341,millenarianism,15,15,0,0
+342,santo daime,15,15,0,0
+343,self-religion,15,15,0,0
+344,ghana,15,15,0,0
+345,book of mormon,15,15,0,0
+346,muslims,15,14,0,1
+347,diggers,15,15,0,0
+348,ents,15,15,0,0
+349,henry thornton,15,15,0,0
+350,meher baba,14,14,0,0
+351,zen buddhism,14,14,0,0
+352,protestant,14,14,0,0
+353,journal for the scientific study of religion,14,14,0,0
+354,rael,14,10,4,0
+355,ti and do,14,14,0,0
+356,switzerland,14,14,0,0
+357,introvigne,14,14,0,0
+358,european court of human rights,14,14,0,0
+359,shupe,14,14,0,0
+360,oxford university press,14,14,0,0
+361,satanist,14,13,0,1
+362,ramtha,14,14,0,0
+363,bhagwan,14,13,0,1
+364,movement for the restoration of the ten commandments of god,14,14,0,0
+365,catholics,14,13,0,1
+366,lucifer,14,14,0,0
+367,newton,14,14,0,0
+368,islamic,14,14,0,0
+369,prabhupada,14,14,0,0
+370,the solar temple,14,14,0,0
+371,san francisco,14,14,0,0
+372,moon,14,14,0,0
+373,concerned relatives,14,14,0,0
+374,li hongzhi,14,14,0,0
+375,bhagavad gita,14,14,0,0
+376,amish,14,14,0,0
+377,gaia,14,14,0,0
+378,berg,14,14,0,0
+379,mary baker eddy,14,14,0,0
+380,aladura,14,14,0,0
+381,akashic records,14,14,0,0
+382,cut,14,14,0,0
+383,methodist,14,14,0,0
+384,marxist-leninist,14,14,0,0
+385,mourides,14,14,0,0
+386,national socialist,14,14,0,0
+387,wolves,14,14,0,0
+388,rockwell,14,14,0,0
+389,marlene dixon,14,14,0,0
+390,pitt,14,14,0,0
+391,buxton,14,14,0,0
+392,babington,14,14,0,0
+393,wilson,13,13,0,0
+394,usa,13,13,0,0
+395,new agers,13,13,0,0
+396,journal of contemporary religion,13,13,0,0
+397,anton lavey,13,13,0,0
+398,christian scientists,13,13,0,0
+399,silva mind control,13,13,0,0
+400,the secret doctrine,13,13,0,0
+401,hale-bopp comet,13,13,0,0
+402,robert lifton,13,13,0,0
+403,ghost dance,13,13,0,0
+404,baha'i,13,13,0,0
+405,palmer,13,13,0,0
+406,unarius,13,13,0,0
+407,santeria,13,13,0,0
+408,uganda,13,13,0,0
+409,james r. lewis,13,13,0,0
+410,spiritism,13,13,0,0
+411,korea,13,13,0,0
+412,druidry,13,13,0,0
+413,pakistan,13,13,0,0
+414,annie besant,13,13,0,0
+415,amorc,13,13,0,0
+416,rosicrucian,13,13,0,0
+417,french,13,13,0,0
+418,holy order of mans,13,13,0,0
+419,tantra,13,13,0,0
+420,cog,13,13,0,0
+421,maitreya,13,13,0,0
+422,shiva,13,13,0,0
+423,tibet,13,13,0,0
+424,lord's resistance army,13,13,0,0
+425,african,13,13,0,0
+426,apa,13,13,0,0
+427,prophet,13,13,0,0
+428,mecca,13,13,0,0
+429,violence and new religious movements,13,13,0,0
+430,unifi cation church,13,13,0,0
+431,ra ë l,13,13,0,0
+432,jugendsekten,13,13,0,0
+433,neo-shamanism,13,13,0,0
+434,psychic phenomena,13,13,0,0
+435,media trickery,13,13,0,0
+436,national socialism,13,13,0,0
+437,expanding universes,13,13,0,0
+438,atroshi,13,13,0,0
+439,american,12,12,0,0
+440,sra,12,12,0,0
+441,al-qaeda,12,12,0,0
+442,salvation army,12,12,0,0
+443,north america,12,12,0,0
+444,new christian right,12,12,0,0
+445,council of europe,12,12,0,0
+446,italy,12,12,0,0
+447,citizens freedom foundation,12,12,0,0
+448,aff,12,12,0,0
+449,satanism scare,12,12,0,0
+450,maoism,12,12,0,0
+451,snow,12,12,0,0
+452,unificationist,12,12,0,0
+453,book of revelation,12,12,0,0
+454,american psychiatric association,12,12,0,0
+455,hitler,12,12,0,0
+456,cult,12,12,0,0
+457,school of economic science,12,12,0,0
+458,kingdom of heaven,12,12,0,0
+459,violence,12,12,0,0
+460,christians,12,12,0,0
+461,cults in our midst,12,12,0,0
+462,gandhi,12,12,0,0
+463,marshall applewhite,12,12,0,0
+464,berkeley,12,12,0,0
+465,rogs,12,12,0,0
+466,karl marx,12,12,0,0
+467,cbt,12,12,0,0
+468,discordianism,12,12,0,0
+469,gnostic,12,12,0,0
+470,yahweh,12,12,0,0
+471,new kadampa tradition,12,12,0,0
+472,lavey,12,12,0,0
+473,brahmo samaj,12,12,0,0
+474,ruhani satsang,12,12,0,0
+475,ramakrishna,12,12,0,0
+476,seicho-no-ie,12,12,0,0
+477,stephen,12,12,0,0
+478,soviet union,12,12,0,0
+479,the self,12,12,0,0
+480,eucharist,12,12,0,0
+481,sri aurobindo,12,12,0,0
+482,são paulo,12,12,0,0
+483,lds,12,12,0,0
+484,elizabeth clare prophet,12,12,0,0
+485,thelema,12,12,0,0
+486,sufi sm,12,12,0,0
+487,thought reform and the psychology of totalism,12,12,0,0
+488,american psychological association,12,11,1,0
+489,brent,12,12,0,0
+490,sierra leone company,12,12,0,0
+491,freetown,12,12,0,0
+492,mai mishra,12,12,0,0
+493,center for studies on new religions,11,11,0,0
+494,the new religious consciousness,11,11,0,0
+495,western esotericism,11,11,0,0
+496,world council of churches,11,11,0,0
+497,christadelphians,11,11,0,0
+498,krishnamurti,11,11,0,0
+499,the church universal and triumphant,11,10,1,0
+500,i am,11,11,0,0
+501,international churches of christ,11,11,0,0
+502,buddhists,11,11,0,0
+503,pagans,11,11,0,0
+504,routledge,11,11,0,0
+505,durkheim,11,11,0,0
+506,shambhala,11,11,0,0
+507,e-meter,11,11,0,0
+508,new york times,11,11,0,0
+509,exodus,11,11,0,0
+510,cult awareness network (can),11,11,0,0
+511,black mass,11,11,0,0
+512,nazism,11,11,0,0
+513,yoga,11,11,0,0
+514,west,11,11,0,0
+515,martin,11,11,0,0
+516,cult controversies,11,11,0,0
+517,love family,11,11,0,0
+518,unificationists,11,11,0,0
+519,world wide web,11,11,0,0
+520,mau mau,11,11,0,0
+521,xenu,11,11,0,0
+522,set,11,11,0,0
+523,msia,11,11,0,0
+524,quebec,11,11,0,0
+525,wright,11,11,0,0
+526,vedanta,11,11,0,0
+527,ufo,11,11,0,0
+528,mormon church,11,11,0,0
+529,freemasons,11,10,0,1
+530,a course in miracles,11,11,0,0
+531,gnosticism,11,11,0,0
+532,thomas,11,11,0,0
+533,internal revenue service,11,11,0,0
+534,transit,11,11,0,0
+535,mahikari,11,11,0,0
+536,cambridge university press,11,11,0,0
+537,university of california press,11,11,0,0
+538,ananda marga,11,11,0,0
+539,virgin mary,11,11,0,0
+540,adolf hitler,11,11,0,0
+541,anti-semitism,11,11,0,0
+542,sikh dharma,11,11,0,0
+543,j. z. knight,11,11,0,0
+544,nostradamus,11,11,0,0
+545,pentecostals,11,11,0,0
+546,yogananda,11,11,0,0
+547,seth,11,11,0,0
+548,muktananda,11,11,0,0
+549,britain,11,11,0,0
+550,plymouth brethren,11,11,0,0
+551,theravada,11,11,0,0
+552,american nazi party,11,11,0,0
+553,kardecism,11,11,0,0
+554,new apostolic church,11,11,0,0
+555,self,11,11,0,0
+556,joseph,11,11,0,0
+557,farrakhan,11,11,0,0
+558,sayyid qutb,11,11,0,0
+559,goddess feminists,11,11,0,0
+560,godianism,11,11,0,0
+561,christian churches,11,11,0,0
+562,anglican,11,11,0,0
+563,sayyid,11,11,0,0
+564,south africa,11,11,0,0
+565,esalen,11,11,0,0
+566,church of christ,11,11,0,0
+567,smith,11,11,0,0
+568,ra ë lian,11,11,0,0
+569,john paul ii,11,11,0,0
+570,neo-nazi,11,11,0,0
+571,elves,11,11,0,0
+572,james stephen,11,11,0,0
+573,william wilberforce,11,11,0,0
+574,henry v enn,11,11,0,0
+575,east india company,11,11,0,0
+576,rabi'a,11,11,0,0
+577,neo-pagans,10,10,0,0
+578,encyclopedia of american religions,10,10,0,0
+579,charisma,10,10,0,0
+580,satanic ritual abuse,10,10,0,0
+581,movement of spiritual inner awareness,10,10,0,0
+582,society for the scientific study of religion,10,10,0,0
+583,ofshe,10,10,0,0
+584,eastern,10,10,0,0
+585,heelas,10,10,0,0
+586,theosophists,10,10,0,0
+587,anthroposophical society,10,10,0,0
+588,rastafarians,10,10,0,0
+589,james,10,10,0,0
+590,freemasonry,10,10,0,0
+591,vietnam,10,10,0,0
+592,susan palmer,10,10,0,0
+593,oklahoma city bombing,10,10,0,0
+594,timothy mcveigh,10,10,0,0
+595,jones,10,10,0,0
+596,london school of economics,10,10,0,0
+597,abraham,10,10,0,0
+598,turner,10,10,0,0
+599,rev. moon,10,10,0,0
+600,william,10,10,0,0
+601,robert,10,10,0,0
+602,marxism,10,10,0,0
+603,ssehv,10,10,0,0
+604,united nations,10,10,0,0
+605,amway,10,10,0,0
+606,aids,10,10,0,0
+607,jesus fellowship,10,10,0,0
+608,satanic groups,10,10,0,0
+609,swami prabhupada,10,10,0,0
+610,edgar cayce,10,10,0,0
+611,summit lighthouse,10,10,0,0
+612,revelation,10,10,0,0
+613,madame blavatsky,10,10,0,0
+614,christ apostolic church,10,10,0,0
+615,raja yoga,10,10,0,0
+616,mother meera,10,10,0,0
+617,chaitanya,10,10,0,0
+618,pentecostalist,10,10,0,0
+619,upanishads,10,10,0,0
+620,mo letters,10,10,0,0
+621,father divine,10,10,0,0
+622,fraternity of the inner light,10,10,0,0
+623,shirdi sai baba,10,10,0,0
+624,house church movement,10,10,0,0
+625,the,10,10,0,0
+626,nipponzan myohoji,10,10,0,0
+627,vivekananda,10,10,0,0
+628,mount carmel center,10,10,0,0
+629,center,10,10,0,0
+630,agonshu,10,10,0,0
+631,new religion (japan),10,10,0,0
+632,wolof,10,10,0,0
+633,baptist,10,10,0,0
+634,pope john paul ii,10,10,0,0
+635,gospel,10,10,0,0
+636,spain,10,10,0,0
+637,eastern europe,10,10,0,0
+638,rome,10,10,0,0
+639,rpf,10,10,0,0
+640,russian orthodox church,10,8,0,2
+641,soviet,10,10,0,0
+642,sant'egidio,10,10,0,0
+643,wuns,10,10,0,0
+644,counter-cult groups,10,10,0,0
+645,george stephen,10,10,0,0
+646,john newton,10,10,0,0
+647,henry,10,10,0,0
+648,témoins de jéhovah,9,1,7,1
+649,middle east,9,8,0,1
+650,illuminati,7,5,0,2
+651,psnc,7,0,7,0
+652,the moonies,6,5,0,1
+653,cnom,6,0,6,0
+654,palestine,5,4,0,1
+655,ethiopia,5,4,0,1
+656,western culture,5,4,0,1
+657,dgccrf,5,0,5,0
+658,lebanon,4,3,0,1
+659,ordre du temple solaire,4,2,1,1
+660,zionist,4,3,0,1
+661,masons,4,3,0,1
+662,tom cruise,4,3,0,1
+663,ehesp,4,0,4,0
+664,caffes,4,0,4,0
+665,la miviludes,4,0,4,0
+666,toujours renouvelées,4,0,4,0
+667,les dérives sectaires,4,0,4,0
+668,oms,4,0,4,0
+669,dnrt,4,0,4,0
+670,the hare krishnas,3,2,0,1
+671,sunna,3,2,0,1
+672,ministère de l'éducation nationale,3,0,3,0
+673,procureurs de la république,3,0,3,0
+674,stratégie nationale de lutte contre les dérives sectaires,3,0,3,0
+675,cnef,3,0,3,0
+676,église de l'unification,3,0,3,0
+677,dérives sectaires,3,0,3,0
+678,ciase,3,0,3,0
+679,crr,3,0,3,0
+680,clir,3,0,3,0
+681,rgpd,3,0,3,0
+682,effet barnum,3,0,3,0
+683,steiner-waldorf,3,0,3,0
+684,cnrs,3,0,3,0
+685,la scientologie,3,0,1,2
+686,caimades,3,0,3,0
+687,phénomène d'emprise mentale,3,0,3,0
+688,ia,3,0,3,0
+689,netflix,3,0,0,3
+690,la luz del mundo,2,1,0,1
+691,buddhas,2,1,0,1
+692,syrian,2,1,0,1
+693,luz del mundo,2,1,0,1
+694,guadalajara,2,1,0,1
+695,new wave,2,1,0,1
+696,westboro baptist church,2,1,0,1
+697,american horror story,2,1,0,1
+698,druze,2,1,0,1
+699,protestant church,2,1,0,1
+700,ai cult,2,0,0,2
+701,blue öyster cult,2,0,0,2
+702,raëlism,2,0,0,2
+703,tomato cult,1,0,0,1
+704,facebook group page,1,0,0,1
+705,missbrauch,1,0,0,1
+706,wild wild country,1,0,0,1
+707,los del mundo,1,0,0,1
+708,the manson family,1,0,0,1
+709,richard branson,1,0,0,1
+710,christian songs,1,0,0,1
+711,jesuses,1,0,0,1
+712,muhammads,1,0,0,1
+713,andrei kuraev,1,0,0,1
+714,bike polo,1,0,0,1
+715,selbstverständlichkeit,1,0,0,1
+716,the new jesus something,1,0,0,1
+717,the new garden,1,0,0,1
+718,the new jesus,1,0,0,1
+719,human design,1,0,0,1
+720,kult,1,0,0,1
+721,sekte,1,0,0,1
+722,kirchensteuer,1,0,0,1
+723,zeugen jehovas,1,0,0,1
+724,alawites,1,0,0,1
+725,sunnis,1,0,0,1
+726,shia,1,0,0,1
+727,buddhafield cult,1,0,0,1
+728,gomez,1,0,0,1
+729,holy hell,1,0,0,1
+730,botox,1,0,0,1
+731,archangels,1,0,0,1
+732,the cult of satan,1,0,0,1
+733,the cult of the archangels,1,0,0,1
+734,mk ultra,1,0,0,1
+735,brian jones,1,0,0,1
+736,cold war paranoia,1,0,0,1
+737,religious cults in turkey,1,0,0,1
+738,fethullah gülen,1,0,0,1
+739,menzil,1,0,0,1
+740,east side of turkey,1,0,0,1
+741,gourou,1,0,0,1
+742,groupe,1,0,0,1
+743,la secte de raël,1,0,0,1
+744,les témoins de jéhovah,1,0,0,1
+745,les illuminati,1,0,0,1
+746,le truc de raël,1,0,0,1
+747,une secte.,1,0,0,1
+748,on va pas citer une secte en particulier,1,0,0,1
+749,turkish religious cults,1,0,0,1
+750,nakşibendi,1,0,0,1
+751,süleymancilar,1,0,0,1
+752,shi'a muslims,1,0,0,1
+753,ziad rahbani,1,0,0,1

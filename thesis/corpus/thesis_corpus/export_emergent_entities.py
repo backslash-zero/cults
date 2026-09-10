@@ -103,17 +103,39 @@ def write_latex_rows(rows: list[dict], top_n: int, path: Path = LATEX_OUTPUT_PAT
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--top-n", type=int, default=DEFAULT_TOP_N)
+    parser.add_argument("--input", type=Path, default=EMBEDDING_SPACE_PATH,
+                         help="embedding_space.jsonl to rank from (default: v1's processed/shared_space/). "
+                              "Pass processed/shared_space_v2/embedding_space.jsonl for the v2 space -- v1's "
+                              "own default output paths below shift accordingly only if --csv-output/--latex-output "
+                              "aren't also given, so v1's files are never overwritten by a v2 run.")
+    parser.add_argument("--csv-output", type=Path, default=None,
+                         help="Default: alongside --input, named emergent_entities_ranked.csv.")
+    parser.add_argument("--latex-output", type=Path, default=None,
+                         help="Default: v1's 04_Appendix/Emergent_Entities/top_100_rows.tex when --input is "
+                              "the default; otherwise must be given explicitly, to avoid a v2 run silently "
+                              "overwriting v1's appendix table.")
     args = parser.parse_args()
 
-    rows = rank_emergent_entities()
-    write_csv(rows)
-    write_latex_rows(rows, args.top_n)
+    csv_output = args.csv_output or (args.input.parent / "emergent_entities_ranked.csv")
+    if args.latex_output is not None:
+        latex_output = args.latex_output
+    elif args.input == EMBEDDING_SPACE_PATH:
+        latex_output = LATEX_OUTPUT_PATH
+    else:
+        raise SystemExit(
+            "--latex-output is required when --input isn't v1's default embedding_space.jsonl -- "
+            "refusing to guess a path and risk silently overwriting v1's appendix table."
+        )
+
+    rows = rank_emergent_entities(args.input)
+    write_csv(rows, csv_output)
+    write_latex_rows(rows, args.top_n, latex_output)
 
     top_n_total = sum(r["total"] for r in rows[: args.top_n])
     grand_total = sum(r["total"] for r in rows)
     print(f"{len(rows)} emergent entities ranked.")
-    print(f"Wrote full ranking -> {CSV_OUTPUT_PATH}")
-    print(f"Wrote top {args.top_n} LaTeX rows -> {LATEX_OUTPUT_PATH}")
+    print(f"Wrote full ranking -> {csv_output}")
+    print(f"Wrote top {args.top_n} LaTeX rows -> {latex_output}")
     print(
         f"Top {args.top_n} ({100 * args.top_n / len(rows):.1f}% of entities) account for "
         f"{top_n_total:,} of {grand_total:,} total mentions ({100 * top_n_total / grand_total:.1f}%)."

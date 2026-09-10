@@ -1,0 +1,20 @@
+\chapter{Emergent Entities (Revised Pipeline)}\label{ch:emergent_entities_v2}
+
+This appendix supersedes \ref{ch:emergent_entities} for the revised (v2) extraction pipeline (\ref{sec:extraction_v2}) and its corrected emergent-entity construction (\ref{sec:emergent_entities_v2}) — kept as a separate appendix alongside, not in place of, \ref{ch:emergent_entities}, since the first-generation archive and its own entity ranking remain on disk as a frozen developmental baseline (\ref{sec:vectorising_scholarly_work}).
+
+Of the entity anchors and broader \texttt{domain\_terms} candidates surfaced across all three corpora under the revised pipeline, 753 survive the per-corpus mention thresholds described in \ref{sec:emergent_entities_v2} (literature $\geq$10, MIVILUDES $\geq$3, interviews $\geq$1 mentions in the corpus where they qualify) as embedded points in the revised shared space (\ref{sec:shared_space_v2}). Table~\ref{tab:emergent_entities_v2} ranks the top 100 by total mention count across all three corpora — the top 100 (13.3\% of all 753 entities) already account for 8{,}016 of 16{,}928 total mentions (47.4\%). The full ranked list of all 753 entities, with the same per-corpus breakdown, is available as \texttt{processed/shared\_space\_v2/emergent\_entities\_ranked.csv}; the full per-entity provenance breakdown (how many of the 753 are mentioned by one, two, or all three corpora) is documented in \ref{sec:emergent_entities_v2} and in the supplementary technical report (\ref{sec:analysis_methods}).
+
+\begin{longtable}{@{}r p{5.5cm} r r r r@{}}
+\caption{Top 100 emergent entities by total mention count, revised (v2) pipeline, with per-corpus breakdown}\label{tab:emergent_entities_v2} \\
+\toprule
+Rank & Entity & Total & Literature & MIVILUDES & Interviews \\
+\midrule
+\endfirsthead
+\toprule
+Rank & Entity & Total & Literature & MIVILUDES & Interviews \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\input{04_Appendix/Emergent_Entities_v2/top_100_rows}
+\end{longtable}
