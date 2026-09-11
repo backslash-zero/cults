@@ -673,6 +673,58 @@
       "n_answers": 4,
       "total_word_count": 273,
       "corrections_log": "cleaned/ig-07/corrections.log"
+    },
+    {
+      "id": "b4-sep10-1838",
+      "source_file": "thesis/Interviews/Interview Batch 4/Transcripts-Finished/Sep 10 at 18-38.txt",
+      "batch": "Interview Batch 4",
+      "date_time": "2026-09-10T18:38",
+      "method": "in person",
+      "language": "French",
+      "translated": true,
+      "translation_language": "English",
+      "interviewer": "researcher (thesis author)",
+      "participant_id": "b4-sep10-1838",
+      "location": "France",
+      "interviewee": {
+        "age": 38,
+        "gender": "male",
+        "nationality": "French",
+        "main_language": "French",
+        "language_spoken": "French"
+      },
+      "notes": "Unlike other French interviews in this corpus, the raw ASR output already included a built-in English translation and speaker split, produced before any human review; the researcher's finished/reviewed transcript is that English version (used as translation_en.txt here). transcript.txt (French) was reconstructed by the assistant compiling this corpus from the raw file's French track and has not been independently reviewed by the researcher in French — see corrections.log.",
+      "text": "INTERVIEW — Sep 10, 18:38\n\nInterviewer : Très bien. Quand tu entends le mot secte, qu'est-ce qui te vient à l'esprit ?\n\nInterviewee : Religion.\n\nInterviewer : Juste ça ?\n\nInterviewee : Ouais, religion. Pas pire que les autres — une religion comme une autre.\n\nInterviewer : Est-ce qu'il y a des exemples qui viendraient en tête directement ?\n\nInterviewee : Raël. Je veux dire les Raëliens, parce qu'on en a parlé à la télé, surtout beaucoup. Mais je pense qu'après, le christianisme, l'islamisme, le judaïsme, les Témoins de Jéhovah — toutes les religions.\n\nInterviewer : Et du coup, toutes ces choses que tu m'as mentionnées, en quoi, pour toi, ça constituerait des sectes ?\n\nInterviewee : Après, il faudrait avoir la définition de secte, mais selon celle que j'ai en tête, tu glorifies une personne qui, potentiellement, n'existe pas. Raël, il existe. Après, est-ce que tout ce qu'il a fait, c'est vrai ? Je suis pas sûr, mais autant qu'on est sûr que Dieu existe, ou Allah existe, ou Yahvé existe.\n\nInterviewer : Ok. Pour toi, c'est un peu cet attribut principal ?\n\nInterviewee : Oui. Après, il y a toutes les dérives, mais comme dans toutes les religions, il y en a qui en parlent moins, je pense. Voilà.\n\nInterviewer : Ok. C'est tout. Parfait.\n\nInterviewee : C'est un truc qu'il faut réfléchir quand même plus à l'avance, quand tu veux. Non, justement — ouais, mais là, comme ça, c'est ce qui me vient à l'idée, en tout cas.\n\n---\n",
+      "translation_text": "INTERVIEW — Sep 10, 18:38 (English translation of b4-sep10-1838/transcript.txt)\nTranslation note: this is the researcher's own reviewed/finalized transcript\n(the raw recording already came with an ASR-generated English translation\nalongside the French original), not a certified translation.\n\nInterviewer: All right. When you hear the word \"cult,\" what comes to mind?\n\nInterviewee: Religion.\n\nInterviewer: Just that?\n\nInterviewee: Yeah, religion. No worse than the others — just another religion.\n\nInterviewer: Are there any examples that come to mind right away?\n\nInterviewee: Raël. I mean the Raelians, because they've been talked about on TV — a lot, actually. But I think after that, Christianity, Islam, Judaism, the Jehovah's Witnesses — all religions.\n\nInterviewer: So, all those things you mentioned — in what way do you think they qualify as cults?\n\nInterviewee: Next, we'd need a definition of a cult, but based on the one I have in mind, you're glorifying a person who might not even exist. Raël actually exists. But is everything he's done true? I'm not sure, but no more certain than we are that God exists, or Allah exists, or Yahweh exists.\n\nInterviewer: Okay. So for you, is that kind of the main characteristic?\n\nInterviewee: Yes. Then there are all the abuses, but as with all religions, I think there are some that talk about them less. That's it.\n\nInterviewer: Okay. That's it. Perfect.\n\nInterviewee: It's something you really need to think about more in advance, when you want to. No, actually — yeah, but right now, off the top of my head, that's what comes to mind, anyway.\n\n---\n",
+      "n_questions": 6,
+      "n_answers": 6,
+      "total_word_count": 252,
+      "corrections_log": "cleaned/b4-sep10-1838/corrections.log"
+    },
+    {
+      "id": "b4-sep10-2003",
+      "source_file": "thesis/Interviews/Interview Batch 4/Transcripts-Finished/Sep 10 at 20-03.txt",
+      "batch": "Interview Batch 4",
+      "date_time": "2026-09-10T20:03",
+      "method": "in person",
+      "language": "English",
+      "translated": false,
+      "interviewer": "researcher (thesis author)",
+      "participant_id": "b4-sep10-2003",
+      "location": "France",
+      "interviewee": {
+        "age": 34,
+        "gender": "woman",
+        "nationality": "Mexican / American",
+        "main_language": "Spanish and English",
+        "language_spoken": "English"
+      },
+      "text": "INTERVIEW — Sep 10, 20:03\n\nInterviewer: When you hear the word \"cult,\" what comes to your mind?\n\nInterviewee: A group of people that are blindly devoted, or blindly follow a belief without questioning it.\n\nInterviewer: Okay. Do you have examples of such groups?\n\nInterviewee: Religion.\n\nInterviewee: Um, I remember watching a documentary about a cult. I think it was in Oregon or something — they were following this guy, and he was super... I feel like usually the leaders are super abusive. Um, but nothing in specific — I would say mostly religion.\n\nInterviewer: Okay. Do you remember the name of the one in Oregon?\n\nInterviewee: No, I just remember watching it a long time ago. I just remember watching the documentary, and they were living in like one big property with a lot of land, and they were camping, and it was supposed to be spiritual, but he was abusing them emotionally and in other ways. And I don't remember the name.\n\nInterviewee: Funny thing — a friend of mine who used to play polo, she played polo for like 16 years... she used to say that polo is a cult.\n\nInterviewer: Yeah, why do you think polo could be a cult?\n\nInterviewee: I don't think it's a cult. I think... I think the fact that we get obsessed with it — if it's a very enclosed, non-welcoming community, it could make it feel like that — but I don't think there's a leader that we follow.\n\nInterviewer: Yeah, yeah — so she was saying it as a joke, more so?\n\nInterviewee: Yeah, because it's like, once you start, it's hard to leave.\n\n---\n",
+      "translation_text": null,
+      "n_questions": 5,
+      "n_answers": 7,
+      "total_word_count": 275,
+      "corrections_log": "cleaned/b4-sep10-2003/corrections.log"
     }
   ]
 }

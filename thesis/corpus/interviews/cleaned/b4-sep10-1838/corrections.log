@@ -1,0 +1,15 @@
+CORRECTIONS LOG — b4-sep10-1838 (Interview Batch 4/Transcripts-Finished/Sep 10 at 18-38.txt)
+Status: RESOLVED — reviewed and finalized by the researcher (Transcripts-Finished), 2026-09-11.
+
+No corrections proposed against the researcher's finished file.
+
+Provenance note (not a correction): unlike other French interviews in this corpus,
+the raw ASR output for this interview already came with a built-in English
+translation and two-speaker split, produced before any human review. The
+researcher's own reviewed/finalized transcript is that English version — used here
+as translation_en.txt. transcript.txt (French) was reconstructed by the assistant
+compiling this corpus directly from the raw file's French track
+(thesis/Interviews/Interview Batch 4/Transcript-Raw/Sep 10 at 18-38.txt), applying
+the same turn-splitting as the reviewed English version. It has NOT been
+independently reviewed by the researcher in French — treat it as lower-confidence
+than translation_en.txt if precision on the French wording matters.

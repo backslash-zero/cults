@@ -474,3 +474,39 @@ interviews:
       nationality: "Dutch / Italian"
       main_language: "Dutch"
       language_spoken: "English"
+
+  - id: b4-sep10-1838
+    source_file: "thesis/Interviews/Interview Batch 4/Transcripts-Finished/Sep 10 at 18-38.txt"
+    batch: "Interview Batch 4"
+    date_time: "2026-09-10T18:38"
+    method: "in person"
+    language: "French"
+    translated: true
+    translation_language: "English"
+    interviewer: "researcher (thesis author)"
+    participant_id: b4-sep10-1838
+    location: "France"
+    interviewee:
+      age: 38
+      gender: "male"
+      nationality: "French"
+      main_language: "French"
+      language_spoken: "French"
+    notes: "Unlike other French interviews in this corpus, the raw ASR output already included a built-in English translation and speaker split, produced before any human review; the researcher's finished/reviewed transcript is that English version (used as translation_en.txt here). transcript.txt (French) was reconstructed by the assistant compiling this corpus from the raw file's French track and has not been independently reviewed by the researcher in French — see corrections.log."
+
+  - id: b4-sep10-2003
+    source_file: "thesis/Interviews/Interview Batch 4/Transcripts-Finished/Sep 10 at 20-03.txt"
+    batch: "Interview Batch 4"
+    date_time: "2026-09-10T20:03"
+    method: "in person"
+    language: "English"
+    translated: false
+    interviewer: "researcher (thesis author)"
+    participant_id: b4-sep10-2003
+    location: "France"
+    interviewee:
+      age: 34
+      gender: "woman"
+      nationality: "Mexican / American"
+      main_language: "Spanish and English"
+      language_spoken: "English"

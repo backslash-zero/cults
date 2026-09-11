@@ -6,11 +6,12 @@ appendix, standalone analysis) now lives at `corpus/interviews/` — see
 `corpus/README.md` for the full pipeline, naming conventions, and update
 procedure. This README just documents what's still here.
 
-There are four batches: Interview Batch 1 (11 interviews), Interview Batch 2
-(2 interviews), Interview Batch 3 (7 interviews, several in French), and the
-Instagram Batch (6 interviews collected via Instagram DM — its
-`Transcirpts-Finished` folder name has a typo but it's in scope, since it's
-what the corpus's own `method` field distinguishes against "in person").
+There are five batches: Interview Batch 1 (11 interviews), Interview Batch 2
+(2 interviews), Interview Batch 3 (7 interviews, several in French), Interview
+Batch 4 (2 interviews, one in French), and the Instagram Batch (6 interviews
+collected via Instagram DM — its `Transcirpts-Finished` folder name has a typo
+but it's in scope, since it's what the corpus's own `method` field
+distinguishes against "in person").
 
 ## Folder structure
 
@@ -48,6 +49,10 @@ Edited` with just a stale README.
   option list (alongside the existing `english`, `ngerman`) specifically to
   support the French transcript text in the appendix; `ngerman` remains the
   default/last language in that list, unchanged.
-- Corpus size is currently 26 interviews (11 + 2 + 7 + 6 across the four
+- Corpus size is currently 28 interviews (11 + 2 + 7 + 2 + 6 across the five
   batches). If new batches are added later, add the raw files here first, then
   follow the Step 0–4 pipeline documented in `corpus/README.md`.
+- Interview Batch 4 also has a `Transcript-Raw` (singular) folder name, unlike
+  earlier batches' `Transcripts-Raw`, and its finished folder is
+  `Transcripts-Finished` (hyphenated, no space) rather than `Transcripts
+  Finished` — both are in scope despite the naming drift.
