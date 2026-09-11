@@ -65,31 +65,49 @@ SYSTEM_PROMPT = (
     "or new religious movements -- every entry must be unambiguously secular. "
     "Return ONLY the list, one short name per line -- no numbering, no markdown formatting "
     "(no headers, no bold, no code blocks, no tables, no links), no commentary before or after "
-    "the list, no follow-up questions. Each line must be a bare name only, a few words at most. "
+    "the list, no follow-up questions, no clarifying questions of any kind. You already have "
+    "everything you need -- do not ask what kind of groups, do not ask for more detail, do not "
+    "offer to help with something else. Begin your answer immediately with the first name. "
+    "Each line must be a bare name only, a few words at most. "
     "Example of the exact format expected (do not reuse these specific examples in your answer):\n"
     "Amway\n"
     "CrossFit\n"
     "Anonymous (hacker collective)"
 )
 
-# A real name is always short. Checked directly against a real failure: a
-# generation that went completely off-topic (wrote a markdown tutorial
-# about scraping Reddit instead of a name list) produced "names" up to
-# 270 characters and full of "```"/"|"/"http"/markdown headers -- this
-# threshold and character check catch that shape of failure without
-# needing to inspect content semantically.
+# A real name is always short and is not a question. Checked directly
+# against two real failures on the same live setup: (1) a generation that
+# went completely off-topic (wrote a markdown tutorial about scraping
+# Reddit instead of a name list) produced "names" up to 270 characters and
+# full of "```"/"|"/"http"/markdown headers; (2) a generation that ignored
+# the task entirely and returned a generic chatbot clarifying-question
+# reply ("Are you asking about a specific topic? ... Let me know, and I'll
+# be happy to assist!") -- four short, markdown-free lines that the
+# length/artifact check alone did NOT catch. Both shapes of failure are
+# now rejected.
 MAX_NAME_LENGTH = 60
 SUSPICIOUS_SUBSTRINGS = ("```", "http://", "https://", "| ", "###", "##")
+NON_ANSWER_PHRASES = (
+    "let me know", "happy to assist", "happy to help", "are you asking",
+    "specific topic", "need help with", "looking for information",
+    "could you", "can you clarify", "more detail", "what kind of",
+)
 MAX_REJECTED_FRACTION = 0.3  # if more than this fraction of lines are rejected, something is wrong -- fail loudly
+MIN_NAMES_FRACTION = 0.5  # fewer than this fraction of the REQUESTED n surviving is also a failure, not a partial success
+
+
+def _looks_like_non_answer(line: str) -> bool:
+    l = line.lower()
+    return line.rstrip().endswith("?") or any(p in l for p in NON_ANSWER_PHRASES)
 
 
 def parse_group_list(raw_text: str) -> list[str]:
     """Splits the model's line-per-name response into a clean list --
     strips numbering ("1. ", "- ", "* "), blank lines, surrounding
     whitespace/quotes, and any line that's clearly not a bare name (too
-    long, or containing markdown/code/link artifacts -- see
-    MAX_NAME_LENGTH/SUSPICIOUS_SUBSTRINGS docstring above). Pure function,
-    testable without Ollama."""
+    long, markdown/code/link artifacts, or a conversational
+    non-answer/question -- see the constants' own docstring above). Pure
+    function, testable without Ollama."""
     names = []
     rejected = 0
     for line in raw_text.splitlines():
@@ -104,7 +122,7 @@ def parse_group_list(raw_text: str) -> list[str]:
                 break
         if not line:
             continue
-        if len(line) > MAX_NAME_LENGTH or any(s in line for s in SUSPICIOUS_SUBSTRINGS):
+        if len(line) > MAX_NAME_LENGTH or any(s in line for s in SUSPICIOUS_SUBSTRINGS) or _looks_like_non_answer(line):
             rejected += 1
             continue
         names.append(line)
@@ -112,8 +130,9 @@ def parse_group_list(raw_text: str) -> list[str]:
     total = len(names) + rejected
     if total and rejected / total > MAX_REJECTED_FRACTION:
         raise ValueError(
-            f"{rejected}/{total} lines rejected as not-a-bare-name (too long or markdown-like) -- "
-            "the model likely went off-topic or ignored the format instructions rather than "
+            f"{rejected}/{total} lines rejected as not-a-bare-name (too long, markdown-like, or a "
+            "conversational non-answer) -- the model likely went off-topic, asked a clarifying "
+            "question instead of answering, or ignored the format instructions rather than "
             "returning a clean list. Inspect the raw response before retrying, not just this "
             "filtered output."
         )
@@ -164,6 +183,69 @@ def generate_group_names_raw(host: str, model: str, n: int, timeout: float | Non
     return content
 
 
+MAX_ATTEMPTS = 3
+
+
+def generate_group_names_with_retries(
+    host: str,
+    model: str,
+    n: int,
+    timeout: float | None = None,
+    out_dir: Path | None = None,
+    max_attempts: int = MAX_ATTEMPTS,
+) -> list[str]:
+    """Generates + validates, retrying up to max_attempts times when the
+    result is a hard parse failure (ValueError from parse_group_list) OR a
+    soft failure -- too FEW names survived relative to what was requested,
+    even though nothing individually looked malformed. The soft case is a
+    real failure seen live: a run returned exactly 4 lines, a generic
+    chatbot clarifying-question non-answer ("Are you asking about a
+    specific topic? ... Let me know, and I'll be happy to assist!") -- the
+    model never attempted the task. Each line was short and markdown-free
+    so none tripped the per-line rejection checks, and 4 > 0 so the old
+    "not names" check in main() let it through as a false success.
+    MIN_NAMES_FRACTION catches that shape directly.
+
+    If out_dir is given, the raw response is written to
+    generated_secular_groups_raw_response.txt on every attempt (overwritten
+    each time), so whatever the final attempt was -- success or exhausted
+    failure -- is always on disk to inspect, without needing a debugger.
+    Retrying here means a transient bad generation self-heals on the
+    machine that's actually running Ollama, instead of requiring another
+    slow manual copy-the-file-back-and-report round trip.
+    """
+    last_error: Exception | None = None
+    for attempt in range(1, max_attempts + 1):
+        raw = generate_group_names_raw(host, model, n, timeout)
+        if out_dir is not None:
+            raw_path = out_dir / "generated_secular_groups_raw_response.txt"
+            raw_path.write_text(raw, encoding="utf-8")
+            logger.info("Attempt %d/%d: raw response saved to %s (%d chars)", attempt, max_attempts, raw_path, len(raw))
+
+        try:
+            names = parse_group_list(raw)
+        except ValueError as e:
+            last_error = e
+            logger.warning("Attempt %d/%d failed: %s", attempt, max_attempts, e)
+            continue
+
+        min_needed = n * MIN_NAMES_FRACTION
+        if len(names) < min_needed:
+            last_error = ValueError(
+                f"Only {len(names)}/{n} requested names survived validation (need at least "
+                f"{MIN_NAMES_FRACTION:.0%}, i.e. {min_needed:.0f}) -- the model likely didn't "
+                "attempt the task at all (e.g. asked a clarifying question instead of answering) "
+                "rather than producing a genuinely short but valid list."
+            )
+            logger.warning("Attempt %d/%d failed: %s", attempt, max_attempts, last_error)
+            continue
+
+        logger.info("Attempt %d/%d succeeded: %d names.", attempt, max_attempts, len(names))
+        return names
+
+    raise RuntimeError(f"All {max_attempts} attempts failed. Last error: {last_error}") from last_error
+
+
 def generate_group_names(host: str, model: str, n: int, timeout: float | None = None) -> list[str]:
     return parse_group_list(generate_group_names_raw(host, model, n, timeout))
 
@@ -191,25 +273,16 @@ def main() -> None:
 
     chat_timeout = args.chat_timeout if args.chat_timeout is not None else default_chat_timeout(args.n)
     logger.info("Generating %d non-religious group names via %s (timeout=%.0fs)...", args.n, args.chat_model, chat_timeout)
-    raw_response = generate_group_names_raw(args.ollama_host, args.chat_model, args.n, timeout=chat_timeout)
 
-    # Always saved BEFORE parsing -- if parse_group_list rejects the
-    # response as off-topic/malformed (see its own docstring: this is
-    # exactly what caught a real failure, a full markdown tutorial about
-    # scraping Reddit instead of a name list), this file is what you
-    # inspect, not a traceback with no record of what the model actually said.
     raw_path = args.out_dir / "generated_secular_groups_raw_response.txt"
-    raw_path.write_text(raw_response, encoding="utf-8")
-    logger.info("Raw model response saved to %s (%d chars)", raw_path, len(raw_response))
-
     try:
-        names = parse_group_list(raw_response)
-    except ValueError as e:
-        print(f"ERROR: {e}\nRaw response is in {raw_path} -- read it before retrying.", file=sys.stderr)
+        names = generate_group_names_with_retries(
+            args.ollama_host, args.chat_model, args.n, timeout=chat_timeout, out_dir=args.out_dir,
+        )
+    except RuntimeError as e:
+        print(f"ERROR: {e}\nRaw response of the last attempt is in {raw_path} -- read it before retrying.", file=sys.stderr)
         raise SystemExit(1)
     logger.info("Got %d names: %s", len(names), names)
-    if not names:
-        raise SystemExit(f"Model returned zero parseable names -- inspect {raw_path} before retrying.")
 
     logger.info("Embedding %d names via %s...", len(names), args.embed_model)
     vectors = embed_texts(args.ollama_host, args.embed_model, names)

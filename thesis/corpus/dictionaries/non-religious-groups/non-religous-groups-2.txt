@@ -1,0 +1,112 @@
+prompt: give the name of 100 real non-religious groups
+model: qwen3:8b
+
+Humanist & Secular Organizations
+American Humanist Association (AHA) – Promotes humanism and secular ethics.
+Freedom From Religion Foundation (FFRF) – Advocates for the separation of church and state.
+Secular Coalition for America (SCUSA) – Pushes for secular policies.
+International Humanist and Ethical Union (IHEU) – Global humanist organization.
+The Secular Student Alliance (SSA) – Supports secular education for students.
+The Freethought Association (UK) – Focuses on rationalism and secularism.
+Humanists of America – Promotes secular humanism.
+The Secular Humanist Society of the United States (SHSUS) – Encourages secular ethics.
+The Secular Outlook (UK) – Advocates for secularism in public life.
+The Secular Society (UK) – Promotes secularism and rationalism.
+Environmental & Science Groups
+Greenpeace – Environmental activism.
+Sierra Club – Conservation and environmental justice.
+The Nature Conservancy – Protects ecosystems.
+National Geographic Society – Science and exploration.
+The Ocean Cleanup – Ocean pollution solutions.
+The World Wildlife Fund (WWF) – Wildlife conservation.
+350.org – Climate action.
+Union of Concerned Scientists (UCS) – Science-based policy advocacy.
+The Skeptics Society – Promotes critical thinking.
+Committee for Skeptical Inquiry (CSI) – Investigates paranormal claims.
+Center for Inquiry (CFI) – Promotes scientific skepticism.
+The National Academy of Sciences (NAS) – Scientific research and policy.
+The American Association for the Advancement of Science (AAAS) – Science advocacy.
+The Royal Society (UK) – Scientific research and education.
+The National Science Foundation (NSF) – Funding for scientific research.
+Social Justice & Civil Rights
+American Civil Liberties Union (ACLU) – Civil rights advocacy.
+NAACP (National Association for the Advancement of Colored People) – Racial justice.
+Human Rights Campaign (HRC) – LGBTQ+ rights.
+The ACLU of Texas – State-level civil rights.
+The Southern Poverty Law Center (SPLC) – Combats hate groups.
+The National Organization for Women (NOW) – Women’s rights.
+The NAACP Legal Defense Fund – Legal advocacy for civil rights.
+The Anti-Defamation League (ADL) – Combats anti-Semitism and hate.
+The Southern Poverty Law Center (SPLC) – Anti-racism work.
+The International Gay and Lesbian Human Rights Commission (IGLHRC) – LGBTQ+ rights globally.
+The Movement for Black Lives (M4BL) – Black liberation.
+The Women’s March – Gender equality and social justice.
+The Disability Rights Education & Defense Fund (DREDF) – Disability rights.
+The National Council of La Raza (NCLR) – Latino civil rights.
+The Asian American Justice Center (AAJC) – Asian American advocacy.
+Education & Youth Groups
+The Secular Education Network (SEN) – Secular education advocacy.
+The Humanist Press – Publishes secular literature.
+The American Humanist Association’s Youth Programs – Youth engagement.
+The Secular Student Alliance (SSA) – Secular student networks.
+The National Center for Science Education (NCSE) – Science education advocacy.
+The National Association of Biology Teachers (NABT) – Science education.
+The American Association of University Women (AAUW) – Women’s education.
+The National Association of Educational Writers (NAEW) – Education journalism.
+The National Education Association (NEA) – Educator advocacy.
+The International Secular Humanist Association (ISHA) – Global education.
+Health & Wellness
+The American Association for the Advancement of Science (AAAS) – Health research.
+The American College of Obstetricians and Gynecologists (ACOG) – Women’s health.
+The American Psychological Association (APA) – Mental health advocacy.
+The National Institute of Mental Health (NIMH) – Mental health research.
+The American Cancer Society (ACS) – Cancer research and support.
+The American Heart Association (AHA) – Cardiovascular health.
+The Centers for Disease Control and Prevention (CDC) – Public health.
+The National Institutes of Health (NIH) – Medical research.
+The World Health Organization (WHO) – Global health advocacy.
+The American Diabetes Association (ADA) – Diabetes education.
+Arts & Culture
+The Secular Society (UK) – Secular culture and arts.
+The Humanist Press – Secular literature and art.
+The National Endowment for the Arts (NEA) – Arts funding.
+The American Theatre Wing – Theatre advocacy.
+The National Endowment for the Humanities (NEH) – Humanities research.
+The American Film Institute (AFI) – Film and media.
+The National Museum of African American History and Culture – Cultural education.
+The Smithsonian Institution – Cultural and scientific research.
+The American Library Association (ALA) – Library advocacy.
+The National Association of Independent Schools (NAIS) – Education and culture.
+Political & Advocacy Groups
+The Progressive Alliance – Global progressive politics.
+The Democratic Socialists of America (DSA) – Socialist advocacy.
+The American Constitution Society (ACS) – Constitutional rights.
+The Brennan Center for Justice – Voting rights and civil liberties.
+The Open Society Foundations – Global advocacy.
+The National Organization for Women (NOW) – Women’s rights.
+The American Civil Liberties Union (ACLU) – Civil rights.
+The ACLU of Texas – State-level civil rights.
+The Southern Poverty Law Center (SPLC) – Anti-racism.
+The Center for American Progress (CAP) – Progressive policy.
+International & Global Groups
+The United Nations (UN) – Global governance and human rights.
+The International Labour Organization (ILO) – Workers’ rights.
+The International Monetary Fund (IMF) – Economic policy.
+The World Bank – Development and poverty reduction.
+The International Secular Humanist Association (ISHA) – Global secularism.
+The International Humanist and Ethical Union (IHEU) – Global humanism.
+The International Association for the Advancement of Science (IAAS) – Global science.
+The International Union for Conservation of Nature (IUCN) – Environmental protection.
+The World Health Organization (WHO) – Global health.
+The International Council of Nurses (ICN) – Nursing advocacy.
+Miscellaneous & Regional Groups
+The Secular Student Alliance (SSA) – Local student chapters.
+The American Humanist Association’s Local Chapters – Regional humanist groups.
+The Freethought Association (UK) – Secularist networks.
+The Secular Society (UK) – Regional activism.
+The National Association of Biology Teachers (NABT) – Local education.
+The National Education Association (NEA) – State chapters.
+The American Association for the Advancement of Science (AAAS) – Regional chapters.
+The American Psychological Association (APA) – Local chapters.
+The American Medical Association (AMA) – Regional advocacy.
+The American Library Association (ALA) – Local chapters.

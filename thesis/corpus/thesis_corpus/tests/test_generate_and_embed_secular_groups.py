@@ -7,6 +7,7 @@ see module docstring) and are exercised for real on the Windows machine.
 Run from thesis/corpus/:  python -m unittest thesis_corpus.tests.test_generate_and_embed_secular_groups -v
 """
 import unittest
+from unittest import mock
 
 from thesis_corpus import generate_and_embed_secular_groups as gesg
 
@@ -43,6 +44,20 @@ class TestParseGroupList(unittest.TestCase):
         raw = "\n".join(good[:4] + ["```python", "### Header"] + good[4:])
         self.assertEqual(gesg.parse_group_list(raw), good)
 
+    def test_raises_on_generic_clarifying_question_non_answer(self):
+        # A real failure, reproduced verbatim: a live run against qwen3:8b
+        # returned exactly this -- four short, markdown-free lines that
+        # none of the length/artifact checks caught -- instead of
+        # attempting the task at all. 4/4 rejected must raise.
+        raw = "\n".join([
+            "Are you asking about a specific topic?",
+            "Do you need help with a task or problem?",
+            "Are you looking for information or guidance?",
+            "Let me know, and I'll be happy to assist!",
+        ])
+        with self.assertRaises(ValueError):
+            gesg.parse_group_list(raw)
+
     def test_raises_when_the_model_goes_completely_off_topic(self):
         # A real failure, reproduced: a live run asked for a name list and
         # instead got a full markdown tutorial about scraping Reddit
@@ -74,6 +89,47 @@ class TestDefaultChatTimeout(unittest.TestCase):
         # real case that timed out: n=100 against qwen3:8b at a fixed 120s
         self.assertEqual(gesg.default_chat_timeout(100), 600.0)
         self.assertGreater(gesg.default_chat_timeout(100), 120.0)
+
+
+class TestGenerateGroupNamesWithRetries(unittest.TestCase):
+    def test_returns_names_on_first_try_when_good(self):
+        good_raw = "\n".join([f"Group {i}" for i in range(10)])
+        with mock.patch.object(gesg, "generate_group_names_raw", return_value=good_raw) as m:
+            names = gesg.generate_group_names_with_retries("host", "model", n=10, max_attempts=3)
+        self.assertEqual(len(names), 10)
+        m.assert_called_once()
+
+    def test_retries_and_recovers_from_a_transient_non_answer(self):
+        # First attempt: the real "only 4 names" failure (plausible-looking
+        # but far too few relative to n=10, even though none individually
+        # trip the length/markdown checks) -- MIN_NAMES_FRACTION must catch
+        # this even when parse_group_list itself doesn't raise.
+        bad_raw = "\n".join(["Group A", "Group B"])
+        good_raw = "\n".join([f"Group {i}" for i in range(10)])
+        with mock.patch.object(gesg, "generate_group_names_raw", side_effect=[bad_raw, good_raw]) as m:
+            names = gesg.generate_group_names_with_retries("host", "model", n=10, max_attempts=3)
+        self.assertEqual(len(names), 10)
+        self.assertEqual(m.call_count, 2)
+
+    def test_raises_after_exhausting_all_attempts(self):
+        bad_raw = "\n".join(["Group A", "Group B"])
+        with mock.patch.object(gesg, "generate_group_names_raw", return_value=bad_raw) as m:
+            with self.assertRaises(RuntimeError):
+                gesg.generate_group_names_with_retries("host", "model", n=10, max_attempts=3)
+        self.assertEqual(m.call_count, 3)
+
+    def test_writes_raw_response_to_out_dir_on_every_attempt(self):
+        import tempfile
+        from pathlib import Path
+
+        bad_raw = "Are you asking about a specific topic?"
+        good_raw = "\n".join([f"Group {i}" for i in range(10)])
+        with tempfile.TemporaryDirectory() as tmp:
+            out_dir = Path(tmp)
+            with mock.patch.object(gesg, "generate_group_names_raw", side_effect=[bad_raw, good_raw]):
+                gesg.generate_group_names_with_retries("host", "model", n=10, max_attempts=3, out_dir=out_dir)
+            raw_path = out_dir / "generated_secular_groups_raw_response.txt"
+            self.assertEqual(raw_path.read_text(encoding="utf-8"), good_raw)
 
 
 if __name__ == "__main__":
