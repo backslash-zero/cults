@@ -1,0 +1,8 @@
+{
+  "script": "thesis_corpus.embed_domain_terms",
+  "corpus": "interviews",
+  "run_tag": "20260912",
+  "embed_model": "bge-m3",
+  "filter": "not term.islower()",
+  "git_commit": "7f2acf277132b5ef3fa8e26272d052b562550c8d"
+}

@@ -1,0 +1,11 @@
+{
+  "script": "thesis_corpus.embed_v2",
+  "corpus": "interviews",
+  "run_tag": "20260912",
+  "embed_model": "bge-m3",
+  "expressions_v2_sha256": "f6d9d5321340a3c9ea1f6bb26c2db1adbab39c51619338e9edfcd5336c5f8ce1",
+  "git_commit": "7f2acf277132b5ef3fa8e26272d052b562550c8d",
+  "platform": "win32",
+  "created_at": "2026-09-11T13:39:20.436084+00:00",
+  "ollama_host": "http://127.0.0.1:11434"
+}

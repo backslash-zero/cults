@@ -1,0 +1,30 @@
+{
+  "script": "thesis_corpus.extract_interviews_full",
+  "script_version": "2.0.0",
+  "corpus": "interviews",
+  "model": "qwen3:4b",
+  "judge_model": null,
+  "judge_version": null,
+  "judge_prompt_sha256": null,
+  "screening": {
+    "extraction_version": "interviews-full-2.0.0",
+    "prompt_sha256": "8dc071fc86c18d556a5e0ae6a859ab2106b77f32494f84ca8433230a74405597",
+    "ollama_options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 16384
+    },
+    "ollama_think": false
+  },
+  "stage1_audit": {
+    "audit_csv": "C:\\Users\\DesktopMachine_HU\\Documents\\cults\\thesis\\corpus\\processed\\audits\\stage1_text_integrity_20260909.csv",
+    "audit_csv_relative": "processed\\audits\\stage1_text_integrity_20260909.csv",
+    "audit_csv_sha256": "aa27b16bae8eaa240788d1f20f5dc027fcd3de68cafa1303735dc2c67bd8687d",
+    "audit_regions_sha256": "f34a554af701d6788d8ee5caeb387ce7cafcc5f3a3fb0299b2e97354f85e90ef"
+  },
+  "text_transform_policy": "newline_to_space (screen_v2.fold_newlines); verbatim_expression untouched",
+  "git_commit": "7f2acf277132b5ef3fa8e26272d052b562550c8d",
+  "platform": "win32",
+  "created_at": "2026-09-11T13:12:43.877301+00:00",
+  "ollama_host": "http://127.0.0.1:11434"
+}

@@ -38,6 +38,14 @@ processed/shared_space_v2/literature_balanced_sample.jsonl
 processed/shared_space_v2/pca_transform.joblib
 processed/shared_space_v2/interview_prototypes.jsonl
 
+# Same as shared_space_v2 above, but for shared_space_v3 (literature +
+# MIVILUDES v2, pooled with the exhaustive interview archive instead of the
+# archived selective one -- see build_shared_space.py's --interviews-archive-dir).
+processed/shared_space_v3/embedding_space.jsonl
+processed/shared_space_v3/literature_balanced_sample.jsonl
+processed/shared_space_v3/pca_transform.joblib
+processed/shared_space_v3/interview_prototypes.jsonl
+
 # geometric-analysis toolkit output -- large, regeneratable from
 # embedding_space.jsonl, and qualitative-retrieval tables carry literal
 # copyrighted excerpt text (same reasoning as criterion_expressions*.jsonl
@@ -45,6 +53,15 @@ processed/shared_space_v2/interview_prototypes.jsonl
 # covered by this -- that's the durable, manually-reviewed research record.
 processed/analysis/
 processed/analysis_v2/
+# Stale: an early iteration of analyze_corpus_centroids.py wrote here (via
+# gac.resolve_space_paths against shared_space_v3) before that module
+# switched to raw bge-m3 (no PCA) and moved its output to processed/analysis_raw/
+# below -- superseded, never referenced by any Analysis/*.md doc, not committed.
+processed/analysis_v3/
+# analyze_corpus_centroids.py's raw-bge-m3 (no PCA) output -- same reasoning:
+# centroid_neighbors.csv/criterion_nearest_neighbors.csv carry verbatim
+# expression text, and the PNGs are regeneratable from the source archives.
+processed/analysis_raw/
 
 # qa_interview_entity_trace.py's own output -- a QA aid, not a thesis
 # deliverable, and its CSV/PDF embed verbatim participant interview text

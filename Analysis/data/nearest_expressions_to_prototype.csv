@@ -1,0 +1,11 @@
+rank,key,label,euclidean_distance,cosine_similarity
+1,b4-sep10-1838:0,Religion.,0.6142752963958782,0.8212739156892719
+2,b4-sep10-2003:0,Religion.,0.6142752963958782,0.8212739156892719
+3,b3-aug18-1645:0,Un groupe qui suit une doctrine.,0.6457772307053182,0.7878402661927002
+4,b2-aug13-1840:0,Somehow they try to convince people to join the cult.,0.6499945542695599,0.783236881278143
+5,b3-aug23-1213:0,Une secte.,0.6630677339036346,0.7687783578235317
+6,noll-2002-the-jung-cult-origins-of-a-charismatic-movement:0,It is not just religious but a religion .,0.6652072579122231,0.7663852367265942
+7,b4-sep10-1838:0,"Ouais, religion.",0.6664827555710336,0.7649544675247992
+8,b3-aug21-1932:0,Une communauté.,0.6671149674072245,0.7642443386452005
+9,hayes-2006-new-religious-movements-in-the-catholic-church:110,This is Christianity.,0.6679676701579346,0.7632851500376227
+10,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:113,It is a religious organization without a doubt.,0.6699329613425473,0.7610704924647307

@@ -1,0 +1,26 @@
+{
+  "corpus": "interviews",
+  "run_tag": "20260912",
+  "model": "qwen3:4b",
+  "judge_model": null,
+  "documents": {
+    "done": 28
+  },
+  "chunks": {
+    "total": 28,
+    "called": 28,
+    "model_failed": 0,
+    "model_failure_rate": 0.0
+  },
+  "segments": {
+    "total": 669,
+    "labeled": 667,
+    "unlabeled": 2,
+    "labeled_rate": 0.997,
+    "per_document": 23.893
+  },
+  "label_issue_codes": {
+    "segment_unlabeled": 2
+  },
+  "updated_at": "2026-09-11T13:30:16.576258+00:00"
+}

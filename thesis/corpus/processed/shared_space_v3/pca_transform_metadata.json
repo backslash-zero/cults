@@ -1,0 +1,15 @@
+{
+  "k": 408,
+  "embedding_dim": 1024,
+  "variance_threshold": 0.95,
+  "variance_at_k": 0.9502253101522019,
+  "seed": 42,
+  "n_points_fit": 15014,
+  "embedding_space_sha256": "f369cfa236f68bdc640695a535d852c0cf5c9b20ec2a07dc089fe38c56eb0bc3",
+  "archive_paths": {
+    "literature": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/v2/literature/run_20260910/criterion_expressions.jsonl",
+    "miviludes": "/Users/celestinmeunier/Documents/cults/thesis/corpus/processed/v2/miviludes/run_20260910/criterion_expressions.jsonl",
+    "interviews": "processed/interviews_full/interviews/run_20260912/criterion_expressions.jsonl"
+  },
+  "git_commit": "1d5ce24bc44eb4d942f020d4a7703219e75813ea"
+}

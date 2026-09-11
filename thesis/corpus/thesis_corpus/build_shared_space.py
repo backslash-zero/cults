@@ -201,6 +201,17 @@ CONCEPTNET_CONCEPTS_PATH = CORPUS_DIR / "dictionaries" / "conceptnet_concepts_em
 MANUALLY_EXCLUDED_POOLED_KEYS = {
     "b3-aug23-1213:0",
 }
+# Same exclusion, re-keyed for archives that carry a `segment_index` (the
+# exhaustive interview pipeline, extract_interviews_full.py): there,
+# chunk_index identifies a whole transcript-unit (often the WHOLE
+# transcript, per interview_chunking.py), not one candidate, so the
+# document_id:chunk_index key above would silently drop every segment of
+# that interview instead of just "Sept?" (confirmed: it did, 24/24 segments
+# of b3-aug23-1213 were dropped on the first shared_space_v3 pooling run).
+# segment_index=4 is "Sept?" in run_20260912 -- see load_corpus_points_v2.
+MANUALLY_EXCLUDED_POOLED_SEGMENT_KEYS = {
+    "b3-aug23-1213:0:4",
+}
 # Produced by translate_miviludes_expressions.py on the Ollama machine (see
 # thesis_corpus/README.md) -- translates MIVILUDES's own expressions to
 # English so they're embedded on the same footing as the English-only
@@ -523,7 +534,15 @@ def load_corpus_points_v2(
                 response_rank_by_document[document_id] += 1
                 response_rank = response_rank_by_document[document_id]
 
-            if key in MANUALLY_EXCLUDED_POOLED_KEYS:
+            # Archives with a segment_index (exhaustive interview pipeline) are
+            # excluded by the finer document_id:chunk_index:segment_index key
+            # instead -- see MANUALLY_EXCLUDED_POOLED_SEGMENT_KEYS's docstring
+            # for why the coarser key isn't safe there.
+            if "segment_index" in item:
+                if f"{key}:{item['segment_index']}" in MANUALLY_EXCLUDED_POOLED_SEGMENT_KEYS:
+                    manually_excluded += 1
+                    continue
+            elif key in MANUALLY_EXCLUDED_POOLED_KEYS:
                 manually_excluded += 1
                 continue
 
@@ -540,6 +559,7 @@ def load_corpus_points_v2(
                 "attribution": item.get("attribution"),
                 "claim_mode": item.get("claim_mode"),
                 "epistemic_status": item.get("epistemic_status"),
+                "cult_relevant": item.get("cult_relevant"),
                 "response_rank": response_rank,
                 "vector": item["embedding_vector"],
             })
@@ -602,6 +622,7 @@ def load_miviludes_points_v2(
                 "attribution": item.get("attribution"),
                 "claim_mode": item.get("claim_mode"),
                 "epistemic_status": item.get("epistemic_status"),
+                "cult_relevant": item.get("cult_relevant"),
                 "response_rank": None,
                 "vector": translation["embedding_vector_en"],
             })
@@ -1068,6 +1089,16 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=None,
                          help="Override the output directory (default: processed/shared_space/, or "
                               "processed/shared_space_v2/ if --run-tag is given).")
+    parser.add_argument("--interviews-archive-dir", type=Path, default=None,
+                         help="Override just the interviews corpus_archives entry to "
+                              "<this dir>/criterion_expressions.jsonl, and its domain_term_paths to "
+                              "<this dir>/{chunk_terms.jsonl,domain_term_vectors.jsonl} -- for pooling a run that "
+                              "doesn't live under processed/v2/interviews/run_<run-tag>/, e.g. "
+                              "processed/interviews_full/interviews/run_<tag>/ (the exhaustive interview pipeline, "
+                              "see extract_interviews_full.py). Schema-compatible with load_corpus_points_v2 as-is "
+                              "(same required fields), so no other code path changes. literature/miviludes are "
+                              "unaffected and still resolved from --run-tag. Defaults --output-dir to "
+                              "processed/shared_space_v3/ when set (still overridable via --output-dir).")
     parser.add_argument("--min-expression-words", type=int, default=MIN_EXPRESSION_WORDS,
                          help="Pooling-time short-expression filter (word count). v1 default is 5. v2 archives "
                               "already screen short fragments at extraction time with a referent test a bare "
@@ -1082,7 +1113,11 @@ def main() -> None:
             for corpus in CORPUS_ARCHIVES
         }
         miviludes_translations_path = v2_root / "miviludes" / f"run_{args.run_tag}" / "expression_translations_embedded.jsonl"
-        output_dir = args.output_dir or (SHARED_SPACE_DIR.parent / "shared_space_v2")
+        default_output_dir = SHARED_SPACE_DIR.parent / "shared_space_v2"
+        if args.interviews_archive_dir:
+            corpus_archives["interviews"] = args.interviews_archive_dir / "criterion_expressions.jsonl"
+            default_output_dir = SHARED_SPACE_DIR.parent / "shared_space_v3"
+        output_dir = args.output_dir or default_output_dir
     else:
         corpus_archives = CORPUS_ARCHIVES
         miviludes_translations_path = MIVILUDES_EXPRESSION_TRANSLATIONS_PATH

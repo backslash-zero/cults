@@ -1,0 +1,18 @@
+rank,key,label,euclidean_distance,cosine_similarity
+1,crit-radical-behavior-change,Le changement radical de comportement,0.7324996868538224,0.6871638603986678
+2,crit-authoritarian-opaque-group,"L'existence d'un groupe organisé sur un mode autoritaire, opaque et cloisonné, avec présence d'un dirigeant de type leader charismatique ou praticien référent exclusif",0.7652785387700344,0.6458115403382494
+3,crit-infiltration-public-authorities,Les tentatives d'infiltration des pouvoirs publics,0.7753035171005911,0.6328027285824145
+4,crit-rupture-origin-environment,"La rupture avec l'environnement d'origine (proches, famille)",0.7768452129023106,0.6307874181163522
+5,crit-difficulty-leaving-group,De grandes difficultés voire une impossibilité pour un membre de quitter ledit groupe,0.7823312843595769,0.6235829929710769
+6,crit-alarming-dietary-change,Le changement inquiétant des habitudes alimentaires,0.7896545923168639,0.6138859679575785
+7,crit-harsh-living-conditions,Les conditions de vie particulièrement éprouvantes ou déstabilisantes,0.7988688692798455,0.6015573701033008
+8,crit-indoctrination-of-children,L'embrigadement des enfants,0.7993801551369062,0.6008689705036065
+9,crit-public-order-contestation,La contestation des institutions et les troubles à l'ordre public ; la menace d'atteinte à l'ordre public,0.8017166950616323,0.5977181339146413
+10,crit-rejection-of-outside-world,Le refus de l'autre et le dénigrement du monde extérieur : l'absence totale d'accès aux médias ou moyens de communication,0.8107774854614289,0.5854122992630968
+11,crit-physical-integrity-harm,"Les atteintes à l'intégrité physique des personnes en état de faiblesse et d'ignorance, et plus généralement la commission d'actes criminels ou délictueux sur des individus, majeurs ou mineurs",0.8116545308631107,0.5842136109532029
+12,crit-mental-destabilization,La déstabilisation mentale et la sujétion psychologique ou physique conduisant à des actions ou abstentions gravement préjudiciables aux personnes et plus généralement à la perte d'esprit critique et d'autonomie,0.8136565712351611,0.5814726991543904
+13,crit-dubious-care-exclusive,L'offre de soins et de médicaments douteux et exclusive du recours à des pratiques conventionnelles,0.8169795074071561,0.5769086063467974
+14,crit-deceptive-recruitment,Les méthodes de recrutement trompeuses,0.8243393261922108,0.5667341715595388
+15,crit-violation-republic-principles,La violation des principes fondateurs de la République,0.839546988180348,0.5454212779335346
+16,crit-financial-demands-opacity,"Le caractère exorbitant des exigences financières ; la violation des règlements ou de la loi (travail illégal, formation professionnelle déviante…) et/ou l'opacité de la gestion financière",0.8416119595175534,0.5424969087669659
+17,crit-legal-disputes,L'importance des démêlés judiciaires,0.8558688317204522,0.5221136003318443

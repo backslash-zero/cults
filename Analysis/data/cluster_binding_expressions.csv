@@ -1,0 +1,473 @@
+cluster_id,rank,key,label,euclidean_distance,cosine_similarity
+0,1,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:65,the Peoples Temple,0.37020314937908444,0.9431370983966688
+0,2,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:112,the Peoples Temple,0.37020314937908444,0.9431370983966688
+0,3,clarke-2004-encyclopedia-of-new-religious-movements:494,the Peoples Temple,0.37020314937908444,0.9431370983966688
+0,4,dawson-2009-cults-and-new-religious-movements-a-reader:177,the Peoples Temple,0.37020314937908444,0.9431370983966688
+0,5,dawson-2009-cults-and-new-religious-movements-a-reader:176,The Peoples Temple,0.3787168326726651,0.9390506606483274
+0,6,clarke-2004-encyclopedia-of-new-religious-movements:462,The Peoples Temple,0.3787168326726651,0.9390506606483274
+0,7,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:3,Peoples Temple,0.40147206592496354,0.9276728670851465
+0,8,chryssides-2006-the-a-to-z-of-new-religious-movements:145,Peoples Temple,0.40147206592496354,0.9276728670851465
+1,1,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:15,the Branch Davidians,0.48838857343426517,0.8892246554548345
+1,2,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:4,the Branch Davidians,0.48838857343426517,0.8892246554548345
+1,3,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:15,the Branch Davidians,0.48838857343426517,0.8892246554548345
+1,4,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:65,the Branch Davidians,0.48838857343426517,0.8892246554548345
+1,5,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:177,Branch Davidians,0.4978568252134083,0.882723723501063
+1,6,hexham-et-al-2001-new-religious-movements-challenge-and-response:239,Branch Davidians,0.4978568252134083,0.882723723501063
+1,7,2008-the-oxford-handbook-of-new-religious-movements-1:147,Branch Davidians,0.4978568252134083,0.882723723501063
+1,8,clarke-2004-encyclopedia-of-new-religious-movements:714,Branch Davidians,0.4978568252134083,0.882723723501063
+2,1,2008-the-oxford-handbook-of-new-religious-movements-1:327,The Church of Scientology,0.3060571917275642,0.9589521180759938
+2,2,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:34,The Church of Scientology,0.3060571917275642,0.9589521180759938
+2,3,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:21,The Church of Scientology,0.3060571917275642,0.9589521180759938
+2,4,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:324,The Church of Scientology,0.3060571917275642,0.9589521180759938
+2,5,melton-2014-encyclopedic-handbook-of-cults-in-america:241,Church of Scientology,0.33903020223489194,0.9463481695115779
+2,6,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:232,Church of Scientology,0.33903020223489194,0.9463481695115779
+2,7,barker-2020-even-new-religious-movements-have-legacies:2,Church of Scientology,0.33903020223489194,0.9463481695115779
+2,8,barker-2020-even-new-religious-movements-have-legacies-2124:2,Church of Scientology,0.33903020223489194,0.9463481695115779
+3,1,barker-2020-even-new-religious-movements-have-legacies-2124:8,"the 'suicide cult', Heaven's Gate",0.45412443531064683,0.9064896986822326
+3,2,barker-2020-even-new-religious-movements-have-legacies:8,"the 'suicide cult', Heaven's Gate",0.45412443531064683,0.9064896986822326
+3,3,2008-the-oxford-handbook-of-new-religious-movements-1:393,the collective suicide of Heaven's Gate,0.47027954952203593,0.8963900059013847
+3,4,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:113,the early 1997 San Diego Heaven's Gate cult suicide,0.5414230172144731,0.847711205366757
+3,5,dawson-2009-the-study-of-new-religious-movements-and-the-radicalization-of-home:1,the collective suicide of Heaven's Gate in San Diego in 1997,0.5414868388286219,0.8476644148907871
+3,6,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:198,The Heaven's Gate Suicides,0.5430542830181737,0.8465145355212964
+3,7,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:13,the Heaven's Gate collective suicide in California in 1997,0.5569887674510277,0.8361477018687349
+3,8,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:59,suicide cults,0.5831807799287423,0.8159506893003736
+4,1,2008-the-oxford-handbook-of-new-religious-movements-1:134,Heaven's Gate,0.20683626715792902,0.9848487070685797
+4,2,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:1,Heaven's Gate,0.20683626715792902,0.9848487070685797
+4,3,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:130,Heaven's Gate,0.20683626715792902,0.9848487070685797
+4,4,dawson-2009-cults-and-new-religious-movements-a-reader:262,Heaven's Gate,0.20683626715792902,0.9848487070685797
+4,5,dawson-2006-psychopathologies-and-the-attribution-of-charisma-a-critical-introdu:1,Heaven's Gate,0.20683626715792902,0.9848487070685797
+4,6,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:58,Heaven's Gate,0.20683626715792902,0.9848487070685797
+4,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:303,Heaven's Gate,0.20683626715792902,0.9848487070685797
+4,8,clarke-2004-encyclopedia-of-new-religious-movements:275,Heaven's Gate,0.20683626715792902,0.9848487070685797
+5,1,barker-2020-even-new-religious-movements-have-legacies:7,the International Society for Krishna Consciousness (ISKCON),0.5066869457124314,0.8760761848939745
+5,2,barker-2020-even-new-religious-movements-have-legacies-2124:7,the International Society for Krishna Consciousness (ISKCON),0.5066869457124314,0.8760761848939747
+5,3,dawson-2009-cults-and-new-religious-movements-a-reader:237,The International Society for Krishna Consciousness (ISKCON),0.5085284951802292,0.8747786290750051
+5,4,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:323,The International Society for Krishna Consciousness,0.5108703921459387,0.8731216886905442
+5,5,hexham-et-al-2001-new-religious-movements-challenge-and-response:79,the International Society for Krishna Consciousness,0.5176846864064838,0.8682570869133573
+5,6,melton-2014-encyclopedic-handbook-of-cults-in-america:156,the International Society for Krishna Consciousness,0.5176846864064838,0.8682570869133573
+5,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:113,the International Society for Krishna Consciousness,0.5176846864064838,0.8682570869133573
+5,8,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:30,the International Society for Krishna Consciousness,0.5176846864064838,0.8682570869133573
+6,1,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:274,the Raelian religion,0.4644915827218184,0.8970907824985955
+6,2,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:18,the Raëlian religion,0.4678642643997646,0.8950049799723655
+6,3,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:12,the Raëlian religion,0.4678642643997646,0.8950049799723655
+6,4,2008-the-oxford-handbook-of-new-religious-movements-1:15,the Raelian movement,0.49464412623498116,0.8779082728497155
+6,5,2008-the-oxford-handbook-of-new-religious-movements-1:344,Raelian Religion,0.512527637474346,0.865961385796074
+6,6,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:191,Raelian movement,0.5142942909312497,0.8647582983136592
+6,7,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:205,Rae ¨l (Raelian movement),0.5491162696650312,0.8401970053049441
+6,8,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:14,Raelians,0.5552544723734871,0.8357005933615178
+7,1,saliba-2009-psychology-and-the-new-religious-movements:5,the Solar Temple,0.33412213499407767,0.9601651371723874
+7,2,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:275,the Solar Temple,0.33412213499407767,0.9601651371723874
+7,3,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:66,the Solar Temple,0.33412213499407767,0.9601651371723874
+7,4,dawson-2009-cults-and-new-religious-movements-a-reader:177,the Solar Temple,0.33412213499407767,0.9601651371723874
+7,5,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:78,the Solar Temple,0.33412213499407767,0.9601651371723874
+7,6,clarke-2004-encyclopedia-of-new-religious-movements:94,the Solar Temple,0.33412213499407767,0.9601651371723874
+7,7,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:110,the Solar Temple,0.33412213499407767,0.9601651371723874
+7,8,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:42,The Solar Temple,0.35264757180415324,0.9519780732262507
+8,1,2008-the-oxford-handbook-of-new-religious-movements-1:164,Falun Gong,0.3763509258612696,0.9365537740614032
+8,2,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:322,Falun Gong,0.3763509258612696,0.9365537740614032
+8,3,chryssides-2006-the-a-to-z-of-new-religious-movements:81,Falun Gong,0.3763509258612696,0.9365537740614032
+8,4,clarke-2004-encyclopedia-of-new-religious-movements:127,Falun Gong,0.3763509258612696,0.9365537740614032
+8,5,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:144,Falun Gong,0.3763509258612696,0.9365537740614032
+8,6,dawson-2006-psychopathologies-and-the-attribution-of-charisma-a-critical-introdu:6,Falun Gong,0.3763509258612696,0.9365537740614032
+8,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:149,the Falun Gong,0.40760614544712614,0.9212305773962126
+8,8,clarke-2004-encyclopedia-of-new-religious-movements:216,the Falun Gong movement,0.4613311492056726,0.8920365762373871
+9,1,clarke-2004-encyclopedia-of-new-religious-movements:358,NRMs,0.28957710555698857,0.970416764792349
+9,2,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:246,NRMs,0.28957710555698857,0.970416764792349
+9,3,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:8,NRMs,0.28957710555698857,0.970416764792349
+9,4,hexham-et-al-2001-new-religious-movements-challenge-and-response:100,NRMs,0.28957710555698857,0.970416764792349
+9,5,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:311,NRMs,0.28957710555698857,0.970416764792349
+9,6,denaux-2002-the-attitude-of-belgian-authorities-toward-new-religious-movements:10,NRMs,0.28957710555698857,0.970416764792349
+9,7,dawson-2009-cults-and-new-religious-movements-a-reader:236,NRMs,0.28957710555698857,0.970416764792349
+9,8,namini-et-al-2009-how-is-well-being-related-to-membership-in-new-religious-movem:13,NRMs,0.28957710555698857,0.970416764792349
+10,1,dawson-2009-cults-and-new-religious-movements-a-reader:154,new religious movements (NRMs),0.29067953083985576,0.9640310420478937
+10,2,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:67,new religious movements (NRMs),0.29067953083985576,0.9640310420478937
+10,3,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:2,new religious movements (NRMs),0.29067953083985576,0.9640310420478937
+10,4,2008-the-oxford-handbook-of-new-religious-movements-1:133,new religious movements (NRMs),0.29067953083985576,0.9640310420478937
+10,5,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:107,new religious movements (NRMs),0.29067953083985576,0.9640310420478937
+10,6,barker-2020-even-new-religious-movements-have-legacies:1,new religious movements (NRMs),0.29067953083985576,0.9640310420478937
+10,7,barker-2020-even-new-religious-movements-have-legacies-2124:1,new religious movements (NRMs),0.29067953083985576,0.9640310420478937
+10,8,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:89,new religious movements (NRMs),0.29067953083985576,0.9640310420478937
+11,1,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:16,NRMs are religions.,0.5123325804407887,0.8671406623976414
+11,2,dawson-2009-cults-and-new-religious-movements-a-reader:28,NRMs are simply caught up in a process which affects all religious collectivities.,0.5666219684171062,0.8279367245032088
+11,3,dawson-2009-cults-and-new-religious-movements-a-reader:31,Various NRMs share beliefs and practices that tie them to certain religious traditions.,0.5715668457024207,0.8241696836823358
+11,4,buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on:1,"NRMs may attract people who are rigid on religious and socio-moral issues, submissive and conformist.",0.5778829624568784,0.8193109493404067
+11,5,buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on-2123:1,"NRMs may attract people who are rigid on religious and socio-moral issues, submissive and conformist.",0.5778829624568784,0.8193109493404067
+11,6,buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on:1,"NRMs-as new, radical, and marginalized groups-are prone to underline the absolute character of their truth, and the non-negotiable character of their ideas, beliefs, and practices.",0.5894590961521173,0.8102665799689044
+11,7,buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on-2123:1,"NRMs-as new, radical, and marginalized groups-are prone to underline the absolute character of their truth, and the non-negotiable character of their ideas, beliefs, and practices.",0.5894590961521173,0.8102665799689044
+11,8,hexham-et-al-2001-new-religious-movements-challenge-and-response:103,"NRMs may challenge, for example, prevailing sociological ideas about secularisation, the dilemmas of the liberal state, the limits of tolerance in democratic societies, the processes of religious conversion, the routinisation of charisma, and so on.",0.5896022770839608,0.8101536872980604
+12,1,clarke-2004-encyclopedia-of-new-religious-movements:254,Godianism is a neo-African traditional movement with its Head Office in Nigeria.,0.6100465657548835,0.8010535143005739
+12,2,clarke-2004-encyclopedia-of-new-religious-movements:255,Godianism propagates African Traditional Religion,0.6174005355281815,0.7944496647421678
+12,3,clarke-2004-encyclopedia-of-new-religious-movements:255,Godianism actively organizes a panAfrican revival of traditional religion and culture,0.632088669935003,0.7810220430478567
+12,4,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:131,"Godianism, founded by Chief K.O.K.Onyioha in Nigeria, as the religious wing of the National Council of Nigeria and the Cameroons.",0.6384483741435569,0.7751100872302645
+12,5,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:118,"the Kenyan neo-traditionalist movement, Mungiki",0.6874684189897777,0.7275558598610826
+12,6,clarke-2004-encyclopedia-of-new-religious-movements:499,Godianism,0.6915893760725632,0.7233979020839078
+12,7,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:181,Godianism,0.6915893760725632,0.7233979020839078
+12,8,clarke-2004-encyclopedia-of-new-religious-movements:254,The leader of Godianism is Chief K.O.K.Onyioha (19232003).,0.6927758555965507,0.7221959823071152
+13,1,arweck-et-al-2013-educating-the-next-generation-in-universal-values-hindu-relate:1,New Religious Movements (NRMs),0.3275808860969887,0.9540683223388113
+13,2,arweck-et-al-2013-educating-the-next-generation-in-universal-values-hindu-relate-2125:1,New Religious Movements (NRMs),0.3275808860969887,0.9540683223388113
+13,3,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:82,New Religious Movements (NRMs),0.3275808860969887,0.9540683223388113
+13,4,clarke-2004-encyclopedia-of-new-religious-movements:11,New Religious Movements (NRMs),0.3275808860969887,0.9540683223388113
+13,5,shingange-2021-african-pentecostal-mission-and-new-religious-movements-a-critica:0,New Religious Movements (NRMs),0.3275808860969887,0.9540683223388113
+13,6,clarke-2004-encyclopedia-of-new-religious-movements:266,NRMs (New Religious Movements),0.3611359392094832,0.9400038940542672
+13,7,denaux-2002-the-attitude-of-belgian-authorities-toward-new-religious-movements:1,New Religious Movements ('NRMs'),0.3661167811223651,0.9377993476876516
+13,8,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:13,New Religions Studies (NRS),0.4765785215041902,0.8811484077272467
+14,1,clarke-2004-encyclopedia-of-new-religious-movements:138,Christian Science,0.3681155571805983,0.9387551680561756
+14,2,2008-the-oxford-handbook-of-new-religious-movements-1:356,Christian Science,0.3681155571805983,0.9387551680561756
+14,3,barker-2020-even-new-religious-movements-have-legacies-2124:11,Christian Science,0.3681155571805983,0.9387551680561756
+14,4,melton-2014-encyclopedic-handbook-of-cults-in-america:26,Christian Science,0.3681155571805983,0.9387551680561756
+14,5,chryssides-2006-the-a-to-z-of-new-religious-movements:206,Christian Science,0.3681155571805983,0.9387551680561756
+14,6,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:92,Christian Science Church,0.45422780138671004,0.8950025301943261
+14,7,clarke-2004-encyclopedia-of-new-religious-movements:138,Christian Science Journal,0.4783725545080442,0.8810902929041267
+14,8,melton-2014-encyclopedic-handbook-of-cults-in-america:28,"The Church of Christ, Scientist",0.48661754581599403,0.8761743829316981
+15,1,chryssides-2006-the-a-to-z-of-new-religious-movements:217,Satanism,0.5286690265304991,0.858851291700762
+15,2,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:63,Satanism,0.5286690265304991,0.858851291700762
+15,3,clarke-2004-encyclopedia-of-new-religious-movements:562,Satanism,0.5286690265304991,0.858851291700762
+15,4,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:101,Satanic cults,0.5411776488437628,0.8496604548229271
+15,5,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:65,Satanic cults,0.5411776488437628,0.8496604548229271
+15,6,melton-2014-encyclopedic-handbook-of-cults-in-america:256,Satanic practice,0.5455693915727918,0.8463825596475307
+15,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:18,Modern religious Satanism,0.5629809519461707,0.8331261574442159
+15,8,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:190,Satanic ritual abuse,0.5898020725795354,0.8118912278492204
+16,1,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:299,Wicca is a tradition in its own right,0.6113099059411926,0.7982424914737978
+16,2,2008-the-oxford-handbook-of-new-religious-movements-1:44,"Witchcraft, or Wicca, is the fastest growing 'religion' in the USA today.",0.6169018101554432,0.7932933798366344
+16,3,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:424,Wicca,0.6280416193024686,0.783300223072463
+16,4,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:43,Wicca,0.6280416193024686,0.783300223072463
+16,5,clarke-2004-encyclopedia-of-new-religious-movements:678,Wicca,0.6280416193024686,0.783300223072463
+16,6,2008-the-oxford-handbook-of-new-religious-movements-1:469,Wicca,0.6280416193024686,0.783300223072463
+16,7,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:6,Wiccans,0.6301328902010961,0.7814039772802182
+16,8,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:68,"Wicca and witchcraft, a growing 'new religion' in its own right",0.6328560188473001,0.7789255287119788
+17,1,2008-the-oxford-handbook-of-new-religious-movements-1:370,Sahaja Yoga is an example.,0.5628096385544002,0.8378644668149038
+17,2,2008-the-oxford-handbook-of-new-religious-movements-1:361,Sahaja Yoga,0.564810940921707,0.8362542882167411
+17,3,chryssides-2006-the-a-to-z-of-new-religious-movements:158,Sahaja Yoga,0.564810940921707,0.8362542882167411
+17,4,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:44,Sahaja Yoga,0.564810940921707,0.8362542882167411
+17,5,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:238,the Sahaja Yoga movement,0.5734325574971678,0.8292534132058057
+17,6,2008-the-oxford-handbook-of-new-religious-movements-1:29,the Ananda Marga Yoga Society,0.6031146725518676,0.8043393101898225
+17,7,melton-2014-encyclopedic-handbook-of-cults-in-america:240,Ananda Marga Yoga Society,0.6125887565969984,0.7961221529954989
+17,8,gleig-2012-researching-new-religious-movements-from-the-inside-out-and-the-outsi:9,The Integral Yoga movement,0.6350832058402373,0.7760997705507966
+18,1,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:131,Mama Ji Sarkar is respected by his devotees as having been a true majzub,0.5924920971364632,0.8159018186812357
+18,2,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:136,THE MAJZUB MAMA JI SARKAR,0.6325887214698831,0.7801256161186967
+18,3,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:133,"Mama Ji Sarkar sarmast, do sauda dast-ba-dast!",0.6419824142786033,0.7714055201723876
+18,4,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:151,This is a quality of a majzub .,0.6501756511959919,0.7636943331478763
+18,5,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:145,"Rabi'a could be described, undoubtedly with some distortion, as the mother of a revered 'saint' (sa'in) 4 who was regarded as majzub .",0.6785104458405871,0.7362747606388812
+18,6,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:135,muridan muntazim kamiti Mama Ji Sarkar,0.679208927865207,0.7355840153064026
+18,7,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:126,a cult centred on devotion to a living majzub,0.6907318235427025,0.7240868809111163
+18,8,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:138,Mama Ji's body bore the imprint of saintliness,0.692686598389865,0.7221172205226343
+19,1,2008-the-oxford-handbook-of-new-religious-movements-1:427,New Age movement,0.48240054011835903,0.8911239967516059
+19,2,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:121,the New Age movement,0.48507683256921696,0.8893440014737561
+19,3,2008-the-oxford-handbook-of-new-religious-movements-1:87,the New Age Movement,0.49009710474937457,0.8859788761921548
+19,4,clarke-2004-encyclopedia-of-new-religious-movements:540,The New Age Movement,0.4979459585946868,0.8806482476005826
+19,5,clarke-2004-encyclopedia-of-new-religious-movements:220,New Age,0.516524419893447,0.8676928305784947
+19,6,melton-2014-encyclopedic-handbook-of-cults-in-america:119,New Age,0.516524419893447,0.8676928305784947
+19,7,hexham-et-al-2001-new-religious-movements-challenge-and-response:70,New Age,0.516524419893447,0.8676928305784947
+19,8,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:40,New Age,0.516524419893447,0.8676928305784947
+20,1,clarke-2004-encyclopedia-of-new-religious-movements:260,"Osho, founder of the Rajneesh Movement",0.5392515656171069,0.8593400729572636
+20,2,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:7,the Rajneesh movement,0.5594888249886566,0.8431873088974055
+20,3,2008-the-oxford-handbook-of-new-religious-movements-1:15,the Osho Rajneesh group,0.5638469367699052,0.8396309398072135
+20,4,clarke-2004-encyclopedia-of-new-religious-movements:411,Rajneesh Movement,0.5749064328307769,0.8304818876804017
+20,5,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:205,Rajneesh (Rajneesh or Osho movement),0.575597376113158,0.8299046290479927
+20,6,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:88,Rajneesh,0.6114317445537084,0.7990049279735632
+20,7,2008-the-oxford-handbook-of-new-religious-movements-1:298,Rajneesh,0.6114317445537084,0.7990049279735632
+20,8,clarke-2004-encyclopedia-of-new-religious-movements:378,Rajneesh,0.6114317445537084,0.7990049279735632
+21,1,melton-2014-encyclopedic-handbook-of-cults-in-america:114,The Aquarian Conspiracy (1980),0.6517173579658461,0.7631043199639793
+21,2,clarke-2004-encyclopedia-of-new-religious-movements:220,The Aquarian Conspiracy: Personal and Social Transformation in the 1980s,0.6737973619340075,0.7415544447923149
+21,3,clarke-2004-encyclopedia-of-new-religious-movements:129,The Molecules of Emotion (1998),0.6756439374274286,0.7397197235602704
+21,4,clarke-2004-encyclopedia-of-new-religious-movements:251,The Spiral Dance (1989),0.688547661102029,0.7267580170642916
+21,5,hexham-et-al-2001-new-religious-movements-challenge-and-response:52,The Power is Within You (1991),0.691373309187784,0.7238868703323795
+21,6,clarke-2004-encyclopedia-of-new-religious-movements:199,The Human Process for Enlightenment and Freedom (1972),0.7064252108635719,0.7083956569710701
+21,7,hexham-et-al-2001-new-religious-movements-challenge-and-response:52,"How to be Chic, Fabulous and Live Forever (1990)",0.7114350952652903,0.703165519593722
+21,8,clarke-2004-encyclopedia-of-new-religious-movements:288,Such titles as How to Become a Millionaire (1992) and Heavenly Power Defeats Illness (1992) are good examples of these tendencies.,0.7181374601406002,0.6961101898730637
+22,1,clarke-2004-encyclopedia-of-new-religious-movements:587,"There are around 800,000 followers in total in various countries.",0.585302134709239,0.8203920637138071
+22,2,clarke-2004-encyclopedia-of-new-religious-movements:128,"The movement has around 1,500 members and is actively proselytizing.",0.603076349891538,0.8052043590259468
+22,3,clarke-2004-encyclopedia-of-new-religious-movements:39,The movement claims to have at the time of writing more than 130 million members worldwide.,0.613638903518059,0.7959643267964092
+22,4,clarke-2004-encyclopedia-of-new-religious-movements:448,"New Acropolis is now active in fortytwo countries, with some 20,000 members.",0.6433824359240484,0.7690816989347886
+22,5,clarke-2004-encyclopedia-of-new-religious-movements:337,"It claims to have some 15 million followers worldwide, although this is unproven.",0.6706026169784846,0.7433653624932048
+22,6,clarke-2004-encyclopedia-of-new-religious-movements:38,"Agonshu now has a modest following of between one hundred and one thousand members in several countries of the Far East, Asia, and Africa.",0.6755146731368266,0.7386110498708895
+22,7,clarke-2004-encyclopedia-of-new-religious-movements:191,"Eckankar claims to have tens of thousands of members worldwide, many of whom also continue to be members of other religions.",0.6805419258808094,0.7337092937665511
+22,8,chryssides-2006-the-a-to-z-of-new-religious-movements:40,"In 2001 between 1,000 and 1,600 members remain.",0.6998085248301814,0.7145879800175124
+23,1,clarke-2004-encyclopedia-of-new-religious-movements:547,Sathya Sai Baba,0.5723872787868973,0.8327809925276972
+23,2,arweck-et-al-2013-educating-the-next-generation-in-universal-values-hindu-relate:4,Sathya Sai Baba,0.5723872787868973,0.8327809925276972
+23,3,arweck-et-al-2013-educating-the-next-generation-in-universal-values-hindu-relate-2125:4,Sathya Sai Baba,0.5723872787868973,0.8327809925276972
+23,4,chryssides-2006-the-a-to-z-of-new-religious-movements:161,Satya Sai Baba,0.5853489053617448,0.8218648279508622
+23,5,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:235,"Sathya Sai Baba, god-man, guru, mystic, saint",0.5940313177332109,0.8144160774972278
+23,6,arweck-et-al-2013-educating-the-next-generation-in-universal-values-hindu-relate-2125:2,Sathya Sai Baba's followers as devotees,0.6274979560767184,0.7846782021611558
+23,7,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:237,"Sathya Sai Baba is called Bhagawan (God) by devotees, or, fondly, Baba or Swami (Lord).",0.6379155375431553,0.7750889943240149
+23,8,arweck-et-al-2013-educating-the-next-generation-in-universal-values-hindu-relate-2125:7,"Sathya Sai Baba, whose formulation they are, was nurtured in a Hindu environment.",0.6384731472928816,0.7745712197328051
+24,1,clarke-2004-encyclopedia-of-new-religious-movements:428,the Muslim Brotherhood,0.6296648510328483,0.790456289982426
+24,2,melton-2014-encyclopedic-handbook-of-cults-in-america:235,the Black Muslims,0.6330564298683035,0.7871342614673857
+24,3,clarke-2004-encyclopedia-of-new-religious-movements:82,BLACK MUSLIMS,0.6377435449368821,0.7825136691998957
+24,4,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:282,Muslim Brotherhood,0.64191048076004,0.7783767057688498
+24,5,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:171,The Nation of Islam,0.6482882847169079,0.7719933678248257
+24,6,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:104,Wahhabis,0.6488935318543175,0.7713842031868106
+24,7,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:22,the Nation of Islam,0.649464773892493,0.7708089613193064
+24,8,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:174,the Nation of Islam,0.649464773892493,0.7708089613193064
+25,1,2008-the-oxford-handbook-of-new-religious-movements-1:460,Rissho ¯ Ko ¯seikai,0.6570982244011598,0.7690063629386279
+25,2,clarke-2004-encyclopedia-of-new-religious-movements:489,Soka Gakkai,0.6834037263097719,0.7404238645312285
+25,3,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:51,Soka Gakkai,0.6834037263097719,0.7404238645312285
+25,4,hexham-et-al-2001-new-religious-movements-challenge-and-response:177,Soka Gakkai,0.6834037263097719,0.7404238645312285
+25,5,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:118,Soka Gakkai,0.6834037263097719,0.7404238645312285
+25,6,clarke-2004-encyclopedia-of-new-religious-movements:307,Soka Gakkai o Kiru,0.6889494721312346,0.734254877951585
+25,7,clarke-2004-encyclopedia-of-new-religious-movements:104,Byakkô Shinkô Kai,0.6903103800399061,0.732733379410189
+25,8,clarke-2004-encyclopedia-of-new-religious-movements:541,Naganuma Myôkô,0.6974321238141123,0.7247223864330332
+26,1,2008-the-oxford-handbook-of-new-religious-movements-1:134,Aum Shinrikyo,0.40120758066516343,0.9326130706376836
+26,2,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:205,Aum Shinrikyo,0.40120758066516343,0.9326130706376836
+26,3,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:329,Aum Shinrikyo,0.40120758066516343,0.9326130706376836
+26,4,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:279,Aum Shinrikyo,0.40120758066516343,0.9326130706376836
+26,5,hexham-et-al-2001-new-religious-movements-challenge-and-response:106,Aum Shinrikyo,0.40120758066516343,0.9326130706376836
+26,6,clarke-2004-encyclopedia-of-new-religious-movements:64,Aum Shinrikyo,0.40120758066516343,0.9326130706376836
+26,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:46,Aum Shinrikyo,0.40120758066516343,0.9326130706376836
+26,8,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:51,Aum Shinrikyo,0.40120758066516343,0.9326130706376836
+27,1,saliba-2009-psychology-and-the-new-religious-movements:5,the Unification Church,0.3604526260725036,0.9520301058993351
+27,2,melton-2014-encyclopedic-handbook-of-cults-in-america:15,the Unification Church,0.3604526260725036,0.9520301058993351
+27,3,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:15,the Unification Church,0.3604526260725036,0.9520301058993351
+27,4,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:87,the Unification Church,0.3604526260725036,0.9520301058993351
+27,5,2008-the-oxford-handbook-of-new-religious-movements-1:173,the Unification Church,0.3604526260725036,0.9520301058993351
+27,6,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:265,the Unification Church,0.3604526260725036,0.9520301058993351
+27,7,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:264,the Unification Church,0.3604526260725036,0.9520301058993351
+27,8,hexham-et-al-2001-new-religious-movements-challenge-and-response:7,the Unification Church,0.3604526260725036,0.9520301058993351
+28,1,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:18,the Order of the Solar Temple,0.49086076378672244,0.8827657681930532
+28,2,clarke-2004-encyclopedia-of-new-religious-movements:446,the Order of the Solar Temple,0.49086076378672244,0.8827657681930532
+28,3,clarke-2004-encyclopedia-of-new-religious-movements:462,Order of the Solar Temple,0.5232592937230591,0.8605827553195453
+28,4,dawson-2009-cults-and-new-religious-movements-a-reader:217,Order of the Solar Temple,0.5232592937230591,0.8605827553195453
+28,5,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:159,the Order of the Solar Temple (OTS),0.5454873429557221,0.8445438306676815
+28,6,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:280,Order of the Solar Temple (OTS),0.5583582182372777,0.8349514032503179
+28,7,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:165,The Holy Order of MANS,0.5627965681491319,0.8315919323779617
+28,8,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:161,the Sovereign Order of the Solar Temple,0.5734509283081345,0.8234184465945968
+29,1,melton-2014-encyclopedic-handbook-of-cults-in-america:74,The Rosicrucian Fellowship,0.5300760638901222,0.856835661094349
+29,2,melton-2014-encyclopedic-handbook-of-cults-in-america:73,The Ancient and Mystical Order Rosae Crucis,0.5708109339123435,0.826277507953728
+29,3,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:160,the Ancient and Mystical Order Rosae Crucis,0.5717252440806316,0.8255659211670884
+29,4,dawson-2009-cults-and-new-religious-movements-a-reader:63,AMORC Rosicrucian order,0.6035242507448237,0.8000997052793886
+29,5,clarke-2004-encyclopedia-of-new-religious-movements:278,the Fellowship of the Rosy Cross,0.6100309133355456,0.7947191004224912
+29,6,chryssides-2006-the-a-to-z-of-new-religious-movements:156,Rosicrucian Fellowship (q.v.),0.61337281883893,0.7919329320439764
+29,7,clarke-2004-encyclopedia-of-new-religious-movements:204,Rosicrucian philosophy,0.6139495247879994,0.7914509896593903
+29,8,2008-the-oxford-handbook-of-new-religious-movements-1:126,Rosicrucian Order of Alpha et Omega,0.6355147638557834,0.7730898563658861
+30,1,hexham-et-al-2001-new-religious-movements-challenge-and-response:113,The Family (formerly the Children of God),0.41612517475840854,0.9240336797957861
+30,2,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:60,The Family (formerly known as the Children of God),0.43256122213004433,0.9148531140668831
+30,3,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:379,The Family (formerly known as the Children of God),0.43256122213004433,0.914853114066883
+30,4,hexham-et-al-2001-new-religious-movements-challenge-and-response:223,Children of God (now The Family),0.45245906305116457,0.9032633392678147
+30,5,clarke-2004-encyclopedia-of-new-religious-movements:538,The Children of God (now known as The Family),0.4642940045082993,0.8961228759277942
+30,6,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:238,The Family/ Children of God,0.4644960936253172,0.8959994243505565
+30,7,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:15,the Family of Love (formerly the Children of God),0.46503547791023286,0.8956694859681176
+30,8,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:146,"Children of God (now known, interestingly, as The Family)",0.4651301848399534,0.8956115801227167
+31,1,clarke-2004-encyclopedia-of-new-religious-movements:443,Neo-paganism,0.494949820640703,0.8828549378220389
+31,2,melton-2014-encyclopedic-handbook-of-cults-in-america:204,NeoPagans,0.6083890214285139,0.7967293452833852
+31,3,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:18,Neo- Shamanism,0.633295935495374,0.775448414445188
+31,4,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:67,Pagan milieu,0.637797433010448,0.7715109726229774
+31,5,2008-the-oxford-handbook-of-new-religious-movements-1:480,Neo-Pagan festivals,0.6469406161933805,0.7634283522990932
+31,6,2008-the-oxford-handbook-of-new-religious-movements-1:471,most forms of Neo-Pagan practice are about the embodiment of faith and the Divine rather than reverence for the written Word,0.653649345680379,0.7574241181659498
+31,7,clarke-2004-encyclopedia-of-new-religious-movements:121,neoPentecostalism,0.657070262684836,0.7543382550381199
+31,8,clarke-2004-encyclopedia-of-new-religious-movements:676,the paganism of the West,0.6766493542650681,0.7363697433842676
+32,1,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:112,the Church of Jesus Christ of Latter-day Saints,0.5134317678211235,0.8725704731748576
+32,2,barker-2020-even-new-religious-movements-have-legacies:4,the Church of Jesus Christ of Latter-day Saints,0.5134317678211235,0.8725704731748576
+32,3,denaux-2002-the-attitude-of-belgian-authorities-toward-new-religious-movements:13,the Church of Jesus Christ of Latter-day Saints,0.5134317678211235,0.8725704731748576
+32,4,barker-2020-even-new-religious-movements-have-legacies-2124:4,the Church of Jesus Christ of Latter-day Saints,0.5134317678211235,0.8725704731748576
+32,5,melton-2014-encyclopedic-handbook-of-cults-in-america:34,The Church of Jesus Christ of Latter-day Saints,0.521263573899423,0.8668993953354723
+32,6,clarke-2004-encyclopedia-of-new-religious-movements:140,The Community of Christ,0.5410187376453053,0.8522135743075833
+32,7,melton-2014-encyclopedic-handbook-of-cults-in-america:42,The Church of the Lamb of God,0.5597192845897535,0.8378087775680014
+32,8,melton-2014-encyclopedic-handbook-of-cults-in-america:105,The Worldwide Church of God,0.5644728449441686,0.8340687674602641
+33,1,chryssides-2006-the-a-to-z-of-new-religious-movements:30,African Independent Churches,0.5275120093420009,0.8617333837258497
+33,2,clarke-2004-encyclopedia-of-new-religious-movements:26,African Independent Churches,0.5275120093420009,0.8617333837258497
+33,3,chryssides-2006-the-a-to-z-of-new-religious-movements:30,African Church Incorporated,0.5688852927267986,0.8301149646039304
+33,4,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:172,African Independent Churches (AICs),0.5898812139835735,0.8131565096495335
+33,5,clarke-2004-encyclopedia-of-new-religious-movements:426,African Independent Churches (AICs),0.5898812139835735,0.8131565096495335
+33,6,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:174,the African Baptist Church,0.614766519305526,0.7922609565460599
+33,7,shingange-2021-african-pentecostal-mission-and-new-religious-movements-a-critica:12,African Pentecostal Christians,0.6403043868893774,0.7699197137633708
+33,8,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:127,The Zion Christian Church in South Africa would be a case in point.,0.6435988382907014,0.7669713465665646
+34,1,chryssides-2006-the-a-to-z-of-new-religious-movements:17,The Theosophical Society,0.48991096891315955,0.897022783465947
+34,2,melton-2014-encyclopedic-handbook-of-cults-in-america:111,Theosophical Society,0.5012533012559126,0.8888248012793095
+34,3,chryssides-2006-the-a-to-z-of-new-religious-movements:180,Theosophical Society,0.5012533012559126,0.8888248012793095
+34,4,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:279,Theosophical Society,0.5012533012559126,0.8888248012793095
+34,5,clarke-2004-encyclopedia-of-new-religious-movements:623,Theosophical Society,0.5012533012559126,0.8888248012793095
+34,6,chryssides-2006-the-a-to-z-of-new-religious-movements:174,Anthroposophical Society,0.5491247115831003,0.8521587874900007
+34,7,melton-2014-encyclopedic-handbook-of-cults-in-america:111,Theosophical Publishing House,0.5576435309627122,0.8452835249006321
+34,8,barker-2020-even-new-religious-movements-have-legacies-2124:11,Theosophy,0.6009446477328075,0.8087011964214136
+35,1,melton-2014-encyclopedic-handbook-of-cults-in-america:66,The New Organization,0.6130350582463835,0.8004433052427029
+35,2,clarke-2004-encyclopedia-of-new-religious-movements:466,New Thought,0.6142322941062189,0.799350160718353
+35,3,chryssides-2006-the-a-to-z-of-new-religious-movements:16,New Thought,0.6142322941062189,0.799350160718353
+35,4,dawson-2009-cults-and-new-religious-movements-a-reader:65,The Committee for the Future,0.6245117222370153,0.7898743923000435
+35,5,chryssides-2006-the-a-to-z-of-new-religious-movements:137,NEW THOUGHT,0.6254813444950409,0.7889726124649903
+35,6,hexham-et-al-2001-new-religious-movements-challenge-and-response:38,the New Left,0.6257073508821344,0.7887621637144082
+35,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:118,Free Minds,0.6263540236652999,0.7881594193367798
+35,8,dawson-2009-cults-and-new-religious-movements-a-reader:193,The Concerned Relatives,0.6500554504604323,0.7656471443451707
+36,1,chryssides-2006-the-a-to-z-of-new-religious-movements:13,the Family Federation for World Peace and Unification,0.6383271852053514,0.7757138493611686
+36,2,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:325,the United Front Against Fascism,0.6496610063173969,0.76497745921362
+36,3,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:130,the Association pour la Defense de la Familie et de l'Individual (ADFI),0.6632544050126796,0.7518514783546585
+36,4,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:326,The Freedom Socialist Party,0.6641124960489152,0.7510133122822626
+36,5,2008-the-oxford-handbook-of-new-religious-movements-1:184,the Association pour la De ´fense de la Familie et de l'Individual (ADFI),0.6645286209128253,0.7506071450855094
+36,6,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:267,American Family Foundation,0.6649769011403555,0.7501690091278369
+36,7,hexham-et-al-2001-new-religious-movements-challenge-and-response:194,American Family Foundation,0.6649769011403555,0.7501690091278369
+36,8,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:334,American Family Foundation (AFF),0.6814409653557698,0.7338645632907217
+37,1,hexham-et-al-2001-new-religious-movements-challenge-and-response:24,The Family,0.42881575783161013,0.9168303559091956
+37,2,2008-the-oxford-handbook-of-new-religious-movements-1:154,The Family,0.42881575783161013,0.9168303559091956
+37,3,clarke-2004-encyclopedia-of-new-religious-movements:76,The Family,0.42881575783161013,0.9168303559091956
+37,4,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:29,The Family,0.42881575783161013,0.9168303559091956
+37,5,chryssides-2006-the-a-to-z-of-new-religious-movements:82,The Family,0.42881575783161013,0.9168303559091956
+37,6,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:235,The Family,0.42881575783161013,0.9168303559091956
+37,7,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:165,The Family,0.42881575783161013,0.9168303559091956
+37,8,panchenko-2004-new-religious-movements-and-the-study-of-folklore-the-russian-cas:5,the City,0.5335394820869738,0.8505641579575512
+38,1,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:156,Scientology is a religion - and it certainly functions as a religion in the lives of most members of the Church of Scientology,0.5634730081048079,0.8352983566034969
+38,2,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:39,"Scientology is an esoteric Gnostic system based upon the belief that the true self, called the Thetan, is trapped in MEST (matter, energy, space, and time), the visible world.",0.6061245594371191,0.8002624065117949
+38,3,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:143,The Church of Scientology is a psychotherapeutically oriented religion founded in the mid twentieth century by L. Ron Hubbard (1911-1986).,0.6170582799304283,0.7908692138882163
+38,4,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:59,Scientology is a commercial enterprise bent on profi t,0.6225092517157687,0.7861236477079153
+38,5,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:18,training in est and auditing in Scientology are organized as services that individuals may choose for their own personal growth.,0.6572893858049917,0.7548614685815762
+38,6,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:146,"The Church of Scientology believes that 'Man is basically good, that he is seeking to survive, [and] that his survival depends on himself and upon his fellows and his attainment of brotherhood with the universe.'",0.6593743937560118,0.7529334162634995
+38,7,melton-2014-encyclopedic-handbook-of-cults-in-america:129,Worship in Scientology takes second place to the daily work of becoming clear and exercising one's life as an operating Thetan.,0.662708041793492,0.7498382913738386
+38,8,2008-the-oxford-handbook-of-new-religious-movements-1:414,Scientology has been repeatedly criticized for the quite considerable sums of money charged for its courses and for the allegedly dubious methods by which some members have been persuaded to gather the necessary funds to purchase the very costly higher-level courses.,0.6672559063054877,0.7455899900212841
+39,1,hexham-et-al-2001-new-religious-movements-challenge-and-response:10,New Religious Movements,0.4741773089607288,0.9001588641035717
+39,2,denaux-2002-the-attitude-of-belgian-authorities-toward-new-religious-movements:6,New Religious Movements,0.4741773089607288,0.9001588641035718
+39,3,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:89,New Religious Movements,0.4741773089607288,0.9001588641035718
+39,4,buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on-2123:0,New Religious Movements,0.4741773089607288,0.9001588641035718
+39,5,buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on:0,New Religious Movements,0.4741773089607288,0.9001588641035718
+39,6,hexham-et-al-2001-new-religious-movements-challenge-and-response:110,New Religious Movement,0.48969087197281397,0.8896686867166416
+39,7,chryssides-2006-the-a-to-z-of-new-religious-movements:8,New Religious Movement,0.48969087197281397,0.8896686867166416
+39,8,clarke-2004-encyclopedia-of-new-religious-movements:18,NEW RELIGIOUS MOVEMENT,0.5115165323854544,0.8743387631583108
+40,1,2008-the-oxford-handbook-of-new-religious-movements-1:35,brainwashing,0.43186420418692767,0.9207849536007149
+40,2,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:23,brainwashing,0.43186420418692767,0.9207849536007149
+40,3,clarke-2004-encyclopedia-of-new-religious-movements:92,brainwashing,0.43186420418692767,0.9207849536007149
+40,4,dawson-2006-psychopathologies-and-the-attribution-of-charisma-a-critical-introdu:21,brainwashing,0.43186420418692767,0.9207849536007149
+40,5,dawson-2009-cults-and-new-religious-movements-a-reader:166,brainwashing,0.43186420418692767,0.9207849536007149
+40,6,anthony-and-robbins-2009-conversion-and-brainwashing-in-new-religious-movements:19,brainwashing,0.43186420418692767,0.9207849536007149
+40,7,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:14,brainwashing,0.43186420418692767,0.9207849536007149
+40,8,hexham-et-al-2001-new-religious-movements-challenge-and-response:114,brainwashing,0.43186420418692767,0.9207849536007149
+41,1,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:193,the cultic milieu,0.3168017050420763,0.9615253152634318
+41,2,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:272,the cultic milieu,0.3168017050420763,0.9615253152634318
+41,3,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:1,the cultic milieu,0.3168017050420763,0.9615253152634318
+41,4,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:343,The cultic milieu,0.35203343078575133,0.9468662478687546
+41,5,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:62,cultic milieu,0.3532702799822286,0.946323726993203
+41,6,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:14,cultic milieu,0.3532702799822286,0.946323726993203
+41,7,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:128,cults and the cultic milieu,0.3923912525993354,0.9281766668792407
+41,8,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:251,global cultic milieu,0.44030376548763583,0.9033576102616114
+42,1,2008-the-oxford-handbook-of-new-religious-movements-1:42,sects,0.5063865916534265,0.8769977194366517
+42,2,richardson-and-introvigne-2001-brainwashing-theories-in-european-parliamentary-a:3,sects,0.5063865916534265,0.8769977194366517
+42,3,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:109,sects,0.5063865916534265,0.8769977194366517
+42,4,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:219,totalitarian sects,0.5393078890125685,0.8529961406191716
+42,5,clarke-2004-encyclopedia-of-new-religious-movements:356,les sectes,0.5594080621603296,0.837598435435144
+42,6,adeliyan-tous-et-al-2023-using-law-to-limit-religious-freedom-the-case-of-new-re:12,dangerous sects,0.5663414329482712,0.8321565765389244
+42,7,ferrari-2006-new-religious-movements-in-western-europe:12,sectarian movements,0.56717895583234,0.8314946810746238
+42,8,adeliyan-tous-et-al-2023-using-law-to-limit-religious-freedom-the-case-of-new-re:12,sectarian movements,0.56717895583234,0.8314946810746238
+43,1,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:93,mental manipulation,0.5199038339613324,0.8732509816042218
+43,2,richardson-and-introvigne-2001-brainwashing-theories-in-european-parliamentary-a:7,mental manipulation,0.5199038339613324,0.8732509816042218
+43,3,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:218,mental manipulation,0.5199038339613324,0.8732509816042218
+43,4,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:274,mental manipulation,0.5199038339613324,0.8732509816042218
+43,5,2008-the-oxford-handbook-of-new-religious-movements-1:227,coercive persuasion,0.5624004756659551,0.8400161851191197
+43,6,dawson-2009-cults-and-new-religious-movements-a-reader:164,coercive persuasion,0.5624004756659551,0.8400161851191197
+43,7,dawson-2009-cults-and-new-religious-movements-a-reader:145,interpersonal manipulation that are meant to suppress certain behavior and to elicit and train other behavior.,0.6402539913561188,0.7723596242498834
+43,8,richardson-and-introvigne-2001-brainwashing-theories-in-european-parliamentary-a:12,the exercise of serious and repeated pressures or techniques aimed at altering the capacity of judgment,0.6496052311897825,0.7636439590153504
+44,1,melton-2014-encyclopedic-handbook-of-cults-in-america:224,deprogramming,0.49490023147565865,0.8807904341221752
+44,2,2008-the-oxford-handbook-of-new-religious-movements-1:158,deprogramming,0.49490023147565865,0.8807904341221752
+44,3,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:16,deprogramming,0.49490023147565865,0.8807904341221752
+44,4,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:112,deprogramming,0.49490023147565865,0.8807904341221752
+44,5,hexham-et-al-2001-new-religious-movements-challenge-and-response:230,de-programming,0.5036473194004468,0.8748634763450422
+44,6,dawson-2009-cults-and-new-religious-movements-a-reader:16,deprogrammers,0.5451224074848091,0.8453477373703748
+44,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:128,deprogrammer,0.5619716560612776,0.8326899283462933
+44,8,2008-the-oxford-handbook-of-new-religious-movements-1:284,deprogrammers/exit-counselors,0.5778187673757791,0.8204335710763135
+45,1,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:91,The group has catastrophic millennial and dualistic beliefs that expect and promote conflict.,0.5524147063347593,0.8468455083257433
+45,2,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:107,Some millennialists expect the transition to be accomplished catastrophically (catastrophic millennialism).,0.5754402865639927,0.8282287738699825
+45,3,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:91,Catastrophic millennialism involves a radical dualism that expects conflict and can even promote it.,0.5756570641182802,0.8280496109800084
+45,4,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:16,catastrophic millennialism,0.5993974106254896,0.8080522706030433
+45,5,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:81,I use 'apocalypticism' as a synonym for catastrophic millennialism.,0.6101913795929007,0.7986922628025899
+45,6,2008-the-oxford-handbook-of-new-religious-movements-1:305,apocalyptic millennialism constitutes a powerful and volatile mixture,0.6169728072556029,0.7927267524646462
+45,7,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:82,Catastrophic millennialists who live in isolated communities are inherently in tension with mainstream society.,0.6491529522198017,0.7635193184584852
+45,8,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:67,Catastrophic millennialism is generally associated with a 'pessimistic evaluation of human nature and society.',0.6499654733602923,0.7627623737654213
+46,1,2008-the-oxford-handbook-of-new-religious-movements-1:265,destructive cults,0.18638095943885793,0.9868042054005628
+46,2,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:257,destructive cults,0.18638095943885793,0.9868042054005628
+46,3,chryssides-2006-the-a-to-z-of-new-religious-movements:192,destructive cults,0.18638095943885793,0.9868042054005628
+46,4,clarke-2004-encyclopedia-of-new-religious-movements:54,destructive cults,0.18638095943885793,0.9868042054005628
+46,5,richardson-and-introvigne-2001-brainwashing-theories-in-european-parliamentary-a:7,destructive cults,0.18638095943885793,0.9868042054005628
+46,6,hexham-et-al-2001-new-religious-movements-challenge-and-response:226,destructive cults,0.18638095943885793,0.9868042054005628
+46,7,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:16,destructive cults,0.18638095943885793,0.9868042054005628
+46,8,richardson-and-introvigne-2001-brainwashing-theories-in-european-parliamentary-a:6,destructive cult,0.2501241282548987,0.9712512794991819
+47,1,2008-the-oxford-handbook-of-new-religious-movements-1:162,anti-cult movement,0.41488298014982994,0.9251240910450522
+47,2,richardson-and-introvigne-2001-brainwashing-theories-in-european-parliamentary-a:3,anti-cult,0.42979924839209477,0.9168117998444614
+47,3,2008-the-oxford-handbook-of-new-religious-movements-1:192,anti-cult,0.42979924839209477,0.9168117998444614
+47,4,anthony-and-robbins-2009-conversion-and-brainwashing-in-new-religious-movements:4,anticult movement,0.4487232901596461,0.9058426882535575
+47,5,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:57,anticult movement,0.4487232901596461,0.9058426882535575
+47,6,2008-the-oxford-handbook-of-new-religious-movements-1:186,the 'anticult movement',0.46687232698850323,0.8948791563749441
+47,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:154,the 'anticult movement',0.46687232698850323,0.8948791563749441
+47,8,clarke-2004-encyclopedia-of-new-religious-movements:163,an anti-anti-cult group,0.4721099547118467,0.8916344469118553
+48,1,introvigne-2014-advocacy-brainwashing-theories-and-new-religious-movements:3,the ' cults ' apply real ' brainwashing.,0.45165031523370947,0.8973159263175599
+48,2,2008-the-oxford-handbook-of-new-religious-movements-1:266,cult/brainwashing,0.45650536467912733,0.8945656525695266
+48,3,2008-the-oxford-handbook-of-new-religious-movements-1:251,cultic brainwashing theory,0.47767214789558443,0.8822317479247332
+48,4,saliba-2009-psychology-and-the-new-religious-movements:4,"cults use brainwashing, hypnosis, thought reform, coercive persuasion, or indoctrination",0.48274078967864087,0.8791952965149145
+48,5,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:85,"cults use brainwashing, hypnosis, thought reform, coercive persuasion, or indoctrination",0.48274078967864087,0.8791952965149145
+48,6,2008-the-oxford-handbook-of-new-religious-movements-1:68,the 'brainwashing' of cult converts,0.48395649232550525,0.8784622274766826
+48,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:151,so- called cult/ brainwashing cases,0.49491504330687386,0.871771060544831
+48,8,2008-the-oxford-handbook-of-new-religious-movements-1:172,cult/mind control ideology,0.49922057907720263,0.8691012100026595
+49,1,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:193,The human being is a part of nature.,0.5579450167550457,0.8386465409694145
+49,2,dawson-2009-cults-and-new-religious-movements-a-reader:216,The Work is being completed.,0.5888104459099218,0.8139875450185485
+49,3,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:129,He can see behind the faces of people.,0.5970765980816356,0.8071580523848081
+49,4,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:134,a middle position,0.6203687574135154,0.7874025706493657
+49,5,tomkins-2010-the-clapham-sect-how-wilberforce-s-circle-transformed-britain:40,the imitating multitude,0.6230032522298669,0.7851201768174907
+49,6,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:207,the Class was on the road,0.6402475309782287,0.7699438170719293
+49,7,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:32,This report is part of a work in progress.,0.6413846669387363,0.7689285838241197
+49,8,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:139,Extraction is the goal,0.649654539074952,0.7614899475704678
+50,1,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:134,Male Left leadership [in other groups] seemed pompous and uncaring.,0.627383912406935,0.7860915511405506
+50,2,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:213,a very controlling environment existed in both as well.,0.6478703629090944,0.7668425498657622
+50,3,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:65,"The way they looked, the way they presented themselves was otherworldly, I guess you would say.",0.6489705863884273,0.7657911684069629
+50,4,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:214,"the corrupt and arbitrary nature of their leader, and the collusion of the inner circle",0.6529537125790922,0.7619704328740479
+50,5,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:69,They were frightened and in fear of going to jail,0.657302583176443,0.7577720749541677
+50,6,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:209,the leadership instigated purges and orchestrated tests to weed out less committed members and those who could not withstand the pressure.,0.6659807205809725,0.7493110781615678
+50,7,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:172,"The world was considered to be corrupt, unjust, and doomed, and they felt rejected by it.",0.6682060148816665,0.7471240235539951
+50,8,clarke-2004-encyclopedia-of-new-religious-movements:688,"People who lacked a strong sense of boundaries, or conversely, were too rigid and set in their ways, were deemed unsuitable.",0.6765740426798575,0.738832595126194
+51,1,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:49,"We don't approach/go towards the groups, we do not have the time.",0.63433210400693,0.7823481466536857
+51,2,dawson-2009-cults-and-new-religious-movements-a-reader:108,the religious experience under consideration is not genuine,0.6506566369382054,0.7665086448680491
+51,3,2008-the-oxford-handbook-of-new-religious-movements-1:219,"it has so few of the aspects of a religion, no hierarchy, no membership system, no structure, not even a network connecting regions or neighborhoods",0.6570461759083523,0.760199027232149
+51,4,hexham-et-al-2001-new-religious-movements-challenge-and-response:111,None of these reports is systematic in nature.,0.6669215667052627,0.7503264137094279
+51,5,2008-the-oxford-handbook-of-new-religious-movements-1:426,"There is no dogma, no orthodoxy, and essentially, no agreement on where the boundaries of the movement are and who is or is not part of it.",0.6698097551004644,0.7474110440014112
+51,6,2008-the-oxford-handbook-of-new-religious-movements-1:206,"There is no sexual element, and children are never mentioned, much less abused",0.6814703653166054,0.735513070260146
+51,7,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:315,They have a left-wing political agenda that we don't have.,0.6880509833021357,0.7287077419318935
+51,8,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:178,the rat-cult is not mentioned,0.6888580656544091,0.7278687485036262
+52,1,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:62,cults,0.37719308442014987,0.9420007655332978
+52,2,chryssides-2006-the-a-to-z-of-new-religious-movements:13,cults,0.37719308442014987,0.9420007655332978
+52,3,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:81,cults,0.37719308442014987,0.9420007655332978
+52,4,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:84,cults,0.37719308442014987,0.9420007655332978
+52,5,melton-2014-encyclopedic-handbook-of-cults-in-america:6,cults,0.37719308442014987,0.9420007655332978
+52,6,panchenko-2004-new-religious-movements-and-the-study-of-folklore-the-russian-cas:1,cults,0.37719308442014987,0.9420007655332978
+52,7,panchenko-2004-new-religious-movements-and-the-study-of-folklore-the-russian-cas-2118:1,cults,0.37719308442014987,0.9420007655332978
+52,8,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:5,cults,0.37719308442014987,0.9420007655332978
+53,1,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:35,it is a multidimensional process in which both individual and group have some degree of infl uence,0.5879115336677233,0.8161901319248295
+53,2,dawson-2009-cults-and-new-religious-movements-a-reader:29,sufficient condition for achieving acceptability in the long run.,0.5891229477276274,0.8151826168112991
+53,3,richardson-2018-definitions-of-cult-from-sociological-technical-to-popular-negat:4,requiring a high degree of conformity and commitment.,0.6239410187120538,0.7853345620604284
+53,4,dawson-2009-cults-and-new-religious-movements-a-reader:145,Get the person to drastically reinterpret his or her life's history and radically alter his or her worldview and accept a new version of reality and causality.,0.6404747422224463,0.7705613000364857
+53,5,namini-and-murken-2009-self-chosen-involvement-in-new-religious-movements-nrms-w:7,"a minimum of six months is estimated as necessary before an adequate readjustment can be made to the 'real' world, a genuine appreciation of its qualities, and a sense that the group is no longer a need or a threat",0.676899339131978,0.7366512574219528
+53,6,2008-the-oxford-handbook-of-new-religious-movements-1:247,"The 'relief effect' is thus mediated by the affiliative attitudes of social cohesiveness and shared beliefs-that is, by both social and cognitive modalities.",0.678617123102628,0.7350058161830337
+53,7,buxant-and-saroglou-2007-feeling-good-but-lacking-autonomy-closed-mindedness-on-2123:10,"lack of autonomy and flexibility is the price to be paid for re-establishing quality in relationships, order and structure in meaning, equilibrium in mood, and optimism for the future against depressive tendencies",0.6788773774847965,0.7347562678125575
+53,8,dawson-2009-cults-and-new-religious-movements-a-reader:36,"The movement is a 'total institution', regulating all its adherents' activities, programming all of their day but for the briefest periods of recreation or private time.",0.6789239676249664,0.7347114050804375
+54,1,dawson-2009-the-study-of-new-religious-movements-and-the-radicalization-of-home:14,charismatic leadership and authority,0.4728934707909331,0.8964021728845616
+54,2,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:16,charismatic leadership,0.4825288228570325,0.8901106784343775
+54,3,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:62,charismatic leadership,0.4825288228570325,0.8901106784343775
+54,4,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:17,charismatic leadership,0.4825288228570325,0.8901106784343775
+54,5,dawson-2009-cults-and-new-religious-movements-a-reader:16,charismatic leaders,0.5016597160608733,0.8772421631213392
+54,6,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:196,charismatic authority,0.5174034266379003,0.8662771532832927
+54,7,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:16,charismatic authority,0.5174034266379003,0.8662771532832927
+54,8,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:197,Charismatic authority involves the interactive relationship between the leaders and their followers.,0.5822262783936286,0.8175602343533652
+55,1,hayes-2006-new-religious-movements-in-the-catholic-church:110,This is Christianity.,0.5855308950186654,0.821716160422451
+55,2,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:7,The bodies of saints are enormously powerful.,0.5927659992802814,0.8155144503689502
+55,3,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:373,The Christ is now here.,0.6098442374063988,0.8005734552726892
+55,4,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:99,"The saint is a remote figure, revered, feared and respected.",0.6119903165202658,0.7986658830440991
+55,5,hayes-2006-new-religious-movements-in-the-catholic-church:15,the Holy Spirit clearly speaking to us once again,0.6212643069810379,0.7903457175059726
+55,6,dawson-2009-cults-and-new-religious-movements-a-reader:45,"the inner man is Divine, is fully Divine . . .",0.6330332075825857,0.7796067859136132
+55,7,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:135,The sacred text is thus intimately connected to the individual who provided it.,0.6451647891540773,0.7683267374580616
+55,8,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:159,This is the story of the death of a saint.,0.6517059004884524,0.7621551760985069
+56,1,noll-2002-the-jung-cult-origins-of-a-charismatic-movement:0,It is not just religious but a religion .,0.587268940956046,0.8155352606776176
+56,2,2008-the-oxford-handbook-of-new-religious-movements-1:110,The conspicuous ability to subject science to religious interpretation and use.,0.6034286474146653,0.8020914397461192
+56,3,2008-the-oxford-handbook-of-new-religious-movements-1:98,No science can stand alone. It needs religion to make it meaningful.,0.6185141926524895,0.789211865364459
+56,4,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:141,"religion legitimates social institutions by bestowing upon them an ultimately ontological status, that is, by locating them within a sacred and cosmic frame of reference",0.645977124819311,0.7649487804841073
+56,5,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:280,"a system that claims to embrace the essential truth underlying all systems of religion, philosophy, and science",0.6577969644632876,0.7541818559874327
+56,6,gleig-2012-researching-new-religious-movements-from-the-inside-out-and-the-outsi:8,"a degree of respect to that which is numinous and beyond our normal way of understanding, and for God ' s sake, beyond only the ' good scholarly way!",0.6622425226479268,0.7500815289136189
+56,7,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:14,"Invention plays a part in all religions and is linked to other conceptual lenses, including syncretism and legitimation.",0.663642170103346,0.7487849267847257
+56,8,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:260,"The absolute insistence that the only acceptable, moral epistemology is the material one of science bears more than a passing resemblance to fundamentalist religious responses to the modern world.",0.6659725121606233,0.7466202203470311
+57,1,dawson-2006-psychopathologies-and-the-attribution-of-charisma-a-critical-introdu:1,new religious movements,0.5045408848049137,0.8768020960524949
+57,2,dawson-2009-cults-and-new-religious-movements-a-reader:3,new religious movements,0.5045408848049137,0.8768020960524949
+57,3,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:5,new religious movements,0.5045408848049137,0.8768020960524949
+57,4,introvigne-2014-advocacy-brainwashing-theories-and-new-religious-movements:13,new religious movements,0.5045408848049137,0.8768020960524949
+57,5,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:12,new religious movements,0.5045408848049137,0.8768020960524949
+57,6,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:39,new religious movements,0.5045408848049137,0.8768020960524949
+57,7,dawson-2009-cults-and-new-religious-movements-a-reader:15,The new religions,0.5351672887354147,0.8548119855568983
+57,8,hexham-et-al-2001-new-religious-movements-challenge-and-response:144,New Religious Movements are nothing new.,0.5589022583671063,0.8368787236099196
+58,1,clarke-2004-encyclopedia-of-new-religious-movements:160,The major criterion of the concept of cult is its oppositional nature: A cult is a group that has beliefs and/or practices that are counter to those of the dominant culture.,0.565827270595244,0.8293011049017536
+58,2,hexham-et-al-2001-new-religious-movements-challenge-and-response:94,Cults are problematic,0.5681236668002391,0.8275428384034365
+58,3,melton-2014-encyclopedic-handbook-of-cults-in-america:22,"Viewed parochially, cults can appear to be the strange activity of cultural outcasts, those small groups always on the edge of culture, always dissenting, always strange, sometimes sinister.",0.5840179649856223,0.8151764078034812
+58,4,melton-2014-encyclopedic-handbook-of-cults-in-america:7,"A cult is a perversion, a distortion of biblical Christianity, and, as such, rejects the historical teachings of the Christian Church.",0.5911229613807989,0.8095380240171615
+58,5,melton-2014-encyclopedic-handbook-of-cults-in-america:210,"A cult is a perversion, a distortion of biblical Christianity, and as such, rejects the historic teachings of the Christian Church.",0.5922099164377012,0.8086692484112401
+58,6,clarke-2004-encyclopedia-of-new-religious-movements:159,"The term 'cult' has become quite problematic in recent years, particularly within the United States",0.5986328010173857,0.8035043189801778
+58,7,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:15,cults as complex and often confounding human systems,0.6015402001165342,0.8011478070848003
+58,8,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:79,One of the most important factors in promoting conflict with a religious group is to call it a 'cult.',0.6025646191946633,0.8003149933807652

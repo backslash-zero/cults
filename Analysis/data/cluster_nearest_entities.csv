@@ -1,0 +1,591 @@
+cluster_id,rank,key,label,euclidean_distance,cosine_similarity
+0,1,the peoples temple,the peoples temple,0.37020314937908444,0.9431370983966688
+0,2,peoples temple,peoples temple,0.40147206592496354,0.9276728670851465
+0,3,people's temple,people's temple,0.42328290934107365,0.9161442892637462
+0,4,peoples' temple,peoples' temple,0.4293530159465443,0.9128272842845415
+0,5,temple of man,temple of man,0.6826017598121324,0.7323534392626465
+0,6,temple,temple,0.7190929323087492,0.6995722917190756
+0,7,jesus people,jesus people,0.740479174851425,0.6795672181704676
+0,8,jesus people movement,jesus people movement,0.7514633465053362,0.669064567860244
+0,9,the solar temple,the solar temple,0.7567301968194401,0.663973978657433
+0,10,underground temple,underground temple,0.7611800354120364,0.6596449086249213
+1,1,the branch davidians,the branch davidians,0.48838857343426517,0.8892246554548345
+1,2,branch davidians,branch davidians,0.4978568252134083,0.882723723501063
+1,3,branch davidian,branch davidian,0.549786908651558,0.8448492441498475
+1,4,davidians,davidians,0.6522386076719965,0.7591164046092063
+1,5,davidian,davidian,0.7032442668914538,0.7109851335983071
+1,6,david,david,0.7493744120389815,0.6643353058295111
+1,7,father david,father david,0.751750085778109,0.6618524047836146
+1,8,davidian compound,davidian compound,0.7877433207878823,0.6232772212643207
+1,9,house of david,house of david,0.7988729639207077,0.6109835572070643
+1,10,"koresh, david","koresh, david",0.8151172794406822,0.5927316404958993
+2,1,the church of scientology,the church of scientology,0.3060571917275642,0.9589521180759938
+2,2,church of scientology,church of scientology,0.33903020223489194,0.9463481695115779
+2,3,scientology,scientology,0.363345583844332,0.9362281296615382
+2,4,church of scientology international,church of scientology international,0.47192403058403093,0.8824876844168661
+2,5,founding church of scientology,founding church of scientology,0.5858779429922006,0.8110602011272146
+2,6,mormon church,mormon church,0.6475089250355561,0.7660171792225774
+2,7,the book of mormon,the book of mormon,0.6506371669561285,0.7636109293764546
+2,8,book of mormon,book of mormon,0.6522886098687359,0.7623359035712585
+2,9,mormons,mormons,0.6798527084407593,0.7405775504628301
+2,10,psychic phenomena,psychic phenomena,0.6832464204547068,0.7378363107221229
+3,1,the heaven's gate suicides,the heaven's gate suicides,0.49656682439236094,0.8792004801939439
+3,2,heaven's gate cult,heaven's gate cult,0.6572441224296253,0.7538175341992599
+3,3,suicide,suicide,0.7120439015051798,0.7030689343178116
+3,4,self-religion,self-religion,0.7459781757976534,0.6696068097520944
+3,5,heaven's gate students,heaven's gate students,0.7529285702351655,0.6625612982389054
+3,6,ufo cults,ufo cults,0.7555695570547838,0.6598666193678284
+3,7,heaven's gate,heaven's gate,0.7684955498930256,0.6465434075911243
+3,8,mass suicide,mass suicide,0.769505770428149,0.6454924885105813
+3,9,satanic cults,satanic cults,0.772830532398139,0.6420245086552383
+3,10,self-religions,self-religions,0.7751764401682399,0.6395681676994572
+4,1,heaven's gate,heaven's gate,0.20683626715792902,0.9848487070685799
+4,2,kingdom of heaven,kingdom of heaven,0.6417647266080858,0.7732486551360446
+4,3,heaven's gate cult,heaven's gate cult,0.6961885365755683,0.7315015330817249
+4,4,the kingdom of the cults,the kingdom of the cults,0.7041613298295073,0.7251006159207141
+4,5,heaven,heaven,0.7232694710220428,0.7094631498395014
+4,6,heaven's gate students,heaven's gate students,0.7237976673007971,0.7090249906321886
+4,7,knights templar,knights templar,0.7396964437724883,0.695685197706261
+4,8,ticket to heaven,ticket to heaven,0.7412933194378163,0.6943291700553956
+4,9,exodus,exodus,0.747632413994355,0.6889179476165901
+4,10,garden of eden,garden of eden,0.7486331693929174,0.6880594763879222
+5,1,the international society for krishna consciousness,the international society for krishna consciousness,0.5176846864064838,0.8682570869133572
+5,2,international society for krishna consciousness (iskcon),international society for krishna consciousness (iskcon),0.5355943261694364,0.8551638221957203
+5,3,international society for krishna consciousness,international society for krishna consciousness,0.5593314296843748,0.8371244840846181
+5,4,krishna consciousness,krishna consciousness,0.5914491055102211,0.8114709833438798
+5,5,the hare krishna,the hare krishna,0.6232096205597929,0.7846949179657599
+5,6,the hare krishna movement,the hare krishna movement,0.6361305001762827,0.7734010298512162
+5,7,hare krishna movement,hare krishna movement,0.6388548633211074,0.7709901699477808
+5,8,hare krishnas,hare krishnas,0.6551656882463603,0.7563407005584339
+5,9,hare krishna,hare krishna,0.6880959010771829,0.725638688988577
+5,10,krishna devotees,krishna devotees,0.6891992856201785,0.7245840440979505
+6,1,raelian religion,raelian religion,0.49903268454736766,0.8750159056208666
+6,2,raelian movement,raelian movement,0.5217197899738711,0.8596555916763089
+6,3,raëlian religion,raëlian religion,0.5248981839313889,0.857449377895884
+6,4,raelians,raelians,0.5552544723734871,0.8357005933615178
+6,5,raëlians,raëlians,0.5741497537808807,0.821545892969316
+6,6,raelian church,raelian church,0.5775621062406088,0.8189393170955965
+6,7,rae ¨lian religion,rae ¨lian religion,0.5927747013577385,0.8071299959547387
+6,8,raëlian church,raëlian church,0.6006361910011216,0.8009074276036603
+6,9,raelian,raelian,0.6337042329909202,0.7738341851393724
+6,10,ra ë lian movement,ra ë lian movement,0.6658358673294766,0.7461378230770859
+7,1,the solar temple,the solar temple,0.35264757180415324,0.9519780732262507
+7,2,solar temple,solar temple,0.40823729472730896,0.9247592390943455
+7,3,the mystical apocalypse of the solar temple,the mystical apocalypse of the solar temple,0.5764571309995087,0.8181643063373609
+7,4,order of the solar temple,order of the solar temple,0.6247036237610653,0.7808714764554474
+7,5,temple,temple,0.6979246498795058,0.7185510770496786
+7,6,underground temple,underground temple,0.703183053583747,0.7138099601975284
+7,7,solar light retreat,solar light retreat,0.7471909016298763,0.6727359198800096
+7,8,the peoples temple,the peoples temple,0.751436291705128,0.6686418092137048
+7,9,people's temple,people's temple,0.7560347637345414,0.6641809766117384
+7,10,temple of love,temple of love,0.7571490957006395,0.6630958208119149
+8,1,falun gong,falun gong,0.3763509258612696,0.9365537740614029
+8,2,falun dafa,falun dafa,0.6979023957022061,0.7205368982488267
+8,3,falungong,falungong,0.7246883507642906,0.6967075199475901
+8,4,zhong gong,zhong gong,0.8417857357948562,0.581997982773125
+8,5,tao te ching,tao te ching,0.8509791535243466,0.5722657764166634
+8,6,taoist,taoist,0.8554671037153591,0.56747650682784
+8,7,taoism,taoism,0.8559685558030575,0.5669398009860687
+8,8,confucius,confucius,0.8741866115409268,0.5472279705369596
+8,9,tao,tao,0.8782537248546561,0.5427709115274408
+8,10,chinese communists,chinese communists,0.8829812100500498,0.5375643669730406
+9,1,nrms,nrms,0.28957710555698857,0.970416764792349
+9,2,nrm,nrm,0.44724763730528466,0.8987505354384617
+9,3,conversion to nrms,conversion to nrms,0.496184993484884,0.870269736224375
+9,4,japanese nrms,japanese nrms,0.556683441174382,0.8309762595462961
+9,5,nrm members,nrm members,0.5860944589822984,0.810242879351493
+9,6,eastern-based nrms,eastern-based nrms,0.5902179261006806,0.8072509152880156
+9,7,gender and nrms,gender and nrms,0.5914573374110542,0.8063470698601607
+9,8,nrp,nrp,0.6599256124985288,0.7534931352112635
+9,9,nrim,nrim,0.6731627176648745,0.742607146600206
+9,10,new religious movements (nrms),new religious movements (nrms),0.6820309264184478,0.7351936189151844
+10,1,new religious movements (nrms),new religious movements (nrms),0.29067953083985576,0.9640310420478937
+10,2,new religions studies (nrs),new religions studies (nrs),0.5902456261526664,0.808127771618008
+10,3,understanding new religious movements,understanding new religious movements,0.6786897026499349,0.7418248343609437
+10,4,nrms,nrms,0.6953547920704358,0.7282970218038813
+10,5,new religious movements,new religious movements,0.6962783977075071,0.7275379729079706
+10,6,research network on new religions (renner),research network on new religions (renner),0.7090310935543244,0.7169499566502897
+10,7,new religious movement,new religious movement,0.7119758524203665,0.7144780792874169
+10,8,joining new religious movements,joining new religious movements,0.7216059866444534,0.7063220567831392
+10,9,understanding the new religions,understanding the new religions,0.7235126213113223,0.7046940698080142
+10,10,conversion and 'brainwashing' in new religious movements,conversion and 'brainwashing' in new religious movements,0.7260968256010297,0.702481313434804
+11,1,nrms,nrms,0.6420417753131088,0.7669266946246056
+11,2,gender and nrms,gender and nrms,0.6501217943122181,0.7599389202872675
+11,3,new religious movements (nrms),new religious movements (nrms),0.6609320001175525,0.7504535962524854
+11,4,conversion to nrms,conversion to nrms,0.6966492384534815,0.7180006968939654
+11,5,eastern-based nrms,eastern-based nrms,0.7167770372049187,0.6989604354540603
+11,6,nrm,nrm,0.7270733553502993,0.6890103889585251
+11,7,nrm members,nrm members,0.7341682772880105,0.6820716199872955
+11,8,japanese nrms,japanese nrms,0.7438830640698934,0.6724612253720701
+11,9,new religions studies (nrs),new religions studies (nrs),0.7674361456876956,0.6486372549671411
+11,10,nrp,nrp,0.8135466644824842,0.5998470744100954
+12,1,godianism,godianism,0.6836359338055517,0.7314003362960195
+12,2,goddess movement,goddess movement,0.7674760559647712,0.642387787766902
+12,3,unificationist movement,unificationist movement,0.8089065380390971,0.594603687497126
+12,4,african initiated churches,african initiated churches,0.8099920035510036,0.5933183605443821
+12,5,kabbalism,kabbalism,0.8105453768670651,0.5926622218990676
+12,6,unificationism,unificationism,0.810831518121198,0.5923225912662436
+12,7,joining new religious movements,joining new religious movements,0.8150356267373844,0.5873217123231108
+12,8,kimbanguism,kimbanguism,0.8159186497504572,0.5862682268384745
+12,9,kimbanguist church,kimbanguist church,0.8163420435525901,0.5857622790155357
+12,10,buddhahood,buddhahood,0.8172006071107745,0.5847361119269359
+13,1,new religious movements (nrms),new religious movements (nrms),0.39829137342208953,0.9228314323955509
+13,2,new religions studies (nrs),new religions studies (nrs),0.5196464141249896,0.855036558567277
+13,3,research network on new religions (renner),research network on new religions (renner),0.5537157681574625,0.8327810117267127
+13,4,new religious movements,new religious movements,0.63850915615847,0.7712572952732847
+13,5,new religions studies,new religions studies,0.6550551771590153,0.7582312749251466
+13,6,understanding new religious movements,understanding new religious movements,0.6570504658583094,0.7566376952261147
+13,7,new religious movement,new religious movement,0.6574516473347268,0.7563169993797358
+13,8,new religions,new religions,0.6698855072516462,0.7462728757276715
+13,9,new religious movements: a practical introduction,new religious movements: a practical introduction,0.6839740690506891,0.7346648255868543
+13,10,renner studies on new religions,renner studies on new religions,0.6879590771003014,0.731337302893186
+14,1,christian science,christian science,0.3681155571805983,0.938755168056176
+14,2,christian science journal,christian science journal,0.4783725545080442,0.8810902929041265
+14,3,christian scientists,christian scientists,0.48641725626871457,0.8762947824310017
+14,4,"the church of christ, scientist","the church of christ, scientist",0.48661754581599403,0.8761743829316981
+14,5,"church of christ, scientist","church of christ, scientist",0.5000627834594573,0.8679779826089551
+14,6,church of religious science,church of religious science,0.567228367472105,0.8236870118759263
+14,7,religious science,religious science,0.5931305200889435,0.8051169447277007
+14,8,christianity,christianity,0.6244288325267219,0.7815718818298938
+14,9,christian church,christian church,0.6481154568290711,0.7629488662265119
+14,10,church of religious science/science of mind,church of religious science/science of mind,0.6494342726971115,0.7618913136254618
+15,1,satanism,satanism,0.5286690265304991,0.858851291700762
+15,2,satanic cults,satanic cults,0.5411776488437628,0.8496604548229271
+15,3,esoteric satanism,esoteric satanism,0.5595599951640122,0.8357637850673645
+15,4,satanic abuse,satanic abuse,0.5601815648748372,0.8352858549737707
+15,5,satanic groups,satanic groups,0.5642536336647495,0.8321411937580602
+15,6,satanic rituals,satanic rituals,0.5653295650672975,0.831306519789333
+15,7,satan,satan,0.59214949279819,0.8099858036189225
+15,8,satanic scare,satanic scare,0.5986080256417472,0.8047040219449451
+15,9,satanic milieu,satanic milieu,0.6025819357608817,0.8014255588960911
+15,10,contemporary religious satanism,contemporary religious satanism,0.6032362146929225,0.8008837710508075
+16,1,wicca,wicca,0.6280416193024686,0.783300223072463
+16,2,wiccans,wiccans,0.6301328902010961,0.7814039772802182
+16,3,wiccan,wiccan,0.6532334793394597,0.7600410166977536
+16,4,wiccan covens,wiccan covens,0.6794037123643711,0.7349108496813215
+16,5,the meaning of witchcraft,the meaning of witchcraft,0.6956097881487254,0.7188534588557833
+16,6,wiccan rede,wiccan rede,0.7010332920126816,0.7133955900694753
+16,7,a community of witches,a community of witches,0.7163971989626138,0.6977031406817875
+16,8,dianic wiccans,dianic wiccans,0.7258844245984898,0.6878431992806117
+16,9,satanic rituals,satanic rituals,0.7267893452171617,0.6868961896145814
+16,10,dianic wicca,dianic wicca,0.7322758593672477,0.6811278733105746
+17,1,sahaja yoga,sahaja yoga,0.564810940921707,0.8362542882167407
+17,2,yoga,yoga,0.5949824362604618,0.8112900435922706
+17,3,sahaj yoga,sahaj yoga,0.6025855478611812,0.8047947374804229
+17,4,siddha yoga,siddha yoga,0.6612587392939928,0.7518918347725501
+17,5,raja yoga,raja yoga,0.663794426302437,0.7494949396110222
+17,6,integral yoga,integral yoga,0.6689044967189723,0.7446364204055655
+17,7,siddha yoga dham,siddha yoga dham,0.6706529687877205,0.7429656311152484
+17,8,kundalini yoga,kundalini yoga,0.6725534114856936,0.7411443080684278
+17,9,surat shabd yoga,surat shabd yoga,0.6759349944229405,0.7378916112763698
+17,10,agni yoga,agni yoga,0.6882288636123667,0.7259266069089865
+18,1,the majzub mama ji sarkar,the majzub mama ji sarkar,0.6325887214698831,0.7801256161186968
+18,2,mama ji sarkar,mama ji sarkar,0.7009319001523969,0.7137482167377857
+18,3,mama ji,mama ji,0.7252320004959821,0.6885075791237325
+18,4,mother meera,mother meera,0.8095328559226039,0.5942756068274601
+18,5,goddess worship,goddess worship,0.8108908399076187,0.5926728797425569
+18,6,mother,mother,0.8111795456897397,0.5923317601427021
+18,7,guru ma,guru ma,0.8121502340324085,0.591184125615859
+18,8,the ama-nazaretha,the ama-nazaretha,0.8127986523355599,0.5904164984631974
+18,9,sufi saints,sufi saints,0.814433767416672,0.5884787602632152
+18,10,mother divine,mother divine,0.8245580788993904,0.5763934037546061
+19,1,the new age movement,the new age movement,0.48507683256921696,0.8893440014737561
+19,2,new age,new age,0.516524419893447,0.8676928305784948
+19,3,new age movement,new age movement,0.5269336908387149,0.8602260388644938
+19,4,new age movements,new age movements,0.5350042220973504,0.8543351169973515
+19,5,new age spirituality,new age spirituality,0.5350605349066473,0.8542935341383842
+19,6,new age groups,new age groups,0.5502651132994956,0.8429501571911664
+19,7,new age milieu,new age milieu,0.5653000200664577,0.8314212716450167
+19,8,new age religion,new age religion,0.5701320498574838,0.827649735381933
+19,9,new age studies,new age studies,0.5719149622696277,0.8262499395080638
+19,10,the new age,the new age,0.5794369411768462,0.8202964700797122
+20,1,rajneesh movement,rajneesh movement,0.5725634991478621,0.8324352489659368
+20,2,osho rajneesh,osho rajneesh,0.5756921847713693,0.8298256210342763
+20,3,rajneeshism,rajneeshism,0.5989920870729476,0.8099428235049966
+20,4,rajneesh foundation,rajneesh foundation,0.6070217061800324,0.8029083504204013
+20,5,rajneesh,rajneesh,0.6114317445537084,0.7990049279735632
+20,6,rajneesh foundation international,rajneesh foundation international,0.6349717805246755,0.7776907341672025
+20,7,rajneeshees,rajneeshees,0.6491797891671167,0.7644364746343124
+20,8,rajneesh therapy,rajneesh therapy,0.6491902223139415,0.7644269597091697
+20,9,bhagwan shree rajneesh,bhagwan shree rajneesh,0.6499683588047972,0.7636922927392087
+20,10,bhagwan rajneesh,bhagwan rajneesh,0.6589299555095026,0.755171604803616
+21,1,moral re-armament,moral re-armament,0.7289916447446864,0.6845445301685349
+21,2,coercive persuasion,coercive persuasion,0.7430779452915193,0.669276434956916
+21,3,getting saved from the sixties,getting saved from the sixties,0.7442398077057412,0.66800396703074
+21,4,the consciousness reformation,the consciousness reformation,0.7491564069438228,0.6625977221457218
+21,5,the process,the process,0.7493880468045053,0.6623421264257928
+21,6,self transformation,self transformation,0.7600234883775041,0.6505216712586501
+21,7,expanding universes,expanding universes,0.7608381823810452,0.649609233099186
+21,8,the spiral dance,the spiral dance,0.7638180337873646,0.6462646203385397
+21,9,a course in miracles,a course in miracles,0.7646441931133657,0.6453346925086061
+21,10,the science of mind,the science of mind,0.7651569380924224,0.6447566756916094
+22,1,joining new religious movements,joining new religious movements,0.8039225382494268,0.6020211491352795
+22,2,christian community,christian community,0.821769523806759,0.5811600672387166
+22,3,christian groups,christian groups,0.8276426264529206,0.5741952643748076
+22,4,new age groups,new age groups,0.8290541220715624,0.5725137060709838
+22,5,older members,older members,0.8302832737102696,0.5710474297183159
+22,6,shaker communities,shaker communities,0.831377186746193,0.5697403732344826
+22,7,i am movement,i am movement,0.8370928944338982,0.5628834261095124
+22,8,understanding new religious movements,understanding new religious movements,0.8370966812505942,0.5628785639551959
+22,9,exploring new religions,exploring new religions,0.8397496562855818,0.5596802463112607
+22,10,the international society for krishna consciousness,the international society for krishna consciousness,0.8408250810548694,0.5583813224646627
+23,1,sathya sai baba,sathya sai baba,0.5723872787868973,0.8327809925276972
+23,2,satya sai baba,satya sai baba,0.5853489053617448,0.8218648279508622
+23,3,sathya sai baba movement,sathya sai baba movement,0.6020943186849684,0.8074002170366186
+23,4,bhagavan sri sathya sai baba,bhagavan sri sathya sai baba,0.605598936064572,0.8043214585354268
+23,5,sai baba,sai baba,0.6258616619833743,0.786170091963663
+23,6,sathya sai movement,sathya sai movement,0.6622891379028694,0.7520359436737901
+23,7,shirdi sai baba,shirdi sai baba,0.6661692968216919,0.7482859893937691
+23,8,sathya sai organisation,sathya sai organisation,0.6737161101359981,0.740930628771611
+23,9,sai baba movement,sai baba movement,0.6780409886375997,0.7366773249956284
+23,10,sathya sai,sathya sai,0.6906897932006666,0.7240838354294438
+24,1,islamists,islamists,0.625384267220207,0.7946246735672303
+24,2,muslim brotherhood,muslim brotherhood,0.64191048076004,0.7783767057688498
+24,3,wahhabis,wahhabis,0.6488935318543175,0.7713842031868106
+24,4,the nation of islam,the nation of islam,0.649464773892493,0.7708089613193064
+24,5,islamist,islamist,0.6496496189263363,0.7706225325500259
+24,6,muslims,muslims,0.6542483809264691,0.7659705593358191
+24,7,islamism,islamism,0.6625429568047603,0.7574973646695911
+24,8,black muslims,black muslims,0.6640627535624816,0.755932922043281
+24,9,wahhabism,wahhabism,0.666133571686583,0.7537964516129114
+24,10,ikhwan al-muslimin,ikhwan al-muslimin,0.6680869423860524,0.751774139074585
+25,1,so ¯ka gakkai,so ¯ka gakkai,0.6738226369916396,0.7509642266399701
+25,2,soka gakkai,soka gakkai,0.6834037263097719,0.7404238645312285
+25,3,sekai kyuseikyo,sekai kyuseikyo,0.69071741945268,0.732278089346055
+25,4,sekai kyusei kyo,sekai kyusei kyo,0.7022887240379241,0.7192127109353785
+25,5,i,i,0.705153373089626,0.7159444591894311
+25,6,self,self,0.7075881106230313,0.7131568426260753
+25,7,ikeda daisaku,ikeda daisaku,0.7086913982031935,0.7118897876392419
+25,8,kurozumikyo,kurozumikyo,0.7087004965627581,0.7118796253390773
+25,9,mau mau,mau mau,0.7132162564035439,0.7066745899068814
+25,10,daisaku ikeda,daisaku ikeda,0.7139544167409706,0.7058213677684033
+26,1,aum shinrikyo,aum shinrikyo,0.40120758066516343,0.9326130706376836
+26,2,aum shinrikyo ¯,aum shinrikyo ¯,0.42623830112627487,0.9189385312876599
+26,3,aum shinriky ō,aum shinriky ō,0.4522492034386846,0.9038518417835958
+26,4,aum shinrikyˆ o,aum shinrikyˆ o,0.5461933852339493,0.8419227666036634
+26,5,aum shinriky o,aum shinriky o,0.5480512973761065,0.8405801691697925
+26,6,tenrikyo,tenrikyo,0.5995569553703262,0.8015546526874562
+26,7,shinshukyo,shinshukyo,0.6945249406042922,0.7204135275777941
+26,8,shinto,shinto,0.737670104966192,0.6796159076803918
+26,9,sekai kyuseikyo,sekai kyuseikyo,0.7485829898261888,0.6689073436775217
+26,10,konkokyo,konkokyo,0.770708061718146,0.6467135517203365
+27,1,the unification church,the unification church,0.3604526260725036,0.9520301058993351
+27,2,unification church,unification church,0.4322198153257408,0.9146792021011161
+27,3,unifi cation church,unifi cation church,0.505152049802507,0.8697931989220005
+27,4,unificationist church,unificationist church,0.5228799049136583,0.8578277263858027
+27,5,unification church/ moonies,unification church/ moonies,0.5782573380023384,0.8177914733624163
+27,6,unificationists,unificationists,0.6288773805940195,0.7776715914150241
+27,7,unificationist,unificationist,0.6393159404377379,0.7689802688571503
+27,8,unitarian church,unitarian church,0.6460643655955349,0.7632848360850139
+27,9,unificationism,unificationism,0.6505927777136423,0.7594296369723781
+27,10,association of unity churches,association of unity churches,0.658782853826724,0.7523888586820722
+28,1,order of the solar temple,order of the solar temple,0.5232592937230591,0.8605827553195453
+28,2,renewed order of the temple,renewed order of the temple,0.6202280478467587,0.7857199679931313
+28,3,order of the golden dawn,order of the golden dawn,0.6206014749488814,0.7854069337515237
+28,4,order of the star of the east,order of the star of the east,0.6314806577342584,0.776209860209016
+28,5,holy order of mans,holy order of mans,0.6466714570950826,0.7631017402973609
+28,6,hermetic order of the golden dawn,hermetic order of the golden dawn,0.6617449116298622,0.7497857349844912
+28,7,ordo templi orientis,ordo templi orientis,0.6627831755004508,0.7488573858079716
+28,8,sufi order of the west,sufi order of the west,0.6681415426126752,0.7440425190482962
+28,9,symbolic order,symbolic order,0.6875412187710558,0.7262858028831977
+28,10,the order,the order,0.6924824041282367,0.7216816806263818
+29,1,rosicrucian order,rosicrucian order,0.5414723140001041,0.8485143000197715
+29,2,rosicrucian fellowship,rosicrucian fellowship,0.5482692317396506,0.8434671280005249
+29,3,rosicrucian fraternity,rosicrucian fraternity,0.5600307591205079,0.8345847952374881
+29,4,rosicrucian,rosicrucian,0.5868850448641505,0.8135969877200738
+29,5,rosicrucianism,rosicrucianism,0.586929919647571,0.8135611191504075
+29,6,rosicrucian anthroposophic league,rosicrucian anthroposophic league,0.6269678598559115,0.7804423223611511
+29,7,ancient mystical order of the rosy cross,ancient mystical order of the rosy cross,0.6395158980396595,0.769613427479838
+29,8,rosy cross,rosy cross,0.6971490851587755,0.7171191952822671
+29,9,lectorium rosicrucianum,lectorium rosicrucianum,0.7363854192987567,0.6787914657972538
+29,10,rosicrucians,rosicrucians,0.7444177158828218,0.6706866715691069
+30,1,the family (formerly the children of god),the family (formerly the children of god),0.44083187872069873,0.9100992155288024
+30,2,the children of god,the children of god,0.4736670199433885,0.8903367344785532
+30,3,children of god/the family,children of god/the family,0.47959195040850516,0.8866196139202192
+30,4,children of god,children of god,0.5277283725252833,0.8547075259825245
+30,5,children of god (cog),children of god (cog),0.579892023337155,0.8166820290236634
+30,6,free the children of god,free the children of god,0.6562437594485718,0.7545666596160046
+30,7,word of god,word of god,0.6869023438856604,0.7274654200070334
+30,8,the worldwide church of god,the worldwide church of god,0.6907461174733589,0.7239800365202076
+30,9,the church of the lamb of god,the church of the lamb of god,0.6942022418561711,0.7208298820310044
+30,10,children of jesus and mary,children of jesus and mary,0.70576478253535,0.7101764792485206
+31,1,neo- pagan,neo- pagan,0.509091033303253,0.8730848230061522
+31,2,neo-paganism,neo-paganism,0.5255107147535234,0.8613951201792767
+31,3,neo-pagans,neo-pagans,0.5576805441195977,0.8374172092045451
+31,4,neopaganism,neopaganism,0.5703731712746538,0.8275649663209589
+31,5,paganism,paganism,0.6004154510946814,0.8033617838122857
+31,6,modern paganism,modern paganism,0.6007025644021867,0.8031245845721073
+31,7,neo-pagan,neo-pagan,0.606298410022159,0.798476685382668
+31,8,contemporary paganism,contemporary paganism,0.6280545142311927,0.7799976736827504
+31,9,pagan movement,pagan movement,0.6285604661795113,0.7795601531240006
+31,10,neo-templarism,neo-templarism,0.6409238768271485,0.7687600673351442
+32,1,the church of jesus christ of latter-day saints,the church of jesus christ of latter-day saints,0.5134317678211235,0.8725704731748576
+32,2,the worldwide church of god,the worldwide church of god,0.5644728449441686,0.8340687674602641
+32,3,the church,the church,0.5645560301501301,0.8340029833988579
+32,4,the church of the lamb of god,the church of the lamb of god,0.5744792602545673,0.8260932459575105
+32,5,community of christ,community of christ,0.5858335809047127,0.8168737006323437
+32,6,the last testament church,the last testament church,0.5873710631176361,0.8156110398804524
+32,7,church of jesus christ of latter-day saints,church of jesus christ of latter-day saints,0.5923791394078827,0.8114767367304336
+32,8,church of the lamb of god,church of the lamb of god,0.6025446813121035,0.802975985087587
+32,9,church of the living word,church of the living word,0.6060718568973418,0.7999930056684585
+32,10,worldwide church of god,worldwide church of god,0.6074129232767113,0.7988541698365319
+33,1,african independent churches,african independent churches,0.5275120093420009,0.8617333837258496
+33,2,african initiated churches,african initiated churches,0.5629159251355117,0.8348243335897585
+33,3,african orthodox church,african orthodox church,0.6367086103295239,0.7731204278532748
+33,4,african pentecostal christians,african pentecostal christians,0.6403043868893774,0.7699197137633709
+33,5,african pentecostal evangelization,african pentecostal evangelization,0.6565206113554974,0.755261525653928
+33,6,african pentecostal mission,african pentecostal mission,0.6617464063517409,0.7504593310424591
+33,7,african charismatic churches,african charismatic churches,0.6668416749827336,0.7457408674674362
+33,8,african pentecostalism,african pentecostalism,0.6839427259596602,0.7296396288369907
+33,9,ethiopian churches,ethiopian churches,0.7121591460256003,0.7021815991725411
+33,10,christian churches,christian churches,0.7212198533154696,0.6931286941235615
+34,1,theosophical society,theosophical society,0.5012533012559126,0.8888248012793095
+34,2,the theosophical society,the theosophical society,0.5123662077203174,0.8806110027528409
+34,3,theosophical,theosophical,0.5370131605872421,0.8617512203297426
+34,4,anthroposophical society,anthroposophical society,0.5491247115831003,0.8521587874900007
+34,5,theosophical society in america,theosophical society in america,0.5605686212958487,0.842898509407529
+34,6,theosophical movement,theosophical movement,0.5933884520560627,0.8152818270479734
+34,7,theosophy,theosophy,0.6009446477328075,0.8087011964214136
+34,8,theosophists,theosophists,0.6033539925120356,0.806585484183672
+34,9,the theosophist,the theosophist,0.6358986789753223,0.7771762439604923
+34,10,transcendental meditation,transcendental meditation,0.6431690457405915,0.7703953386860108
+35,1,new thought,new thought,0.6142322941062189,0.799350160718353
+35,2,new left,new left,0.6247258915231397,0.7896748181377256
+35,3,the forum,the forum,0.6494616698686408,0.7662211653246416
+35,4,concerned relatives,concerned relatives,0.6517226270606927,0.7640319495530554
+35,5,insight,insight,0.656651847149538,0.7592324766309893
+35,6,the world tomorrow,the world tomorrow,0.6576608427516184,0.7582459140972555
+35,7,conscientious objection,conscientious objection,0.6706359530138771,0.7454205748758933
+35,8,the internet,the internet,0.6718085478458394,0.7442489468768527
+35,9,the self,the self,0.6730433195050585,0.7430136377642591
+35,10,next level mind,next level mind,0.6735885674060655,0.7424669907645001
+36,1,american family foundation,american family foundation,0.6649769011403555,0.7501690091278369
+36,2,family federation for world peace and unification,family federation for world peace and unification,0.6738150591181211,0.7414664206756919
+36,3,citizens' freedom foundation,citizens' freedom foundation,0.6813580741672153,0.7339478458859976
+36,4,american family foundation (aff),american family foundation (aff),0.6814409653557698,0.7338645632907218
+36,5,freedom of thought foundation,freedom of thought foundation,0.6873304911046599,0.7279361284767508
+36,6,society,society,0.6948952121238905,0.72024627668428
+36,7,workers party,workers party,0.6956598219707939,0.7194636352360331
+36,8,self,self,0.7000030196032047,0.7150058812884097
+36,9,citizens freedom foundation,citizens freedom foundation,0.7054354156455,0.7093902318201081
+36,10,democratic workers party,democratic workers party,0.7100146437310485,0.7046232422694259
+37,1,the family,the family,0.42881575783161013,0.9168303559091956
+37,2,the self,the self,0.5311328474830338,0.8522492464334346
+37,3,the way,the way,0.5358521294383726,0.8489380726016132
+37,4,the family international,the family international,0.5425457802817413,0.8441920497509969
+37,5,the system,the system,0.5596708395051353,0.8317807693213739
+37,6,the party,the party,0.5654043908819623,0.8275394720845806
+37,7,the power,the power,0.56601483800201,0.8270852944429826
+37,8,the mother,the mother,0.5796557025264292,0.8168092393454549
+37,9,the process,the process,0.5859506160697237,0.8119850820596273
+37,10,the farm,the farm,0.5886896819942998,0.8098695047310961
+38,1,what is scientology?,what is scientology?,0.6385914168161796,0.7718794481331788
+38,2,founding church of scientology,founding church of scientology,0.757507073394048,0.6552780585203746
+38,3,la scientologie en suisse,la scientologie en suisse,0.7642494545231101,0.6480719988181443
+38,4,comprehending cults,comprehending cults,0.7761789471049892,0.635165319554787
+38,5,church of scientology international,church of scientology international,0.7877568030758351,0.6224483197977028
+38,6,the future of religion,the future of religion,0.7887977881578346,0.6212955032092247
+38,7,the church of scientology,the church of scientology,0.7891752923416362,0.6208772894670122
+38,8,church of religious science/science of mind,church of religious science/science of mind,0.7894768859980723,0.6205427620450304
+38,9,so-called sects and psychogroups,so-called sects and psychogroups,0.7905196777261606,0.6193855737635299
+38,10,the consciousness reformation,the consciousness reformation,0.7906101297019927,0.619285308681937
+39,1,new religious movements,new religious movements,0.4741773089607288,0.9001588641035718
+39,2,new religious movement,new religious movement,0.48969087197281397,0.8896686867166416
+39,3,new religions,new religions,0.5638706157517771,0.8348421946549047
+39,4,understanding new religious movements,understanding new religious movements,0.5775659994179652,0.8238752963803251
+39,5,the new religions,the new religions,0.5787951580010343,0.8228786764036884
+39,6,religious movements,religious movements,0.5805441456855182,0.8214561507464889
+39,7,violence and new religious movements,violence and new religious movements,0.5931511322436203,0.8110755345693839
+39,8,new religions studies,new religions studies,0.5951801330875146,0.8093842315173629
+39,9,ecclesial movements,ecclesial movements,0.6045133408958222,0.8015292152641087
+39,10,spiritual regeneration movement,spiritual regeneration movement,0.6083898597522719,0.798230790573863
+40,1,brainwashing,brainwashing,0.5088469121252411,0.8715504908058112
+40,2,a social psychological critique of 'brainwashing' claims about recruitment to new religions,a social psychological critique of 'brainwashing' claims about recruitment to new religions,0.6474165284395286,0.7626206957654047
+40,3,the brainwashing/deprogramming controversy,the brainwashing/deprogramming controversy,0.6511876354483087,0.7592917828273387
+40,4,conversion and 'brainwashing' in new religious movements,conversion and 'brainwashing' in new religious movements,0.6622211436104278,0.7494393537858353
+40,5,coercive persuasion,coercive persuasion,0.7390889700083498,0.6762073233697992
+40,6,mind,mind,0.758214811015373,0.6567377886519423
+40,7,conscientious objection,conscientious objection,0.771456885066768,0.6429666733784881
+40,8,mind dynamics,mind dynamics,0.7753368373918408,0.6388861767777636
+40,9,the science of mind,the science of mind,0.7792652730573107,0.6347341548685861
+40,10,thought reform and the psychology of totalism,thought reform and the psychology of totalism,0.7813428370826041,0.6325302495807252
+41,1,cultic milieu,cultic milieu,0.4106515326758819,0.9190545859998359
+41,2,the cultic milieu,the cultic milieu,0.5299678490638627,0.8492369255483054
+41,3,satanic milieu,satanic milieu,0.6265814851588735,0.7797258482823493
+41,4,"the cult, the cultic milieu and secularization","the cult, the cultic milieu and secularization",0.6354511705143829,0.7727624187366544
+41,5,cult,cult,0.6991105460577068,0.7199115840560806
+41,6,satanic cults,satanic cults,0.6991671487619512,0.7198624155540421
+41,7,comprehending cults,comprehending cults,0.7012795440515883,0.7180218697438856
+41,8,the cult experience,the cult experience,0.7093120731702657,0.7109735636066854
+41,9,new age milieu,new age milieu,0.7105121156319466,0.7099139178363033
+41,10,cults in context,cults in context,0.7112754798258071,0.709238447865132
+42,1,sectes,sectes,0.5734997771373621,0.8264675619081763
+42,2,christian sects,christian sects,0.5919485866423847,0.8114774930876074
+42,3,sects,sects,0.6066490663562055,0.7991925237936262
+42,4,so-called sects and psychogroups,so-called sects and psychogroups,0.6170141815608775,0.7903492937259686
+42,5,sekten,sekten,0.62264971276515,0.7854786597546213
+42,6,sectarianism,sectarianism,0.6375924877383957,0.7723489233863821
+42,7,pour en finir avec les sectes,pour en finir avec les sectes,0.6437514998359976,0.7668467597981902
+42,8,illegal activities of sects,illegal activities of sects,0.6457100315786111,0.7650859740132522
+42,9,jugendsekten,jugendsekten,0.6670598127200417,0.7455453318147824
+42,10,satanic groups,satanic groups,0.6671774159984241,0.7454359889410525
+43,1,coercive persuasion,coercive persuasion,0.6224580684044158,0.7885969968285935
+43,2,conscientious objection,conscientious objection,0.6825221822581403,0.7319588234116274
+43,3,mystical manipulation,mystical manipulation,0.6837697452021144,0.7307271025519486
+43,4,brainwashing,brainwashing,0.6870602779131506,0.727467588061269
+43,5,satanic abuse,satanic abuse,0.6898292917759504,0.7247128337422366
+43,6,submissiveness,submissiveness,0.7097647627014961,0.7045513061481244
+43,7,"cults: faith, healing, and coercion","cults: faith, healing, and coercion",0.7163176188752161,0.697798994217328
+43,8,self-direction,self-direction,0.7266183484561264,0.6870590462431937
+43,9,latent tension,latent tension,0.7289062291069193,0.6846528480014344
+43,10,gestalt therapy,gestalt therapy,0.7319427342970944,0.6814472609054161
+44,1,deprogramming,deprogramming,0.525356615547612,0.859705378309699
+44,2,the brainwashing/deprogramming controversy,the brainwashing/deprogramming controversy,0.7192116683036058,0.6959919473569577
+44,3,radical departures,radical departures,0.7383034426139108,0.6771094008544263
+44,4,brainwashing,brainwashing,0.779671009677504,0.6344992678336605
+44,5,coercive persuasion,coercive persuasion,0.7878290547741474,0.6258220987836517
+44,6,dissenters,dissenters,0.7904341352971739,0.6230321005567289
+44,7,return to personal choice,return to personal choice,0.8023542915005358,0.6101488354735679
+44,8,getting saved from the sixties,getting saved from the sixties,0.8033471133536971,0.6090670129961215
+44,9,neuro-linguistic programming,neuro-linguistic programming,0.8048411735475233,0.6074366591717972
+44,10,moral re-armament,moral re-armament,0.8061644649526772,0.6059899984590046
+45,1,how the millennium comes violently,how the millennium comes violently,0.7207053634582887,0.6932546406396007
+45,2,millennialism,millennialism,0.7549738793197232,0.657003342611248
+45,3,millenarianism,millenarianism,0.7684068715002533,0.6423332942445468
+45,4,conscientious objection,conscientious objection,0.7727470194992768,0.6375386842682795
+45,5,"millennium, messiahs, and mayhem","millennium, messiahs, and mayhem",0.7858113585501778,0.622942051621469
+45,6,yelling,yelling,0.7862100692890664,0.6224929731757323
+45,7,moral panics,moral panics,0.7863062097908975,0.6223843690454697
+45,8,radical departures,radical departures,0.7888484673630456,0.6195136704682924
+45,9,satanic scare,satanic scare,0.7955246236452133,0.611931079519134
+45,10,concerned relatives,concerned relatives,0.7971365023894168,0.6100909969246731
+46,1,satanic cults,satanic cults,0.6693817695670137,0.7557618182127323
+46,2,ufo cults,ufo cults,0.7289744019616996,0.7091815359367472
+46,3,ufo cult,ufo cult,0.7395136329907929,0.7005305048332374
+46,4,cult,cult,0.7988064254655891,0.6495459439927846
+46,5,satanic groups,satanic groups,0.805532367422465,0.6435143772624583
+46,6,the chaos of cults,the chaos of cults,0.8100044358005075,0.6394758111927965
+46,7,comprehending cults,comprehending cults,0.8118215320643206,0.6378283378894081
+46,8,satanic rituals,satanic rituals,0.8163241554125398,0.633730853246234
+46,9,sufi cults,sufi cults,0.8178282261437616,0.6323569303350536
+46,10,cults,cults,0.8179339222720918,0.6322601895628523
+47,1,the anti-cult movement,the anti-cult movement,0.510432657484031,0.8667919080245858
+47,2,anti-cult movement (acm),anti-cult movement (acm),0.5585088888215074,0.8328859670049742
+47,3,anti-cult movements in cross-cultural perspective,anti-cult movements in cross-cultural perspective,0.6070216930455636,0.7955806456584544
+47,4,christian countercult,christian countercult,0.6101500817950065,0.7930685359861738
+47,5,anti-cult movement,anti-cult movement,0.6231127266786513,0.7825214298878324
+47,6,anticult,anticult,0.6427151581995996,0.7661503248946114
+47,7,anticult movement,anticult movement,0.6593084955457773,0.7518959807999723
+47,8,counter-cult groups,counter-cult groups,0.6987896276991449,0.7165197824803887
+47,9,"the cult, the cultic milieu and secularization","the cult, the cultic milieu and secularization",0.7144190114891632,0.7019471869583627
+47,10,anti-catholicism,anti-catholicism,0.7158761696814645,0.7005723165996918
+48,1,conversion and 'brainwashing' in new religious movements,conversion and 'brainwashing' in new religious movements,0.6589976930070854,0.7536699320988236
+48,2,a social psychological critique of 'brainwashing' claims about recruitment to new religions,a social psychological critique of 'brainwashing' claims about recruitment to new religions,0.6604555770469948,0.7524698056082326
+48,3,satanic cults,satanic cults,0.6628287846660891,0.7505110783890885
+48,4,ufo cults,ufo cults,0.6674875439460528,0.7466450633656233
+48,5,brainwashing,brainwashing,0.6949281942462889,0.7233254496261464
+48,6,ufo cult,ufo cult,0.708392489920359,0.711539581867703
+48,7,"cults: faith, healing, and coercion","cults: faith, healing, and coercion",0.7095017178750311,0.7105587539466856
+48,8,comprehending cults,comprehending cults,0.7174188327587984,0.7035117440260766
+48,9,cultic milieu,cultic milieu,0.7345030825489742,0.6880395340520356
+48,10,misunderstanding cults,misunderstanding cults,0.7352862091909613,0.6873215589392598
+49,1,snapping,snapping,0.6979867016673096,0.7161123198773335
+49,2,demonstration,demonstration,0.6999458413881869,0.7142042120675252
+49,3,loading the language,loading the language,0.7037184785200923,0.710514923262032
+49,4,latihan,latihan,0.7267549525742429,0.6875574054511748
+49,5,yelling,yelling,0.7398684339011444,0.6741585798750995
+49,6,drawing down the moon,drawing down the moon,0.740694833703165,0.6733057276541374
+49,7,time,time,0.7525131583489986,0.6610116489976257
+49,8,a course in miracles,a course in miracles,0.7552876213833114,0.6580973129085367
+49,9,the training of the cadre,the training of the cadre,0.7554974776524606,0.6578762730333789
+49,10,a time to chant,a time to chant,0.7560592104957544,0.6572845066694037
+50,1,yelling,yelling,0.7498549034798272,0.6618157926707704
+50,2,their blood cries out,their blood cries out,0.7757448813912856,0.6327143728657441
+50,3,satanic scare,satanic scare,0.7808445388123046,0.6268652438457114
+50,4,concerned relatives,concerned relatives,0.7881010020938961,0.6184771157919324
+50,5,doctrine over person,doctrine over person,0.7885325976150415,0.61797567318114
+50,6,conscientious objection,conscientious objection,0.7936158510997646,0.612050115943269
+50,7,coercive persuasion,coercive persuasion,0.7964962208575204,0.6086754773680765
+50,8,satanic abuse,satanic abuse,0.7980119825761126,0.6068948592937355
+50,9,submissiveness,submissiveness,0.800588450199342,0.603859968736798
+50,10,brainwashing,brainwashing,0.8032456114148245,0.6007200169098781
+51,1,anonymous,anonymous,0.7657504442822638,0.6434112163558048
+51,2,doctrine over person,doctrine over person,0.7844537556059468,0.621517414939174
+51,3,aum shinrikyˆ o,aum shinrikyˆ o,0.7852497897396664,0.6205740569979368
+51,4,self-religion,self-religion,0.7949791935529347,0.6089639512507936
+51,5,misunderstanding cults,misunderstanding cults,0.8037186162295035,0.5984141336011268
+51,6,asahara shˆ okˆ o,asahara shˆ okˆ o,0.8044953081409536,0.5974709190905942
+51,7,metsubˆ o no hi,metsubˆ o no hi,0.8103913753003331,0.5902814947059564
+51,8,silence,silence,0.8106901630965024,0.5899153986033042
+51,9,secularization,secularization,0.8123592484421945,0.5878697461070324
+51,10,total overcomers anonymous,total overcomers anonymous,0.8132841668871438,0.5867341700087498
+52,1,ufo cults,ufo cults,0.5207555345198945,0.8582741826397845
+52,2,satanic cults,satanic cults,0.5450358122404088,0.8414670785326891
+52,3,ufo cult,ufo cult,0.5711217827829993,0.8225564414615287
+52,4,cults,cults,0.5966032296544521,0.8032308003044024
+52,5,cult,cult,0.5969311090704693,0.8029766097337343
+52,6,cultic milieu,cultic milieu,0.6129901023520677,0.7903570261079085
+52,7,sufi cults,sufi cults,0.6293708842631716,0.7771394894801169
+52,8,cult formation,cult formation,0.6345903050531075,0.7728547800020846
+52,9,comprehending cults,comprehending cults,0.6384424648590107,0.7696693926086575
+52,10,heaven's gate cult,heaven's gate cult,0.6647714766115049,0.7473840858982059
+53,1,self transformation,self transformation,0.7420833882481742,0.6712867258809551
+53,2,conscientious objection,conscientious objection,0.7545690024411572,0.6580814976855439
+53,3,submissiveness,submissiveness,0.7553406369698817,0.6572580056215032
+53,4,loading the language,loading the language,0.7599535841791176,0.6523181160053411
+53,5,conformity,conformity,0.7679097693199591,0.6437279165416436
+53,6,the consciousness reformation,the consciousness reformation,0.7765428901830511,0.634305565867411
+53,7,mind,mind,0.7829544613129554,0.6272393953341681
+53,8,mind dynamics,mind dynamics,0.785872326556245,0.6240043717655952
+53,9,doctrine over person,doctrine over person,0.7866159735642807,0.6231782799446697
+53,10,self-direction,self-direction,0.7870456100322987,0.6227007061018117
+54,1,charismatic authority,charismatic authority,0.5196608722153414,0.8646771346111908
+54,2,charismatic leadership,charismatic leadership,0.5758707155976044,0.8225904401459698
+54,3,charismatic,charismatic,0.6110113417255535,0.7940856568970243
+54,4,evolving perspectives on charismatic leadership,evolving perspectives on charismatic leadership,0.6354066211937623,0.7733037218232638
+54,5,the charismatic relationship,the charismatic relationship,0.6520055984531873,0.7586988105230931
+54,6,charismatic christianity,charismatic christianity,0.6546894646645296,0.7563020103990463
+54,7,prophetic charisma,prophetic charisma,0.6597682039701543,0.7517393412943271
+54,8,charisma,charisma,0.6748979973362471,0.7379382521388154
+54,9,charismatic renewal,charismatic renewal,0.6842781366594919,0.7292249835004545
+54,10,charismatic movement,charismatic movement,0.685546159967197,0.7280380540729524
+55,1,god is love,god is love,0.6946578388961148,0.7200862860549427
+55,2,secure attachment to god,secure attachment to god,0.7039087408649123,0.7106743030359682
+55,3,christian faith,christian faith,0.7231188189310956,0.6907320667121105
+55,4,the gods have landed,the gods have landed,0.7319935272652597,0.6813381228467931
+55,5,baptism in the holy spirit,baptism in the holy spirit,0.7364641407594827,0.6765618221625949
+55,6,holy wine ceremony,holy wine ceremony,0.7436031487593339,0.6688753915392034
+55,7,healing,healing,0.7490277865101416,0.6629850526145029
+55,8,the church universal and triumphant,the church universal and triumphant,0.7491386281379979,0.6628642640718636
+55,9,god,god,0.7514197076170187,0.6603741411945236
+55,10,in gods we trust,in gods we trust,0.7529709910336707,0.6586764620873977
+56,1,christian faith,christian faith,0.7190534211768109,0.695253230133491
+56,2,understanding the new religions,understanding the new religions,0.7411915781685692,0.6726662782484053
+56,3,the future of religion,the future of religion,0.7460513027517693,0.6676166097977996
+56,4,comprehending cults,comprehending cults,0.7481368160788561,0.6654392560955542
+56,5,the church universal and triumphant,the church universal and triumphant,0.7573439066459579,0.6557548328400051
+56,6,church of religious science/science of mind,church of religious science/science of mind,0.7588437317036685,0.6541659415578767
+56,7,religious science,religious science,0.7609798753613989,0.6518976715942313
+56,8,secure attachment to god,secure attachment to god,0.7615066560445629,0.6513371531172534
+56,9,the new religious consciousness,the new religious consciousness,0.7672357366977349,0.6452184334303765
+56,10,faith,faith,0.7682618536876124,0.6441171598859012
+57,1,understanding new religious movements,understanding new religious movements,0.5742553025992421,0.8248640492549832
+57,2,understanding the new religions,understanding the new religions,0.6064714856865058,0.7985949857677731
+57,3,joining new religious movements,joining new religious movements,0.6078463365473239,0.7974422976406459
+57,4,exploring new religions,exploring new religions,0.6327964059744219,0.7760654911783155
+57,5,new religious movements (nrms),new religious movements (nrms),0.6340343405994228,0.7749827578317552
+57,6,new religious movements: a practical introduction,new religious movements: a practical introduction,0.6432425781222432,0.7668604429344155
+57,7,new religions as global cultures,new religions as global cultures,0.650931713106903,0.7599883347414942
+57,8,new religious movements,new religious movements,0.6580711962771715,0.7535343438408448
+57,9,psychology and the new religious movements,psychology and the new religious movements,0.6648062382723277,0.7473810762741349
+57,10,conversion and 'brainwashing' in new religious movements,conversion and 'brainwashing' in new religious movements,0.6661891556062358,0.7461101927872391
+58,1,comprehending cults,comprehending cults,0.6329645075982124,0.7749505985678269
+58,2,misunderstanding cults: searching for objectivity in a controversial field,misunderstanding cults: searching for objectivity in a controversial field,0.6693211998606183,0.7429776351600075
+58,3,misunderstanding cults,misunderstanding cults,0.6758890148857686,0.7370112983406074
+58,4,cults in context,cults in context,0.698339243545289,0.7161773332924819
+58,5,ufo cults,ufo cults,0.6985828652864231,0.7159471842298744
+58,6,satanic cults,satanic cults,0.7001459609171821,0.7144709664621438
+58,7,cult formation,cult formation,0.7043810633548502,0.7104542247566294
+58,8,"cults: faith, healing, and coercion","cults: faith, healing, and coercion",0.7137880153280098,0.7014452584363658
+58,9,cults,cults,0.7157881731923674,0.6995141839073732
+58,10,cultic milieu,cultic milieu,0.7223634188167988,0.693128453173373

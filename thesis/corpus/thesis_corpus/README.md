@@ -542,11 +542,13 @@ and `emergent_entities_ranked.csv`/`top_100_rows.tex` from
 `export_interview_emergent_entities.py`. `summary.json`'s `segments` block
 (`total`/`labeled`/`unlabeled`/`labeled_rate`) is the number to watch — it's
 the coverage/labeling-quality figure now, not a candidates-retained figure.
-This is a standalone, single-corpus archive: it is never pooled into
-`processed/shared_space_v2/` and never touches the `Emergent_Entities_v2`
+This is a standalone, single-corpus archive by default: it is never pooled
+into `processed/shared_space_v2/` and never touches the `Emergent_Entities_v2`
 appendix or the `Geometric_Analysis_Draft_v3` report — see
 `processed/v2/interviews/run_20260910/ARCHIVED.md` for what happens to the
-old interview run this supersedes.
+old interview run this supersedes. It *is* pooled into `processed/shared_space_v3/`
+(see "Shared cross-corpus space" below, `--interviews-archive-dir`), a
+separate space built alongside `shared_space_v2` rather than replacing it.
 
 Tests (stdlib `unittest`, no Ollama): `test_interview_chunking.py`,
 `test_interview_segment_labels.py`, `test_extract_interviews_full.py`.
@@ -1072,6 +1074,42 @@ No Ollama needed — pure `numpy`/`scikit-learn`/`matplotlib` on data that's
 already local (same `requirements-reduce_embeddings.txt`, now with
 `matplotlib` added). Never modifies any of the five source files, only
 writes new ones under `processed/shared_space/`.
+
+**v2/v3 pooling** (`--run-tag`, `--interviews-archive-dir`): everything
+above describes the v1 pipeline; `--run-tag <tag>` pools the v2 (strict-
+verbatim) archives instead — `processed/v2/<corpus>/run_<tag>/criterion_expressions.jsonl`
+for all three corpora — and defaults `--output-dir` to `processed/shared_space_v2/`.
+Pass `--min-expression-words 0` for a v2 run (its own screen already handles
+short-fragment filtering with a referent test a word-count floor can't
+express — see `load_corpus_points_v2`'s docstring). `--interviews-archive-dir
+<dir>` additionally overrides just the interviews side to `<dir>/criterion_expressions.jsonl`
+(and its domain-term paths alongside it) — for pooling a run that doesn't
+live under the `processed/v2/interviews/run_<tag>/` template, e.g. the
+exhaustive interview pipeline's `processed/interviews_full/interviews/run_<tag>/`
+(see `extract_interviews_full.py` above). Schema-compatible as-is: both
+archives carry the fields `load_corpus_points_v2` needs. Defaults
+`--output-dir` to `processed/shared_space_v3/` when set:
+
+```
+python -m thesis_corpus.build_shared_space --run-tag 20260910 --min-expression-words 0 \
+    --interviews-archive-dir processed/interviews_full/interviews/run_20260912
+```
+
+`shared_space_v3` = `shared_space_v2` with the exhaustive interview archive
+(668 points) pooled in place of the archived selective one (64 points) —
+everything else (literature/MIVILUDES `run_20260910`, concept backbone,
+entity-anchor thresholds) identical. `shared_space_v2` itself is untouched
+and still what `Emergent_Entities_v2`/`Geometric_Analysis_Draft_v3` read.
+
+One manual-exclusion caveat this surfaced: `MANUALLY_EXCLUDED_POOLED_KEYS`
+excludes one bad interview fragment ("Sept?") by `document_id:chunk_index`
+— fine-grained enough in the old chunking scheme, but the exhaustive
+pipeline packs a whole transcript into one `chunk_index`, so that key would
+match every segment of that document instead of just the one fragment.
+Archives carrying a `segment_index` are now excluded via the finer
+`MANUALLY_EXCLUDED_POOLED_SEGMENT_KEYS` (`document_id:chunk_index:segment_index`)
+instead — see that constant's docstring and `TestManualExclusion` in
+`tests/test_build_shared_space.py` for the regression test.
 
 ### Output
 

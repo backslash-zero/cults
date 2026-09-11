@@ -145,6 +145,31 @@ class TestManualExclusion(unittest.TestCase):
         self.assertEqual(points[0]["key"], "b3-aug23-1213:1")
         self.assertEqual(removal_counts["manually_excluded"], 1)
 
+    def test_segment_indexed_archive_excludes_only_the_matching_segment(self):
+        # Regression test for the bug the segment-key exclusion was added to
+        # fix: an exhaustive-pipeline archive (extract_interviews_full.py)
+        # packs a whole transcript into one chunk_index, so the coarse
+        # document_id:chunk_index key would wrongly drop every segment of
+        # that chunk, not just "Sept?" (segment_index=4). Confirmed live on
+        # the first shared_space_v3 pooling run: all 24 segments of
+        # b3-aug23-1213 were dropped before this fix.
+        self.assertIn("b3-aug23-1213:0:4", bss.MANUALLY_EXCLUDED_POOLED_SEGMENT_KEYS)
+        path = self._write_archive([
+            {"document_id": "b3-aug23-1213", "chunk_index": 0, "segment_index": 4,
+             "embedding_text": "Sept?", "embedding_vector": [0.1, 0.2], "attribution": "participant",
+             "claim_mode": "question_or_reflection", "epistemic_status": "speculative"},
+            {"document_id": "b3-aug23-1213", "chunk_index": 0, "segment_index": 5,
+             "embedding_text": "Charles Manson", "embedding_vector": [0.3, 0.4], "attribution": "participant",
+             "claim_mode": "direct_statement", "epistemic_status": "asserted"},
+        ])
+        try:
+            points, removal_counts = bss.load_corpus_points_v2("interviews", path, min_expression_words=0)
+        finally:
+            path.unlink()
+        self.assertEqual(len(points), 1)
+        self.assertEqual(points[0]["label"], "Charles Manson")
+        self.assertEqual(removal_counts["manually_excluded"], 1)
+
     def test_no_exclusions_when_key_absent(self):
         path = self._write_archive([
             {"document_id": "other-interview", "chunk_index": 0, "embedding_text": "Scientology",

@@ -1,0 +1,60 @@
+cluster_id,size,internal_dispersion_mean,distance_to_grand_centroid,binding_expression_1,binding_expression_2,binding_expression_3,nearest_entity,nearest_entity_euclidean_distance,nearest_entity_cosine_similarity,entity_gap
+57,143,0.6843,0.3522,new religious movements,new religious movements,new religious movements,understanding new religious movements,0.5743,0.8249,False
+24,141,0.7615,0.3334,the Muslim Brotherhood,the Black Muslims,BLACK MUSLIMS,islamists,0.6254,0.7946,False
+25,134,0.7852,0.3548,Rissho ¯ Ko ¯seikai,Soka Gakkai,Soka Gakkai,so ¯ka gakkai,0.6738,0.751,True
+32,129,0.694,0.3768,the Church of Jesus Christ of Latter-day Saints,the Church of Jesus Christ of Latter-day Saints,the Church of Jesus Christ of Latter-day Saints,the church of jesus christ of latter-day saints,0.5134,0.8726,False
+52,117,0.6241,0.4245,cults,cults,cults,ufo cults,0.5208,0.8583,False
+51,97,0.7479,0.3654,"We don't approach/go towards the groups, we do not have the time.",the religious experience under consideration is not genuine,"it has so few of the aspects of a religion, no hierarchy, no membership system, no structure, not even a network connecting regions or neighborhoods",anonymous,0.7658,0.6434,True
+11,86,0.6626,0.4372,NRMs are religions.,NRMs are simply caught up in a process which affects all religious collectivities.,Various NRMs share beliefs and practices that tie them to certain religious traditions.,nrms,0.642,0.7669,True
+40,85,0.6638,0.4173,brainwashing,brainwashing,brainwashing,brainwashing,0.5088,0.8716,False
+19,82,0.6767,0.4026,New Age movement,the New Age movement,the New Age Movement,the new age movement,0.4851,0.8893,False
+27,82,0.6273,0.4442,the Unification Church,the Unification Church,the Unification Church,the unification church,0.3605,0.952,False
+54,76,0.676,0.4035,charismatic leadership and authority,charismatic leadership,charismatic leadership,charismatic authority,0.5197,0.8647,False
+15,75,0.6812,0.3935,Satanism,Satanism,Satanism,satanism,0.5287,0.8589,False
+42,73,0.6914,0.3561,sects,sects,sects,sectes,0.5735,0.8265,False
+34,64,0.7201,0.3321,The Theosophical Society,Theosophical Society,Theosophical Society,theosophical society,0.5013,0.8888,False
+55,63,0.7236,0.3187,This is Christianity.,The bodies of saints are enormously powerful.,The Christ is now here.,god is love,0.6947,0.7201,True
+1,60,0.6836,0.4867,the Branch Davidians,the Branch Davidians,the Branch Davidians,the branch davidians,0.4884,0.8892,False
+47,60,0.6426,0.4444,anti-cult movement,anti-cult,anti-cult,the anti-cult movement,0.5104,0.8668,False
+30,59,0.6327,0.4749,The Family (formerly the Children of God),The Family (formerly known as the Children of God),The Family (formerly known as the Children of God),the family (formerly the children of god),0.4408,0.9101,False
+43,59,0.7173,0.3213,mental manipulation,mental manipulation,mental manipulation,coercive persuasion,0.6225,0.7886,False
+20,57,0.7193,0.4811,"Osho, founder of the Rajneesh Movement",the Rajneesh movement,the Osho Rajneesh group,rajneesh movement,0.5726,0.8324,False
+39,56,0.6924,0.3528,New Religious Movements,New Religious Movements,New Religious Movements,new religious movements,0.4742,0.9002,False
+5,55,0.6829,0.4161,the International Society for Krishna Consciousness (ISKCON),the International Society for Krishna Consciousness (ISKCON),The International Society for Krishna Consciousness (ISKCON),the international society for krishna consciousness,0.5177,0.8683,False
+16,54,0.7172,0.3521,Wicca is a tradition in its own right,"Witchcraft, or Wicca, is the fastest growing 'religion' in the USA today.",Wicca,wicca,0.628,0.7833,False
+58,54,0.6696,0.3868,The major criterion of the concept of cult is its oppositional nature: A cult is a group that has beliefs and/or practices that are counter to those of the dominant culture.,Cults are problematic,"Viewed parochially, cults can appear to be the strange activity of cultural outcasts, those small groups always on the edge of culture, always dissenting, always strange, sometimes sinister.",comprehending cults,0.633,0.775,False
+37,53,0.6386,0.4746,The Family,The Family,The Family,the family,0.4288,0.9168,False
+26,50,0.6348,0.5308,Aum Shinrikyo,Aum Shinrikyo,Aum Shinrikyo,aum shinrikyo,0.4012,0.9326,False
+50,49,0.7324,0.3305,Male Left leadership [in other groups] seemed pompous and uncaring.,a very controlling environment existed in both as well.,"The way they looked, the way they presented themselves was otherworldly, I guess you would say.",yelling,0.7499,0.6618,True
+0,47,0.5957,0.5272,the Peoples Temple,the Peoples Temple,the Peoples Temple,the peoples temple,0.3702,0.9431,False
+23,46,0.7204,0.4514,Sathya Sai Baba,Sathya Sai Baba,Sathya Sai Baba,sathya sai baba,0.5724,0.8328,False
+45,45,0.7133,0.3508,The group has catastrophic millennial and dualistic beliefs that expect and promote conflict.,Some millennialists expect the transition to be accomplished catastrophically (catastrophic millennialism).,Catastrophic millennialism involves a radical dualism that expects conflict and can even promote it.,how the millennium comes violently,0.7207,0.6933,True
+2,44,0.4991,0.6107,The Church of Scientology,The Church of Scientology,The Church of Scientology,the church of scientology,0.3061,0.959,False
+7,44,0.6014,0.5125,the Solar Temple,the Solar Temple,the Solar Temple,the solar temple,0.3526,0.952,False
+35,43,0.7367,0.2933,The New Organization,New Thought,New Thought,new thought,0.6142,0.7994,False
+6,42,0.6486,0.4667,the Raelian religion,the Raëlian religion,the Raëlian religion,raelian religion,0.499,0.875,False
+44,42,0.6699,0.4384,deprogramming,deprogramming,deprogramming,deprogramming,0.5254,0.8597,False
+36,40,0.7305,0.3863,the Family Federation for World Peace and Unification,the United Front Against Fascism,the Association pour la Defense de la Familie et de l'Individual (ADFI),american family foundation,0.665,0.7502,True
+9,39,0.5488,0.6138,NRMs,NRMs,NRMs,nrms,0.2896,0.9704,False
+28,39,0.665,0.4681,the Order of the Solar Temple,the Order of the Solar Temple,Order of the Solar Temple,order of the solar temple,0.5233,0.8606,False
+48,39,0.5906,0.4672,the ' cults ' apply real ' brainwashing.,cult/brainwashing,cultic brainwashing theory,conversion and 'brainwashing' in new religious movements,0.659,0.7537,True
+3,32,0.6646,0.4583,"the 'suicide cult', Heaven's Gate","the 'suicide cult', Heaven's Gate",the collective suicide of Heaven's Gate,the heaven's gate suicides,0.4966,0.8792,False
+53,31,0.7048,0.3511,it is a multidimensional process in which both individual and group have some degree of infl uence,sufficient condition for achieving acceptability in the long run.,requiring a high degree of conformity and commitment.,self transformation,0.7421,0.6713,True
+56,30,0.6968,0.363,It is not just religious but a religion .,The conspicuous ability to subject science to religious interpretation and use.,No science can stand alone. It needs religion to make it meaningful.,christian faith,0.7191,0.6953,True
+38,29,0.6995,0.3944,Scientology is a religion - and it certainly functions as a religion in the lives of most members of the Church of Scientology,"Scientology is an esoteric Gnostic system based upon the belief that the true self, called the Thetan, is trapped in MEST (matter, energy, space, and time), the visible world.",The Church of Scientology is a psychotherapeutically oriented religion founded in the mid twentieth century by L. Ron Hubbard (1911-1986).,what is scientology?,0.6386,0.7719,False
+41,29,0.5745,0.4638,the cultic milieu,the cultic milieu,the cultic milieu,cultic milieu,0.4107,0.9191,False
+17,28,0.7075,0.4577,Sahaja Yoga is an example.,Sahaja Yoga,Sahaja Yoga,sahaja yoga,0.5648,0.8363,False
+22,28,0.7165,0.4245,"There are around 800,000 followers in total in various countries.","The movement has around 1,500 members and is actively proselytizing.",The movement claims to have at the time of writing more than 130 million members worldwide.,joining new religious movements,0.8039,0.602,True
+49,28,0.6933,0.3533,The human being is a part of nature.,The Work is being completed.,He can see behind the faces of people.,snapping,0.698,0.7161,True
+10,25,0.5044,0.5529,new religious movements (NRMs),new religious movements (NRMs),new religious movements (NRMs),new religious movements (nrms),0.2907,0.964,False
+14,23,0.5683,0.5322,Christian Science,Christian Science,Christian Science,christian science,0.3681,0.9388,False
+18,23,0.7245,0.4383,Mama Ji Sarkar is respected by his devotees as having been a true majzub,THE MAJZUB MAMA JI SARKAR,"Mama Ji Sarkar sarmast, do sauda dast-ba-dast!",the majzub mama ji sarkar,0.6326,0.7801,False
+21,23,0.733,0.3829,The Aquarian Conspiracy (1980),The Aquarian Conspiracy: Personal and Social Transformation in the 1980s,The Molecules of Emotion (1998),moral re-armament,0.729,0.6845,True
+33,23,0.6913,0.4764,African Independent Churches,African Independent Churches,African Church Incorporated,african independent churches,0.5275,0.8617,False
+4,21,0.4202,0.6656,Heaven's Gate,Heaven's Gate,Heaven's Gate,heaven's gate,0.2068,0.9848,False
+8,21,0.5776,0.5889,Falun Gong,Falun Gong,Falun Gong,falun gong,0.3764,0.9366,False
+12,21,0.7268,0.4242,Godianism is a neo-African traditional movement with its Head Office in Nigeria.,Godianism propagates African Traditional Religion,Godianism actively organizes a panAfrican revival of traditional religion and culture,godianism,0.6836,0.7314,True
+31,21,0.6843,0.4238,Neo-paganism,NeoPagans,Neo- Shamanism,neo- pagan,0.5091,0.8731,False
+46,21,0.3939,0.6249,destructive cults,destructive cults,destructive cults,satanic cults,0.6694,0.7558,True
+13,20,0.5445,0.5223,New Religious Movements (NRMs),New Religious Movements (NRMs),New Religious Movements (NRMs),new religious movements (nrms),0.3983,0.9228,False
+29,20,0.6737,0.4745,The Rosicrucian Fellowship,The Ancient and Mystical Order Rosae Crucis,the Ancient and Mystical Order Rosae Crucis,rosicrucian order,0.5415,0.8485,False

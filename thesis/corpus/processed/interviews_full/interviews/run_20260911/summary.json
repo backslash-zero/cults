@@ -1,0 +1,28 @@
+{
+  "corpus": "interviews",
+  "run_tag": "20260911",
+  "model": "qwen3:4b",
+  "judge_model": null,
+  "documents": {
+    "done": 2
+  },
+  "chunks": {
+    "total": 2,
+    "called": 2,
+    "model_failed": 0,
+    "model_failure_rate": 0.0
+  },
+  "candidates": {
+    "emitted": 73,
+    "screen_retained": 66,
+    "screen_rejected": 7,
+    "reconciled": true,
+    "final": 66,
+    "final_per_document": 33.0
+  },
+  "screen_rejection_codes": {
+    "duplicate_or_overlapping_span": 5,
+    "dangling_boundary": 2
+  },
+  "updated_at": "2026-09-11T12:44:23.767918+00:00"
+}

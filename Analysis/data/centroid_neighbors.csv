@@ -1,0 +1,158 @@
+group,group_n,rank,key,label,euclidean_distance,cosine_similarity
+rapport,94,1,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:1,sectarian deviations,0.6449090341051855,0.7756502291720258
+rapport,94,2,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:14,sectarian deviations,0.6449090341051855,0.7756502291720258
+rapport,94,3,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:60,Sensitization to the issues of sectarian deviations,0.6483575452660683,0.7721833061003948
+rapport,94,4,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:101,of a sectarian drift,0.6552149126815086,0.76523497947448
+rapport,94,5,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:39,The new digital tools also facilitate the emergence and spread of sectarian deviations.,0.6574600499558587,0.762943604807562
+rapport,94,6,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:7,the sectarian deviations,0.6613927372615792,0.7589116355354202
+rapport,94,7,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:89,Sectarian deviations are very often entangled with other situations of violence and danger in which the minor is the victim.,0.6621060986982513,0.7581781683232938
+rapport,94,8,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:59,sectarian movements,0.6663284752306843,0.753817494008953
+rapport,94,9,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:55,the sectarian phenomenon,0.6669207381816634,0.753203759386113
+rapport,94,10,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:3,"Sectarian deviations constitute behaviors that, through various means—particularly by relying on beliefs or doctrines—aim to place individuals in a state of submission that results in multiple personal and financial damages.",0.6735538017773344,0.7462920832480993
+sectarian_drift_list,17,1,crit-mental-destabilization,La déstabilisation mentale et la sujétion psychologique ou physique conduisant à des actions ou abstentions gravement préjudiciables aux personnes et plus généralement à la perte d'esprit critique et d'autonomie,0.6483960305108069,0.7640615694515671
+sectarian_drift_list,17,2,crit-harsh-living-conditions,Les conditions de vie particulièrement éprouvantes ou déstabilisantes,0.6573333205397432,0.7557164409612283
+sectarian_drift_list,17,3,crit-physical-integrity-harm,"Les atteintes à l'intégrité physique des personnes en état de faiblesse et d'ignorance, et plus généralement la commission d'actes criminels ou délictueux sur des individus, majeurs ou mineurs",0.6824956749479508,0.7316080035692443
+sectarian_drift_list,17,4,crit-difficulty-leaving-group,De grandes difficultés voire une impossibilité pour un membre de quitter ledit groupe,0.682556022751559,0.7315492662443487
+sectarian_drift_list,17,5,crit-financial-demands-opacity,"Le caractère exorbitant des exigences financières ; la violation des règlements ou de la loi (travail illégal, formation professionnelle déviante…) et/ou l'opacité de la gestion financière",0.6884876426339431,0.7257332787227185
+sectarian_drift_list,17,6,crit-radical-behavior-change,Le changement radical de comportement,0.6902077886696056,0.7240375620864683
+sectarian_drift_list,17,7,crit-dubious-care-exclusive,L'offre de soins et de médicaments douteux et exclusive du recours à des pratiques conventionnelles,0.6916275584663039,0.7226343832960594
+sectarian_drift_list,17,8,crit-public-order-contestation,La contestation des institutions et les troubles à l'ordre public ; la menace d'atteinte à l'ordre public,0.6962676150054002,0.7180292466892749
+sectarian_drift_list,17,9,crit-authoritarian-opaque-group,"L'existence d'un groupe organisé sur un mode autoritaire, opaque et cloisonné, avec présence d'un dirigeant de type leader charismatique ou praticien référent exclusif",0.6978223123693623,0.7164794970340158
+sectarian_drift_list,17,10,crit-rupture-origin-environment,"La rupture avec l'environnement d'origine (proches, famille)",0.7094720390447652,0.7047555515092373
+literature,5741,1,noll-2002-the-jung-cult-origins-of-a-charismatic-movement:0,It is not just religious but a religion .,0.6728172025439604,0.7589278289313247
+literature,5741,2,hayes-2006-new-religious-movements-in-the-catholic-church:110,This is Christianity.,0.6738914451859546,0.7577007066913979
+literature,5741,3,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:113,It is a religious organization without a doubt.,0.6760519578214561,0.7552275979880299
+literature,5741,4,hexham-et-al-2001-new-religious-movements-challenge-and-response:233,religious cults,0.6775722032458198,0.7534835592089237
+literature,5741,5,dawson-2009-cults-and-new-religious-movements-a-reader:108,the individuals are being manipulated by a cunning and probably unscrupulous cult leader,0.6782813582560587,0.7526669971004192
+literature,5741,6,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:284,cult-like,0.6796364270440945,0.7511072303927027
+literature,5741,7,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:154,religious bodies in a relatively high state of tension with their environments,0.6807945693464619,0.7497706861373723
+literature,5741,8,melton-2014-encyclopedic-handbook-of-cults-in-america:3,A Word About Approaching the Cults,0.6839844776191019,0.7460794738685492
+literature,5741,9,dawson-2009-cults-and-new-religious-movements-a-reader:15,The new religions,0.6852689033900188,0.7445883220097665
+literature,5741,10,2008-the-oxford-handbook-of-new-religious-movements-1:266,cult/brainwashing,0.6880473196653161,0.7413525932132662
+interviews,668,1,b1-aug11-2011:0,This comes to my mind.,0.6003455521676259,0.8102529742484208
+interviews,668,2,b1-aug09-2124:0,It's culty in that way.,0.6014632536725344,0.8092655677912765
+interviews,668,3,b1-aug13-1342:0,"I mean, theoretically, yes, I think — or a sect would be a cult under a religious umbrella, probably.",0.6077548540821348,0.8036724764949625
+interviews,668,4,b3-aug21-1932:0,Mais sinon je pense à un groupe.,0.6079398544226169,0.8035071986436833
+interviews,668,5,b3-aug23-1213:0,J'ai compris — une secte.,0.6096088109946427,0.802013896938238
+interviews,668,6,b1-aug08-2128:0,"You're being part of, like, a cult — you just think you're part of a community, or something like that.",0.6100766534333751,0.8015943520832685
+interviews,668,7,b1-aug08-2137:0,"And, yeah — say, like, cults — they're just like a really, really niche, small group that's against a topic.",0.6110964989430063,0.8006785021174558
+interviews,668,8,b1-aug09-2048:0,"Well, I've been a member of a religion.",0.6168668144873307,0.7954700155016741
+interviews,668,9,b4-sep10-2003:0,Religion.,0.6174412239826899,0.7949486349000632
+interviews,668,10,b4-sep10-1838:0,Religion.,0.6174412239826899,0.7949486349000632
+dictionary,4695,1,i40205,production,0.5764254632199831,0.8242282721302823
+dictionary,4695,2,sc_1450,production,0.5764254632199831,0.8242282721302823
+dictionary,4695,3,i35591,possession,0.5780343789970075,0.822931961930665
+dictionary,4695,4,sc_0797,recognition,0.5799283185489655,0.8214016547944472
+dictionary,4695,5,sc_1370,employment,0.5818334392250569,0.8198570303802679
+dictionary,4695,6,sc_0383,choice,0.5818492364806173,0.8198441741736394
+dictionary,4695,7,sc_1347,functioning,0.5820678526500285,0.8196665469508216
+dictionary,4695,8,i39989,judgment,0.5821960267051315,0.8195623148256787
+dictionary,4695,9,i35600,accomplishment,0.5828078888649285,0.8190650323303477
+dictionary,4695,10,sc_0875,identification,0.5840646591982633,0.8180414383541499
+entities_all,3785,1,self,self,0.6283907904849356,0.8050705778054275
+entities_all,3785,2,the church,the church,0.6531484727582213,0.7785271387886006
+entities_all,3785,3,the self,the self,0.6661481515632368,0.7641801574878524
+entities_all,3785,4,faith,faith,0.6710487210413568,0.758697730908374
+entities_all,3785,5,christianity,christianity,0.6761623389814025,0.7529339189505151
+entities_all,3785,6,theosophical society,theosophical society,0.6788915933282844,0.7498404883387899
+entities_all,3785,7,the system,the system,0.6789778779506854,0.7497423738083668
+entities_all,3785,8,society,society,0.6800780229692012,0.7484922674775059
+entities_all,3785,9,theosophical,theosophical,0.680717028512984,0.7477644195099443
+entities_all,3785,10,christians,christians,0.6810525495612827,0.7473818729531598
+entities_literature,3759,1,self,self,0.628475201627882,0.8049050310929766
+entities_literature,3759,2,the church,the church,0.6528358241981459,0.7788016115270431
+entities_literature,3759,3,the self,the self,0.6659114993906994,0.7643821080579223
+entities_literature,3759,4,faith,faith,0.6707574971717216,0.7589648777237806
+entities_literature,3759,5,christianity,christianity,0.6758134356409203,0.7532708920873141
+entities_literature,3759,6,theosophical society,theosophical society,0.6786862222321375,0.7500172905470319
+entities_literature,3759,7,the system,the system,0.6787730928595754,0.7499185767925527
+entities_literature,3759,8,society,society,0.6803477411501384,0.7481295598863442
+entities_literature,3759,9,theosophical,theosophical,0.6804640504810293,0.7479968013153492
+entities_literature,3759,10,christians,christians,0.6807964682096438,0.7476180722902743
+entities_miviludes,61,1,internet,internet,0.7107938260059012,0.7122361746527203
+entities_miviludes,61,2,caffes,caffes,0.7185923027910766,0.7029529995205342
+entities_miviludes,61,3,cnrs,cnrs,0.7330863893514581,0.6854306024607956
+entities_miviludes,61,4,bible,bible,0.7418665498574691,0.6746457822610881
+entities_miviludes,61,5,oms,oms,0.7422140175026434,0.6742160273526465
+entities_miviludes,61,6,l. ron hubbard,l. ron hubbard,0.7461622531378612,0.6693224060832568
+entities_miviludes,61,7,constitution,constitution,0.7508959020460285,0.6634209809605609
+entities_miviludes,61,8,american psychological association,american psychological association,0.7521254008144548,0.6618820362351218
+entities_miviludes,61,9,europe,europe,0.7525021813394298,0.6614098918655237
+entities_miviludes,61,10,rgpd,rgpd,0.7560979807727268,0.656892176918602
+entities_interviews,34,1,jews,jews,0.5715471487107323,0.8335762628292942
+entities_interviews,34,2,scientology,scientology,0.5997497960246753,0.8095308500429919
+entities_interviews,34,3,christians,christians,0.5999374338251248,0.8093668209131804
+entities_interviews,34,4,mormons,mormons,0.6061072854933741,0.8039504700948912
+entities_interviews,34,5,muslims,muslims,0.6253013406309957,0.786745522761408
+entities_interviews,34,6,zionist,zionist,0.6283968776186641,0.7839207069548293
+entities_interviews,34,7,church of scientology,church of scientology,0.6313213871794287,0.7812391347156266
+entities_interviews,34,8,palestine,palestine,0.6441075213897957,0.7693682728971445
+entities_interviews,34,9,satanists,satanists,0.6507875551857025,0.7630720770411396
+entities_interviews,34,10,jehovah's witnesses,jehovah's witnesses,0.6577990863791074,0.7563931699815608
+literature__asserted,5705,1,noll-2002-the-jung-cult-origins-of-a-charismatic-movement:0,It is not just religious but a religion .,0.673025084920776,0.7586874925420756
+literature__asserted,5705,2,hayes-2006-new-religious-movements-in-the-catholic-church:110,This is Christianity.,0.673801139905214,0.7578008249421762
+literature__asserted,5705,3,davis-and-hankins-2002-new-religious-movements-and-religious-liberty-in-america:113,It is a religious organization without a doubt.,0.676155358087577,0.755106005812906
+literature__asserted,5705,4,hexham-et-al-2001-new-religious-movements-challenge-and-response:233,religious cults,0.6775554532558373,0.7534998039033309
+literature__asserted,5705,5,dawson-2009-cults-and-new-religious-movements-a-reader:108,the individuals are being manipulated by a cunning and probably unscrupulous cult leader,0.6785151073020078,0.7523950851483032
+literature__asserted,5705,6,kaplan-and-l-w-2002-2-the-cult-the-cultic-milieu-and-secularization:284,cult-like,0.6796421664449855,0.7510976565899623
+literature__asserted,5705,7,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:154,religious bodies in a relatively high state of tension with their environments,0.6809322511712697,0.7496087755478081
+literature__asserted,5705,8,melton-2014-encyclopedic-handbook-of-cults-in-america:3,A Word About Approaching the Cults,0.6840747781768898,0.7459718556033501
+literature__asserted,5705,9,dawson-2009-cults-and-new-religious-movements-a-reader:15,The new religions,0.685137782408363,0.744737848681208
+literature__asserted,5705,10,2008-the-oxford-handbook-of-new-religious-movements-1:173,cult/ mind control,0.6882277558250423,0.7411393490947165
+literature__speculative,22,1,2008-the-oxford-handbook-of-new-religious-movements-1:27,Church? Sect? New Religion?,0.7018026757581578,0.7173560340129759
+literature__speculative,22,2,lucas-and-robbins-2004-new-religious-movements-in-the-twenty-first-century:243,"It might, however, alternatively be classified as a cult, since it is not a primary source of identity for any of its members and since members of the English-language group are mostly members of the local cultic milieu, and even the international cultic milieu.",0.7090076216763731,0.7093258359013279
+literature__speculative,22,3,namini-and-murken-2009-self-chosen-involvement-in-new-religious-movements-nrms-w:17,"it may be that at least some of the individuals who exit continue to profit from the experiences in the group, especially from having come to know the ''living God'' and Jesus and having found faith.",0.7100460987244711,0.7081617529626463
+literature__speculative,22,4,2023-decoding-delusions-a-clinician-s-guide-to-working-with-delusions-and-other:144,might simply have been preparing to defend himself against an apocalyptic onslaught,0.7214543433157609,0.6952612244380462
+literature__speculative,22,5,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:77,"I have naively wondered why it is that other scholars wonder if I am a witch, or a Charismatic Catholic",0.7268403421016485,0.6890988811806972
+literature__speculative,22,6,namini-and-murken-2009-self-chosen-involvement-in-new-religious-movements-nrms-w:17,it may also be that some of the respondents had already gone through the worst of the process when interviewed.,0.729105143502242,0.6864944126183081
+literature__speculative,22,7,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:152,"Given the decline of the Church in recent years, it may well be that independent Scientologists will one day outnumber members of the Church of Scientology.",0.7368510134780815,0.677524044532726
+literature__speculative,22,8,lewis-and-t-llefsen-2016-the-oxford-handbook-of-new-religious-movements-volume-i:290,"LESBIANISM SO- CALLED COULD POSSIBLY NECESSARILY BE A STOPGAP, A TEMPORARY INTERIM SOLUTION to a sexual need.",0.7540714141942816,0.6572420803115372
+literature__speculative,22,9,2008-the-oxford-handbook-of-new-religious-movements-1:180,Singer's testimony in civil suits based on her brainwashing argument may constitute all by itself the most effective tactic of the anticult movement,0.7690431222922551,0.6392278070864746
+literature__speculative,22,10,lalich-2004-bounded-choicetrue-believers-and-charismatic-cults:21,It's entirely possible Clonaid's announcement is part of an elaborate hoax intended to bring publicity to the Raëlian movement.,0.7720735080925569,0.6355388407563087
+literature__contested,14,1,2008-the-oxford-handbook-of-new-religious-movements-1:35,brainwashing,0.5844401237765323,0.8245606660725577
+literature__contested,14,2,hexham-et-al-2001-new-religious-movements-challenge-and-response:114,brainwashing,0.5844401237765323,0.8245606660725577
+literature__contested,14,3,hammer-and-rothstein-2012-the-cambridge-companion-to-new-religious-movements:38,More extreme theories of 'brainwashing' have also been debated.,0.6498643137085138,0.7650114389132302
+literature__contested,14,4,anthony-and-robbins-2009-conversion-and-brainwashing-in-new-religious-movements:29,brainwashing has something to do with recruitment mechanisms,0.6585144230595527,0.756665317490032
+literature__contested,14,5,2008-the-oxford-handbook-of-new-religious-movements-1:294,the generalization that cults are detrimental to one's mental health is 'doubtful.',0.6868465760611472,0.7285564901403969
+literature__contested,14,6,introvigne-2014-advocacy-brainwashing-theories-and-new-religious-movements:10,"the judge was led into a misunderstanding, confusing Lifton ' s theory of totalism with the CIA ' s hypotheses on brainwashing",0.7096958947514461,0.7050251987315129
+literature__contested,14,7,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:207,It is an issue as to how far women can be empowered in the context of absolute surrender to a male master.,0.7536245136829324,0.6576219636516705
+literature__contested,14,8,chryssides-2006-the-a-to-z-of-new-religious-movements:24,Whether Seventh-day Adventism should be classified as an NRM or not is debatable.,0.758552811617049,0.6521268397784996
+literature__contested,14,9,werbner-and-basu-2002-embodying-charisma-modernity-locality-and-the-performance:178,the rat-cult is not mentioned,0.7691032345226689,0.6402409747904821
+literature__contested,14,10,bromley-2007-teaching-new-religious-movementslearning-from-new-religious-movemen:285,How does the definition of a cult on a Christian counter-cult site like Apologetics Index (www.apologeticsindex .com) differ from that used on secular anti-cult sites like the American Family Foundation (www.csj.org)?,0.7949261356146012,0.6104575735540904
+miviludes__asserted,105,1,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:1,sectarian deviations,0.6507783375478726,0.7691430271997813
+miviludes__asserted,105,2,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:14,sectarian deviations,0.6507783375478726,0.7691430271997813
+miviludes__asserted,105,3,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:60,Sensitization to the issues of sectarian deviations,0.6569468332544744,0.7629021819435081
+miviludes__asserted,105,4,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:101,of a sectarian drift,0.6572978538639073,0.7625457750216877
+miviludes__asserted,105,5,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:89,Sectarian deviations are very often entangled with other situations of violence and danger in which the minor is the victim.,0.6594265391363946,0.7603772515416791
+miviludes__asserted,105,6,raw-transcript:0,a sectarian drift,0.6649689018517269,0.7546979819705173
+miviludes__asserted,105,7,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:7,the sectarian deviations,0.6680483346875543,0.7515222046861028
+miviludes__asserted,105,8,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:39,The new digital tools also facilitate the emergence and spread of sectarian deviations.,0.6690095508754559,0.7505280247678947
+miviludes__asserted,105,9,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:55,the sectarian phenomenon,0.671534629045302,0.7479092911621835
+miviludes__asserted,105,10,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:3,"Sectarian deviations constitute behaviors that, through various means—particularly by relying on beliefs or doctrines—aim to place individuals in a state of submission that results in multiple personal and financial damages.",0.6731407421088811,0.746238569013088
+miviludes__speculative,3,1,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:41,These technologies could become essential for detecting sectarian drifts and extremist discourses.,0.5023467340650811,0.86515098394031
+miviludes__speculative,3,2,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:96,We are confident that AI will also be this growth accelerator for the sectarian groups that will thus multiply the subjugated people.,0.5414787813653645,0.8407265956634836
+miviludes__speculative,3,3,mission-interministe-rielle-de-vigilance-et-de-lutte-contre-les-de-rives-sectair:90,How to get out of sectarian control?,0.5973037511487953,0.802714019952995
+interviews__asserted,647,1,b1-aug09-2124:0,It's culty in that way.,0.6007786796856271,0.8097861170474508
+interviews__asserted,647,2,b1-aug11-2011:0,This comes to my mind.,0.6015675442772853,0.8090892576214583
+interviews__asserted,647,3,b1-aug13-1342:0,"I mean, theoretically, yes, I think — or a sect would be a cult under a religious umbrella, probably.",0.606592330064615,0.8046291485081541
+interviews__asserted,647,4,b1-aug08-2128:0,"You're being part of, like, a cult — you just think you're part of a community, or something like that.",0.6082400887057551,0.803159054755475
+interviews__asserted,647,5,b3-aug23-1213:0,J'ai compris — une secte.,0.6091541068798734,0.8023416697687487
+interviews__asserted,647,6,b3-aug21-1932:0,Mais sinon je pense à un groupe.,0.609217883010406,0.8022840903405305
+interviews__asserted,647,7,b1-aug08-2137:0,"And, yeah — say, like, cults — they're just like a really, really niche, small group that's against a topic.",0.6101786250463095,0.8014235429405699
+interviews__asserted,647,8,b1-aug09-2048:0,"Well, I've been a member of a religion.",0.6163830586400735,0.7958332174390861
+interviews__asserted,647,9,b4-sep10-1838:0,Religion.,0.6166492135126868,0.795591944814368
+interviews__asserted,647,10,b4-sep10-2003:0,Religion.,0.6166492135126868,0.7955919448143681
+interviews__negated,4,1,b1-aug11-2011:0,"No, I don't have much personal experience.",0.48270181695070064,0.8764151094841142
+interviews__negated,4,2,b3-aug22-2057:0,"Non, j'ai pas les noms, je sais pas trop.",0.4919836000933939,0.871050410064431
+interviews__negated,4,3,b4-sep10-2003:0,I don't think it's a cult.,0.5613642872509367,0.8277132816087933
+interviews__negated,4,4,b1-aug08-1420:0,"Oh, okay, yeah — not good.",0.6049870856116238,0.7975420497009869
+interviews__speculative,15,1,b1-aug09-2124:0,It's a random...,0.6454675128612697,0.7662676023141999
+interviews__speculative,15,2,b4-sep10-2003:0,I think...,0.653417082773349,0.7589412203063095
+interviews__speculative,15,3,b1-aug11-2011:0,but I might be wrong.,0.6584558966912347,0.7542509409134428
+interviews__speculative,15,4,b4-sep10-2003:0,"I think the fact that we get obsessed with it — if it's a very enclosed, non-welcoming community, it could make it feel like that — but I don't think there's a leader that we follow.",0.6617786270948234,0.75113822921957
+interviews__speculative,15,5,b3-aug16-1514:0,"And there's a theory — we don't know, maybe it's a conspiracy theory — that some of them, like Charles Manson, started a cult, or like, uh, Brian Jones.",0.6758490565347721,0.7377833753022285
+interviews__speculative,15,6,b1-aug08-2137:0,"Interesting — that's what, you know, because of the movies, I'd say?",0.6816118885296484,0.7322325803503063
+interviews__speculative,15,7,b1-aug09-2124:0,"It's always interesting to realize, like, how did it get there?",0.7037536963272666,0.7104675004250013
+interviews__speculative,15,8,b1-aug11-2011:0,"so I have the feeling that when someone decides to join a cult, they might not even call it a cult, actually — because I also feel the name itself comes with a negative connotation.",0.7159981446000419,0.6981328657778472
+interviews__speculative,15,9,b3-aug16-1514:0,"I guess — or not, yeah — because also, there was no reason to kill them, but he did it anyway.",0.7268717521169306,0.6870007658538206
+interviews__speculative,15,10,b4-sep10-1838:0,"Je suis pas sûr, mais autant qu'on est sûr que Dieu existe, ou Allah existe, ou Yahvé existe.",0.742111944182905,0.6711152737894222
