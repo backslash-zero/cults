@@ -48,12 +48,15 @@ MIVILUDES, scholar literature, and interviews, with subset breakdowns.
    central member — is only mid-table here, a real divergence between the two notions of
    "central."
 8. [`08_Secular_Groups_Hypothesis.md`](08_Secular_Groups_Hypothesis.md) — the first direct test
-   of the thesis's central Hypothesis. Secular structures (Amway, Nazism, Maoist thought
-   reform, LGAT seminar programs) score *as well as or better than* a religious/NRM baseline
-   against the 17 official criteria, but *worse* against the corpus's own emergent usage
-   prototype — the structural criteria generalize beyond religion; actual discourse hasn't
-   caught up yet. A second, LLM-generated comparison list is prepared (code written) but not
-   yet run — Ollama is unreachable on this Mac, pending a Windows-machine run.
+   of the thesis's central Hypothesis, in two rounds. C1 (n=10, hand-picked): secular structures
+   (Amway, Nazism, Maoist thought reform, LGAT seminar programs) score *as well as or better
+   than* a religious/NRM baseline against the 17 official criteria, but *worse* against the
+   corpus's own emergent usage prototype. C2 (n=169, a broad human-reviewed LLM-sourced list,
+   embedded once folded in) **reverses the second half of that result**: against a large,
+   heterogeneous secular set, the religious baseline no longer scores highest on any centroid,
+   including the prototype centroid — though a large share of that reversal is plausibly driven
+   by C2 over-representing secularist/humanist-advocacy organizations rather than religiously
+   neutral ones (a real confound, not just a caveat — see the doc's own Caveats section).
 9. [`09_Interview_Prototypes_vs_Clusters.md`](09_Interview_Prototypes_vs_Clusters.md) — do
    people's spontaneous prototype exemplars (not just any interview segment) land in literature's
    well-covered regions or its gaps? 13 of 25 (52%) land in a gap cluster, roughly double the
@@ -66,9 +69,11 @@ MIVILUDES, scholar literature, and interviews, with subset breakdowns.
 centroids — same pattern `generate_voronoi_projections.py` already uses for entity clusters.
 Held for after the numeric clustering results (step 6) are reviewed.
 
-**C2's LLM-generated secular-groups list** (step 8) — code is written
-(`generate_and_embed_secular_groups.py`), run command documented in
-`08_Secular_Groups_Hypothesis.md`, waiting on Ollama access (Windows machine).
+**A religiously-neutral subset of C2** (step 8) — the current 169-name C2 list
+over-represents secularist/humanist-advocacy organizations (flagged as the result's biggest
+caveat in `08_Secular_Groups_Hypothesis.md`); a narrower rerun restricted to non-ideological
+groups (MLMs, sports, hobby, tech, wellness) would isolate the Hypothesis test from that
+confound.
 
 ---
 
@@ -85,7 +90,7 @@ decided, not automatically from the steps list above.
 | [`05_Epistemic_Status_Centroids.md`](05_Epistemic_Status_Centroids.md) | **To publish** | Split out of 02 (already marked to publish); the confirmed "brainwashing is central because it's contested, not asserted" finding. |
 | [`06_Literature_Clusters.md`](06_Literature_Clusters.md) | not yet decided | 59 literature concept clusters + entity-gap analysis; strong candidate once the Voronoi visualization (planned next) is added. |
 | [`07_Cult_Prototype.md`](07_Cult_Prototype.md) | **To publish** | Directly answers "whether criteria form recognisable clusters or prototypes" — a core Research Goal item. |
-| [`08_Secular_Groups_Hypothesis.md`](08_Secular_Groups_Hypothesis.md) | **To publish** | First direct test of the central Hypothesis; strengthen once C2's generated list is folded in. |
+| [`08_Secular_Groups_Hypothesis.md`](08_Secular_Groups_Hypothesis.md) | **To publish** | First direct test of the central Hypothesis; C1+C2 both in, C2's advocacy-org confound is flagged and worth a narrower follow-up rerun before final write-up. |
 | [`09_Interview_Prototypes_vs_Clusters.md`](09_Interview_Prototypes_vs_Clusters.md) | **To publish** | Sharpens the folk-vs-expert-concept finding using the thesis's own prototype-theory-motivated exemplar layer. |
 | [`01_Shared_Space_v3.md`](01_Shared_Space_v3.md) | not yet decided | Reference/methodology; superseded as the analysis basis by step 2. |
 | [`04_Projection_Techniques_Comparison.md`](04_Projection_Techniques_Comparison.md) | not yet decided | Methodological justification (why the step-2 plots are trustworthy); may belong in a methods/appendix section rather than Results. |
@@ -222,16 +227,24 @@ individual step files.*
   organizes more around behavioral change and authoritarian structure. Two different, equally
   legitimate notions of "central" that genuinely diverge.
 
-- **The central Hypothesis gets a real, nuanced answer, not a flat yes or no** (step 8). Tested
-  directly for the first time: secular structures (Amway, Nazism, Maoist thought reform, LGAT
-  seminar programs like Landmark Forum) score *as well as or better than* a religious/NRM
-  baseline against the 17 official criteria — "Maoist thought reform" alone outscores every one
-  of 9 religious comparison entities. But against the corpus's own emergent usage prototype
-  (step 7), the same secular set scores consistently *lower* than the religious baseline. **So**:
-  the structural criteria, applied consistently, don't discriminate between religious and
-  secular groups — direct support for the Hypothesis — but actual discourse about "cult" still
-  skews religious regardless. The criteria already imply what the Hypothesis claims; usage just
-  hasn't caught up.
+- **The central Hypothesis gets a real, nuanced answer, not a flat yes or no — and the answer
+  shifts once the secular comparison set gets bigger** (step 8). C1 (n=10, hand-picked): secular
+  structures (Amway, Nazism, Maoist thought reform, LGAT seminar programs like Landmark Forum)
+  score *as well as or better than* a religious/NRM baseline against the 17 official criteria —
+  "Maoist thought reform" alone outscores every one of 9 religious comparison entities — but
+  score consistently *lower* against the corpus's own emergent usage prototype (step 7). C2
+  (n=169, a broad human-reviewed list, embedded once folded in) still supports the criteria-list
+  result (89% of the 169 beat the religious baseline's mean there) but **reverses the
+  prototype-centroid result**: the religious baseline no longer scores highest on that centroid
+  either once the secular set is this large. A large share of the top scorers driving that
+  reversal are secularist/humanist-advocacy organizations (Anti-Defamation League, Southern
+  Poverty Law Center, Freethought Association) whose identity is defined by opposition to
+  religion specifically — a real confound worth isolating with a narrower, religiously-neutral
+  rerun before treating the prototype-centroid reversal as settled. What survives across both
+  rounds: the structural criteria, applied consistently, don't discriminate between religious
+  and secular groups — direct support for the Hypothesis. Whether actual discourse ("the
+  prototype") has caught up to that is now the less settled of the two findings, not the
+  more settled one.
 
 - **The gap between lay prototype and expert vocabulary is even sharper than the general
   folk-vs-expert finding suggested** (step 9). Restricting to exactly the 25 theoretically-motivated
