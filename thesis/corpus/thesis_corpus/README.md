@@ -551,6 +551,34 @@ old interview run this supersedes.
 Tests (stdlib `unittest`, no Ollama): `test_interview_chunking.py`,
 `test_interview_segment_labels.py`, `test_extract_interviews_full.py`.
 
+### Display translations for non-English interviews (`translate_interview_segments`)
+
+Every segment is embedded in its own original language (bge-m3 is
+multilingual, so this is the right choice for embedding fidelity — same
+reasoning as `prepare_interviews.py` feeding chunking `transcript.txt`
+rather than `translation_en.txt`). But a planned use of this archive is
+displaying interview embeddings synced to subtitles, using English as a
+lingua franca — so the corpus's 6 French interviews need an English line to
+show, even though their embedding stays French. This is a pure display-layer
+enrichment run **on top of** an already-embedded run, mirroring
+`translate_miviludes_expressions.py`'s structure: reads that run's
+`expressions_v2.jsonl` (read-only), translates each non-English segment's
+`verbatim_expression` with `ollama_client.translate_text` (one `qwen3:4b`
+chat call per segment, no JSON schema, no re-embedding), and writes
+`segment_translations_en.jsonl` alongside it, keyed by
+`document_id`+`segment_index`. Checkpointed/resumable; a failed translation
+is logged and simply left for the next run, never silently dropped or
+guessed at. Does not require re-running `extract_interviews_full.py` or
+`embed_v2.py`.
+
+```
+python -m thesis_corpus.translate_interview_segments --run-tag 20260912
+python -m thesis_corpus.translate_interview_segments --run-tag 20260912 --limit 5   # smoke test
+```
+
+Tests (stdlib `unittest`, no Ollama, `translate` injectable for stubbing):
+`test_translate_interview_segments.py`.
+
 ## Stage 3: reduced/downsampled JSONL for analysis (`reduce_embeddings`)
 
 `criterion_expressions.jsonl` (Stage 2's output) is a durable archive with
