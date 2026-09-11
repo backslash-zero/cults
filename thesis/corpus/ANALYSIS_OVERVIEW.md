@@ -55,6 +55,33 @@ since most no longer appear verbatim in v2's stricter extraction — projected
 through the new v2 transform instead of v1's. v1 confirmed byte-identical
 throughout (checked before and after every build step).
 
+**Interviews, going forward: a separate exhaustive pipeline (2026-09-11)**.
+v2's interview extraction is *selective* the same way v1's was: 26 interviews
+yielded only 64 kept expressions total (under 3/interview), because the
+prompt asks the model to find "the few... genuinely worth keeping"
+cult-relevant spans rather than segment everything, and interviewer speech
+is discarded outright. A new, interview-only pipeline
+(`extract_interviews_full.py`/`interview_extraction_schema.py`/
+`screen_interviews_full.py`, documented in `thesis_corpus/README.md`)
+inverts this: every expression from every speaker (filler included) is
+extracted and embedded, with `cult_relevant` recorded as a label rather than
+a reason to omit something. The rationale is geometric, not just about
+recall for its own sake: this shared space is a clustering/proximity
+structure (UMAP, Voronoi regions seeded by MIVILUDES criteria,
+nearest-neighbor composition), and that structure gets more informative,
+not less, from more points — every additional extracted expression gives
+the space more to be shaped by, and post-embedding geometric neighborhood
+to cult-relevant material is itself a usable relevance signal, one the
+extractor doesn't need to pre-decide by guessing before anything is
+embedded. This pipeline's output (`processed/interviews_full/interviews/
+run_<tag>/`) is standalone — single-corpus, no pooling, no PCA refit — and
+is **not** currently pooled into `shared_space_v2`; the 64-expression v2
+interview archive stays exactly as described above, live and unmodified,
+as the basis for everything already built on it (see
+`processed/v2/interviews/run_20260910/ARCHIVED.md`). Whether/how to fold the
+new archive into a shared space is an explicit future decision, not made by
+building the extraction pipeline itself.
+
 **Not yet done for v2**: none of the geometric-analysis toolkit's 9 modules
 (`analyze_global_structure` etc.) have been run against `shared_space_v2`
 yet — they still default to v1's `processed/shared_space/` and need the same

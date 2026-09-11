@@ -392,6 +392,147 @@ python -m thesis_corpus.embed_v2 --corpus literature --run-tag <tag>
 
 Tests (stdlib `unittest`, no Ollama): `python -m unittest discover -s thesis_corpus/tests -t .`
 
+## Exhaustive interview extraction (`extract_interviews_full`) — a separate, recall-first pipeline
+
+Extraction v2 above (and v1 before it) is **selective**: the prompt asks the
+model to find only "the few... genuinely worth keeping" cult-relevant spans
+(at most 4 per chunk, "usually 0 to 2"), discards all interviewer speech
+outright, and gates every candidate through three separate cult-relevance
+checks (the model's own self-report, a deterministic screen rule, a
+second-model judge). Run against the interview corpus, this kept only 64
+expressions total across 26 interviews (well under 3 per interview) — and it
+specifically loses short-but-real answers ("Illuminati.", "Tomato cult!")
+that fail the short-span referent rule, exactly the kind of content the
+interview protocol's opening free-association prompt is designed to elicit
+(`interview_prototypes.jsonl`, below, is a hand-built workaround for that
+same symptom).
+
+**Why go exhaustive instead of tuning the filter.** The shared embedding
+space this feeds is a geometric structure — UMAP/PCA projections, Voronoi
+regions seeded by MIVILUDES criteria, nearest-neighbor and cluster-composition
+analyses. That kind of structure gets *more* informative, not less, from more
+points: every additional extracted expression is another coordinate the space
+can be shaped by, and the space's own clustering/proximity already does the
+work of separating cult-relevant material from everything else — geometric
+neighborhood to a cult-relevant region, or to the MIVILUDES criteria
+themselves, is a real, inspectable relevance signal in its own right,
+computed *after* embedding rather than guessed at *before* it. Deciding
+relevance up front, before embedding, throws away exactly the material that
+signal needs (everything else an interviewee said, for contrast and context)
+and replaces it with a small model's one-shot guess. So this pipeline inverts
+the earlier design: extract every expression from every speaker (interviewer
+included, filler included), embed all of it, and record `cult_relevant` as a
+**label** on each point rather than a reason to omit it — the geometry, not
+the extractor, ends up doing the sorting.
+
+Three new modules, none of them touching `extraction_v2_schema.py`,
+`screen_v2.py`, `extract_v2.py`, or any literature/MIVILUDES behavior:
+
+- **`interview_chunking.py`** — one unit per *whole transcript* (not
+  `chunking.py`'s 300–700-word/2–5-paragraph packer, which — applied to an
+  interview — fragments the conversation into 2–5-turn windows and is exactly
+  why the old pipeline can't see a short reply next to the question that
+  prompted it). Interviews are short (measured directly on the 28-interview
+  corpus: 111–1536 words, avg ~440) and fit the model's context window
+  whole. Crucially, a unit's `text` contains **no structural markup at all**:
+  `build_transcript_units()` parses the raw transcript's `Interviewer:`/
+  `Interviewee:`/`Interview Notes:` labels once, here, then throws the label
+  strings themselves away along with the `---` separator, the transcript
+  header (date, demographics), and any `Interview Notes:` turn (transcriber
+  commentary — never a speaker's own words) — none of that is anyone's
+  speech, so none of it should be extractable text or sit inside an
+  `embedding_text`/`context_window`. What remains is just the interviewer's
+  and interviewee's own words, joined by blank lines; a parallel
+  `turn_roles` list carries one role (`"interviewer"`/`"participant"`) per
+  blank-line-separated paragraph, in order, for `screen_interviews_full.py`
+  to pair back up positionally (`turn_spans()`) without ever needing to see
+  a label again. `build_transcript_units(document_id, pages, max_words=1800)`
+  splits only if a transcript ever exceeds that, and only at a boundary where
+  a new interviewer turn starts — never mid-turn, and never at the very first
+  interviewer turn (which would leave a near-empty first half).
+- **`interview_extraction_schema.py`** — a new prompt (`SYSTEM_PROMPT_FULL`)
+  asking for **exhaustive** segmentation: every clause/sentence/short
+  reply from every speaker, filler and backchannel ("Okay.", "Um.",
+  "[laughs]") included, no cap, no length floor. `attribution` is **not**
+  asked of the model at all (fully deterministic downstream, see below);
+  `self_contained`/`textually_intelligible`/`single_coherent_expression`
+  (v2's reject-gate booleans) are dropped entirely; `cult_relevant` remains,
+  reframed explicitly as a label that must still be returned when false.
+  `expression_kind`/`claim_mode`/`epistemic_status` are imported byte-identical
+  from `extraction_v2_schema` so any future reuse of the geometric-analysis
+  toolkit's filters keeps working on this archive too. `domain_terms` (the
+  chunk-level, unfiltered entity-mention channel `embed_domain_terms.py`
+  already relies on for emergent-entity recall) is kept in the same shape.
+- **`screen_interviews_full.py`** — a much shorter deterministic rule set than
+  `screen_v2.py`'s S1–S15: keeps every genuine structural/correctness check
+  (verbatim-substring match, span-cuts-word, dangling-boundary, `too_long`,
+  integrity/corruption, exact-duplicate dedup), and **drops** everything that
+  was actually a relevance or selectivity judgment (the `cult_relevant`
+  reject-gate, the short-fragment-no-referent rule, the heading/meta-discourse/
+  citation/standalone-name rules — none apply to conversational speech, and
+  the standalone-name one would have quietly reintroduced the
+  short-answer-loss problem this pipeline exists to fix, and the
+  per-chunk cap). Interviewer speech is **kept**, tagged
+  `attribution="interviewer"` — resolved from the `turn_roles` list
+  `interview_chunking.py` built alongside the (label-free) unit text, via
+  `turn_spans()`, which pairs each blank-line-separated paragraph with its
+  role positionally. Since the header and `Interview Notes:` text never
+  reach a unit's text in the first place (dropped at chunking time, not
+  merely excluded here), there is no `span_includes_speaker_label`/
+  `span_in_transcript_header`/`span_in_transcript_notes` rule at all — those
+  are structurally impossible once the labels themselves are gone; the one
+  remaining fallback, `span_outside_known_turn`, exists only for a
+  chunking bug that should never happen with unit text this module itself
+  produced.
+
+Reuses, unmodified: `screen_v2.resolve_span/fold_newlines/
+screen_domain_terms/prepare_chunk`, `text_integrity.has_hard_corruption/
+ligature_substitution_present/soft_flags`, `judge_v2.judge_records` (see
+below), and — crucially — `embed_v2.py`/`embed_domain_terms.py` need **zero
+code changes**: both already key off generic file/field names with a working
+`--out-root` flag, so pointing them at a new root is enough. (`screen_v2.
+speaker_turns()` is not reused here — that function scans for labels in
+running text, which this pipeline's text no longer has; `turn_spans()`
+above is the label-free equivalent.)
+
+**Judge**: off by default (unlike `extract_v2.py`, which defaults to
+`qwen3:8b`). The judge's old value was almost entirely a relevance/
+self-containedness reject gate, both removed here by design; verbatim
+fidelity — its other concern — is already structurally guaranteed by the
+verbatim-substring screen rule regardless of whether a judge runs. Passing
+`--judge-model` still works (`judge_v2.judge_records` reused unmodified) but
+merges the verdict onto every record as extra `judge_*` label fields —
+**never** filters by it.
+
+**Audit tolerance**: unlike `extract_v2.py`, a document missing from the
+Stage-1 integrity audit does not block the run (logged, treated as
+flag-free) — that audit exists to catch PDF/OCR corruption, essentially
+irrelevant to already-reviewed, hand-typed interview transcripts, and newly
+added interviews shouldn't need an audit re-run just to be extractable.
+
+```
+python -m thesis_corpus.prepare_interviews                      # Stage 1, same as extract_v2's interviews path
+python -m thesis_corpus.extract_interviews_full --run-tag <tag> --model qwen3:4b
+python -m thesis_corpus.extract_interviews_full --run-tag <tag> --limit 2   # smoke test
+python -m thesis_corpus.embed_v2 --corpus interviews --run-tag <tag> --out-root ../processed/interviews_full
+python -m thesis_corpus.embed_domain_terms --corpus interviews --run-tag <tag> --out-root ../processed/interviews_full
+python -m thesis_corpus.export_interview_emergent_entities --run-tag <tag>
+```
+
+Output tree: `processed/interviews_full/interviews/run_<tag>/` — same file
+names as a v2 run (`expressions_v2.jsonl`, `criterion_expressions.jsonl`,
+`chunk_terms.jsonl`, `domain_term_vectors.jsonl`, `config.json`,
+`summary.json`, `run.log`) so `embed_v2.py`/`embed_domain_terms.py` work
+unmodified, plus `emergent_entities_ranked.csv`/`top_100_rows.tex` from
+`export_interview_emergent_entities.py`. This is a standalone, single-corpus
+archive: it is never pooled into `processed/shared_space_v2/` and never
+touches the `Emergent_Entities_v2` appendix or the `Geometric_Analysis_Draft_v3`
+report — see `processed/v2/interviews/run_20260910/ARCHIVED.md` for what
+happens to the old interview run this supersedes.
+
+Tests (stdlib `unittest`, no Ollama): `test_interview_chunking.py`,
+`test_screen_interviews_full.py`, `test_extract_interviews_full.py`.
+
 ## Stage 3: reduced/downsampled JSONL for analysis (`reduce_embeddings`)
 
 `criterion_expressions.jsonl` (Stage 2's output) is a durable archive with
@@ -1004,6 +1145,16 @@ their per-corpus mention distribution), and mean vector norm by
 center relative to the others).
 
 ## Interview initial-exemplar prototype layer (`propose_initial_exemplars`, `build_interview_prototype_layer`)
+
+This layer was a manually-curated fix for one specific symptom of the
+selective v2 interview extraction (short, spontaneous opening answers lost
+to the shared space's pooling filter) — see "Exhaustive interview
+extraction" above for the pipeline that addresses the same underlying
+problem (under-extraction) directly, at the source, for the whole interview
+corpus rather than one hand-reviewed row per interview. The two layers are
+independent and this one is not superseded or removed by the new pipeline;
+it's kept here as prior art for how this codebase has already treated
+"bypass the aggressive filter, keep provenance to the original" once before.
 
 Four kinds of data now sit alongside each other in this pipeline, easy to
 conflate but genuinely different:
