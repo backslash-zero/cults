@@ -472,7 +472,25 @@ Three new modules, none of them touching `extraction_v2_schema.py`,
   citation/standalone-name rules — none apply to conversational speech, and
   the standalone-name one would have quietly reintroduced the
   short-answer-loss problem this pipeline exists to fix, and the
-  per-chunk cap). Interviewer speech is **kept**, tagged
+  per-chunk cap). `dangling_boundary` itself was recalibrated after a real
+  smoke-test run on 2 interviews showed it rejecting **49% of everything the
+  model returned**: `DANGLING_START_WORDS` (borrowed byte-for-byte from
+  `extraction_v2_schema.py`) treats a span starting "And..."/"But..." as a
+  clipped literature fragment, but that's normal, complete spoken syntax
+  (12/36 rejections), and a bare trailing comma isn't a truncation signal
+  either — it's the natural pause after a filler word like "Yes,"/"Well,"
+  (22/36) — exactly the content this pipeline exists to keep. Both are gone
+  here: there is no start-word check at all, and comma is dropped from the
+  end-punctuation check. The remaining end-word check (`DANGLING_END_WORDS`
+  — "of", "the", "that", etc.) now only fires when the span has **no
+  terminal punctuation** of its own, since "...to create a huge cult like
+  that." legitimately ends in "that" as a demonstrative, not a dangling
+  relative pronoun, and real terminal punctuation is strong evidence the
+  clause is actually complete. Replaying the smoke test's raw model
+  responses through the fixed screen: 36→66 retained out of 73 emitted (the
+  2 still-rejected "and,"/"after that," fragments have no terminal
+  punctuation and genuinely don't complete a thought). Interviewer speech is
+  **kept**, tagged
   `attribution="interviewer"` — resolved from the `turn_roles` list
   `interview_chunking.py` built alongside the (label-free) unit text, via
   `turn_spans()`, which pairs each blank-line-separated paragraph with its

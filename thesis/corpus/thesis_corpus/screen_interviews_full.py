@@ -12,8 +12,18 @@ a reject code).
 Rule order (first-failing-rule wins):
   not_verbatim                   span_cuts_word
   span_outside_known_turn        span_crosses_speaker_turn
-  dangling_boundary               too_long
+  dangling_boundary (end only)    too_long
   integrity_*                     duplicate_or_overlapping_span
+
+`dangling_boundary` is END-only here, unlike screen_v2.py's version: there is
+no start-word check (a span starting "And it started as..." or "But because
+I know...") is normal, complete spoken syntax, not a truncated literature
+sentence, and a real smoke-test run confirmed this: 12/36 dangling rejections
+were exactly this false positive. A bare trailing comma is also no longer
+fatal (another 22/36): "Yes,", "Well,", "Um," are precisely the
+filler/backchannel expressions this pipeline is asked to keep, and in
+transcribed speech a trailing comma after a short interjection is a natural
+pause marker, not a truncation signal.
 
 Attribution is resolved via `turn_spans()`, which pairs the blank-line
 -separated paragraphs of a unit's (already label-free -- see
@@ -39,7 +49,7 @@ from dataclasses import dataclass, field
 
 from thesis_corpus import interview_extraction_schema as schema
 from thesis_corpus import text_integrity as ti
-from thesis_corpus.extraction_v2_schema import DANGLING_END_WORDS, DANGLING_START_WORDS, MAX_WORDS
+from thesis_corpus.extraction_v2_schema import DANGLING_END_WORDS, MAX_WORDS
 from thesis_corpus.screen_v2 import ChunkContext, fold_newlines, prepare_chunk, resolve_span, screen_domain_terms
 
 __all__ = [
@@ -50,7 +60,14 @@ __all__ = [
 _BLANK_LINE_RE = re.compile(r"\n\s*\n")
 _WORD_STRIP_RE = re.compile(r"^[^\w]+|[^\w]+$")
 _TRAILING_PUNCT_RE = re.compile(r"[.!?\"”»’')\]]+$")
-_DANGLING_PUNCT_END_RE = re.compile(r"[,;:(\[]$")
+# No comma here (unlike screen_v2.py's version): "Yes,", "Well,", "Um," are
+# exactly the filler/backchannel expressions this pipeline is asked to keep
+# (see interview_extraction_schema.py's prompt) -- in transcribed speech a
+# trailing comma after a short interjection is a natural pause marker, not a
+# sign the span was cut off mid-clause. Semicolon/colon/open-bracket are
+# kept: much rarer in casual speech, and still a real truncation signal
+# when they do occur.
+_DANGLING_PUNCT_END_RE = re.compile(r"[;:(\[]$")
 _OPENING_QUOTE_END_RE = re.compile(r"[\"“«‘]$")
 _LONE_CAPITAL_END_RE = re.compile(r"(?:^|\s)[A-Z]\.?$")
 
@@ -112,12 +129,21 @@ def screen_candidate(cand: schema.CandidateFull, ctx: ChunkContext, turn_roles: 
     attribution = overlapping[0][2]
 
     tokens = text.split()
-    first = _bare(tokens[0]).lower() if tokens else ""
     last_raw = tokens[-1] if tokens else ""
     last = _bare(_TRAILING_PUNCT_RE.sub("", last_raw)).lower()
-    if first in DANGLING_START_WORDS:
-        return ScreenOutcome("dangling_boundary", f"starts with {first!r}", span=span, text=text)
-    if last in DANGLING_END_WORDS:
+    # No start-word check here (unlike screen_v2.py): a span starting "And
+    # it started as a group in the pub..." or "But because I know your
+    # background..." is normal, complete spoken syntax, not a truncated
+    # literature sentence -- DANGLING_START_WORDS' premise (a clause-initial
+    # conjunction signals a clipped fragment) doesn't hold for speech. The
+    # end-word check only fires when the span has no terminal punctuation of
+    # its own: "...to create a huge cult like that." and "...but he
+    # influenced other people to do that." both legitimately end in "that"
+    # (a demonstrative, not a dangling relative pronoun) and both end in a
+    # period -- a real smoke-test run confirmed the terminal-punctuation-less
+    # cases ("and,", "after that,") are the genuinely incomplete ones.
+    has_terminal_punct = bool(re.search(r"[.!?]$", last_raw))
+    if last in DANGLING_END_WORDS and not has_terminal_punct:
         return ScreenOutcome("dangling_boundary", f"ends with {last!r}", span=span, text=text)
     if _DANGLING_PUNCT_END_RE.search(text) or _OPENING_QUOTE_END_RE.search(text):
         return ScreenOutcome("dangling_boundary", f"ends with {text[-1]!r}", span=span, text=text)

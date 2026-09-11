@@ -110,9 +110,27 @@ class StructuralCorrectnessTests(unittest.TestCase):
         out = screen("something never said in this transcript")
         self.assertEqual(out.rejection_code, "not_verbatim")
 
-    def test_dangling_boundary_rejected(self):
-        out = screen("And then secondly, religious cults")
+    def test_clause_initial_and_but_not_rejected(self):
+        # unlike screen_v2.py, there is no start-word check here -- a span
+        # starting "And..."/"But..." is normal spoken syntax, confirmed
+        # against a real smoke-test run (12/36 dangling false positives were
+        # exactly this before the fix).
+        out = screen("And then secondly, religious cults.")
+        self.assertIsNone(out.rejection_code, out.detail)
+
+    def test_dangling_end_word_without_terminal_punctuation_rejected(self):
+        out = screen("Honestly, some kind of new wave band — Blue Öyster Cult. And")
         self.assertEqual(out.rejection_code, "dangling_boundary")
+
+    def test_dangling_end_word_with_terminal_punctuation_not_rejected(self):
+        # "that" ending a complete sentence (demonstrative, not a dangling
+        # relative pronoun) must survive when followed by real terminal
+        # punctuation -- a real smoke-test false positive before the fix
+        # ("...to create a huge cult like that.").
+        text = "Q?\n\nI wouldn't want to create a huge cult like that."
+        out = screen("I wouldn't want to create a huge cult like that.",
+                     text_ctx=text, roles=["interviewer", "participant"])
+        self.assertIsNone(out.rejection_code, out.detail)
 
     def test_hard_corruption_rejected(self):
         text = "What comes to mind?\n\nThe le�der demands obedience.\n\n"
