@@ -31,6 +31,40 @@ class TestParseGroupList(unittest.TestCase):
     def test_empty_input_returns_empty_list(self):
         self.assertEqual(gesg.parse_group_list(""), [])
 
+    def test_rejects_lines_longer_than_max_name_length(self):
+        # Padded with enough good lines that one bad one stays under the
+        # rejection-fraction safety net (tested separately, below).
+        good = [f"Group {i}" for i in range(8)]
+        raw = "\n".join(good[:4] + [("x" * 100)] + good[4:])
+        self.assertEqual(gesg.parse_group_list(raw), good)
+
+    def test_rejects_markdown_and_code_artifacts(self):
+        good = [f"Group {i}" for i in range(8)]
+        raw = "\n".join(good[:4] + ["```python", "### Header"] + good[4:])
+        self.assertEqual(gesg.parse_group_list(raw), good)
+
+    def test_raises_when_the_model_goes_completely_off_topic(self):
+        # A real failure, reproduced: a live run asked for a name list and
+        # instead got a full markdown tutorial about scraping Reddit
+        # subreddits (headers, code blocks, a fake data table, a
+        # follow-up question) -- mostly-rejected lines must raise, not
+        # silently return whatever few short lines happened to survive.
+        raw = "\n".join([
+            "To create a list of the top 100 most popular Reddit subreddits, you can use a combination of tools.",
+            "## Step-by-Step Guide",
+            "### 1. Understand What Makes a Subreddit Popular",
+            "```python",
+            "import praw",
+            "reddit = praw.Reddit(client_id='YOUR_CLIENT_ID')",
+            "```",
+            "| Rank | Subreddit | Subscribers |",
+            "|------|-----------|-------------|",
+            "| 1 | r/worldnews | 10M+ |",
+            "Would you like help writing a Python script to fetch and rank subreddits?",
+        ])
+        with self.assertRaises(ValueError):
+            gesg.parse_group_list(raw)
+
 
 class TestDefaultChatTimeout(unittest.TestCase):
     def test_small_n_uses_the_120s_floor(self):

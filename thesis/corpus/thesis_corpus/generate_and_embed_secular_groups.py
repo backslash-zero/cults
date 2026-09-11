@@ -63,15 +63,35 @@ SYSTEM_PROMPT = (
     "startups known for intense internal culture, fraternities/sororities, and secular "
     "political or ideological movements. Do NOT include any religious groups, churches, cults, "
     "or new religious movements -- every entry must be unambiguously secular. "
-    "Return ONLY the list, one name per line, no numbering, no commentary, no explanation."
+    "Return ONLY the list, one short name per line -- no numbering, no markdown formatting "
+    "(no headers, no bold, no code blocks, no tables, no links), no commentary before or after "
+    "the list, no follow-up questions. Each line must be a bare name only, a few words at most. "
+    "Example of the exact format expected (do not reuse these specific examples in your answer):\n"
+    "Amway\n"
+    "CrossFit\n"
+    "Anonymous (hacker collective)"
 )
+
+# A real name is always short. Checked directly against a real failure: a
+# generation that went completely off-topic (wrote a markdown tutorial
+# about scraping Reddit instead of a name list) produced "names" up to
+# 270 characters and full of "```"/"|"/"http"/markdown headers -- this
+# threshold and character check catch that shape of failure without
+# needing to inspect content semantically.
+MAX_NAME_LENGTH = 60
+SUSPICIOUS_SUBSTRINGS = ("```", "http://", "https://", "| ", "###", "##")
+MAX_REJECTED_FRACTION = 0.3  # if more than this fraction of lines are rejected, something is wrong -- fail loudly
 
 
 def parse_group_list(raw_text: str) -> list[str]:
     """Splits the model's line-per-name response into a clean list --
-    strips numbering ("1. ", "- ", "* "), blank lines, and surrounding
-    whitespace/quotes. Pure function, testable without Ollama."""
+    strips numbering ("1. ", "- ", "* "), blank lines, surrounding
+    whitespace/quotes, and any line that's clearly not a bare name (too
+    long, or containing markdown/code/link artifacts -- see
+    MAX_NAME_LENGTH/SUSPICIOUS_SUBSTRINGS docstring above). Pure function,
+    testable without Ollama."""
     names = []
+    rejected = 0
     for line in raw_text.splitlines():
         line = line.strip().strip("\"'")
         if not line:
@@ -82,8 +102,21 @@ def parse_group_list(raw_text: str) -> list[str]:
             if prefix.rstrip(". )-*").isdigit() or prefix.strip() in ("-", "*"):
                 line = line[prefix_len:].strip()
                 break
-        if line:
-            names.append(line)
+        if not line:
+            continue
+        if len(line) > MAX_NAME_LENGTH or any(s in line for s in SUSPICIOUS_SUBSTRINGS):
+            rejected += 1
+            continue
+        names.append(line)
+
+    total = len(names) + rejected
+    if total and rejected / total > MAX_REJECTED_FRACTION:
+        raise ValueError(
+            f"{rejected}/{total} lines rejected as not-a-bare-name (too long or markdown-like) -- "
+            "the model likely went off-topic or ignored the format instructions rather than "
+            "returning a clean list. Inspect the raw response before retrying, not just this "
+            "filtered output."
+        )
     return names
 
 
@@ -97,7 +130,14 @@ def default_chat_timeout(n: int) -> float:
     return max(120.0, n * 6.0)
 
 
-def generate_group_names(host: str, model: str, n: int, timeout: float | None = None) -> list[str]:
+def generate_group_names_raw(host: str, model: str, n: int, timeout: float | None = None) -> str:
+    """Just the chat call + </think>-stripping -- returns raw text, not yet
+    parsed/validated. Split out from generate_group_names so main() can
+    always save the raw response to disk BEFORE parsing, regardless of
+    whether parsing then succeeds or raises -- the real failure this
+    guards against (a response that's an off-topic markdown essay, not a
+    list) is exactly the case where you most want the raw text preserved
+    to inspect, not just a traceback."""
     if timeout is None:
         timeout = default_chat_timeout(n)
     resp = httpx.post(
@@ -110,7 +150,10 @@ def generate_group_names(host: str, model: str, n: int, timeout: float | None = 
             ],
             "stream": False,
             "think": False,
-            "options": {"temperature": 0.7},
+            # Low, not zero -- some variation across n items is fine/wanted,
+            # but 0.7 measurably increased the risk of the model drifting
+            # off-task into free-form writing on a real n=100 run.
+            "options": {"temperature": 0.2},
         },
         timeout=timeout,
     )
@@ -118,7 +161,11 @@ def generate_group_names(host: str, model: str, n: int, timeout: float | None = 
     content = resp.json()["message"]["content"].strip()
     if "</think>" in content:
         content = content.rsplit("</think>", 1)[-1].strip()
-    return parse_group_list(content)
+    return content
+
+
+def generate_group_names(host: str, model: str, n: int, timeout: float | None = None) -> list[str]:
+    return parse_group_list(generate_group_names_raw(host, model, n, timeout))
 
 
 def main() -> None:
@@ -144,10 +191,25 @@ def main() -> None:
 
     chat_timeout = args.chat_timeout if args.chat_timeout is not None else default_chat_timeout(args.n)
     logger.info("Generating %d non-religious group names via %s (timeout=%.0fs)...", args.n, args.chat_model, chat_timeout)
-    names = generate_group_names(args.ollama_host, args.chat_model, args.n, timeout=chat_timeout)
+    raw_response = generate_group_names_raw(args.ollama_host, args.chat_model, args.n, timeout=chat_timeout)
+
+    # Always saved BEFORE parsing -- if parse_group_list rejects the
+    # response as off-topic/malformed (see its own docstring: this is
+    # exactly what caught a real failure, a full markdown tutorial about
+    # scraping Reddit instead of a name list), this file is what you
+    # inspect, not a traceback with no record of what the model actually said.
+    raw_path = args.out_dir / "generated_secular_groups_raw_response.txt"
+    raw_path.write_text(raw_response, encoding="utf-8")
+    logger.info("Raw model response saved to %s (%d chars)", raw_path, len(raw_response))
+
+    try:
+        names = parse_group_list(raw_response)
+    except ValueError as e:
+        print(f"ERROR: {e}\nRaw response is in {raw_path} -- read it before retrying.", file=sys.stderr)
+        raise SystemExit(1)
     logger.info("Got %d names: %s", len(names), names)
     if not names:
-        raise SystemExit("Model returned zero parseable names -- inspect its raw response before retrying.")
+        raise SystemExit(f"Model returned zero parseable names -- inspect {raw_path} before retrying.")
 
     logger.info("Embedding %d names via %s...", len(names), args.embed_model)
     vectors = embed_texts(args.ollama_host, args.embed_model, names)
