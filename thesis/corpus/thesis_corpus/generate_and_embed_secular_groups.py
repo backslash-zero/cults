@@ -87,7 +87,19 @@ def parse_group_list(raw_text: str) -> list[str]:
     return names
 
 
-def generate_group_names(host: str, model: str, n: int, timeout: float = 120.0) -> list[str]:
+def default_chat_timeout(n: int) -> float:
+    """Scales with `n` -- a fixed 120s default was enough for n=30 but timed
+    out on a real n=100 request against qwen3:8b (ReadTimeout at exactly
+    120s, mid-generation, not a crash). ~6s/name is a generous per-item
+    budget for an 8B model generating a longer structured list on typical
+    consumer hardware; still overridable via --chat-timeout for a slower
+    machine or a much larger n."""
+    return max(120.0, n * 6.0)
+
+
+def generate_group_names(host: str, model: str, n: int, timeout: float | None = None) -> list[str]:
+    if timeout is None:
+        timeout = default_chat_timeout(n)
     resp = httpx.post(
         f"{host}/api/chat",
         json={
@@ -115,6 +127,10 @@ def main() -> None:
     parser.add_argument("--ollama-host", default=DEFAULT_OLLAMA_HOST)
     parser.add_argument("--chat-model", default=DEFAULT_CHAT_MODEL)
     parser.add_argument("--embed-model", default=DEFAULT_EMBED_MODEL)
+    parser.add_argument("--chat-timeout", type=float, default=None,
+                         help="Seconds to wait for the chat call. Defaults to max(120, n*6) -- "
+                              "a fixed 120s was enough at n=30 but timed out mid-generation at "
+                              "n=100 against qwen3:8b. Raise this further for a slower machine.")
     parser.add_argument("--out-dir", type=Path, default=bss.PROCESSED_DIR / "analysis_raw" / "secular_groups")
     args = parser.parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -126,8 +142,9 @@ def main() -> None:
         print(f"ERROR: {e}", file=sys.stderr)
         raise SystemExit(1)
 
-    logger.info("Generating %d non-religious group names via %s...", args.n, args.chat_model)
-    names = generate_group_names(args.ollama_host, args.chat_model, args.n)
+    chat_timeout = args.chat_timeout if args.chat_timeout is not None else default_chat_timeout(args.n)
+    logger.info("Generating %d non-religious group names via %s (timeout=%.0fs)...", args.n, args.chat_model, chat_timeout)
+    names = generate_group_names(args.ollama_host, args.chat_model, args.n, timeout=chat_timeout)
     logger.info("Got %d names: %s", len(names), names)
     if not names:
         raise SystemExit("Model returned zero parseable names -- inspect its raw response before retrying.")

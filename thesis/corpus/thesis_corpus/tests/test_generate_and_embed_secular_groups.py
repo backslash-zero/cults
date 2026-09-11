@@ -32,5 +32,15 @@ class TestParseGroupList(unittest.TestCase):
         self.assertEqual(gesg.parse_group_list(""), [])
 
 
+class TestDefaultChatTimeout(unittest.TestCase):
+    def test_small_n_uses_the_120s_floor(self):
+        self.assertEqual(gesg.default_chat_timeout(10), 120.0)
+
+    def test_large_n_scales_up(self):
+        # real case that timed out: n=100 against qwen3:8b at a fixed 120s
+        self.assertEqual(gesg.default_chat_timeout(100), 600.0)
+        self.assertGreater(gesg.default_chat_timeout(100), 120.0)
+
+
 if __name__ == "__main__":
     unittest.main()
