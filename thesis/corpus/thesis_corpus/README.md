@@ -392,7 +392,7 @@ python -m thesis_corpus.embed_v2 --corpus literature --run-tag <tag>
 
 Tests (stdlib `unittest`, no Ollama): `python -m unittest discover -s thesis_corpus/tests -t .`
 
-## Exhaustive interview extraction (`extract_interviews_full`) — a separate, recall-first pipeline
+## Exhaustive interview extraction (`extract_interviews_full`) — a separate, coverage-guaranteed pipeline
 
 Extraction v2 above (and v1 before it) is **selective**: the prompt asks the
 model to find only "the few... genuinely worth keeping" cult-relevant spans
@@ -407,120 +407,116 @@ interview protocol's opening free-association prompt is designed to elicit
 (`interview_prototypes.jsonl`, below, is a hand-built workaround for that
 same symptom).
 
-**Why go exhaustive instead of tuning the filter.** The shared embedding
-space this feeds is a geometric structure — UMAP/PCA projections, Voronoi
-regions seeded by MIVILUDES criteria, nearest-neighbor and cluster-composition
-analyses. That kind of structure gets *more* informative, not less, from more
-points: every additional extracted expression is another coordinate the space
-can be shaped by, and the space's own clustering/proximity already does the
-work of separating cult-relevant material from everything else — geometric
-neighborhood to a cult-relevant region, or to the MIVILUDES criteria
-themselves, is a real, inspectable relevance signal in its own right,
-computed *after* embedding rather than guessed at *before* it. Deciding
-relevance up front, before embedding, throws away exactly the material that
-signal needs (everything else an interviewee said, for contrast and context)
-and replaces it with a small model's one-shot guess. So this pipeline inverts
-the earlier design: extract every expression from every speaker (interviewer
-included, filler included), embed all of it, and record `cult_relevant` as a
-**label** on each point rather than a reason to omit it — the geometry, not
-the extractor, ends up doing the sorting.
+**Why go exhaustive.** The shared embedding space this feeds is a geometric
+structure — UMAP/PCA projections, Voronoi regions seeded by MIVILUDES
+criteria, nearest-neighbor and cluster-composition analyses. That kind of
+structure gets *more* informative, not less, from more points: every
+additional point is another coordinate the space can be shaped by, and
+post-embedding geometric proximity to cult-relevant material is itself a
+usable relevance signal, computed *after* embedding rather than guessed at
+*before* it. There's a second, independent reason on top of that: a planned
+use of this archive is displaying interview embeddings synced to subtitles
+as the interview plays, which needs a point for literally every piece of
+the transcript, with no gaps — not just "as much recall as the extractor
+happens to achieve."
 
-Three new modules, none of them touching `extraction_v2_schema.py`,
-`screen_v2.py`, `extract_v2.py`, or any literature/MIVILUDES behavior:
+**Design (v2, `interviews-full-2.0.0`) — chunking decides what gets a
+point, the model only labels it.** A first version of this pipeline
+(`interviews-full-1.0.0`) still asked the model to find-and-copy expressions
+out of the transcript, verified verbatim, screened them, and embedded
+whatever survived — the same *shape* of design as extraction v2, just with
+a much looser screen. That has a real coverage gap for the subtitle-sync use
+case: the model can simply fail to emit anything for a given sentence, and
+no amount of relaxing the screen can conjure a candidate that was never
+produced. It's also actively wrong for that use case if the model *does*
+paraphrase: a point representing text that doesn't match the subtitle shown
+over it defeats the whole point. v2 inverts the design instead:
+`interview_chunking.py` already deterministically produces the exact
+sentence-sized segments that should be embedded, independent of the model
+entirely — so there is nothing left for the model to "find." Its only job
+is to *label* each already-known segment. There is no `verbatim_expression`
+field in the schema at all, therefore no verbatim-matching machinery, no
+`not_verbatim`/`span_cuts_word`/`dangling_boundary`/duplicate-span rejection
+codes, and critically: **nothing can be rejected**, because nothing is being
+selected — `interview_segment_labels.py`'s `build_segment_records()` builds
+exactly one archive record per segment
+(`interview_chunking.segment_spans()`... — see below), whether or not a
+valid model label exists for it. An unlabeled segment still gets embedded;
+it just carries `label_status="missing"` and `cult_relevant=None` (honestly
+"unknown," never guessed) instead of `label_status="model"` and a real
+`True`/`False`.
+
+Four modules, none of them touching `extraction_v2_schema.py`, `screen_v2.py`,
+`extract_v2.py`, or any literature/MIVILUDES behavior:
 
 - **`interview_chunking.py`** — one unit per *whole transcript* (not
   `chunking.py`'s 300–700-word/2–5-paragraph packer, which — applied to an
-  interview — fragments the conversation into 2–5-turn windows and is exactly
-  why the old pipeline can't see a short reply next to the question that
-  prompted it). Interviews are short (measured directly on the 28-interview
-  corpus: 111–1536 words, avg ~440) and fit the model's context window
-  whole. Crucially, a unit's `text` contains **no structural markup at all**:
-  `build_transcript_units()` parses the raw transcript's `Interviewer:`/
-  `Interviewee:`/`Interview Notes:` labels once, here, then throws the label
-  strings themselves away along with the `---` separator, the transcript
-  header (date, demographics), and any `Interview Notes:` turn (transcriber
-  commentary — never a speaker's own words) — none of that is anyone's
-  speech, so none of it should be extractable text or sit inside an
-  `embedding_text`/`context_window`. What remains is just the interviewer's
-  and interviewee's own words, joined by blank lines; a parallel
-  `turn_roles` list carries one role (`"interviewer"`/`"participant"`) per
-  blank-line-separated paragraph, in order, for `screen_interviews_full.py`
-  to pair back up positionally (`turn_spans()`) without ever needing to see
-  a label again. `build_transcript_units(document_id, pages, max_words=1800)`
-  splits only if a transcript ever exceeds that, and only at a boundary where
-  a new interviewer turn starts — never mid-turn, and never at the very first
-  interviewer turn (which would leave a near-empty first half).
-- **`interview_extraction_schema.py`** — a new prompt (`SYSTEM_PROMPT_FULL`)
-  asking for **exhaustive** segmentation: every clause/sentence/short
-  reply from every speaker, filler and backchannel ("Okay.", "Um.",
-  "[laughs]") included, no cap, no length floor. `attribution` is **not**
-  asked of the model at all (fully deterministic downstream, see below);
-  `self_contained`/`textually_intelligible`/`single_coherent_expression`
-  (v2's reject-gate booleans) are dropped entirely; `cult_relevant` remains,
-  reframed explicitly as a label that must still be returned when false.
-  `expression_kind`/`claim_mode`/`epistemic_status` are imported byte-identical
-  from `extraction_v2_schema` so any future reuse of the geometric-analysis
-  toolkit's filters keeps working on this archive too. `domain_terms` (the
-  chunk-level, unfiltered entity-mention channel `embed_domain_terms.py`
-  already relies on for emergent-entity recall) is kept in the same shape.
-- **`screen_interviews_full.py`** — a much shorter deterministic rule set than
-  `screen_v2.py`'s S1–S15: keeps every genuine structural/correctness check
-  (verbatim-substring match, span-cuts-word, dangling-boundary, `too_long`,
-  integrity/corruption, exact-duplicate dedup), and **drops** everything that
-  was actually a relevance or selectivity judgment (the `cult_relevant`
-  reject-gate, the short-fragment-no-referent rule, the heading/meta-discourse/
-  citation/standalone-name rules — none apply to conversational speech, and
-  the standalone-name one would have quietly reintroduced the
-  short-answer-loss problem this pipeline exists to fix, and the
-  per-chunk cap). `dangling_boundary` itself was recalibrated after a real
-  smoke-test run on 2 interviews showed it rejecting **49% of everything the
-  model returned**: `DANGLING_START_WORDS` (borrowed byte-for-byte from
-  `extraction_v2_schema.py`) treats a span starting "And..."/"But..." as a
-  clipped literature fragment, but that's normal, complete spoken syntax
-  (12/36 rejections), and a bare trailing comma isn't a truncation signal
-  either — it's the natural pause after a filler word like "Yes,"/"Well,"
-  (22/36) — exactly the content this pipeline exists to keep. Both are gone
-  here: there is no start-word check at all, and comma is dropped from the
-  end-punctuation check. The remaining end-word check (`DANGLING_END_WORDS`
-  — "of", "the", "that", etc.) now only fires when the span has **no
-  terminal punctuation** of its own, since "...to create a huge cult like
-  that." legitimately ends in "that" as a demonstrative, not a dangling
-  relative pronoun, and real terminal punctuation is strong evidence the
-  clause is actually complete. Replaying the smoke test's raw model
-  responses through the fixed screen: 36→66 retained out of 73 emitted (the
-  2 still-rejected "and,"/"after that," fragments have no terminal
-  punctuation and genuinely don't complete a thought). Interviewer speech is
-  **kept**, tagged
-  `attribution="interviewer"` — resolved from the `turn_roles` list
-  `interview_chunking.py` built alongside the (label-free) unit text, via
-  `turn_spans()`, which pairs each blank-line-separated paragraph with its
-  role positionally. Since the header and `Interview Notes:` text never
-  reach a unit's text in the first place (dropped at chunking time, not
-  merely excluded here), there is no `span_includes_speaker_label`/
-  `span_in_transcript_header`/`span_in_transcript_notes` rule at all — those
-  are structurally impossible once the labels themselves are gone; the one
-  remaining fallback, `span_outside_known_turn`, exists only for a
-  chunking bug that should never happen with unit text this module itself
-  produced.
+  interview — fragments the conversation into 2–5-turn windows). Interviews
+  are short (measured directly on the 28-interview corpus: 111–1536 words,
+  avg ~440) and fit the model's context window whole. A unit's `text`
+  contains **no structural markup at all**: `build_transcript_units()`
+  parses the raw transcript's `Interviewer:`/`Interviewee:`/`Interview
+  Notes:` labels once, here, then throws the label strings themselves away
+  along with the `---` separator, the transcript header (date,
+  demographics), and any `Interview Notes:` turn (transcriber commentary —
+  never a speaker's own words). Granularity is sentence-level, not
+  raw-turn-level: each raw speaker turn is split into sentences before
+  becoming the blank-line-separated segments, since a single raw turn is
+  often several sentences covering unrelated ideas. What remains is just
+  the interviewer's and interviewee's own words, one sentence-sized segment
+  per blank-line paragraph; a parallel `turn_roles` list carries one role
+  (`"interviewer"`/`"participant"`) per segment, in order.
+  `build_transcript_units(document_id, pages, max_words=1800)` splits only
+  if a transcript ever exceeds that, and only at a boundary where a new
+  interviewer turn starts — never mid-turn/mid-sentence, and never at the
+  very first interviewer turn (near-empty first half).
+- **`interview_extraction_schema.py`** — the model is given the transcript
+  as a **numbered list of segments** and must return exactly one label per
+  `segment_index`: `expression_kind`, `claim_mode`, `epistemic_status`
+  (imported byte-identical from `extraction_v2_schema` so the
+  geometric-analysis toolkit's filters keep working on this archive too),
+  `entity_anchors`, `cult_relevant` (a label, never a filter — every
+  segment gets one, including `false` ones), `relevance_note`. `attribution`
+  is not asked at all (fully deterministic from `turn_roles`, see below).
+  `domain_terms` (the chunk-level, unfiltered entity-mention channel
+  `embed_domain_terms.py` relies on for emergent-entity recall) is kept in
+  the same shape as before, still whole-unit level.
+- **`interview_segment_labels.py`** — `segment_spans(nfc_text, turn_roles)`
+  is the authoritative list of what gets embedded (pairs each blank-line
+  paragraph with its role, positionally — the direct descendant of the
+  now-removed `screen_interviews_full.turn_spans()`, but generating the
+  record set rather than validating arbitrary model-chosen spans against
+  it). `build_segment_records()` then builds exactly one record per span:
+  if a valid, matching-index label exists, its fields are copied in and
+  `label_status="model"`; otherwise the record still gets built —
+  `verbatim_expression`/`embedding_text` are always the real segment text
+  (never anything the model wrote), `attribution` is always the real role,
+  and the label fields are `None`/`[]`/`"missing"`. A malformed label (fails
+  Pydantic validation), a `segment_index` outside the real range, or a
+  duplicate index are all recorded as diagnostic `LabelIssue`s (written to
+  `label_issues.jsonl`) — informational for QA, **never** a reason to drop
+  a segment.
 
-Reuses, unmodified: `screen_v2.resolve_span/fold_newlines/
-screen_domain_terms/prepare_chunk`, `text_integrity.has_hard_corruption/
-ligature_substitution_present/soft_flags`, `judge_v2.judge_records` (see
-below), and — crucially — `embed_v2.py`/`embed_domain_terms.py` need **zero
-code changes**: both already key off generic file/field names with a working
-`--out-root` flag, so pointing them at a new root is enough. (`screen_v2.
-speaker_turns()` is not reused here — that function scans for labels in
-running text, which this pipeline's text no longer has; `turn_spans()`
-above is the label-free equivalent.)
+Reuses, unmodified: `screen_v2.fold_newlines/screen_domain_terms/
+prepare_chunk`, `text_integrity.has_hard_corruption/soft_flags` (now purely
+informational `screen_flags` — corruption in an already-reviewed, hand-typed
+transcript is vanishingly rare, and even if present the segment must still
+get a point), `judge_v2.judge_records` (see below), and — crucially —
+`embed_v2.py`/`embed_domain_terms.py` need **zero code changes**: both
+already key off generic file/field names with a working `--out-root` flag,
+so pointing them at a new root is enough, and the guaranteed-complete record
+shape (every field always present, just sometimes `None`) is if anything
+more robust for them than v1's design. `screen_v2.resolve_span`/
+`speaker_turns()` are **not** reused at all here — there is no arbitrary
+span to resolve and no label text left in the running transcript to scan
+for.
 
 **Judge**: off by default (unlike `extract_v2.py`, which defaults to
-`qwen3:8b`). The judge's old value was almost entirely a relevance/
-self-containedness reject gate, both removed here by design; verbatim
-fidelity — its other concern — is already structurally guaranteed by the
-verbatim-substring screen rule regardless of whether a judge runs. Passing
-`--judge-model` still works (`judge_v2.judge_records` reused unmodified) but
-merges the verdict onto every record as extra `judge_*` label fields —
-**never** filters by it.
+`qwen3:8b`). Only ever runs over `label_status="model"` records — judging a
+`"missing"` placeholder label is meaningless. Passing `--judge-model` still
+works (`judge_v2.judge_records` reused unmodified) but merges the verdict
+onto the labeled records as extra `judge_*` fields — **never** filters by
+it, and unlabeled records simply pass through with no judge fields at all.
 
 **Audit tolerance**: unlike `extract_v2.py`, a document missing from the
 Stage-1 integrity audit does not block the run (logged, treated as
@@ -540,16 +536,20 @@ python -m thesis_corpus.export_interview_emergent_entities --run-tag <tag>
 Output tree: `processed/interviews_full/interviews/run_<tag>/` — same file
 names as a v2 run (`expressions_v2.jsonl`, `criterion_expressions.jsonl`,
 `chunk_terms.jsonl`, `domain_term_vectors.jsonl`, `config.json`,
-`summary.json`, `run.log`) so `embed_v2.py`/`embed_domain_terms.py` work
-unmodified, plus `emergent_entities_ranked.csv`/`top_100_rows.tex` from
-`export_interview_emergent_entities.py`. This is a standalone, single-corpus
-archive: it is never pooled into `processed/shared_space_v2/` and never
-touches the `Emergent_Entities_v2` appendix or the `Geometric_Analysis_Draft_v3`
-report — see `processed/v2/interviews/run_20260910/ARCHIVED.md` for what
-happens to the old interview run this supersedes.
+`summary.json`, `run.log`), plus `label_issues.jsonl` (the diagnostic
+renamed from `screen_rejected.jsonl` — nothing in it was actually rejected)
+and `emergent_entities_ranked.csv`/`top_100_rows.tex` from
+`export_interview_emergent_entities.py`. `summary.json`'s `segments` block
+(`total`/`labeled`/`unlabeled`/`labeled_rate`) is the number to watch — it's
+the coverage/labeling-quality figure now, not a candidates-retained figure.
+This is a standalone, single-corpus archive: it is never pooled into
+`processed/shared_space_v2/` and never touches the `Emergent_Entities_v2`
+appendix or the `Geometric_Analysis_Draft_v3` report — see
+`processed/v2/interviews/run_20260910/ARCHIVED.md` for what happens to the
+old interview run this supersedes.
 
 Tests (stdlib `unittest`, no Ollama): `test_interview_chunking.py`,
-`test_screen_interviews_full.py`, `test_extract_interviews_full.py`.
+`test_interview_segment_labels.py`, `test_extract_interviews_full.py`.
 
 ## Stage 3: reduced/downsampled JSONL for analysis (`reduce_embeddings`)
 

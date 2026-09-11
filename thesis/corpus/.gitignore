@@ -77,3 +77,13 @@ processed/v2/literature/**/domain_term_vectors.jsonl
 # target machine unzips alongside them -- verbatim text, hand-copied only.
 processed/stage1_mirror_*.zip
 processed/MIRROR_MANIFEST.json
+
+# extract_interviews_full.py's own output tree -- same reasoning as
+# processed/v2/**/*.jsonl above (verbatim participant text), same
+# domain_term_vectors.jsonl exception (small, no excerpt text, the durable
+# input emergent-entities pooling depends on); config.json/summary.json stay
+# tracked. Interviews are small, so no literature-style size exception needed.
+processed/interviews_full/**/*.jsonl
+processed/interviews_full/**/*.log
+processed/interviews_full/**/documents_done.txt
+!processed/interviews_full/**/domain_term_vectors.jsonl

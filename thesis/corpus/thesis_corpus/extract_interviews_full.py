@@ -1,7 +1,10 @@
-"""Exhaustive interview extraction -- full-corpus run (extract + screen[+
+"""Exhaustive interview extraction -- full-corpus run (chunk + label[+
 optional judge]), resumable. Interview-only counterpart of extract_v2.py,
-but recall-first: every speaker, every expression, cult-relevance recorded
-as a label rather than used to decide what gets kept.
+but with a coverage GUARANTEE: every segment interview_chunking.py produces
+gets exactly one archive record, whether or not the model returns a valid
+label for it. There is no candidate-screening step here (see
+interview_segment_labels.py's module docstring for why v1 of this driver's
+verbatim-matching design couldn't guarantee that, and why it's gone).
 
 Never touches processed/v2/interviews/ (the existing, selective v2 run) or
 any shared-space / analysis output for literature/MIVILUDES. Reads
@@ -20,28 +23,30 @@ Output: processed/interviews_full/interviews/run_<tag>/
   config.json               model, prompt hash, screening constants, audit provenance;
                             a resume refuses if any of these differ
   documents_done.txt        checkpoint, one document_id per line
-  documents_manifest.jsonl  per document: pages sha256, unit count, counts, flags
+  documents_manifest.jsonl  per document: pages sha256, segment/label counts, flags
   chunk_index.jsonl         per unit: key, hashes, flags, counts (no text)
   model_responses.jsonl     raw extractor replies
   model_failures.jsonl      extractor failures after retry (unit contributes nothing)
-  screen_rejected.jsonl     candidates rejected by the screen, with codes
+  label_issues.jsonl        label-quality problems (malformed/missing/duplicate label) --
+                            diagnostic only, never removes a segment from the archive
   chunk_terms.jsonl         domain terms (diagnostic inventory only; feeds emergent entities)
-  judge_verdicts.jsonl      every judge verdict (only written when --judge-model is given)
-  expressions_v2.jsonl      FINAL archive (name matches v2's so embed_v2.py/embed_domain_terms.py
-                            work unmodified against --out-root=processed/interviews_full)
+  judge_verdicts.jsonl      every judge verdict for model-labeled segments (only written
+                            when --judge-model is given; unlabeled segments are never judged)
+  expressions_v2.jsonl      FINAL archive: one record per segment (name matches v2's so
+                            embed_v2.py/embed_domain_terms.py work unmodified)
   summary.json              accounting, rewritten after every document
   run.log
 
 Usage (from thesis/corpus/, Ollama host):
-    python -m thesis_corpus.extract_interviews_full --run-tag 20260911 --model qwen3:4b
-    python -m thesis_corpus.extract_interviews_full --run-tag 20260911 --limit 2   # smoke test
-    python -m thesis_corpus.extract_interviews_full --run-tag 20260911 --judge-model qwen3:8b   # optional, off by default
+    python -m thesis_corpus.extract_interviews_full --run-tag 20260912 --model qwen3:4b
+    python -m thesis_corpus.extract_interviews_full --run-tag 20260912 --limit 2   # smoke test
+    python -m thesis_corpus.extract_interviews_full --run-tag 20260912 --judge-model qwen3:8b   # optional, off by default
     (rerun the same command to resume)
 
 Then:
-    python -m thesis_corpus.embed_v2 --corpus interviews --run-tag 20260911 --out-root ../processed/interviews_full
-    python -m thesis_corpus.embed_domain_terms --corpus interviews --run-tag 20260911 --out-root ../processed/interviews_full
-    python -m thesis_corpus.export_interview_emergent_entities --run-tag 20260911
+    python -m thesis_corpus.embed_v2 --corpus interviews --run-tag 20260912 --out-root ../processed/interviews_full
+    python -m thesis_corpus.embed_domain_terms --corpus interviews --run-tag 20260912 --out-root ../processed/interviews_full
+    python -m thesis_corpus.export_interview_emergent_entities --run-tag 20260912
 """
 from __future__ import annotations
 
@@ -55,29 +60,29 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from thesis_corpus import interview_extraction_schema as schema
+from thesis_corpus import interview_segment_labels as isl
 from thesis_corpus import judge_v2
-from thesis_corpus import screen_interviews_full as sif
 from thesis_corpus.extract_v2 import ChunkProgress, append_jsonl, format_duration, load_audit
 from thesis_corpus.interview_chunking import build_transcript_units
 from thesis_corpus.pilot_v2_literature import (
     AUDITS_DIR, PROCESSED_ROOT, git_commit_hash, latest_audit_csv, read_jsonl, sha256_file, write_json,
 )
 
-SCRIPT_VERSION = "1.0.0"
+SCRIPT_VERSION = "2.0.0"
 CORPUS = "interviews"
 logger = logging.getLogger("thesis_corpus.extract_interviews_full")
 _CODE_FENCE_RE = re.compile(r"^```(?:json)?\s*(.*?)\s*```$", re.DOTALL)
 
 
-def parse_envelope(raw: str) -> schema.ChunkEnvelopeFull:
+def parse_envelope(raw: str) -> schema.TranscriptLabelsEnvelope:
     match = _CODE_FENCE_RE.match(raw.strip())
-    return schema.ChunkEnvelopeFull.model_validate(json.loads(match.group(1) if match else raw))
+    return schema.TranscriptLabelsEnvelope.model_validate(json.loads(match.group(1) if match else raw))
 
 
-def extract_unit(ctx: sif.ChunkContext, host: str, model: str, timeout: float, chat):
-    """One extraction call with one retry. Returns (envelope|None, raw, mode, error)."""
+def label_unit(ctx: isl.ChunkContext, segments: list[str], host: str, model: str, timeout: float, chat):
+    """One labeling call with one retry. Returns (envelope|None, raw, mode, error)."""
     from thesis_corpus.ollama_client import AnnotationError
-    user = schema.user_message(ctx.document_id, ctx.page_range, ctx.chunk_index, ctx.nfc_text)
+    user = schema.user_message(ctx.document_id, ctx.page_range, ctx.chunk_index, segments)
     json_schema = schema.response_json_schema()
     error = None
     for attempt in (1, 2):
@@ -94,24 +99,30 @@ def extract_unit(ctx: sif.ChunkContext, host: str, model: str, timeout: float, c
 
 
 def apply_judge_labels(records: list[dict], host: str, judge_model: str, timeout: float, chat, progress_prefix: str = "") -> tuple[list[dict], list[dict]]:
-    """Optional. Runs judge_v2.judge_records (unmodified) over the retained
-    records and merges its verdict fields onto EVERY record, regardless of
-    the judge's own accept/reject decision -- this pipeline never drops an
-    expression on a relevance/quality verdict, so judge disagreement becomes
-    additional label metadata, not a rejection. Returns (labeled_records,
-    verdict_rows)."""
-    result = judge_v2.judge_records(records, host, judge_model, timeout=timeout, chat=chat, progress_prefix=progress_prefix)
+    """Optional. Runs judge_v2.judge_records (unmodified) over the
+    model-labeled records only (judging a "missing" placeholder label is
+    meaningless) and merges its verdict fields onto those, regardless of the
+    judge's own accept/reject decision -- this pipeline never drops a
+    segment on a relevance/quality verdict, so judge disagreement becomes
+    additional label metadata, not a rejection. Records that were never
+    labeled by the model pass through unchanged (no judge_* fields).
+    Returns (labeled_records, verdict_rows)."""
+    labeled_records = [r for r in records if r["label_status"] == "model"]
+    if not labeled_records:
+        return records, []
+    result = judge_v2.judge_records(labeled_records, host, judge_model, timeout=timeout, chat=chat, progress_prefix=progress_prefix)
     verdict_by_key = {(r["document_id"], r["chunk_index"], r["candidate_rank"]): r for r in result["verdict_rows"]}
-    labeled = []
+    out = []
     for rec in records:
         row = verdict_by_key.get((rec["document_id"], rec["chunk_index"], rec["candidate_rank"]))
         rec = dict(rec)
-        rec["judge_model"] = judge_model
-        rec["judge_status"] = row["judge_status"] if row else "failed"
-        rec["judge_verdict"] = row["verdict"] if row else None
-        rec["judge_accepted"] = row["accepted"] if row else None
-        labeled.append(rec)
-    return labeled, result["verdict_rows"]
+        if row:
+            rec["judge_model"] = judge_model
+            rec["judge_status"] = row["judge_status"]
+            rec["judge_verdict"] = row["verdict"]
+            rec["judge_accepted"] = row["accepted"]
+        out.append(rec)
+    return out, result["verdict_rows"]
 
 
 def run_config(args, audit_prov: dict) -> dict:
@@ -135,7 +146,7 @@ def main() -> None:
     parser.add_argument("--judge-model", default="",
                         help="optional second-model judge (e.g. qwen3:8b); off by default -- unlike extract_v2, "
                              "this pipeline never rejects on a judge verdict, so the judge only earns its cost "
-                             "(a second LLM call per expression) if you want the extra judge_* label fields")
+                             "(a second LLM call per labeled segment) if you want the extra judge_* label fields")
     parser.add_argument("--ollama-host", default="http://127.0.0.1:11434")
     parser.add_argument("--timeout", type=float, default=180.0)
     parser.add_argument("--judge-timeout", type=float, default=240.0)
@@ -198,7 +209,7 @@ def run(args, chat=None, check=None) -> Path:
     build_units = (lambda doc_id, pages: build_transcript_units(doc_id, pages, max_words=args.max_words)) \
         if args.max_words else build_transcript_units
 
-    # Cheap pre-pass (pure functions, no model calls) for chunk-count/ETA
+    # Cheap pre-pass (pure functions, no model calls) for unit-count/ETA
     # figures from the first log line. No pre-screen for this pipeline --
     # every unit is callable.
     total_units = 0
@@ -213,71 +224,74 @@ def run(args, chat=None, check=None) -> Path:
         pages = read_jsonl(doc_dir / "pages.jsonl")
         units = build_units(document_id, pages)
         logger.info("[%d/%d] %s: %d unit(s)", doc_number, len(todo), document_id, len(units))
-        contexts = [(sif.prepare_chunk(document_id, u.chunk_index, u.page_range, u.text, "interviews_full",
+        contexts = [(isl.prepare_chunk(document_id, u.chunk_index, u.page_range, u.text, "interviews_full",
                                        document_integrity_flags=doc_flags.get(document_id, []),
                                        corrupted_line_texts=frozenset(region_lines.get(document_id, ()))),
                     u.turn_roles)
                     for u in units]
-        chunk_index_rows, responses, failures, screen_rejected, terms, screen_retained = [], [], [], [], [], []
-        seen_texts: set[str] = set()
+        chunk_index_rows, responses, failures, label_issues, terms, all_records = [], [], [], [], [], []
         for ctx, turn_roles in contexts:
+            spans = isl.segment_spans(ctx.nfc_text, turn_roles)
+            segments = [ctx.nfc_text[s:e] for s, e, _role in spans]
             row = {"document_id": document_id, "chunk_index": ctx.chunk_index, "page_range": ctx.page_range,
                    "word_count": ctx.word_count, "raw_chunk_sha256": ctx.raw_sha256, "nfc_chunk_sha256": ctx.nfc_sha256,
                    "nfc_changed_codepoints": ctx.nfc_changed_codepoints, "document_integrity_flags": ctx.document_integrity_flags,
                    "corrupted_regions": ctx.corrupted_regions, "chunk_integrity_score": ctx.chunk_integrity_score,
-                   "model_status": None, "emitted": 0, "screen_retained": 0, "screen_rejected": 0}
-            envelope, raw, mode, error = extract_unit(ctx, args.ollama_host, args.model, args.timeout, chat)
+                   "model_status": None, "segments": len(segments), "labeled": 0, "issues": 0}
+            envelope, raw, mode, error = label_unit(ctx, segments, args.ollama_host, args.model, args.timeout, chat)
             progress.record_called()
             logger.info(progress.line(document_id, ctx.chunk_index, doc_number))
             responses.append({"document_id": document_id, "chunk_index": ctx.chunk_index, "model": args.model,
                               "structured_output_mode": mode, "raw_content": raw, "error": error})
             if envelope is None:
+                # No labels for this unit -- the segments still all get archived (unlabeled).
+                records, issues = isl.build_segment_records(ctx, turn_roles, [])
                 failures.append({"document_id": document_id, "chunk_index": ctx.chunk_index, "error": error})
                 row["model_status"] = "failed"
-                chunk_index_rows.append(row)
-                logger.error("[%s:%d] extractor failure after retry: %s", document_id, ctx.chunk_index, error)
-                continue
-            retained, rejected = sif.screen_unit(envelope.expressions, ctx, seen_texts, turn_roles)
-            kept_terms, dropped_terms = sif.screen_domain_terms(envelope.domain_terms, ctx)
-            for rec in retained:
+                logger.error("[%s:%d] extractor failure after retry (segments still archived, unlabeled): %s",
+                            document_id, ctx.chunk_index, error)
+            else:
+                records, issues = isl.build_segment_records(ctx, turn_roles, envelope.segment_labels)
+                kept_terms, dropped_terms = isl.screen_domain_terms(envelope.domain_terms, ctx)
+                terms.append({"document_id": document_id, "chunk_index": ctx.chunk_index, "domain_terms": kept_terms, "dropped_terms": dropped_terms})
+                row["model_status"] = "ok"
+            for rec in records:
                 rec.update({"extraction_version": schema.EXTRACTION_VERSION, "prompt_sha256": schema.PROMPT_SHA256,
                             "model": args.model, "structured_output_mode": mode})
-            screen_retained.extend(retained)
-            screen_rejected.extend(rejected)
-            terms.append({"document_id": document_id, "chunk_index": ctx.chunk_index, "domain_terms": kept_terms, "dropped_terms": dropped_terms})
-            row.update({"model_status": "ok", "emitted": len(envelope.expressions), "screen_retained": len(retained), "screen_rejected": len(rejected)})
+            all_records.extend(records)
+            label_issues.extend({"document_id": document_id, "chunk_index": ctx.chunk_index, **vars(issue)} for issue in issues)
+            row.update({"labeled": sum(1 for r in records if r["label_status"] == "model"), "issues": len(issues)})
             chunk_index_rows.append(row)
 
         verdicts = []
-        if args.judge_model and screen_retained:
-            final, verdicts = apply_judge_labels(screen_retained, args.ollama_host, args.judge_model,
-                                                 timeout=args.judge_timeout, chat=chat,
-                                                 progress_prefix=f"{document_id[:30]} judge ")
-        else:
-            final = screen_retained
+        if args.judge_model and all_records:
+            all_records, verdicts = apply_judge_labels(all_records, args.ollama_host, args.judge_model,
+                                                        timeout=args.judge_timeout, chat=chat,
+                                                        progress_prefix=f"{document_id[:30]} judge ")
 
         # write everything for this document, then the checkpoint line -- in that order
         append_jsonl(run_dir / "chunk_index.jsonl", chunk_index_rows)
         append_jsonl(run_dir / "model_responses.jsonl", responses)
         append_jsonl(run_dir / "model_failures.jsonl", failures)
-        append_jsonl(run_dir / "screen_rejected.jsonl", screen_rejected)
+        append_jsonl(run_dir / "label_issues.jsonl", label_issues)
         append_jsonl(run_dir / "chunk_terms.jsonl", terms)
         if verdicts:
             append_jsonl(run_dir / "judge_verdicts.jsonl", verdicts)
-        append_jsonl(run_dir / "expressions_v2.jsonl", final)
+        append_jsonl(run_dir / "expressions_v2.jsonl", all_records)
+        n_labeled = sum(1 for r in all_records if r["label_status"] == "model")
         append_jsonl(run_dir / "documents_manifest.jsonl", [{
             "document_id": document_id, "pages_jsonl_sha256": sha256_file(doc_dir / "pages.jsonl"), "pages": len(pages),
-            "units": len(units), "model_failed": len(failures), "emitted": sum(r["emitted"] for r in chunk_index_rows),
-            "screen_retained": len(screen_retained), "screen_rejected": len(screen_rejected), "final": len(final),
+            "units": len(units), "model_failed": len(failures), "segments": len(all_records),
+            "labeled": n_labeled, "unlabeled": len(all_records) - n_labeled, "label_issues": len(label_issues),
             "document_integrity_flags": doc_flags.get(document_id, []), "finished_at": datetime.now(timezone.utc).isoformat()}])
         with open(done_path, "a", encoding="utf-8", newline="\n") as f:
             f.write(document_id + "\n")
         write_summary(run_dir, args)
-        logger.info("[%d/%d] %s done: units=%d failed=%d emitted=%d screen_retained=%d final=%d | %s",
+        logger.info("[%d/%d] %s done: units=%d failed=%d segments=%d labeled=%d issues=%d | %s",
                     doc_number, len(todo), document_id, len(units), len(failures),
-                    sum(r["emitted"] for r in chunk_index_rows), len(screen_retained), len(final), progress.summary())
+                    len(all_records), n_labeled, len(label_issues), progress.summary())
     summary = write_summary(run_dir, args)
-    print(json.dumps({k: summary[k] for k in ("documents", "chunks", "candidates", "screen_rejection_codes")}, ensure_ascii=False, indent=2))
+    print(json.dumps({k: summary[k] for k in ("documents", "chunks", "segments", "label_issue_codes")}, ensure_ascii=False, indent=2))
     print(progress.summary())
     print(f"Run dir: {run_dir}")
     return run_dir
@@ -285,21 +299,20 @@ def run(args, chat=None, check=None) -> Path:
 
 def write_summary(run_dir: Path, args) -> dict:
     manifest = read_jsonl(run_dir / "documents_manifest.jsonl") if (run_dir / "documents_manifest.jsonl").exists() else []
-    screen_rejected = read_jsonl(run_dir / "screen_rejected.jsonl") if (run_dir / "screen_rejected.jsonl").exists() else []
+    label_issues = read_jsonl(run_dir / "label_issues.jsonl") if (run_dir / "label_issues.jsonl").exists() else []
     units_total = sum(m["units"] for m in manifest)
     failed = sum(m["model_failed"] for m in manifest)
-    emitted = sum(m["emitted"] for m in manifest)
-    screen_ret = sum(m["screen_retained"] for m in manifest)
-    final = sum(m["final"] for m in manifest)
+    segments = sum(m["segments"] for m in manifest)
+    labeled = sum(m["labeled"] for m in manifest)
     summary = {
         "corpus": CORPUS, "run_tag": args.run_tag, "model": args.model, "judge_model": args.judge_model,
         "documents": {"done": len(manifest)},
         "chunks": {"total": units_total, "called": units_total, "model_failed": failed,
                    "model_failure_rate": round(failed / units_total, 4) if units_total else None},
-        "candidates": {"emitted": emitted, "screen_retained": screen_ret, "screen_rejected": len(screen_rejected),
-                       "reconciled": emitted == screen_ret + len(screen_rejected), "final": final,
-                       "final_per_document": round(final / len(manifest), 3) if manifest else None},
-        "screen_rejection_codes": dict(Counter(r["rejection_code"] for r in screen_rejected).most_common()),
+        "segments": {"total": segments, "labeled": labeled, "unlabeled": segments - labeled,
+                     "labeled_rate": round(labeled / segments, 4) if segments else None,
+                     "per_document": round(segments / len(manifest), 3) if manifest else None},
+        "label_issue_codes": dict(Counter(i["code"] for i in label_issues).most_common()),
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
     write_json(run_dir / "summary.json", summary)

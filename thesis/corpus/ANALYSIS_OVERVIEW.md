@@ -55,27 +55,33 @@ since most no longer appear verbatim in v2's stricter extraction — projected
 through the new v2 transform instead of v1's. v1 confirmed byte-identical
 throughout (checked before and after every build step).
 
-**Interviews, going forward: a separate exhaustive pipeline (2026-09-11)**.
-v2's interview extraction is *selective* the same way v1's was: 26 interviews
-yielded only 64 kept expressions total (under 3/interview), because the
-prompt asks the model to find "the few... genuinely worth keeping"
-cult-relevant spans rather than segment everything, and interviewer speech
-is discarded outright. A new, interview-only pipeline
-(`extract_interviews_full.py`/`interview_extraction_schema.py`/
-`screen_interviews_full.py`, documented in `thesis_corpus/README.md`)
-inverts this: every expression from every speaker (filler included) is
-extracted and embedded, with `cult_relevant` recorded as a label rather than
-a reason to omit something. The rationale is geometric, not just about
-recall for its own sake: this shared space is a clustering/proximity
-structure (UMAP, Voronoi regions seeded by MIVILUDES criteria,
-nearest-neighbor composition), and that structure gets more informative,
-not less, from more points — every additional extracted expression gives
-the space more to be shaped by, and post-embedding geometric neighborhood
-to cult-relevant material is itself a usable relevance signal, one the
-extractor doesn't need to pre-decide by guessing before anything is
-embedded. This pipeline's output (`processed/interviews_full/interviews/
-run_<tag>/`) is standalone — single-corpus, no pooling, no PCA refit — and
-is **not** currently pooled into `shared_space_v2`; the 64-expression v2
+**Interviews, going forward: a separate, coverage-guaranteed pipeline
+(2026-09-11/12)**. v2's interview extraction is *selective* the same way
+v1's was: 26 interviews yielded only 64 kept expressions total (under
+3/interview), because the prompt asks the model to find "the few...
+genuinely worth keeping" cult-relevant spans rather than segment everything,
+and interviewer speech is discarded outright. A new, interview-only
+pipeline (`extract_interviews_full.py`/`interview_extraction_schema.py`/
+`interview_segment_labels.py`, documented in `thesis_corpus/README.md`)
+inverts this, and goes one step further than "extract more": chunking
+(`interview_chunking.py`) deterministically decides what gets a point in
+the space — every sentence-sized segment, from every speaker, filler
+included — and the model's only job is to LABEL each segment
+(`cult_relevant`, entities, etc.), never to decide whether it gets embedded.
+An unlabeled or mislabeled segment still gets a point (`label_status`
+records whether a real model label attached); nothing is ever rejected. Two
+motivations converge on this design: the geometric one (this shared space
+is a clustering/proximity structure — UMAP, Voronoi regions seeded by
+MIVILUDES criteria, nearest-neighbor composition — that gets more
+informative, not less, from more points, and post-embedding geometric
+neighborhood to cult-relevant material is itself a usable relevance signal
+the extractor doesn't need to pre-decide by guessing before anything is
+embedded), and a concrete downstream use case (displaying interview
+embeddings synced to subtitles, which needs a point for literally every
+piece of transcript, with no gaps a model's own recall could leave). This
+pipeline's output (`processed/interviews_full/interviews/run_<tag>/`) is
+standalone — single-corpus, no pooling, no PCA refit — and is **not**
+currently pooled into `shared_space_v2`; the 64-expression v2
 interview archive stays exactly as described above, live and unmodified,
 as the basis for everything already built on it (see
 `processed/v2/interviews/run_20260910/ARCHIVED.md`). Whether/how to fold the

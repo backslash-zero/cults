@@ -21,8 +21,10 @@ informal speech but a real improvement over one block per turn), and it is
 those SENTENCES, not raw turns, that become the blank-line-separated blocks
 in `text` -- several in a row can belong to the same speaker's reply.
 `turn_roles` carries one role ("interviewer" or "participant") per block, in
-order, for `screen_interviews_full.py` to pair back up positionally (see
-`turn_spans()` there) without ever needing to see a label again.
+order, for `interview_segment_labels.py` to pair back up positionally (see
+`segment_spans()` there) without ever needing to see a label again -- that
+pairing is also the authoritative list of what gets embedded, guaranteeing
+one archive record per segment regardless of what the model does with it.
 `Interview Notes:` turns (transcriber commentary -- never a speaker's own
 words) and the transcript header are dropped entirely, not merely excluded
 downstream.
