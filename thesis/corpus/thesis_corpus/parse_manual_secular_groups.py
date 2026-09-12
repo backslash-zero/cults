@@ -70,6 +70,80 @@ def parse_manual_group_list(raw_text: str) -> list[str]:
     return names
 
 
+_BLOCK_HEADER_RE = re.compile(r"^\**\s*block\s+([A-D])\b", re.IGNORECASE)
+_DASH_SEPARATOR_RE = re.compile(r" [–—-] ")
+
+
+def parse_manual_group_list_with_cells(raw_text: str) -> list[dict]:
+    """Variant of parse_manual_group_list for the 4-cell coercive-control
+    lists, which differ from the plain non-religious lists in two ways that
+    both matter: the DESCRIPTION is kept rather than discarded, and the
+    block headers are data (the experimental cell) rather than noise to skip.
+
+    Returns `{"name", "description", "cell"}` per entry, where `cell` is
+    "A".."D" from the most recent `Block X` header (None for entries before
+    any header). Descriptions are kept because bare names carry no
+    information about what an organization does -- the limitation established
+    in Analysis/10, where the groups nearest "difficulty leaving the group"
+    turned out to be a mountain-biking group and two sports clubs, matched on
+    the word "group". Scoring names and descriptions separately turns that
+    limitation into a measurement.
+
+    Prefers the dash separator over the parenthesis one, unlike
+    parse_manual_group_list: here the requested format is explicitly
+    `Name – description`, so a name that itself contains parentheses
+    ("Anonymous (hacker collective) – ...") must not be split at the bracket."""
+    entries = []
+    cell = None
+    for line in raw_text.splitlines():
+        line = line.strip()
+        if not line or line.lower().startswith(("prompt:", "model:")):
+            continue
+
+        header = _BLOCK_HEADER_RE.match(line)
+        if header:
+            cell = header.group(1).upper()
+            continue
+
+        line = _LEADING_NUMBERING_RE.sub("", line).strip()
+        if not line:
+            continue
+
+        match = _DASH_SEPARATOR_RE.search(line)
+        if match:
+            name, description = line[: match.start()], line[match.end():]
+        else:
+            paren = line.find("(")
+            if paren == -1:
+                continue  # no separator at all -> a stray heading, not an entry
+            name, description = line[:paren], line[paren + 1:].rstrip(")")
+
+        name = name.strip().strip("\"'")
+        if name:
+            entries.append({"name": name, "description": description.strip(), "cell": cell})
+    return entries
+
+
+def load_all_cell_entries(source_dir: Path) -> list[dict]:
+    """parse_manual_group_list_with_cells over every .txt/.tx file in
+    source_dir, deduplicated on (cell, casefolded name). A name appearing in
+    TWO different cells is deliberately kept twice -- that's a genuine
+    cell-assignment conflict the analysis should surface, not silently
+    resolve (e.g. an MLM the model puts in both "famous cults" and
+    "ordinary-sounding but coercive")."""
+    seen = set()
+    entries = []
+    for path in sorted(source_dir.iterdir()):
+        if path.suffix not in (".txt", ".tx"):
+            continue
+        for entry in parse_manual_group_list_with_cells(path.read_text(encoding="utf-8")):
+            key = (entry["cell"], entry["name"].casefold())
+            if key not in seen:
+                seen.add(key)
+                entries.append(entry)
+    return entries
+
+
 def load_all_group_names(source_dir: Path = DEFAULT_SOURCE_DIR) -> list[str]:
     """Reads every .txt/.tx file in source_dir, parses each, and
     deduplicates case-insensitively across all of them combined (the same

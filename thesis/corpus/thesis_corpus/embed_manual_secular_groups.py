@@ -34,7 +34,11 @@ import sys
 from pathlib import Path
 
 from thesis_corpus import build_shared_space as bss
-from thesis_corpus.parse_manual_secular_groups import DEFAULT_SOURCE_DIR, load_all_group_names
+from thesis_corpus.parse_manual_secular_groups import (
+    DEFAULT_SOURCE_DIR,
+    load_all_cell_entries,
+    load_all_group_names,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("thesis_corpus.embed_manual_secular_groups")
@@ -50,6 +54,18 @@ def main() -> None:
     parser.add_argument("--ollama-host", default=DEFAULT_OLLAMA_HOST)
     parser.add_argument("--embed-model", default=DEFAULT_EMBED_MODEL)
     parser.add_argument("--out-dir", type=Path, default=bss.PROCESSED_DIR / "analysis_raw" / "secular_groups")
+    parser.add_argument("--out-name", default="generated_secular_groups.jsonl",
+                         help="Output filename inside --out-dir. Override so a second list can sit "
+                              "beside the first instead of overwriting it.")
+    parser.add_argument("--cells", action="store_true",
+                         help="Parse the 4-cell coercive-control format (Block A..D headers, "
+                              "'Name - description' entries) instead of a plain name list. Writes a "
+                              "`cell` and `description` field per row, and -- unless "
+                              "--names-only is set -- a second JSONL of the DESCRIPTIONS embedded "
+                              "separately, since bare names carry no information about conduct "
+                              "(see Analysis/10).")
+    parser.add_argument("--names-only", action="store_true",
+                         help="With --cells: skip the description embedding pass.")
     args = parser.parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -60,13 +76,54 @@ def main() -> None:
         print(f"ERROR: {e}", file=sys.stderr)
         raise SystemExit(1)
 
+    if args.cells:
+        entries = load_all_cell_entries(args.source_dir)
+        if not entries:
+            raise SystemExit(f"No cell entries parsed from {args.source_dir} -- nothing to embed.")
+        counts: dict[str, int] = {}
+        for e in entries:
+            counts[str(e["cell"])] = counts.get(str(e["cell"]), 0) + 1
+        logger.info("Parsed %d entries across cells: %s", len(entries), dict(sorted(counts.items())))
+
+        names = [e["name"] for e in entries]
+        logger.info("Embedding %d names via %s...", len(names), args.embed_model)
+        name_vectors = embed_texts(args.ollama_host, args.embed_model, names)
+        out_path = args.out_dir / args.out_name
+        with open(out_path, "w", encoding="utf-8") as f:
+            for e, vector in zip(entries, name_vectors):
+                f.write(json.dumps({"label": e["name"], "cell": e["cell"],
+                                    "description": e["description"],
+                                    "embedding_vector": vector}, ensure_ascii=False) + "\n")
+        written = [out_path]
+
+        if not args.names_only:
+            described = [e for e in entries if e["description"]]
+            if described:
+                logger.info("Embedding %d descriptions via %s...", len(described), args.embed_model)
+                desc_vectors = embed_texts(args.ollama_host, args.embed_model,
+                                           [e["description"] for e in described])
+                desc_path = args.out_dir / args.out_name.replace(".jsonl", "_descriptions.jsonl")
+                with open(desc_path, "w", encoding="utf-8") as f:
+                    for e, vector in zip(described, desc_vectors):
+                        f.write(json.dumps({"label": e["name"], "cell": e["cell"],
+                                            "description": e["description"],
+                                            "embedding_vector": vector}, ensure_ascii=False) + "\n")
+                written.append(desc_path)
+            else:
+                logger.warning("No descriptions found -- skipping the description pass.")
+
+        print("Done. " + "\n      ".join(str(p) for p in written))
+        print(f"({len(entries)} entries, cells {dict(sorted(counts.items()))}). Copy these back to "
+              f"the Mac at the same relative paths, then run analyze_coercive_control_groups.py.")
+        return
+
     names = load_all_group_names(args.source_dir)
     if not names:
         raise SystemExit(f"No group names parsed from {args.source_dir} -- nothing to embed.")
     logger.info("Embedding %d manually-curated group names via %s...", len(names), args.embed_model)
     vectors = embed_texts(args.ollama_host, args.embed_model, names)
 
-    out_path = args.out_dir / "generated_secular_groups.jsonl"
+    out_path = args.out_dir / args.out_name
     with open(out_path, "w", encoding="utf-8") as f:
         for name, vector in zip(names, vectors):
             f.write(json.dumps({"label": name, "embedding_vector": vector}, ensure_ascii=False) + "\n")

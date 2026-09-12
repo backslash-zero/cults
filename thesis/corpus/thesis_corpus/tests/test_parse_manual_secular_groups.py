@@ -70,5 +70,79 @@ class TestLoadAllGroupNames(unittest.TestCase):
         self.assertEqual(names, ["Greenpeace"])
 
 
+class TestParseManualGroupListWithCells(unittest.TestCase):
+    RAW = "\n".join([
+        "prompt: four blocks",
+        "model: qwen3:8b",
+        "",
+        "**Block A — widely known as cults**",
+        "NXIVM – recruited women into a coercive master/slave hierarchy",
+        "Anonymous (hacker collective) – decentralised, no coercion claim",
+        "",
+        "Block B — ordinary-sounding but coercive",
+        "1. Amway – escalating financial demands on a downline",
+        "Herbalife (aggressive recruitment quotas)",
+        "Some Stray Heading With No Separator",
+        "",
+        "Block C — ordinary organizations",
+        "Sierra Club – ordinary membership conservation body",
+    ])
+
+    def test_assigns_each_entry_to_its_block(self):
+        out = pmsg.parse_manual_group_list_with_cells(self.RAW)
+        self.assertEqual([(e["name"], e["cell"]) for e in out], [
+            ("NXIVM", "A"),
+            ("Anonymous (hacker collective)", "A"),
+            ("Amway", "B"),
+            ("Herbalife", "B"),
+            ("Sierra Club", "C"),
+        ])
+
+    def test_keeps_the_description(self):
+        out = pmsg.parse_manual_group_list_with_cells(self.RAW)
+        by_name = {e["name"]: e["description"] for e in out}
+        self.assertEqual(by_name["Amway"], "escalating financial demands on a downline")
+        self.assertEqual(by_name["Herbalife"], "aggressive recruitment quotas")
+
+    def test_prefers_the_dash_separator_so_a_name_keeps_its_own_parentheses(self):
+        # The plain parser splits at "(" and would truncate this to
+        # "Anonymous"; with descriptions in play the dash has to win.
+        out = pmsg.parse_manual_group_list_with_cells(self.RAW)
+        entry = next(e for e in out if e["name"].startswith("Anonymous"))
+        self.assertEqual(entry["name"], "Anonymous (hacker collective)")
+        self.assertEqual(entry["description"], "decentralised, no coercion claim")
+
+    def test_skips_headers_numbering_and_separatorless_strays(self):
+        out = pmsg.parse_manual_group_list_with_cells(self.RAW)
+        names = [e["name"] for e in out]
+        self.assertNotIn("Some Stray Heading With No Separator", names)
+        self.assertIn("Amway", names)  # numbering stripped, not skipped
+
+    def test_entries_before_any_block_header_get_a_none_cell(self):
+        out = pmsg.parse_manual_group_list_with_cells("Orphan Group – no block yet")
+        self.assertEqual(out[0]["cell"], None)
+
+
+class TestLoadAllCellEntries(unittest.TestCase):
+    def test_keeps_the_same_name_in_two_different_cells(self):
+        # A cell-assignment conflict is a finding to surface, not something
+        # to silently resolve -- so dedup is on (cell, name), not name.
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            (d / "a.txt").write_text(
+                "Block A — cults\nAmway – listed as a cult\n"
+                "Block B — coercive\nAmway – listed as merely coercive\n", encoding="utf-8")
+            out = pmsg.load_all_cell_entries(d)
+        self.assertEqual([(e["name"], e["cell"]) for e in out], [("Amway", "A"), ("Amway", "B")])
+
+    def test_dedups_exact_repeats_within_one_cell(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            (d / "a.txt").write_text(
+                "Block B — coercive\nAmway – x\nAMWAY – y\nHerbalife – z\n", encoding="utf-8")
+            out = pmsg.load_all_cell_entries(d)
+        self.assertEqual([e["name"] for e in out], ["Amway", "Herbalife"])
+
+
 if __name__ == "__main__":
     unittest.main()
