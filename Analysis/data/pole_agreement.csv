@@ -1,0 +1,22 @@
+pole_a,pole_b,spearman_over_all_entities
+brainwashing,coercive persuasion,0.792
+brainwashing,crit-mental-destabilization,0.567
+brainwashing,all_entities_grand_centroid,0.815
+brainwashing,cluster_40_core,0.888
+brainwashing,cluster_43_core,0.811
+brainwashing,cluster_48_core,0.699
+coercive persuasion,crit-mental-destabilization,0.572
+coercive persuasion,all_entities_grand_centroid,0.76
+coercive persuasion,cluster_40_core,0.668
+coercive persuasion,cluster_43_core,0.836
+coercive persuasion,cluster_48_core,0.683
+crit-mental-destabilization,all_entities_grand_centroid,0.449
+crit-mental-destabilization,cluster_40_core,0.706
+crit-mental-destabilization,cluster_43_core,0.799
+crit-mental-destabilization,cluster_48_core,0.701
+all_entities_grand_centroid,cluster_40_core,0.675
+all_entities_grand_centroid,cluster_43_core,0.751
+all_entities_grand_centroid,cluster_48_core,0.625
+cluster_40_core,cluster_43_core,0.857
+cluster_40_core,cluster_48_core,0.81
+cluster_43_core,cluster_48_core,0.866

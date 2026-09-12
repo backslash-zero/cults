@@ -1,0 +1,8 @@
+pole,pole_kind,generated_all_mean_cos,generated_all_n,generated_name_matched_mean_cos,generated_name_matched_n,religious_baseline_mean_cos,religious_baseline_n,secular_corpus_native_mean_cos,secular_corpus_native_n,secular_corpus_native_minus_religious,secular_corpus_native_auc_vs_religious,secular_corpus_native_clears_band,generated_name_matched_minus_religious,generated_name_matched_auc_vs_religious,generated_name_matched_clears_band
+brainwashing,entity_anchor,0.4859,169,0.4793,90,0.4126,9,0.4505,10,0.0378,0.7222,False,0.0667,0.8444,True
+coercive persuasion,entity_anchor,0.4877,169,0.4722,90,0.4089,9,0.4218,10,0.013,0.5556,False,0.0633,0.7728,True
+crit-mental-destabilization,criterion_text,0.3138,169,0.2895,90,0.2719,9,0.3023,10,0.0304,0.6556,False,0.0175,0.6259,False
+all_entities_grand_centroid,register_control,0.6585,169,0.6536,90,0.6076,9,0.585,10,-0.0226,0.3889,False,0.046,0.7395,False
+cluster_40_core,cluster_core_proxy,0.4639,169,0.4499,90,0.4088,9,0.4542,10,0.0454,0.7556,False,0.0411,0.7531,False
+cluster_43_core,cluster_core_proxy,0.5256,169,0.5034,90,0.4729,9,0.4945,10,0.0216,0.6222,False,0.0305,0.7136,False
+cluster_48_core,cluster_core_proxy,0.418,169,0.4052,90,0.4198,9,0.3908,10,-0.0289,0.3222,False,-0.0146,0.416,False

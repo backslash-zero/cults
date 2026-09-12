@@ -72,13 +72,19 @@ the overall argument; come back here for the numbers.
     same 169 organizations against each of the 17 MIVILUDES *dérives sectaires* separately, since
     the Hypothesis is a claim about the individual criteria, not a pooled centroid. **No criterion
     discriminates**: all 17 sit at least as close to ordinary non-religious organizations as to
-    the religious baseline, name-form-controlled. *Mental destabilization* — the criteria list's
-    own conceptual anchor — ranks last of 17, so the basis for assessment generalizes everywhere
-    except at its core. But the mechanism is topical keyword overlap, not conduct: the four groups
-    nearest *"difficulty leaving the group"* are a mountain-biking group, an Arduino users' group
-    and two sports clubs, and the single highest criterion match in the run is **Free the Children
-    against "indoctrination of children" (0.570)**. Reported as a methodological limit first and
-    a substantive result second.
+    the religious baseline, name-form-controlled. The mechanism is topical keyword overlap, not
+    conduct: the four groups nearest *"difficulty leaving the group"* are a mountain-biking group,
+    an Arduino users' group and two sports clubs, and the single highest criterion match in the run
+    is **Free the Children against "indoctrination of children" (0.570)**. Reported as a
+    methodological limit first and a substantive result second. **Contains one retracted result
+    (Result 2) and one downgraded result (Result 3)** — see step 11.
+11. [`11_Psychological_Subjection.md`](11_Psychological_Subjection.md) — tests whether
+    psychological subjection is what separates cults from ordinary organizations, and retracts the
+    claim that it is (a criterion-text-length artifact; step 7's prototype ranking was checked and
+    is clean). What replaces it: the literature's three coercion clusters have **no** religious/NRM
+    entity as nearest neighbour, while *Maoist thought reform* and *Erhard Seminar Training* both
+    land in cluster 43 — coercion is theorised with secular exemplars. Ships the length control as
+    a unit-tested regression guard.
 
 ## Planned next (not yet implemented)
 
@@ -119,7 +125,8 @@ decided, not automatically from the steps list above.
 | [`06_Literature_Clusters.md`](06_Literature_Clusters.md) | not yet decided | 59 literature concept clusters + entity-gap analysis; strong candidate once the Voronoi visualization (planned next) is added. |
 | [`07_Cult_Prototype.md`](07_Cult_Prototype.md) | **To publish** | Directly answers "whether criteria form recognisable clusters or prototypes" — a core Research Goal item. |
 | [`08_Secular_Groups_Hypothesis.md`](08_Secular_Groups_Hypothesis.md) | **To publish** | First direct test of the central Hypothesis; C1+C2 both in. Contains a retracted claim (kept visible) and the name-form artifact that forced it — publish the criteria-list result, not the prototype one. |
-| [`10_Secular_Groups_vs_Sectarian_Drifts.md`](10_Secular_Groups_vs_Sectarian_Drifts.md) | **To publish** | Criterion-level Hypothesis test: no drift discriminates religious from non-religious, and mental destabilization (the concept's anchor) generalizes least. Publish with its Mechanism section — the topical-overlap limit is inseparable from the result. |
+| [`10_Secular_Groups_vs_Sectarian_Drifts.md`](10_Secular_Groups_vs_Sectarian_Drifts.md) | **To publish** | Criterion-level Hypothesis test: no drift discriminates religious from non-religious. Publish Result 1 and the Mechanism section; Result 2 is retracted and Result 3 downgraded — quote only the length-robust Diff column. |
+| [`11_Psychological_Subjection.md`](11_Psychological_Subjection.md) | **To publish** | The retraction plus what replaces it — coercion is theorised with secular exemplars. Strong methods contribution: shows a surface-form artifact manufacturing a finding, and ships the control as a test. |
 | [`09_Interview_Prototypes_vs_Clusters.md`](09_Interview_Prototypes_vs_Clusters.md) | **To publish** | Sharpens the folk-vs-expert-concept finding using the thesis's own prototype-theory-motivated exemplar layer. |
 | [`01_Shared_Space_v3.md`](01_Shared_Space_v3.md) | not yet decided | Reference/methodology; superseded as the analysis basis by step 2. |
 | [`04_Projection_Techniques_Comparison.md`](04_Projection_Techniques_Comparison.md) | not yet decided | Methodological justification (why the step-2 plots are trustworthy); may belong in a methods/appendix section rather than Results. |
@@ -268,13 +275,36 @@ individual step files.*
   predicts, since exploitative finance and misleading recruitment are generic organizational
   pathologies with no religious content.
 
-- **The one criterion that resists generalization is the concept's own anchor** (steps 2, 7, 10).
-  *Mental destabilization* is the criteria list's most central member internally (step 2),
-  mid-table against the corpus prototype (step 7), and **dead last of 17** against non-religious
-  organizations (step 10) — nearest drift for only 2 of 169. So the basis for assessment
-  generalizes almost everywhere *except* at its core. Read alongside step 5 (brainwashing is
-  central *because contested, not asserted*), a consistent picture: the cult concept is anchored
-  precisely where it is least stable and least transferable.
+- **RETRACTED — "the one criterion that resists generalization is the concept's own anchor"**
+  (step 11). The claim that *mental destabilization* ranks dead last of 17 against non-religious
+  organizations, and therefore carries the framework's whole discriminating power, was a
+  **criterion-text-length artifact**: it is the longest of the 17 (29 French words vs a floor of 3),
+  and length predicts absolute similarity at Spearman −0.613. On the length-robust gap measure
+  (Spearman with length −0.039) it ranks **6 of 17**. Step 7's prototype ranking was checked for the
+  same confound and is **clean** (−0.150 / +0.093), so it stands. Full account and the unit-tested
+  length control in
+  [`11_Psychological_Subjection.md`](11_Psychological_Subjection.md).
+
+- **What replaces it: the literature's coercion vocabulary has secular exemplars, not religious
+  ones** (step 11). Of the three literature clusters about psychological subjection (40
+  "brainwashing", 43 "mental manipulation"/"coercive persuasion", 48), **0 of 9 religious/NRM
+  entities** is nearest any of them — each sits in its own eponymous cluster instead (Heaven's
+  Gate→4 at 0.985, Aum Shinrikyo→26 at 0.933). **2 of 10 secular entities are**: *Maoist thought
+  reform* (0.587) and *Erhard Seminar Training* (0.524), alongside mystical manipulation,
+  submissiveness, Silva Mind Control and *Thought Reform and the Psychology of Totalism*. The
+  literature discusses religious cults as **cases** and secular programmes as **mechanisms** —
+  which supports the central Hypothesis more directly than the retracted claim did, and required no
+  new data, only the nearest-cluster view already on disk. Read with step 5 (brainwashing is central
+  *because contested, not asserted*): the coercion claim is the field's live argument, conducted in
+  general psychological vocabulary, with secular concrete examples.
+
+- **On the length-robust measure the criteria that come closest to marking cults out are about
+  enclosure, not coercion** (step 11). Smallest gaps: indoctrination of children (+0.005),
+  violation of Republic principles (+0.007, a French-administrative category with no English
+  purchase), difficulty leaving (+0.011), rejection of the outside world (+0.014), rupture with
+  family (+0.016). Setting the administrative one aside, the rest are one family — sealing a group
+  off from the world. All are far inside the ±0.061 artifact band, so this is an ordering, not a
+  set of measured effects.
 
 - **A metric artifact forced a retraction, and is a finding in its own right** (steps 8, 10).
   Adding the semantically empty word "The" to an organization's name is worth **+0.061 cosine**

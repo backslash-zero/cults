@@ -112,18 +112,45 @@ warning signs — **excessive financial demands** and **deceptive recruitment** 
 what you'd expect if the hypothesis is right, since exploitative finance and misleading
 recruitment are generic organisational problems with nothing religious about them.
 
-### 7. But the concept is anchored precisely where it *doesn't* generalise
+### 7. A correction: the "psychological subjection is the exception" finding was wrong
 
-The most interesting single result. **Psychological subjection** ("mental destabilisation"):
+An earlier version of this summary claimed that psychological subjection was the one warning sign
+ordinary organizations *don't* match — that the criteria generalise everywhere except at the
+concept's own core. **That was a measurement artifact and has been withdrawn.** It's recorded here
+rather than deleted, because how it failed is worth knowing.
 
-- is the **most central** of the 17 criteria when you look at the official list on its own terms;
-- is the criterion the literature **fights over most** (see finding 4);
-- and ranks **dead last of 17** for ordinary organizations — it is the nearest warning sign for
-  only 2 of the 169.
+The reason: psychological subjection is by far the **longest** of the 17 criteria — 29 French words,
+where the shortest is 3. Long sentences are mathematically further from short organization names no
+matter what they say, and across the 17 criteria that length effect alone explains most of the
+ranking. Measured the length-robust way — the *gap* between ordinary organizations and real cults on
+each criterion, where the length penalty hits both sides and cancels — psychological subjection sits
+**6th of 17: unremarkable.**
 
-So the warning signs generalise almost everywhere **except at the concept's own core**. Whatever
-is distinctively "cult" about the official framework is concentrated in a psychological claim that
-is simultaneously the most load-bearing, the most disputed, and the least transferable.
+What the length-robust measure shows instead is a different and more coherent family. The criteria
+where real cults come closest to being distinguishable from ordinary organizations are about
+**sealing a group off from the world**: indoctrinating the children, cutting members off from
+family, refusing the outside world, making it impossible to leave. Not psychological harm, and not
+money or recruitment. It's **enclosure**, not coercion, that comes nearest to marking cults out —
+though even that margin is small enough to report as an ordering rather than a measured effect.
+
+### 7b. Where the literature's own coercion talk actually sits — and it's secular
+
+This replaces finding 7 as the genuinely surprising result, and it needed no new data.
+
+Three of the literature's 59 topic clusters are about coercion — one built around the bare word
+*brainwashing*, one around *mental manipulation* and *coercive persuasion*, one around "cults apply
+real brainwashing." Asking which named groups sit closest to them:
+
+- **None of the nine famous religious cults.** Every one sits in its *own* cluster instead —
+  Heaven's Gate with Heaven's Gate material, Aum Shinrikyo with Aum Shinrikyo material.
+- **But two secular ones do**: *Maoist thought reform* and *Erhard Seminar Training* (a 1970s
+  self-improvement seminar). Their neighbours are the coercion-and-therapy vocabulary — mystical
+  manipulation, submissiveness, Silva Mind Control, gestalt therapy, *Thought Reform and the
+  Psychology of Totalism*.
+
+**So the literature discusses religious cults as *cases*, and secular programmes as *mechanisms*.**
+When scholars talk about how coercion actually works, the concrete examples they reach for are
+secular. That supports the thesis's central hypothesis more directly than the claim it replaces.
 
 ### 8. Two honest limits — one of which is itself a finding
 
@@ -167,14 +194,21 @@ The literature's main activity is arguing about the term. The state's criteria a
 grounded in research tradition and partly in French administrative law. Ordinary people use the
 word for something else again — big established religions and vague unease.
 
-**The category's boundary work rests on its least settled claim.** The only criterion that really
-distinguishes cults from ordinary organizations is psychological subjection — and that's exactly
-the claim the field itself has not resolved. Remove it and the remaining 16 warning signs describe
-a very large number of normal institutions.
+**No single warning sign does the boundary work.** The tempting story — that one criterion carries
+all the discriminating power and the rest are filler — was tested and did not hold (finding 7). What
+the length-robust measure shows is flatter and less convenient: **all seventeen** warning signs fit
+ordinary organizations about as well as they fit famous cults, with the *enclosure* criteria coming
+closest to marking a difference and none of them coming close enough to be called a real effect.
 
-**So the thesis's hypothesis is supported, with an important refinement.** It isn't that the
-criteria are sloppy. It's that they are written in the ordinary language of organizational life,
-and the one thing that would narrow them to genuine cults is the one thing under dispute.
+**And the coercion claim, which sounds like it should be the boundary, points the other way.** When
+the literature talks about coercion as a *mechanism* rather than as a story about a particular
+group, the named examples closest to that talk are **secular** — political thought reform and
+commercial self-improvement seminars, not religious cults (finding 7b).
+
+**So the thesis's hypothesis is supported, and by a wider margin than a single-criterion story would
+have given it.** It isn't that the criteria are sloppy. It's that they are written in the ordinary
+language of organizational life, and the field's own analytical vocabulary for coercion was built
+partly on secular cases in the first place.
 
 ---
 
@@ -189,8 +223,10 @@ and the one thing that would narrow them to genuine cults is the one thing under
 2. **A clean comparison set.** The current 169 over-represent advocacy, education and health
    bodies. Rerun with deliberately neutral structures — MLMs, fandoms, workplaces, gyms, sports
    clubs, student societies — for an unconfounded version of finding 6.
-3. **Fix the remaining wording artifact** by re-running the control groups in the same
-   capitalisation as everything else.
+3. **Close out the wording artifacts.** Re-run the control groups in the same capitalisation as
+   everything else (the one confound still uncorrected), and keep the criterion-length covariate in
+   every future criterion-by-criterion comparison — it is now a unit-tested check rather than
+   something to remember, since it already produced one false finding.
 
 **Stronger studies, genuinely new results:**
 

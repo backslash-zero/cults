@@ -142,6 +142,18 @@ formatting. A residual confound remains uncorrected: every C2 name is Title Case
 baseline anchor is lowercase, which cannot be tested without re-embedding the baseline in Title
 Case (needs the Windows/Ollama machine).
 
+**A third member of the same family, found later.** The artifact above is about the *group names*.
+The same sensitivity applies to the *other* side of any comparison — the text a group is compared
+**to**. In [`10_Secular_Groups_vs_Sectarian_Drifts.md`](10_Secular_Groups_vs_Sectarian_Drifts.md),
+where groups are scored against the 17 individual criteria rather than their pooled centroid,
+criterion text length (3 to 29 French words) predicts absolute similarity at **Spearman −0.613**,
+and that artifact was large enough to manufacture an entire false finding before it was caught —
+see `10`'s retracted Result 2. This document's own numbers are not exposed to it, because the
+criteria *centroid* is one fixed vector for every group set, so no per-criterion length varies. The
+general rule, worth carrying into any future use of this space: **whenever the two sides of a
+cosine comparison differ systematically in length or surface form, measure that difference before
+interpreting the similarity.**
+
 **What does survive name-form control**, checked inside the matched 90:
 
 - **The thematic gradient is real.** Ideological/psychological vocabulary in the name (humanist,

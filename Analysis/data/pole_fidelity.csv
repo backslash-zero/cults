@@ -1,0 +1,4 @@
+cluster_id,n_binding_rows,n_resolved,n_distinct_vectors,degenerate,n_missing_keys,member_cos_to_true_centroid_min,member_cos_to_true_centroid_mean
+40,8,8,2,False,0,0.9208,0.9208
+43,8,8,6,False,0,0.7636,0.8386
+48,8,8,7,False,0,0.8691,0.8815

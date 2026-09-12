@@ -1,0 +1,20 @@
+group_set,entity_key,entity_label,nearest_cluster_id,is_subjection_cluster,cosine_similarity
+religious_baseline,heaven's gate,heaven's gate,4,False,0.9848
+religious_baseline,aum shinrikyo,aum shinrikyo,26,False,0.9326
+religious_baseline,peoples temple,peoples temple,0,False,0.9277
+religious_baseline,solar temple,solar temple,7,False,0.9248
+religious_baseline,unification church,unification church,27,False,0.9147
+religious_baseline,the family (formerly the children of god),the family (formerly the children of god),30,False,0.9101
+religious_baseline,theosophical society,theosophical society,34,False,0.8888
+religious_baseline,branch davidians,branch davidians,1,False,0.8827
+religious_baseline,rajneesh movement,rajneesh movement,20,False,0.8324
+secular_corpus_native,communist party,communist party,36,False,0.7006
+secular_corpus_native,landmark forum,landmark forum,35,False,0.6693
+secular_corpus_native,nazism,nazism,24,False,0.6518
+secular_corpus_native,chinese communist party,chinese communist party,36,False,0.6507
+secular_corpus_native,maoist thought reform,maoist thought reform,43,True,0.5872
+secular_corpus_native,national socialism,national socialism,24,False,0.5807
+secular_corpus_native,lifespring,lifespring,35,False,0.5785
+secular_corpus_native,erhard seminar training,erhard seminar training,43,True,0.5236
+secular_corpus_native,amway,amway,25,False,0.5087
+secular_corpus_native,werner erhard,werner erhard,35,False,0.4615
