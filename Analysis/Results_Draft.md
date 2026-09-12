@@ -51,17 +51,30 @@ MIVILUDES, scholar literature, and interviews, with subset breakdowns.
    of the thesis's central Hypothesis, in two rounds. C1 (n=10, hand-picked): secular structures
    (Amway, Nazism, Maoist thought reform, LGAT seminar programs) score *as well as or better
    than* a religious/NRM baseline against the 17 official criteria, but *worse* against the
-   corpus's own emergent usage prototype. C2 (n=169, a broad human-reviewed LLM-sourced list,
-   embedded once folded in) **reverses the second half of that result**: against a large,
-   heterogeneous secular set, the religious baseline no longer scores highest on any centroid,
-   including the prototype centroid — though a large share of that reversal is plausibly driven
-   by C2 over-representing secularist/humanist-advocacy organizations rather than religiously
-   neutral ones (a real confound, not just a caveat — see the doc's own Caveats section).
+   corpus's own emergent usage prototype. C2 (n=169, a broad human-reviewed list) confirms the
+   criteria-list half and **exposes a metric artifact that forced a retraction**: a leading
+   "The" on the same organization is worth +0.061 cosine — more than the effect being
+   measured — so C2's apparent overtaking of the baseline on the prototype centroid was name
+   formatting, not substance. What survives: sports/tech/commercial organizations are the
+   *farthest* of all 169 from the cult concept (NFL last), while anti-cult watchdogs and
+   mental-health institutions sit near the top — the centroid tracks participation in cult
+   *discourse*, not cult-likeness.
 9. [`09_Interview_Prototypes_vs_Clusters.md`](09_Interview_Prototypes_vs_Clusters.md) — do
    people's spontaneous prototype exemplars (not just any interview segment) land in literature's
    well-covered regions or its gaps? 13 of 25 (52%) land in a gap cluster, roughly double the
    corpus-wide base rate (25.4%) — the theoretically-privileged first-association answer skews
    generic even more than ordinary interview speech does overall.
+10. [`10_Secular_Groups_vs_Sectarian_Drifts.md`](10_Secular_Groups_vs_Sectarian_Drifts.md) — the
+    same 169 organizations against each of the 17 MIVILUDES *dérives sectaires* separately, since
+    the Hypothesis is a claim about the individual criteria, not a pooled centroid. **No criterion
+    discriminates**: all 17 sit at least as close to ordinary non-religious organizations as to
+    the religious baseline, name-form-controlled. *Mental destabilization* — the criteria list's
+    own conceptual anchor — ranks last of 17, so the basis for assessment generalizes everywhere
+    except at its core. But the mechanism is topical keyword overlap, not conduct: the four groups
+    nearest *"difficulty leaving the group"* are a mountain-biking group, an Arduino users' group
+    and two sports clubs, and the single highest criterion match in the run is **Free the Children
+    against "indoctrination of children" (0.570)**. Reported as a methodological limit first and
+    a substantive result second.
 
 ## Planned next (not yet implemented)
 
@@ -69,11 +82,22 @@ MIVILUDES, scholar literature, and interviews, with subset breakdowns.
 centroids — same pattern `generate_voronoi_projections.py` already uses for entity clusters.
 Held for after the numeric clustering results (step 6) are reviewed.
 
+**Title-Case control re-embed** (steps 8, 10) — the one name-form confound that could not be
+corrected on this machine. Every C2 name is Title Case; every corpus-native anchor is lowercase.
+Re-embedding the 9 religious baseline entities in Title Case (`The Peoples Temple` etc.) on the
+Windows/Ollama machine would quantify that residual the way the "The" pairs already quantified
+the article effect. Until then, all cross-set magnitudes in 08/10 carry an unmeasured component.
+
+**Behavioural-text scoring instead of names** (step 10) — the deeper fix. Scoring an organization
+against a criterion needs text about what it *does*; names only support topical matching. Either
+embed the LLM's own one-line descriptions (already present, currently stripped during parsing) or
+pull real coverage per organization.
+
 **A religiously-neutral subset of C2** (step 8) — the current 169-name C2 list
-over-represents secularist/humanist-advocacy organizations (flagged as the result's biggest
-caveat in `08_Secular_Groups_Hypothesis.md`); a narrower rerun restricted to non-ideological
-groups (MLMs, sports, hobby, tech, wellness) would isolate the Hypothesis test from that
-confound.
+over-represents secularist/humanist-advocacy, education and health organizations (flagged in
+`08`/`10`'s Caveats, and directly responsible for two of step 10's criterion rankings); a
+narrower rerun restricted to non-ideological groups (MLMs, sports, hobby, tech, wellness) would
+isolate the Hypothesis test from that confound.
 
 ---
 
@@ -90,7 +114,8 @@ decided, not automatically from the steps list above.
 | [`05_Epistemic_Status_Centroids.md`](05_Epistemic_Status_Centroids.md) | **To publish** | Split out of 02 (already marked to publish); the confirmed "brainwashing is central because it's contested, not asserted" finding. |
 | [`06_Literature_Clusters.md`](06_Literature_Clusters.md) | not yet decided | 59 literature concept clusters + entity-gap analysis; strong candidate once the Voronoi visualization (planned next) is added. |
 | [`07_Cult_Prototype.md`](07_Cult_Prototype.md) | **To publish** | Directly answers "whether criteria form recognisable clusters or prototypes" — a core Research Goal item. |
-| [`08_Secular_Groups_Hypothesis.md`](08_Secular_Groups_Hypothesis.md) | **To publish** | First direct test of the central Hypothesis; C1+C2 both in, C2's advocacy-org confound is flagged and worth a narrower follow-up rerun before final write-up. |
+| [`08_Secular_Groups_Hypothesis.md`](08_Secular_Groups_Hypothesis.md) | **To publish** | First direct test of the central Hypothesis; C1+C2 both in. Contains a retracted claim (kept visible) and the name-form artifact that forced it — publish the criteria-list result, not the prototype one. |
+| [`10_Secular_Groups_vs_Sectarian_Drifts.md`](10_Secular_Groups_vs_Sectarian_Drifts.md) | **To publish** | Criterion-level Hypothesis test: no drift discriminates religious from non-religious, and mental destabilization (the concept's anchor) generalizes least. Publish with its Mechanism section — the topical-overlap limit is inseparable from the result. |
 | [`09_Interview_Prototypes_vs_Clusters.md`](09_Interview_Prototypes_vs_Clusters.md) | **To publish** | Sharpens the folk-vs-expert-concept finding using the thesis's own prototype-theory-motivated exemplar layer. |
 | [`01_Shared_Space_v3.md`](01_Shared_Space_v3.md) | not yet decided | Reference/methodology; superseded as the analysis basis by step 2. |
 | [`04_Projection_Techniques_Comparison.md`](04_Projection_Techniques_Comparison.md) | not yet decided | Methodological justification (why the step-2 plots are trustworthy); may belong in a methods/appendix section rather than Results. |
@@ -227,24 +252,48 @@ individual step files.*
   organizes more around behavioral change and authoritarian structure. Two different, equally
   legitimate notions of "central" that genuinely diverge.
 
-- **The central Hypothesis gets a real, nuanced answer, not a flat yes or no — and the answer
-  shifts once the secular comparison set gets bigger** (step 8). C1 (n=10, hand-picked): secular
-  structures (Amway, Nazism, Maoist thought reform, LGAT seminar programs like Landmark Forum)
-  score *as well as or better than* a religious/NRM baseline against the 17 official criteria —
-  "Maoist thought reform" alone outscores every one of 9 religious comparison entities — but
-  score consistently *lower* against the corpus's own emergent usage prototype (step 7). C2
-  (n=169, a broad human-reviewed list, embedded once folded in) still supports the criteria-list
-  result (89% of the 169 beat the religious baseline's mean there) but **reverses the
-  prototype-centroid result**: the religious baseline no longer scores highest on that centroid
-  either once the secular set is this large. A large share of the top scorers driving that
-  reversal are secularist/humanist-advocacy organizations (Anti-Defamation League, Southern
-  Poverty Law Center, Freethought Association) whose identity is defined by opposition to
-  religion specifically — a real confound worth isolating with a narrower, religiously-neutral
-  rerun before treating the prototype-centroid reversal as settled. What survives across both
-  rounds: the structural criteria, applied consistently, don't discriminate between religious
-  and secular groups — direct support for the Hypothesis. Whether actual discourse ("the
-  prototype") has caught up to that is now the less settled of the two findings, not the
-  more settled one.
+- **The central Hypothesis is supported at the level of the criteria, and every one of the 17
+  criteria individually fails to discriminate** (steps 8 and 10). Secular structures score *as
+  well as or better than* a religious/NRM baseline against the 17 official criteria in two
+  independently-built sets — C1's hand-picked 10 (Amway, Nazism, Maoist thought reform, LGAT
+  programs; "Maoist thought reform" alone outscores all 9 religious comparison entities) and
+  C2's 169-name list (89% beat the religious baseline's mean). Per criterion (step 10), the gap
+  is positive for **all 17**: no sectarian drift sits closer to religious groups than to ordinary
+  non-religious organizations. The widest margins are the procedural drifts — exorbitant
+  financial demands (+0.048) and deceptive recruitment (+0.042) — exactly what the Hypothesis
+  predicts, since exploitative finance and misleading recruitment are generic organizational
+  pathologies with no religious content.
+
+- **The one criterion that resists generalization is the concept's own anchor** (steps 2, 7, 10).
+  *Mental destabilization* is the criteria list's most central member internally (step 2),
+  mid-table against the corpus prototype (step 7), and **dead last of 17** against non-religious
+  organizations (step 10) — nearest drift for only 2 of 169. So the basis for assessment
+  generalizes almost everywhere *except* at its core. Read alongside step 5 (brainwashing is
+  central *because contested, not asserted*), a consistent picture: the cult concept is anchored
+  precisely where it is least stable and least transferable.
+
+- **A metric artifact forced a retraction, and is a finding in its own right** (steps 8, 10).
+  Adding the semantically empty word "The" to an organization's name is worth **+0.061 cosine**
+  on the same organization (four accidental duplicate pairs in the C2 list isolate this), and
+  word count correlates with the criteria score at r=+0.384 — both larger than the substantive
+  effects being measured. C2's apparent overtaking of the religious baseline on the prototype
+  centroid was name formatting and has been retracted. More broadly, cosine similarity between an
+  organization's *name* and a criterion's *text* measures topical overlap, not conduct: the four
+  organizations nearest *"difficulty leaving the group"* are a mountain-biking group, an Arduino
+  users' group and two sports clubs (matched on "group/club"), and the highest single criterion
+  match in the whole run is **Free the Children against "indoctrination of children" (0.570)**.
+  Scoring entities against criteria in this space needs behavioural text per entity, not names.
+
+- **The organizations popular discourse most readily calls "basically a cult" are the farthest
+  from this corpus's cult concept** (step 8). The National Football League is last of all 169
+  (0.281 criteria, 0.383 prototype — a wide margin below the next), followed by TechCrunch, the
+  International Olympic Committee and OpenStreetMap; all are short, artifact-free names.
+  Meanwhile anti-cult watchdogs (Southern Poverty Law Center, Anti-Defamation League) and
+  mental-health institutions (NIMH, APA) sit near the top. The centroid tracks **participation in
+  cult discourse, not cult-likeness** — a body that writes about manipulation and deviance lands
+  beside the groups accused of practising it. Sports fandom and intense corporate culture, the
+  stock analogies, are about intensity of affiliation; this concept is about belief, ideology and
+  psychological harm.
 
 - **The gap between lay prototype and expert vocabulary is even sharper than the general
   folk-vs-expert finding suggested** (step 9). Restricting to exactly the 25 theoretically-motivated

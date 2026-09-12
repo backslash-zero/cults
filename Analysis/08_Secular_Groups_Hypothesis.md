@@ -76,9 +76,11 @@ and secular groups.
 
 **Against the corpus's own emergent "cult prototype," religious examples score consistently
 higher (in this small, hand-picked set).** This is the opposite pattern from the criteria-list
-result — and, as C2 below shows, it doesn't survive a larger, more broadly-sampled secular set.
+result. C2 initially appeared to overturn it; that apparent overturning did not survive the
+name-form control (see *Mechanism*), so this C1 result stands unchallenged rather than refuted —
+but also unreplicated.
 
-## Result — C2 (n=169, broad LLM-sourced list): the pattern reverses again
+## Result — C2 (n=169, broad LLM-sourced list)
 
 | Centroid | Secular (C1, n=10) | Religious baseline (n=9) | **Generated secular (C2, n=169)** |
 |---|---|---|---|
@@ -86,50 +88,92 @@ result — and, as C2 below shows, it doesn't survive a larger, more broadly-sam
 | Pooled prototype | 0.517 | 0.576 | **0.587** (median 0.591, range 0.383–0.693) |
 | Equal-weighted prototype | 0.494 | 0.541 | **0.562** (median 0.563, range 0.355–0.686) |
 
-**With a broad, 169-name secular set, the religious baseline no longer scores highest on *any*
-centroid — including the prototype centroid where it previously did.** Against the criteria
-list, 151/169 (89%) of the generated secular names score above the religious baseline's own
-*mean*, and 55/169 (33%) score above the religious baseline's *maximum* (0.522). Against the
-pooled prototype, the religious baseline's earlier lead shrinks from a 0.059 gap (C1) to being
-overtaken outright: 105/169 (62%) of the generated names exceed the religious baseline's mean.
-This is the opposite conclusion from the C1-only prototype result — reversed once the secular
-comparison set gets bigger and more heterogeneous, not confirmed by it.
+Taken at face value these numbers say the religious baseline no longer leads on *any* centroid.
+**One of those two results survives scrutiny and the other does not** — see the next section
+before using either.
 
-**Within the 169, the ranking is not noise — there's a real semantic gradient, and it points at
-a specific confound.** The top scorers on both centroids are heavily concentrated in
-**humanist/secular-advocacy and rights/ideology organizations**: Anti-Defamation League, Southern
-Poverty Law Center, American Psychological Association, Secular Student Alliance, Freethought
-Association, International Humanist and Ethical Union, Progressive Alliance, Center for American
-Progress. The bottom scorers are **commercial/recreational/entertainment organizations** with
-comparably generic institutional names: National Football League (lowest on both centroids),
-TechCrunch, Doctors Without Borders, International Olympic Committee, OpenStreetMap. Since both
-ends of the ranking share the same "The X for/of Y" institutional naming register, this isn't
-simply a lexical-register artifact (bare organization names embedding close to the corpus's own
-formal register regardless of content) — there's a genuine thematic split between
-ideology/belief/rights-oriented organizations and purely commercial/recreational ones.
+**The criteria-list result holds.** 151/169 (89%) of the generated names score above the religious
+baseline's own *mean*, and 55/169 (33%) score above its *maximum* (0.522). It survives the
+name-form control below (+0.033 rather than +0.056), and it points the same direction C1 found
+independently on short lowercase names (+0.014). Two differently-constructed secular sets agree.
 
-**But that gradient is also the result's biggest methodological caveat.** A large fraction of
-the C2 list is explicitly *secularist* advocacy organizations (Freedom From Religion Foundation,
-Secular Coalition for America, Secular Student Alliance, Freethought Association, Secular
-Society, International Humanist and Ethical Union) — organizations whose entire identity is
-defined by their stance *on* religion, not merely non-religious ones. That they embed close to a
-corpus about religious/cult category boundaries is unsurprising on its own terms (shared
-vocabulary: belief, doctrine, ideology, opposition to a dominant worldview) and arguably measures
-something adjacent to the Hypothesis rather than the Hypothesis itself — this was flagged before
-C2 was run (see Caveats below) and the run confirms it's a real effect on the ranking, not a
-hypothetical one.
+**The prototype-centroid "reversal" does not hold, and is retracted.** It is an artifact of how
+C2's names are spelled, not a property of the groups — see below.
 
-**Put together across C1 and C2, this is the Hypothesis's own shape, not a flat refutation or
-confirmation in isolation**: the basis for classifying certain groups as cults (the structural
-criteria) *does* extend to other social structures when applied consistently — both the small
-hand-picked C1 set and the much larger C2 set support this on the criteria-list centroid. Whether
-that also holds against the corpus's own *actual discourse* prototype is less settled than C1
-alone suggested: C1's small set said no; C2's much larger set says the religious lead disappears
-entirely, though a meaningful chunk of that reversal is plausibly driven by including
-religion-opposing secularist organizations rather than a religiously-neutral secular sample. A
-version of C2 restricted to secular groups with no explicit religious/ideological stance (MLMs,
-sports, hobby, tech, wellness — the bottom half of the current ranking) would be a cleaner,
-narrower test of the same question.
+## Mechanism — what this metric actually measures
+
+Before interpreting anything above: C2's names and the corpus-native entity anchors differ
+systematically in *surface form*, and bge-m3 is measurably sensitive to that difference.
+
+| Group set | n | Mean words | Starts with "The" | All-lowercase |
+|---|---|---|---|---|
+| C2 generated | 169 | 3.30 | 71/169 | 1/169 |
+| religious baseline | 9 | 2.56 | 1/9 | 9/9 |
+| C1 corpus-native secular | 10 | 2.00 | 0/10 | 10/10 |
+
+Corpus-native anchors are normalized lowercase text (`build_shared_space.load_emergent_entities`);
+C2's are Title Case organization names as an LLM writes them. **C2's source lists happen to contain
+four organizations under both a bare and a "The"-prefixed name, which isolates the effect of one
+semantically empty token on the same organization:**
+
+| Organization | bare name | with "The" | delta |
+|---|---|---|---|
+| International Gay and Lesbian Human Rights Commission | 0.456 | 0.536 | **+0.081** |
+| American Civil Liberties Union | 0.423 | 0.496 | **+0.073** |
+| Women's March | 0.482 | 0.527 | +0.045 |
+| International Humanist and Ethical Union | 0.531 | 0.575 | +0.044 |
+| | | **mean** | **+0.061** |
+
+**Adding the word "The" is worth +0.061 cosine — larger than the entire +0.056 C2-vs-baseline gap
+it would otherwise be credited to.** Word count correlates with the criteria score at r = +0.384,
+and 71/169 C2 names carry the "The" bonus that essentially no baseline entity has.
+
+Restricting C2 to the baseline's own name profile (≤3 words, no leading "The"; 90 of 169 qualify):
+
+| Comparison | Criteria list | Pooled prototype |
+|---|---|---|
+| religious baseline (n=9) | 0.440 | 0.576 |
+| C2 all (n=169) | 0.496 (**+0.056**) | 0.587 (**+0.011**) |
+| C2 name-form-matched (n=90) | 0.473 (**+0.033**) | 0.571 (**−0.005**) |
+
+The criteria-list advantage shrinks but survives. **The prototype advantage inverts to −0.005,
+i.e. vanishes.** The "reversal" reported in the first version of this document was name
+formatting. A residual confound remains uncorrected: every C2 name is Title Case and every
+baseline anchor is lowercase, which cannot be tested without re-embedding the baseline in Title
+Case (needs the Windows/Ollama machine).
+
+**What does survive name-form control**, checked inside the matched 90:
+
+- **The thematic gradient is real.** Ideological/psychological vocabulary in the name (humanist,
+  secular, rights, mental, mindful, equality, justice) scores 0.496 vs 0.465 for
+  concrete/brand-name vocabulary — a +0.031 gap within the matched subset alone.
+- **Sports, tech and commercial organizations are the farthest of all 169 from the cult concept.**
+  National Football League is last (0.281 criteria, 0.383 prototype — a wide margin below
+  TechCrunch at 0.321), followed by TechCrunch, Doctors Without Borders, the International Olympic
+  Committee and OpenStreetMap. All are short, "The"-less names, so this is not the artifact.
+  **This is the most counterintuitive finding here:** the organizations popular discourse most
+  readily calls "basically a cult" — sports fandom, intense tech companies, fitness brands — are
+  exactly what this corpus's cult concept does *not* resemble. The concept as constituted here is
+  about belief, ideology and psychological harm, not about intensity of affiliation or tribal
+  loyalty.
+- **Anti-cult and mental-health institutions score near the top**: Southern Poverty Law Center and
+  the Anti-Defamation League — organizations whose actual function is to *monitor* hate groups —
+  plus the National Institute of Mental Health and the American Psychological Association. The
+  centroid measures **participation in cult discourse, not cult-likeness**: a body that writes
+  about manipulation, deviance and belief sits geometrically beside the groups accused of
+  practising it. This mirrors [`05_Epistemic_Status_Centroids.md`](05_Epistemic_Status_Centroids.md)'s
+  finding that brainwashing is central *because it is contested rather than asserted* — the same
+  structure, arrived at from the opposite direction.
+
+**Put together across C1 and C2**: the basis for classifying groups as cults (the structural
+criteria) does extend to non-religious structures when applied consistently — supported by two
+independently-built secular sets, and by all 17 criteria individually in
+[`10_Secular_Groups_vs_Sectarian_Drifts.md`](10_Secular_Groups_vs_Sectarian_Drifts.md). Whether the
+corpus's *actual discourse* prototype behaves the same way is **unresolved**: C1's small set said
+religious groups score higher, C2's apparent contradiction was an artifact, and no name-form-clean
+comparison currently separates them. That question needs the criterion-level analysis in
+[`10`](10_Secular_Groups_vs_Sectarian_Drifts.md) and, ultimately, behavioural text per
+organization rather than bare names.
 
 ## Full comparison (C1, n=19)
 
@@ -192,6 +236,14 @@ Full data (all 169 generated names + C1's 19): [`data/secular_vs_religious_dista
 
 ## Caveats
 
+- **Surface form moves this metric more than the effects being measured** (see *Mechanism*): a
+  leading "The" is worth +0.061 on the same organization, and word count correlates at r=+0.384.
+  Any comparison between group sets whose names are spelled differently — which is every
+  C2-vs-corpus-native comparison here — is confounded to that degree. The matched-subset figures
+  are the ones to quote; the Title-Case-vs-lowercase difference remains uncorrected entirely.
+- **One claim in the first version of this document was retracted on that basis** (C2 overtaking
+  the religious baseline on the prototype centroid). Kept visible rather than quietly deleted,
+  since the retraction is itself the methodological finding.
 - **C1's n=10/n=9 is small and hand-picked, not sampled** — C2's much larger, LLM-sourced list
   addresses that specific limitation, but introduces a different one (below).
 - **C2 over-represents secularist/humanist advocacy organizations** relative to the "ordinary
@@ -208,8 +260,10 @@ Full data (all 169 generated names + C1's 19): [`data/secular_vs_religious_dista
   requiring strict group/person consistency.
 - C2's names are bare organization names with no descriptive context (the LLM's own one-line
   descriptions, e.g. "Promotes secular humanism," were stripped during parsing and never
-  embedded) — consistent with how C1's and the religious baseline's entity vectors are also
-  anchor-text-only embeddings (`build_shared_space.load_emergent_entities`'s
-  `entity_anchor_vectors`, the same convention throughout this session's raw-space analyses), so
-  the three groups are compared on equal terms, but none of the three captures whatever additional
-  signal a full descriptive sentence about each group might carry.
+  embedded). All three sets are anchor-text-only embeddings
+  (`build_shared_space.load_emergent_entities`'s `entity_anchor_vectors`, the convention
+  throughout this session's raw-space analyses) — but "same kind of vector" is *not* the same as
+  "comparable on equal terms," which is exactly what the name-form finding above establishes.
+  None of the three captures anything about what these organizations actually do;
+  [`10_Secular_Groups_vs_Sectarian_Drifts.md`](10_Secular_Groups_vs_Sectarian_Drifts.md)'s
+  criterion-level breakdown shows how far that limitation reaches.

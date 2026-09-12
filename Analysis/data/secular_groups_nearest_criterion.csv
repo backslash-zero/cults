@@ -1,0 +1,170 @@
+label,nearest_criterion_key,nearest_criterion_cos,word_count,name_form_matched
+Free the Children,crit-indoctrination-of-children,0.57,3,True
+The American Constitution Society,crit-violation-republic-principles,0.5404,4,False
+The Progressive Alliance,crit-radical-behavior-change,0.5167,3,False
+The Recovery Village,crit-rupture-origin-environment,0.5144,3,False
+Volunteering Matters,crit-radical-behavior-change,0.5117,2,True
+The Nature Conservancy,crit-radical-behavior-change,0.5018,3,False
+Language Exchange,crit-radical-behavior-change,0.5012,2,True
+The Center for American Progress,crit-infiltration-public-authorities,0.5011,5,False
+The Hunger Project,crit-alarming-dietary-change,0.4969,3,False
+Climate Reality Project,crit-radical-behavior-change,0.4952,3,True
+Equality Now,crit-radical-behavior-change,0.4924,2,True
+Science Café,crit-alarming-dietary-change,0.4905,2,True
+The National Institute of Mental Health,crit-mental-destabilization,0.4896,6,False
+Sustainable Food Trust,crit-alarming-dietary-change,0.4891,3,True
+Music Ensembles,crit-indoctrination-of-children,0.4886,2,True
+The Freethought Association,crit-radical-behavior-change,0.4862,3,False
+The American Psychological Association,crit-radical-behavior-change,0.4862,4,False
+Buddy Bench,crit-indoctrination-of-children,0.4861,2,True
+UNICEF,crit-indoctrination-of-children,0.4844,1,True
+Fridays for Future,crit-radical-behavior-change,0.4837,3,True
+Union of Concerned Scientists,crit-alarming-dietary-change,0.4832,4,False
+The International Union for Conservation of Nature,crit-radical-behavior-change,0.4765,7,False
+Mindfulness.org,crit-radical-behavior-change,0.4764,1,True
+The International Humanist and Ethical Union,crit-radical-behavior-change,0.4753,6,False
+The Ocean Cleanup,crit-radical-behavior-change,0.4749,3,False
+The Women’s March,crit-radical-behavior-change,0.4734,3,False
+The American Diabetes Association,crit-alarming-dietary-change,0.4728,4,False
+The World Health Organization,crit-alarming-dietary-change,0.4707,4,False
+The International Association for the Advancement of Science,crit-radical-behavior-change,0.4706,8,False
+The Open Society Foundations,crit-infiltration-public-authorities,0.4698,4,False
+The Skeptics Society,crit-radical-behavior-change,0.4675,3,False
+The Anti-Defamation League,crit-infiltration-public-authorities,0.4675,3,False
+The Secular Student Alliance,crit-radical-behavior-change,0.4672,4,False
+The Movement for Black Lives,crit-infiltration-public-authorities,0.4655,5,False
+The American Association for the Advancement of Science,crit-radical-behavior-change,0.4633,8,False
+The International Gay and Lesbian Human Rights Commission,crit-physical-integrity-harm,0.4629,8,False
+Center for Inquiry,crit-infiltration-public-authorities,0.4624,3,True
+The United Nations,crit-indoctrination-of-children,0.4611,3,False
+The Humanist Press,crit-radical-behavior-change,0.4606,3,False
+The Centers for Disease Control and Prevention,crit-radical-behavior-change,0.4603,7,False
+The National Endowment for the Humanities,crit-indoctrination-of-children,0.4603,6,False
+Project Hope,crit-radical-behavior-change,0.4603,2,True
+The National Institutes of Health,crit-alarming-dietary-change,0.459,5,False
+The Secular Society,crit-infiltration-public-authorities,0.4582,3,False
+The Disability Rights Education & Defense Fund,crit-public-order-contestation,0.4573,7,False
+Habitat for Humanity,crit-indoctrination-of-children,0.4569,3,True
+Mountain Biking Groups,crit-difficulty-leaving-group,0.4563,3,True
+The National Education Association,crit-indoctrination-of-children,0.4559,4,False
+GlobalGiving,crit-radical-behavior-change,0.4556,1,True
+Cultural Exchange Programs,crit-radical-behavior-change,0.4549,3,True
+EarthDay.org,crit-indoctrination-of-children,0.453,1,True
+The World Wildlife Fund,crit-radical-behavior-change,0.4526,4,False
+The Secular Outlook,crit-radical-behavior-change,0.4505,3,False
+The NAACP Legal Defense Fund,crit-violation-republic-principles,0.4499,5,False
+TED Talks,crit-radical-behavior-change,0.4493,2,True
+The National Association of Independent Schools,crit-indoctrination-of-children,0.4492,6,False
+Open Source Initiative,crit-infiltration-public-authorities,0.4471,3,True
+350.org,crit-radical-behavior-change,0.4465,1,True
+The International Secular Humanist Association,crit-radical-behavior-change,0.4464,5,False
+The World Bank,crit-radical-behavior-change,0.4464,3,False
+Book Club,crit-radical-behavior-change,0.4462,2,True
+The Brennan Center for Justice,crit-infiltration-public-authorities,0.4459,5,False
+Committee for Skeptical Inquiry,crit-infiltration-public-authorities,0.4453,4,False
+Meetup for Tech,crit-radical-behavior-change,0.4452,3,True
+Freedom From Religion Foundation,crit-violation-republic-principles,0.4445,4,False
+The Southern Poverty Law Center,crit-rupture-origin-environment,0.444,5,False
+The Democratic Socialists of America,crit-infiltration-public-authorities,0.4439,5,False
+TED-Ed,crit-radical-behavior-change,0.4438,1,True
+Open Source Community,crit-infiltration-public-authorities,0.442,3,True
+The Royal Society,crit-infiltration-public-authorities,0.4408,3,False
+The National Endowment for the Arts,crit-indoctrination-of-children,0.4407,6,False
+The American Civil Liberties Union,crit-infiltration-public-authorities,0.4401,5,False
+The National Center for Science Education,crit-indoctrination-of-children,0.4395,6,False
+Cycling Advocacy,crit-radical-behavior-change,0.4395,2,True
+Gaming Guilds,crit-infiltration-public-authorities,0.4391,2,True
+Mental Health America,crit-mental-destabilization,0.4387,3,True
+International Humanist and Ethical Union,crit-harsh-living-conditions,0.4379,5,False
+The International Labour Organization,crit-public-order-contestation,0.4366,4,False
+Greenpeace,crit-radical-behavior-change,0.4362,1,True
+Designers Without Borders,crit-radical-behavior-change,0.4356,3,True
+The Secular Education Network,crit-infiltration-public-authorities,0.4354,4,False
+The Asian American Justice Center,crit-radical-behavior-change,0.4352,5,False
+The American Cancer Society,crit-radical-behavior-change,0.4346,4,False
+The American Heart Association,crit-radical-behavior-change,0.4342,4,False
+The ACLU of Texas,crit-indoctrination-of-children,0.4337,4,False
+The National Organization for Women,crit-radical-behavior-change,0.4336,5,False
+Creative Commons,crit-infiltration-public-authorities,0.4336,2,True
+The Smithsonian Institution,crit-radical-behavior-change,0.4329,3,False
+Mozilla Foundation,crit-radical-behavior-change,0.4324,2,True
+Street Art Collective,crit-indoctrination-of-children,0.4312,3,True
+The National Science Foundation,crit-radical-behavior-change,0.4308,4,False
+The International Council of Nurses,crit-indoctrination-of-children,0.4301,5,False
+Meetup.com,crit-radical-behavior-change,0.4296,1,True
+The National Association of Biology Teachers,crit-radical-behavior-change,0.4287,6,False
+Hackathon.org,crit-infiltration-public-authorities,0.4284,1,True
+Yoga Alliance,crit-radical-behavior-change,0.4282,2,True
+Human Rights Campaign,crit-indoctrination-of-children,0.4279,3,True
+The National Association of Educational Writers,crit-indoctrination-of-children,0.4266,6,False
+Women’s March,crit-radical-behavior-change,0.4264,2,True
+The American Humanist Association’s Youth Programs,crit-indoctrination-of-children,0.4255,6,False
+IndieGoGo,crit-radical-behavior-change,0.4233,1,True
+The American Film Institute,crit-infiltration-public-authorities,0.4229,4,False
+OpenLearn,crit-radical-behavior-change,0.4217,1,True
+Running Club,crit-radical-behavior-change,0.4207,2,True
+The American Library Association,crit-radical-behavior-change,0.4198,4,False
+Toastmasters International,crit-alarming-dietary-change,0.4191,2,True
+Coursera,crit-radical-behavior-change,0.418,1,True
+The American Medical Association,crit-radical-behavior-change,0.4161,4,False
+Sweat Equity,crit-indoctrination-of-children,0.416,2,True
+United Way,crit-radical-behavior-change,0.4153,2,True
+Alcoholics Anonymous,crit-radical-behavior-change,0.4151,2,True
+Freecycle,crit-radical-behavior-change,0.4131,1,True
+GLAAD,crit-radical-behavior-change,0.4128,1,True
+The Secular Humanist Society of the United States,crit-infiltration-public-authorities,0.4121,8,False
+The American Association of University Women,crit-radical-behavior-change,0.4116,6,False
+Sustainable Development Goals,crit-radical-behavior-change,0.4113,3,True
+Dance Collective,crit-radical-behavior-change,0.4109,2,True
+The American Theatre Wing,crit-radical-behavior-change,0.4106,4,False
+Peace Corps,crit-indoctrination-of-children,0.4106,2,True
+The American Humanist Association’s Local Chapters,crit-physical-integrity-harm,0.4104,6,False
+The National Academy of Sciences,crit-radical-behavior-change,0.4097,5,False
+Ocean Conservancy,crit-indoctrination-of-children,0.4085,2,True
+The Local,crit-radical-behavior-change,0.4085,2,False
+Narcotics Anonymous,crit-radical-behavior-change,0.4083,2,True
+Red Cross,crit-radical-behavior-change,0.4081,2,True
+Poetry Slam,crit-radical-behavior-change,0.4071,2,True
+Amnesty International,crit-radical-behavior-change,0.4065,2,True
+Human Rights Watch,crit-infiltration-public-authorities,0.4051,3,True
+Humanists of America,crit-indoctrination-of-children,0.4045,3,True
+American Humanist Association,crit-harsh-living-conditions,0.404,3,True
+Skateboarding Community,crit-indoctrination-of-children,0.404,2,True
+Arduino User Group,crit-difficulty-leaving-group,0.403,3,True
+Theater Guilds,crit-infiltration-public-authorities,0.4026,2,True
+GitHub,crit-radical-behavior-change,0.4022,1,True
+International Gay and Lesbian Human Rights Commission,crit-physical-integrity-harm,0.4003,7,False
+GiveDirect,crit-radical-behavior-change,0.4003,1,True
+Craft Guilds,crit-indoctrination-of-children,0.4002,2,True
+The Economist,crit-radical-behavior-change,0.3985,2,False
+Artists United,crit-radical-behavior-change,0.3969,2,True
+Women in Tech,crit-radical-behavior-change,0.3953,3,True
+The International Monetary Fund,crit-radical-behavior-change,0.3949,4,False
+MIT OpenCourseWare,crit-radical-behavior-change,0.3948,2,True
+Sierra Club,crit-radical-behavior-change,0.3938,2,True
+Triathlon Clubs,crit-difficulty-leaving-group,0.3931,2,True
+Photography Club,crit-indoctrination-of-children,0.3909,2,True
+Chess Club,crit-radical-behavior-change,0.3902,2,True
+Gardening Club,crit-radical-behavior-change,0.3891,2,True
+The American College of Obstetricians and Gynecologists,crit-indoctrination-of-children,0.389,7,False
+Secular Coalition for America,crit-infiltration-public-authorities,0.3886,4,False
+Linux Foundation,crit-infiltration-public-authorities,0.3878,2,True
+WWF,crit-radical-behavior-change,0.3858,1,True
+The National Museum of African American History and Culture,crit-indoctrination-of-children,0.3846,9,False
+National Geographic Society,crit-alarming-dietary-change,0.3832,3,True
+American Civil Liberties Union,crit-infiltration-public-authorities,0.3814,4,False
+Cinema Society,crit-infiltration-public-authorities,0.3787,2,True
+TimeBank,crit-radical-behavior-change,0.3751,1,True
+The National Council of La Raza,crit-public-order-contestation,0.3693,6,False
+Library of Congress,crit-infiltration-public-authorities,0.3641,3,True
+Khan Academy,crit-indoctrination-of-children,0.3634,2,True
+Open Source Hardware Association,crit-radical-behavior-change,0.3624,4,False
+Golf Society,crit-radical-behavior-change,0.3599,2,True
+NAACP,crit-radical-behavior-change,0.3594,1,True
+Soccer Fans Clubs,crit-difficulty-leaving-group,0.3582,3,True
+International Olympic Committee,crit-indoctrination-of-children,0.357,3,True
+OpenStreetMap,crit-radical-behavior-change,0.3527,1,True
+Black Lives Matter,crit-radical-behavior-change,0.3501,3,True
+Doctors Without Borders,crit-alarming-dietary-change,0.3478,3,True
+TechCrunch,crit-radical-behavior-change,0.3143,1,True
+National Football League,crit-radical-behavior-change,0.2647,3,True
