@@ -10,6 +10,10 @@ tables live in `data/`.
 Data inventory: [`00_Available_Data.md`](00_Available_Data.md) — what's available across
 MIVILUDES, scholar literature, and interviews, with subset breakdowns.
 
+Plain-language synthesis: [`Plain_Language_Summary.md`](Plain_Language_Summary.md) — everything
+below in non-technical words, what it adds up to, and concrete next directions. Start there for
+the overall argument; come back here for the numbers.
+
 ## Steps
 
 1. [`01_Shared_Space_v3.md`](01_Shared_Space_v3.md) — the pooled, standardized+PCA'd
