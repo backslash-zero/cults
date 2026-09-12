@@ -89,6 +89,22 @@ def load_cell_groups(path: Path) -> tuple[list[dict], np.ndarray]:
     return rows, np.array(vectors, dtype=np.float64)
 
 
+def _normalize_org_name(name: str) -> str:
+    """Lowercase, drop a leading article, drop internal "and"/"&", collapse
+    whitespace and punctuation. Deliberately narrow: it is meant to equate
+    "Church Universal Triumphant" with "church universal and triumphant",
+    not to merge genuinely different organizations. Confirmed against the
+    hand review that "Revolutionary Communist Party" still does NOT collapse
+    onto the corpus's "communist workers party", which is a different party."""
+    n = name.lower().strip()
+    for article in ("the ", "a "):
+        if n.startswith(article):
+            n = n[len(article):]
+    n = n.replace("&", " ").replace("-", " ").replace(".", " ").replace("'", "")
+    tokens = [t for t in n.split() if t not in ("and", "of")]
+    return " ".join(tokens)
+
+
 def tag_corpus_membership(labels: list[str], points: list[dict], vectors: np.ndarray) -> list[dict]:
     """The circularity control. A generated name that is ALREADY one of the
     corpus's 3,785 emergent entities is already inside cult discourse, so its
@@ -102,17 +118,29 @@ def tag_corpus_membership(labels: list[str], points: list[dict], vectors: np.nda
     residual_review_candidates()."""
     entity_idx = acc.group_indices(points, "entities_all")
     entity_vectors = vectors[entity_idx]
+    # Normalized BOTH ways round. An earlier version stripped a leading
+    # "The" only from the generated name, which missed the cases where the
+    # CORPUS holds the decorated form -- found by the documented hand review:
+    # "Family International" vs the corpus's "the family international"
+    # (0.870) and "Church Universal Triumphant" vs "church universal and
+    # triumphant" (0.905). Both are the same organization and both were
+    # being passed through as novel.
     entity_keys = {points[i]["key"].lower() for i in entity_idx}
+    normalized_entities = {_normalize_org_name(k): k for k in entity_keys}
 
     rows = []
     for label in labels:
         bare = label.lower()
-        stripped = bare[4:] if bare.startswith("the ") else bare
-        in_corpus = bare in entity_keys or stripped in entity_keys
+        norm = _normalize_org_name(bare)
+        matched = ""
+        if bare in entity_keys:
+            matched = bare
+        elif norm in normalized_entities:
+            matched = normalized_entities[norm]
         rows.append({
             "label": label,
-            "in_corpus_entities": in_corpus,
-            "matched_form": bare if bare in entity_keys else (stripped if stripped in entity_keys else ""),
+            "in_corpus_entities": bool(matched),
+            "matched_form": matched,
         })
     return rows, entity_vectors
 

@@ -198,17 +198,93 @@ reverse.
 `analyze_literature_clusters.py` so true cluster centroids are recoverable without re-running and
 without renumbering. Not done here, because writing it would mean re-running.
 
-## Next: does the space represent coercive control at all?
+## Result: does the space represent coercive control at all? (run, pre-registered)
 
-Everything above compares *names* to *vocabulary*, and `10`'s Mechanism section established that
-this measures topical overlap rather than conduct — the groups nearest "difficulty leaving the
-group" were a mountain-biking group, an Arduino users' group and two sports clubs. So the open
-question is whether coercive control is representable here **when the input actually has the
-quality**.
+**Headline, by the rule committed to in advance: null.** Mean B−C across the two coercion poles is
+**−0.032 on names** and **+0.040 on descriptions**; neither clears the ±0.061 band, so
+`interpret()` returns *"B ≈ C on both views — this space cannot represent coercive control from
+these inputs."* That is the reportable conclusion of the pre-registered test.
 
-A designed test is scaffolded (agreed with the thesis author), with its interpretation fixed in
-advance so the result cannot be read post hoc. Four cells of 25 organizations, generated and
-embedded on the Ollama machine, scored on the poles above as **bare names** and as **one-line
+**The structure underneath it is coherent, and matches the predicted pattern.** Reported as a
+secondary observation, explicitly **not** the pre-registered result:
+
+| Pole | Names B−C | Descriptions B−C | Descriptions AUC | Descriptions, register-corrected |
+|---|---|---|---|---|
+| `coercive persuasion` | −0.018 | **+0.062 (clears)** | **0.824** | **+0.094** |
+| `brainwashing` | −0.046 | +0.018 | 0.640 | +0.050 |
+| `crit-mental-destabilization` | +0.010 | +0.015 | 0.605 | +0.047 |
+| all-entity centroid (register control) | −0.054 | −0.032 | 0.265 | — |
+
+Three things are worth more than the null:
+
+**1. The direction flips between views exactly as predicted.** Both coercion poles are *negative*
+on names and *positive* on descriptions. Names carry no conduct information; descriptions do.
+
+**2. The four-cell ordering on descriptions is the designed one.** On `coercive persuasion`:
+
+| Cell | Mean cos |
+|---|---|
+| A famous cults (n=6) | **0.506** |
+| B coercive (n=22) | **0.428** |
+| D demanding (n=25) | **0.409** |
+| C ordinary (n=23) | **0.366** |
+
+Famous cults > coercive > demanding > ordinary, with **cell D sitting between B and C** — the
+"demanding ≠ coercive" discrimination the design was built to test, working. On **names** there is
+no ordering at all (A 0.423 ≈ C 0.423 ≈ D 0.422 > B 0.405): cell B is *last*. That is
+[`10`](10_Secular_Groups_vs_Sectarian_Drifts.md)'s topical-overlap mechanism measured rather than
+asserted.
+
+**3. Why the pre-registered mean returned null anyway.** It averaged `coercive persuasion` with
+`brainwashing`, and `brainwashing` was already flagged above as the weaker pole — a bare token
+correlating **+0.815** with the all-entity centroid, i.e. mostly register. Averaging a strong pole
+with a mostly-register one diluted the signal below the band. **This is stated as a lesson for the
+follow-up's pre-registration, not as grounds for reinterpreting this run**: switching now to
+"`coercive persuasion` only" would be exactly the post-hoc move the pre-registration exists to
+prevent.
+
+**Specificity: the descriptions signal is real but not about subjection.** B beats C on 13 of 17
+criteria, so some general lift is present. The largest gaps are **deceptive recruitment (+0.051)**
+and **difficulty leaving the group (+0.042)** — substantively apt for a cell of MLMs, fraternities
+and sales bootcamps. But *violation of Republic principles* is third (+0.037), which is content
+nonsense and confirms the general lift, and **mental destabilization is only 6th (+0.015)**. So
+even where descriptions do carry signal, it concentrates on **recruitment and exit**, not
+psychological subjection — consistent with Result 1's finding that the procedural criteria are
+where ordinary organizations match most.
+
+**Circularity control, and the hand review it required.** 24 of 100 curated names are already
+corpus entities and were excluded. The documented 0.85-cosine residual rule flagged 6 rows for
+human eyes and **found a real defect in the automatic tag**: it had stripped a leading "The" only
+from the generated name, missing the cases where the *corpus* holds the decorated form —
+`Family International` vs the corpus's *the family international* (0.870) and `Church Universal
+Triumphant` vs *church universal and triumphant* (0.905). Both are the same organization and were
+passing through as novel. Fixed with two-way normalization, verified not to merge genuinely
+different organizations (`Revolutionary Communist Party` still does not collapse onto the corpus's
+*communist workers party*). **The fix moved two entries out of cell A and left cells B and C
+untouched, so the headline is unchanged** — which is what a working control should do. `Harvard`
+was flagged and deliberately kept: it is in the corpus as a cited institution and publisher, not
+as cult discourse, so the rule over-triggers there.
+
+### What this licenses
+
+The pre-registered null stands as the result. The secondary pattern — direction flip, correct
+four-cell ordering, one pole clearing at AUC 0.824 — is strong enough to justify a **properly
+powered, re-pre-registered follow-up**: more items per cell (22 vs 23 is thin), `coercive
+persuasion`-type poles named in advance rather than averaged with a register-heavy one, and a
+specificity requirement stated numerically. What it does **not** license is a claim that this space
+measures coercive control; the honest position remains that **conduct descriptions carry signal
+that names do not**, which was the useful thing to establish either way.
+
+## Appendix: the original pre-registration
+
+Preserved verbatim as written *before* the run, so the result reported above cannot be read post
+hoc. The motivating question at the time: every comparison in this project compares *names* to
+*vocabulary*, and `10`'s Mechanism section had established that this measures topical overlap
+rather than conduct — the groups nearest "difficulty leaving the group" were a mountain-biking
+group, an Arduino users' group and two sports clubs. So the open question was whether coercive
+control is representable here **when the input actually has the quality**.
+
+Four cells of 25 organizations, scored on the poles above as **bare names** and as **one-line
 descriptions of the control dynamic**:
 
 - **A** — groups already famous as cults. Circularity control; excluded from the headline.
@@ -231,8 +307,17 @@ readings:
 Specificity check: B must **not** also beat C on the other 16 criteria. If it beats everything
 uniformly, the result is register, not coercion — the same trap the retracted finding fell into.
 
+Source list (hand-curated, with the construction rules and the rejected model attempt documented
+in its own header): `thesis/corpus/dictionaries/coercive-control-groups/coercive-groups-curated.txt`.
+The qwen3:8b generation it replaced returned cell B as 76% generic category labels ("Gym Chain",
+"Corporate Training Program") against a cell C of 100% real proper nouns, which would have
+guaranteed B > C for reasons unrelated to coercion.
+
 Full data: [`data/criterion_length_control.csv`](data/criterion_length_control.csv),
 [`data/poles_vs_group_sets.csv`](data/poles_vs_group_sets.csv),
 [`data/pole_agreement.csv`](data/pole_agreement.csv),
 [`data/pole_fidelity.csv`](data/pole_fidelity.csv),
-[`data/entity_sets_nearest_cluster.csv`](data/entity_sets_nearest_cluster.csv).
+[`data/entity_sets_nearest_cluster.csv`](data/entity_sets_nearest_cluster.csv),
+[`data/cells_vs_poles.csv`](data/cells_vs_poles.csv),
+[`data/cells_specificity_by_criterion.csv`](data/cells_specificity_by_criterion.csv),
+[`data/corpus_membership_tags.csv`](data/corpus_membership_tags.csv).

@@ -86,6 +86,31 @@ class TestTagCorpusMembership(unittest.TestCase):
         self.assertTrue(rows[0]["in_corpus_entities"])
         self.assertEqual(rows[0]["matched_form"], "church of scientology")
 
+    def test_matches_aliases_where_the_corpus_holds_the_decorated_form(self):
+        # Found by the documented hand review: the corpus has
+        # "the family international" and "church universal and triumphant",
+        # while the curated list has the undecorated forms. Both are the same
+        # organization and were previously passed through as novel.
+        points = [
+            {"key": "the family international", "source_dataset": "emergent_entities"},
+            {"key": "church universal and triumphant", "source_dataset": "emergent_entities"},
+        ]
+        vectors = np.eye(2)
+        rows, _ = accg.tag_corpus_membership(
+            ["Family International", "Church Universal Triumphant"], points, vectors)
+        self.assertTrue(all(r["in_corpus_entities"] for r in rows))
+        self.assertEqual(rows[0]["matched_form"], "the family international")
+
+    def test_normalization_does_not_merge_genuinely_different_organizations(self):
+        # The same hand review confirmed "Revolutionary Communist Party" is
+        # NOT the corpus's "communist workers party" -- distinct parties. If
+        # normalization ever collapses these, the circularity control starts
+        # silently deleting valid cell-B members.
+        points = [{"key": "communist workers party", "source_dataset": "emergent_entities"}]
+        vectors = np.eye(1)
+        rows, _ = accg.tag_corpus_membership(["Revolutionary Communist Party"], points, vectors)
+        self.assertFalse(rows[0]["in_corpus_entities"])
+
     def test_only_entity_points_count_not_expressions(self):
         vectors = np.eye(3)
         rows, entity_vectors = accg.tag_corpus_membership(["Some Expression"], self._points(), vectors)

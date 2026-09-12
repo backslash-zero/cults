@@ -1,0 +1,101 @@
+label,in_corpus_entities,matched_form,max_cos_to_entity_pool
+Heaven's Gate,True,heaven's gate,1.0
+Branch Davidians,True,branch davidians,1.0
+Peoples Temple,True,peoples temple,1.0
+Scientology,True,scientology,1.0
+Unification Church,True,unification church,1.0
+Aum Shinrikyo,True,aum shinrikyo,1.0
+Children of God,True,children of god,1.0
+Rajneesh movement,True,rajneesh movement,1.0
+Solar Temple,True,solar temple,1.0
+NXIVM,False,,0.5887
+Manson Family,True,manson family,1.0
+Twelve Tribes,True,twelve tribes,1.0
+Word of Faith,False,,0.8791
+Sullivanians,False,,0.5784
+Synanon,True,synanon,1.0
+Fellowship of Friends,False,,0.8466
+ISKCON,True,iskcon,1.0
+Raelian Movement,True,raelian movement,1.0
+Family International,True,the family international,0.8696
+Church Universal Triumphant,True,church universal and triumphant,0.9049
+Ramtha School,False,,0.8482
+Eckankar,True,eckankar,1.0
+Sahaja Yoga,True,sahaja yoga,1.0
+Ananda Marga,True,ananda marga,1.0
+Dahn Yoga,False,,0.6931
+Herbalife,False,,0.5643
+LuLaRoe,False,,0.572
+Primerica,False,,0.6214
+Younique,False,,0.5378
+Vemma,False,,0.6019
+Monat,False,,0.7425
+Arbonne,False,,0.6252
+Mary Kay,False,,0.6782
+Vector Marketing,False,,0.5519
+Nu Skin,False,,0.5781
+Beachbody,False,,0.5815
+Amway,True,amway,1.0
+Landmark Forum,True,landmark forum,1.0
+Lifespring,True,lifespring,1.0
+Bikram Yoga,False,,0.7407
+SoulCycle,False,,0.7172
+Sigma Alpha Epsilon,False,,0.549
+Pi Kappa Alpha,False,,0.5825
+Phi Delta Theta,False,,0.5386
+Wells Fargo,False,,0.6163
+Trump University,False,,0.6077
+LaRouche movement,False,,0.7359
+Revolutionary Communist Party,False,,0.8986
+Workers Institute,False,,0.7682
+Socialist Workers Party,False,,0.9239
+Google,False,,0.7217
+Microsoft,False,,0.6845
+Apple,False,,0.6757
+Harvard,False,,0.8938
+Stanford,True,stanford,1.0
+Red Cross,False,,0.7374
+UNICEF,False,,0.7358
+Walmart,False,,0.6187
+Bank of America,False,,0.7615
+IBM,True,ibm,1.0
+NASA,False,,0.7398
+Disney,False,,0.6671
+Tesla,False,,0.6049
+Amazon,False,,0.6529
+Coca-Cola,False,,0.6295
+Johnson and Johnson,False,,0.7446
+McDonalds,False,,0.6704
+Netflix,False,,0.6362
+Meta,False,,0.6984
+Sony,False,,0.5928
+Siemens,False,,0.6174
+Nestle,False,,0.7088
+Toyota,False,,0.6151
+Visa,False,,0.6088
+Intel,False,,0.6686
+West Point,False,,0.7827
+Naval Academy,False,,0.5945
+Parris Island,False,,0.6285
+Sandhurst,False,,0.6754
+Juilliard,False,,0.6362
+Curtis Institute,False,,0.583
+Royal Ballet School,False,,0.5668
+Bolshoi Academy,False,,0.6682
+Mayo Clinic,False,,0.6182
+Navy SEALs,False,,0.6822
+Foreign Legion,False,,0.8042
+Royal Marines,False,,0.6583
+Mount Athos,False,,0.6029
+Carthusians,False,,0.597
+Trappists,False,,0.5973
+Benedictines,False,,0.5656
+Shaolin Monastery,False,,0.6141
+Cirque du Soleil,False,,0.6012
+Cordon Bleu,False,,0.6836
+Vienna Boys Choir,False,,0.6942
+Paris Opera Ballet,False,,0.6282
+Alvin Ailey School,False,,0.5908
+Scala Academy,False,,0.5859
+National Ballet School,False,,0.5722
+Moscow Conservatory,False,,0.6682

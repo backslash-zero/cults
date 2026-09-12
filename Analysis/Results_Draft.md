@@ -84,7 +84,10 @@ the overall argument; come back here for the numbers.
     is clean). What replaces it: the literature's three coercion clusters have **no** religious/NRM
     entity as nearest neighbour, while *Maoist thought reform* and *Erhard Seminar Training* both
     land in cluster 43 — coercion is theorised with secular exemplars. Ships the length control as
-    a unit-tested regression guard.
+    a unit-tested regression guard. Also reports the **pre-registered 4-cell coercive-control
+    test**, which returns a **null** on its committed rule — though names and descriptions flip
+    direction as predicted, and on descriptions the four cells order correctly (famous cults >
+    coercive > demanding > ordinary).
 
 ## Planned next (not yet implemented)
 
@@ -297,6 +300,21 @@ individual step files.*
   new data, only the nearest-cluster view already on disk. Read with step 5 (brainwashing is central
   *because contested, not asserted*): the coercion claim is the field's live argument, conducted in
   general psychological vocabulary, with secular concrete examples.
+
+- **Conduct descriptions carry signal that bare names do not — established by a pre-registered
+  test that nonetheless returns a null** (step 11). Four matched cells of 25 hand-curated
+  organizations (famous cults / ordinary-sounding but coercive / ordinary / demanding-not-coercive)
+  were scored twice, on names and on one-line descriptions of each group's control dynamic. On the
+  committed rule — mean gap across two coercion poles — neither view clears the ±0.061 artifact
+  band, so **the headline is null**. But the secondary pattern is coherent: both poles flip from
+  negative on names to positive on descriptions; on descriptions the four cells order exactly as
+  designed (**famous cults 0.506 > coercive 0.428 > demanding 0.409 > ordinary 0.366**, with
+  "demanding" correctly intermediate), while on names there is no ordering at all and the coercive
+  cell comes *last*. One pole (`coercive persuasion`) clears the band on descriptions at AUC 0.824.
+  Not claimed as a positive result — switching to that pole alone would be the post-hoc move the
+  pre-registration exists to prevent — but it justifies a properly powered re-pre-registered
+  follow-up. Where descriptions do carry signal it concentrates on **deceptive recruitment**
+  (+0.051) and **difficulty leaving** (+0.042), not on subjection, which is only 6th of 17.
 
 - **On the length-robust measure the criteria that come closest to marking cults out are about
   enclosure, not coercion** (step 11). Smallest gaps: indoctrination of children (+0.005),

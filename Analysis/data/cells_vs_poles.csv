@@ -1,0 +1,9 @@
+view,pole,pole_kind,cell_A_mean_cos,cell_A_n,cell_B_mean_cos,cell_B_n,cell_C_mean_cos,cell_C_n,cell_D_mean_cos,cell_D_n,B_minus_C,B_vs_C_auc,clears_artifact_band
+names,brainwashing,entity_anchor,0.4261,6,0.4237,22,0.4701,23,0.4129,25,-0.0464,0.2312,False
+names,coercive persuasion,entity_anchor,0.4139,6,0.4053,22,0.423,23,0.422,25,-0.0177,0.3794,False
+names,crit-mental-destabilization,criterion_text,0.2902,6,0.2762,22,0.2667,23,0.261,25,0.0095,0.5929,False
+names,all_entities_grand_centroid,register_control,0.6068,6,0.5924,22,0.646,23,0.5984,25,-0.0535,0.1621,False
+descriptions,brainwashing,entity_anchor,0.4366,6,0.3837,22,0.366,23,0.3684,25,0.0177,0.6403,False
+descriptions,coercive persuasion,entity_anchor,0.5063,6,0.4276,22,0.366,23,0.409,25,0.0616,0.8241,True
+descriptions,crit-mental-destabilization,criterion_text,0.3726,6,0.3066,22,0.2915,23,0.3359,25,0.015,0.6047,False
+descriptions,all_entities_grand_centroid,register_control,0.5276,6,0.4502,22,0.4824,23,0.4778,25,-0.0323,0.2648,False
