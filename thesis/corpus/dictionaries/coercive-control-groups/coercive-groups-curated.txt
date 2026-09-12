@@ -1,0 +1,130 @@
+prompt: hand-curated, NOT model-generated -- see PROMPT.md for the design and the note below
+model: none (hand-curated by Claude, reviewed by the thesis author)
+
+# Why this file is hand-curated rather than generated.
+# A qwen3:8b generation attempt is preserved at
+# coercive-control-groups/coercive-groups-1.txt (nested, so the parser does not read it).
+# It was rejected: cell B came back 76% generic CATEGORY LABELS ("Gym Chain",
+# "Political Group", "Corporate Training Program") while cell C was 100% real proper
+# nouns (Google, Microsoft, Apple). That asymmetry guarantees B > C for a reason that has
+# nothing to do with coercion -- a generic noun phrase embeds near abstract organisational
+# vocabulary, a brand name does not -- so the headline test would have returned a
+# confident false positive. Cell D had the same defect (67% generic) and the model padded
+# with duplicates (98 lines, 86 unique).
+#
+# Construction rules applied to every cell here, so the four are comparable:
+#   1. REAL, SPECIFIC, NAMED organizations only. No category labels.
+#   2. Name form matched to cell C and to Analysis/08's artifact control:
+#      three words or fewer, never a leading "The".
+#   3. Cell B excludes anything commonly called a cult (so NXIVM sits in A, not B).
+#   4. Descriptions state the reported or adjudicated control dynamic, not a verdict --
+#      several cell-B entries describe regulator findings or litigation, which is the
+#      evidentiary basis for calling the dynamic coercive.
+
+Block A - organizations widely known as cults
+Heaven's Gate - Apocalyptic isolation culminating in mass suicide of 39 members
+Branch Davidians - Armed compound under absolute deference to a single prophetic leader
+Peoples Temple - Total communal dependency ending in the Jonestown mass deaths
+Scientology - Auditing records and disconnection policy used to bind and discipline members
+Unification Church - Arranged marriage and fundraising obligation structured around the founder
+Aum Shinrikyo - Apocalyptic doctrine, forced initiation and the Tokyo subway sarin attack
+Children of God - Systematic sexual abuse of minors under doctrinal cover
+Rajneesh movement - Guru devotion, communal labour and a bioterror attack by the leadership
+Solar Temple - Doctrinal preparation for the murder-suicide of 74 members
+NXIVM - Branded initiates, collateral extortion and a federal racketeering conviction
+Manson Family - Total psychological domination directed toward the Tate-LaBianca murders
+Twelve Tribes - Communal isolation, corporal punishment of children and unpaid labour
+Word of Faith - Enforced deliverance sessions and blocking exit from the congregation
+Sullivanians - Therapy-based commune separating members from spouses and children
+Synanon - Coerced confession sessions, forced head-shaving and violence against defectors
+Fellowship of Friends - Guru-centred hierarchy with sexual access and financial tithe
+ISKCON - Guru authority and boarding schools where abuse was later documented
+Raelian Movement - UFO doctrine organised around a single founder's revelation
+Family International - Successor to Children of God, same doctrinal control of sexuality
+Church Universal Triumphant - Apocalyptic bunker-building under a channelling leader
+Ramtha School - Paid instruction in channelled teaching with escalating loyalty tiers
+Eckankar - Initiatory levels gated by a living master's authority
+Sahaja Yoga - Founder veneration with arranged marriage and defector shunning
+Ananda Marga - Cadre discipline and political militancy under a single guru
+Dahn Yoga - Escalating paid training with reported coerced labour and lawsuits
+
+Block B - ordinary-sounding organizations credibly described as coercive or high-control, NOT commonly called cults
+Herbalife - FTC settlement of 200 million dollars over income misrepresentation to recruits
+LuLaRoe - Inventory-loading obligations on sellers, litigated as a pyramid structure
+Primerica - Recruitment of customers as commissioned agents under upline pressure
+Younique - Social-media quota pressure on sellers within a downline hierarchy
+Vemma - Shut down by the FTC as a pyramid scheme recruiting on college campuses
+Monat - Non-disparagement demands on distributors alongside injury litigation
+Arbonne - Purchase minimums to remain qualified inside the compensation plan
+Mary Kay - Unit-based recruitment pressure and reported inventory front-loading
+Vector Marketing - High-pressure student recruitment into unpaid commission-only selling
+Nu Skin - Regulator action in China over recruitment and product claims
+Beachbody - Coach recruitment tied to personal purchase requirements
+Amway - Downline obligation and a 1979 FTC case over its earnings representations
+Landmark Forum - Long unbroken sessions with escalating enrolment obligation on graduates
+Lifespring - Confrontational large-group training with reported psychiatric casualties
+Bikram Yoga - Founder-centred certification and multiple adjudicated abuse claims
+SoulCycle - Instructor-led devotional branding with reported workplace control
+Sigma Alpha Epsilon - Fraternity with the highest documented count of hazing deaths
+Pi Kappa Alpha - Chapters repeatedly suspended for coerced drinking rituals
+Phi Delta Theta - Hazing death litigation leading to chapter closures
+Wells Fargo - Sales quotas that coerced staff into opening millions of unauthorised accounts
+Trump University - High-pressure upselling of seminars, settled for 25 million dollars
+LaRouche movement - Cadre discipline, sleep deprivation and family separation per ex-members
+Revolutionary Communist Party - Personality cult around a single leader with enforced line discipline
+Workers Institute - Brixton collective that held a member captive for three decades
+Socialist Workers Party - Internal disputes committee used to suppress abuse complaints
+
+Block C - ordinary organizations with no coercion claim at all
+Google - Large employer with conventional at-will employment and open external mobility
+Microsoft - Publicly traded software firm with standard corporate governance
+Apple - Consumer hardware firm with ordinary employment terms
+Harvard - Research university with tenure, academic freedom and free exit
+Stanford - Research university with conventional academic governance
+Red Cross - Humanitarian body staffed largely by unpaid volunteers who may leave freely
+UNICEF - UN agency delivering child welfare programmes through national committees
+Walmart - Retail employer with hourly staff and routine turnover
+Bank of America - Regulated retail bank with standard employment terms
+IBM - Technology and consulting firm with conventional corporate structure
+NASA - Federal civil-service agency with statutory employment protections
+Disney - Media conglomerate with unionised production workforces
+Tesla - Automaker with conventional at-will employment
+Amazon - Logistics and cloud employer with high but voluntary turnover
+Coca-Cola - Beverage firm operating through independent regional bottlers
+Johnson and Johnson - Pharmaceutical and consumer-health manufacturer
+McDonalds - Quick-service chain operating mostly through independent franchisees
+Netflix - Streaming firm with a documented high-severance, free-exit culture
+Meta - Social media firm with conventional corporate employment
+Sony - Diversified electronics and entertainment group
+Siemens - Industrial engineering group with codetermined works councils
+Nestle - Food manufacturer operating across national labour regimes
+Toyota - Automaker known for consultative continuous-improvement practice
+Visa - Payment network owned by and serving member financial institutions
+Intel - Semiconductor manufacturer with conventional employment terms
+
+Block D - organizations that are highly demanding but not considered coercive
+West Point - Four-year military academy with statutory cadet rights and lawful exit
+Naval Academy - Officer training under military justice with formal grievance channels
+Parris Island - Marine recruit depot with regulated training limits after past reforms
+Sandhurst - British officer academy with regulated instruction and formal complaint routes
+Juilliard - Conservatory demanding daily practice with ordinary academic withdrawal rights
+Curtis Institute - Tuition-free conservatory with highly selective performance standards
+Royal Ballet School - Vocational dance training under statutory safeguarding oversight
+Bolshoi Academy - Classical ballet training with severe physical selection
+Mayo Clinic - Residency programme with accreditation-capped duty hours
+Navy SEALs - Selection course with extreme attrition and a voluntary withdrawal bell
+Foreign Legion - Five-year enlistment with austere discipline and a legal discharge route
+Royal Marines - Commando training with the longest basic course among NATO infantry
+Mount Athos - Monastic peninsula whose monks keep an ascetic rule by continuing vow
+Carthusians - Near-total silence and solitude, entered through a years-long discernment
+Trappists - Strict observance of manual labour and silence under revocable vows
+Benedictines - Rule-governed communal life with a formal novitiate and right to depart
+Shaolin Monastery - Martial and monastic training with long daily physical regimens
+Cirque du Soleil - Acrobatic company with punishing rehearsal loads and union contracts
+Cordon Bleu - Culinary institute with demanding brigade-style kitchen instruction
+Vienna Boys Choir - Residential choral training with statutory schooling alongside
+Paris Opera Ballet - Ballet school with annual assessment-based elimination
+Alvin Ailey School - Dance training with intensive daily technique requirements
+Scala Academy - Opera academy with highly selective vocal and stage training
+National Ballet School - Residential vocational training with safeguarding regulation
+Moscow Conservatory - Music conservatory with rigorous performance examination

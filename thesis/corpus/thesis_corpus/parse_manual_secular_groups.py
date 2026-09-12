@@ -111,6 +111,13 @@ def parse_manual_group_list_with_cells(raw_text: str) -> list[dict]:
             cell = header.group(1).upper()
             continue
 
+        # Checked AFTER the header match, so a markdown-style "### Block A"
+        # is still read as a header. Hand-curated source files carry "#"
+        # provenance comments explaining inclusion rules, and those must not
+        # be embedded as group names.
+        if line.startswith("#"):
+            continue
+
         line = _LEADING_NUMBERING_RE.sub("", line).strip()
         if not line:
             continue

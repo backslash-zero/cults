@@ -138,6 +138,20 @@ class TestBlockHeaderTolerance(unittest.TestCase):
                 entries = pmsg.parse_manual_group_list_with_cells(f"{header}\nName – desc")
                 self.assertEqual(entries[0]["cell"], expected)
 
+    def test_skips_hash_comments_without_breaking_markdown_headers(self):
+        # Hand-curated source files carry "#" provenance comments. Those must
+        # not be embedded as group names, but "### Block A" must still parse
+        # as a header -- so the comment check has to come after the header one.
+        raw = "\n".join([
+            "# construction rule: real named organizations only",
+            "### Block B - coercive",
+            "# this one is a comment, not an entry",
+            "Herbalife - FTC settlement over income misrepresentation",
+        ])
+        entries = pmsg.parse_manual_group_list_with_cells(raw)
+        self.assertEqual([e["name"] for e in entries], ["Herbalife"])
+        self.assertEqual(entries[0]["cell"], "B")
+
     def test_rejects_a_bare_letter_heading_because_it_looks_like_an_entry(self):
         # "A — cults" is indistinguishable from "Name - description", so
         # treating it as a header would silently swallow a real entry.
