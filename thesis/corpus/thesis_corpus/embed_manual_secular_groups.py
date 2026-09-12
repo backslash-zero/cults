@@ -47,6 +47,55 @@ DEFAULT_OLLAMA_HOST = "http://127.0.0.1:11434"
 DEFAULT_EMBED_MODEL = "bge-m3"
 
 
+def diagnose_empty_parse(source_dir: Path) -> str:
+    """Says WHY nothing parsed, rather than just that nothing did.
+
+    Written after a real dead end: the run reported "No cell entries parsed"
+    and gave no way to tell from the message whether the source file was
+    missing, had the wrong extension, or had headers the parser didn't
+    recognise. Each of those needs a different fix, so each gets named
+    here."""
+    if not source_dir.exists():
+        return f"{source_dir} does not exist. Create it and save the model's raw output there as a .txt file."
+
+    listing = sorted(p for p in source_dir.iterdir() if p.is_file())
+    parsed = [p for p in listing if p.suffix in (".txt", ".tx")]
+    ignored = [p for p in listing if p.suffix not in (".txt", ".tx")]
+
+    lines = [f"No cell entries parsed from {source_dir}.", ""]
+    lines.append(f"Files the parser READS (.txt/.tx): {len(parsed)}")
+    for p in parsed:
+        lines.append(f"  {p.name} ({p.stat().st_size} bytes)")
+    lines.append(f"Files IGNORED (wrong extension): {len(ignored)}")
+    for p in ignored:
+        lines.append(f"  {p.name}")
+
+    if not parsed:
+        lines += [
+            "",
+            "=> Nothing to parse: no .txt/.tx file is present.",
+            "   The prompt has to be RUN and its raw output SAVED here first:",
+            f"     1. run the prompt in {source_dir / 'PROMPT.md'}",
+            f"     2. save the model's raw reply as e.g. {source_dir / 'coercive-groups-1.txt'}",
+            "     3. re-run this command",
+            "   (PROMPT.md itself is ignored on purpose -- it is the instructions, not the data.)",
+        ]
+        return "\n".join(lines)
+
+    lines += ["", "=> Files are present but no entry lines matched. First 8 lines of each:"]
+    for p in parsed:
+        lines.append(f"  --- {p.name} ---")
+        for raw_line in p.read_text(encoding="utf-8", errors="replace").splitlines()[:8]:
+            lines.append(f"    {raw_line[:100]!r}")
+    lines += [
+        "",
+        "   An entry must be 'Name - description' on one line (hyphen, en dash or em dash with",
+        "   spaces around it), or 'Name (description)'. A line with no separator is treated as a",
+        "   heading and skipped. Check the lines above against that.",
+    ]
+    return "\n".join(lines)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--source-dir", type=Path, default=DEFAULT_SOURCE_DIR,
@@ -79,11 +128,19 @@ def main() -> None:
     if args.cells:
         entries = load_all_cell_entries(args.source_dir)
         if not entries:
-            raise SystemExit(f"No cell entries parsed from {args.source_dir} -- nothing to embed.")
+            raise SystemExit(diagnose_empty_parse(args.source_dir))
         counts: dict[str, int] = {}
         for e in entries:
             counts[str(e["cell"])] = counts.get(str(e["cell"]), 0) + 1
         logger.info("Parsed %d entries across cells: %s", len(entries), dict(sorted(counts.items())))
+        if set(counts) == {"None"}:
+            raise SystemExit(
+                f"Parsed {len(entries)} entries but NONE got a cell -- no 'Block A'..'Block D' "
+                f"header line was recognised in {args.source_dir}.\n"
+                "The cell assignment is the entire experiment, so this is not embedded as-is.\n"
+                "Fix: make each block header its own line containing the word 'Block' and the "
+                "letter, e.g. 'Block B - ordinary-sounding but coercive'. Then re-run."
+            )
 
         names = [e["name"] for e in entries]
         logger.info("Embedding %d names via %s...", len(names), args.embed_model)

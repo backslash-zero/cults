@@ -70,7 +70,13 @@ def parse_manual_group_list(raw_text: str) -> list[str]:
     return names
 
 
-_BLOCK_HEADER_RE = re.compile(r"^\**\s*block\s+([A-D])\b", re.IGNORECASE)
+# Tolerant of how a model actually decorates a heading: markdown heading
+# hashes, bold/italic asterisks or underscores, blockquote markers, and any
+# punctuation between the word and the letter ("### Block A:", "**Block
+# A —**", "Bloc B -"). The word block/bloc is REQUIRED: a bare "A — ..."
+# line is indistinguishable from a "Name - description" entry, so accepting
+# it would silently eat a real entry.
+_BLOCK_HEADER_RE = re.compile(r"^[#*_>\s]*(?:block|bloc)\s*[:.\-–—]?\s*([A-D])\b", re.IGNORECASE)
 _DASH_SEPARATOR_RE = re.compile(r" [–—-] ")
 
 

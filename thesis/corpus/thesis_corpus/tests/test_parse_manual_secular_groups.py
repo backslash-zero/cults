@@ -123,6 +123,58 @@ class TestParseManualGroupListWithCells(unittest.TestCase):
         self.assertEqual(out[0]["cell"], None)
 
 
+class TestBlockHeaderTolerance(unittest.TestCase):
+    def test_accepts_the_ways_a_model_actually_decorates_a_heading(self):
+        for header, expected in [
+            ("Block A — widely known as cults", "A"),
+            ("**Block A —**", "A"),
+            ("### Block A:", "A"),
+            ("BLOCK B - coercive", "B"),
+            ("Bloc C", "C"),
+            ("Block D.", "D"),
+            ("> Block B", "B"),
+        ]:
+            with self.subTest(header=header):
+                entries = pmsg.parse_manual_group_list_with_cells(f"{header}\nName – desc")
+                self.assertEqual(entries[0]["cell"], expected)
+
+    def test_rejects_a_bare_letter_heading_because_it_looks_like_an_entry(self):
+        # "A — cults" is indistinguishable from "Name - description", so
+        # treating it as a header would silently swallow a real entry.
+        entries = pmsg.parse_manual_group_list_with_cells("A — cults\nName – desc")
+        self.assertEqual(entries[0]["name"], "A")
+        self.assertIsNone(entries[0]["cell"])
+
+
+class TestDiagnoseEmptyParse(unittest.TestCase):
+    """Guards the error message that replaced a dead end: a bare "No cell
+    entries parsed" gave no way to tell a missing file from an unrecognised
+    format."""
+
+    def test_names_the_missing_directory(self):
+        from thesis_corpus.embed_manual_secular_groups import diagnose_empty_parse
+        msg = diagnose_empty_parse(Path("/nonexistent/coercive-control-groups"))
+        self.assertIn("does not exist", msg)
+
+    def test_says_when_only_ignored_extensions_are_present(self):
+        from thesis_corpus.embed_manual_secular_groups import diagnose_empty_parse
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            (d / "PROMPT.md").write_text("instructions, not data", encoding="utf-8")
+            msg = diagnose_empty_parse(d)
+        self.assertIn("no .txt/.tx file is present", msg)
+        self.assertIn("PROMPT.md", msg)
+
+    def test_shows_the_offending_lines_when_a_txt_exists_but_nothing_matched(self):
+        from thesis_corpus.embed_manual_secular_groups import diagnose_empty_parse
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            (d / "out.txt").write_text("Block A\nNoSeparatorHere\nAlsoNothing\n", encoding="utf-8")
+            msg = diagnose_empty_parse(d)
+        self.assertIn("no entry lines matched", msg)
+        self.assertIn("NoSeparatorHere", msg)
+
+
 class TestLoadAllCellEntries(unittest.TestCase):
     def test_keeps_the_same_name_in_two_different_cells(self):
         # A cell-assignment conflict is a finding to surface, not something
