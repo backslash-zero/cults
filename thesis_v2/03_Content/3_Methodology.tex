@@ -29,6 +29,62 @@ Each of the three corpora brings its own biases, and the perspective of people w
 \section{What proximity measures}
 \label{sec:proximity}
 
+% Source: Celestin's brief of 18 Nov (prepared in another conversation); bullets only, Celestin types the final text
+Calibration experiment: framing
+- A sensitivity profile, not a noise band
+    - it shows which kinds of differences the model registers and how strongly
+    - by comparing contrast types against each other: an ordering (paraphrase vs negation vs same topic with a different claim vs unrelated)
+- Not a threshold that corpus distances must exceed
+    - group-level comparisons in the corpus need their own checks (for example permutation tests)
+    - the experiment informs interpretation, it does not replace those checks
+- Results reported as distributions per contrast type
+    - near-identical pairs as the top anchor, unrelated pairs as the bottom anchor
+    - because raw cosines in bge-m3 do not span the full 0 to 1 range
+- Triplets where possible
+    - is the edited sentence closer to the original than a different claim on the same topic?
+
+[TO REVIEW: aim]
+- Before interpreting distances in the corpus: test what cosine similarity in bge-m3 responds to
+    - hand-written sentence pairs, each differing in one controlled way
+- The aim is not a significance threshold
+    - it is which kinds of differences (meaning, stance, negation, language, wording) the model registers, and how strongly relative to one another
+
+Precedents
+- Controlled sentence pairs and triplets are an established way to probe sentence embeddings
+- Zhu, Li and de Melo 2018 (zhuExploringSemanticProperties2018)
+    - sentence triplets with controlled edits: negation, synonym substitution, passivisation, argument reordering
+    - how these changes affect embedding similarity
+- Nikolaev and Padó 2023 (nikolaevRepresentationBiasesSentence2023) [VERIFY pages: 3701 to 3716 or 3683 to 3698]
+    - controlled sentences with modern sentence transformers
+    - cosine similarity driven more by overlap in the nouns than by predicates or syntactic roles
+- Optional: the 0 to 5 graded similarity scale of the SemEval STS tasks, Cer et al. 2017 (cerSemEval2017Task12017)
+    - level 1 means not equivalent, but on the same topic
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}XX@{}}
+\toprule
+Contrast & Example & What it tests \\
+\midrule
+Paraphrase & A cult isolates its members from their families. / A cult cuts its followers off from their relatives. & whether wording changes alone move similarity \\
+Opposite stance & Cults are dangerous. / Cults are harmless. & whether the model registers evaluative stance on the same topic \\
+Negation & The group isolates its members. / The group does not isolate its members. & sensitivity to explicit negation with high word overlap \\
+Translation & English sentence / its French translation & cross-lingual alignment of equivalent content \\
+Name vs conduct description & Scientology / a one-sentence description of what the group does & whether a group name and a description of its conduct are treated as close \\
+Unrelated & cult sentence / everyday sentence & lower anchor (floor) of similarity \\
+Same topic, unrelated claim & two cult sentences making different claims & how much shared topic alone produces similarity \\
+Singular vs plural & A cult isolates\ldots{} / Cults isolate\ldots{} & sensitivity to grammatical number, generic vs singular reference \\
+\midrule
+\multicolumn{3}{@{}l}{[TO REVIEW: optional rows]} \\
+Near-identical pair & same sentence, case and punctuation changed & upper anchor \\
+Label swap & cult / sect / secte / choir in an identical frame & how much the group label alone drives similarity \\
+\bottomrule
+\end{tabularx}
+\caption{Contrast types of the calibration experiment. A control set uses a neutral social group (a choir). The full set of pairs is in Appendix~\ref{app:calibration}.}
+\label{tab:contrasts}
+\end{table}
+
 Style and authorship
 - No custom patch for style or authorship
     - a patch of this kind may also introduce its own biases
