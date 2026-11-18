@@ -1,0 +1,22 @@
+
+All right, um, this is just another meditation, um, about. What I'm doing with this research, and there was a last. Uh, pass, like last generation of the analysis of. This shared space, and what really happened this time that started to be interesting, was creating these different clusters, and these voronoi tessellations.
+
+Um. I think right now, there is something to be fixed in. What we have? So, the first thing that needs to be fixed, in my opinion, is that right now, the like? The next report that should be generated should strictly be a bit. The analysis and not about the methodology, changes, Etc.
+
+And that's not very interesting. I think the first thing that needs to be done from my end is first of all to, um, maybe generate. Uh, a PDF or some kind of visualization where I could have basically every interview and all the different, um, relevant Concepts and entities that were extracted from it.
+
+Um, just to double check that this makes sense. So, that's the first thing. Then, the second thing is that? I am doing this, like clustering of things, which I think is interesting, and the goal is to identify gaps, and if I take okay, this question very seriously. If I take the question, the question of?
+
+Identifying. Conceptual gaps. Um, through this methodology. Um, I have three types of Corpus. I have the literature, the legal one from the movie loot. And then the interviews, so more subjective things. So it's three ways if I were to identify gaps. Um, I would, for example, need to check okay, um?
+
+The literature is structured that way, which gaps are not occupied by. Uh, the interviews. Um, or, I could also be the reverse, which. I have all the interviews, entities, and Concepts. Which of these gaps? Are actually not occupied by. The literature, and then it's the same. Uh, with the midi loot, the midi loot can be like, oh, the mivilude is showing these things.
+
+Um, well. First of all, we need to run with the movie reparts, but then also with the mivi lid. Uh, six iron drifts. And compare it to okay, like the movie loot. Create the space and these clusters. Which of these clusters is not occupied by the literature, or which are these clusters is not occupied by the interviews?
+
+Um, and then exactly, so every time there is, uh. Um, yeah, this thing to be run. Overall. Um, I think there's a need in this analysis report to generate tables. Or, um, that really show? Um, for everything that is being found. Uh. Basically how? How they exist. By this, I mean, that.
+
+It would be. Yeah, it would be interesting to. Uh, create.
+
+Yeah, by this, I mean having tables that just you know lists the things that can be found within each set as examples, and not as just like abstraction is important. Um. I'm also thinking that. Right now, we're embedding, you know, like, questioned, or? Uh, you know, negated Concepts or entities, or just like the rest.
+
+I'm, I'm actually wondering how we treat this, I think. Uh, this is just a it's actually a question that's really like something that needs to be solved right now, but maybe it could be solved, but um, how are we dealing with this at the moment? I think this is probably the first questions that needs to be answered.
