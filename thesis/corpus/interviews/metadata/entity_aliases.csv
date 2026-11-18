@@ -1,0 +1,46 @@
+entity,type,pattern
+Scientology,named group,scientolog
+Manson family,named group,manson|kasabian
+Raëlism,named group,ra[eë]l(?![a-z]*ity)
+Jehovah's Witnesses,named group,jehovah|jéhovah|\bwitnesses\b
+Mormons,named group,mormon
+Illuminati,named group,illuminati
+Ku Klux Klan,named group,ku klux|\bkkk\b
+Freemasons,named group,freemason|franc-maçon
+Moonies,named group,moonies|moon — or
+Osho / Bhagwan movement,named group,\bosho\b|bhagwan|wild wild country
+Hare Krishnas,named group,hare krishna
+Children of God,named group,children of god
+Westboro Baptist Church,named group,westboro
+La Luz del Mundo,named group,luz del mundo|los del mundo
+Ordre du Temple Solaire,named group,temple solaire|cercle solaire
+Buddhafield,named group,buddhafield
+Menzil,named group,menzil
+Gülen movement,named group,g[uü]len
+Nakşibendi,named group,nakşibendi|naksibendi
+Süleymancılar,named group,s[uü]leymanc
+Nursi movement,named group,nursi
+Les Brigandes,named group,brigandes
+MK Ultra / CIA,named group,mk.?ultra|\bcia\b
+Satanists,category,satan
+New Age,category,new age|croyance new wave
+Yoga communities,category,\byoga\b
+Religious cults in Turkey,category,turkish religious|religious cults in turkey
+Religion in general,category,\breligions?\b|religieu|religious
+Catholicism,established religion,catholi|\bcatho\b
+Christianity,established religion,christian|christianisme
+Orthodox Christianity,established religion,orthodox
+Evangelicals,established religion,evangeli|évangéli
+Islam,established religion,muslim|islam|\bshi.a\b|\bsunni|\bimam\b
+Judaism,established religion,\bjews?\b|juda[ïi]sme
+Druze,established religion,\bdruze\b
+Zionism,ideology,zionis
+Tomato cult,non-group object,tomato
+Bike polo club,non-group object,bike polo|\bpolo\b
+Cult films,non-group object,cult film|cult movie
+Blue Öyster Cult,non-group object,blue [öo]yster
+Design & Computation programme,non-group object,design (&|and) computation
+Homeopathy,non-group object,hom[ée]opath
+Human Design,non-group object,human design
+Plastic surgery,non-group object,plastic.surgery|botox
+AI cult,non-group object,(?<!['’a-z])ai\b|artificial intelligence|intelligence artificielle

@@ -1,0 +1,18 @@
+\addchap{\abbrevname}							% KOMA command to add chapter to toc without numbering
+If the horizontal space is too small or too large for you abbreviations, change the allocated space by entering the longest abbreviation in the \verb+\settowidth{}+\index{Commands!settowidth@\verb+\settowidth{}+} command in \path{f_Abbreviations.tex}.
+%------------------------------
+% COLUMN WIDTH
+%------------------------------
+% Must be set by user
+\settowidth{\myabbrevlength}{SUNDIALS}
+
+% Must remain unchanged, needed to update the column size
+\setlength{\mydescriptionwidth}{\linewidth-2\tabcolsep-\myabbrevlength}
+%------------------------------
+% LIST(S) OF ABBREVIATIONS
+%------------------------------
+\printacronyms[template=dbtalongtable, sort=true, include={Numerics}, heading=section*, name=Numerics]
+\printacronyms[template=dbtalongtable, sort=true, include={Software}, heading=section*, name=Software]
+
+Alternatively, you can only have one list of abbreviations without further classification:
+\printacronyms[template=dbtalongtable, sort=true, heading=none]

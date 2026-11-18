@@ -1,0 +1,32 @@
+# LaTeX build output
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.loa
+*.lof
+*.log
+*.lol
+*.lot
+*.mw
+*.nlo
+*.nls
+*.pre
+*.run.xml
+*.tdo
+*.toc
+*.xmpdata
+*.out
+pdfa.xmpi
+
+# SyncTeX
+*.synctex.gz
+
+# Review files quoting interview participants: keep local (repo is public)
+notes/entities_review.csv
+notes/fillers_removed.csv
