@@ -256,7 +256,10 @@ def plot_profile(rows: list[dict], path: Path) -> None:
     fig, ax = plt.subplots(figsize=(8, 0.45 * len(contrasts) + 1.5))
     for y, c in enumerate(contrasts):
         vals = [r["cosine"] for r in rows if r["contrast"] == c]
-        ax.boxplot(vals, positions=[y], vert=False, widths=0.6, showfliers=False)
+        try:  # Matplotlib >= 3.10 renamed vert= to orientation=
+            ax.boxplot(vals, positions=[y], orientation="horizontal", widths=0.6, showfliers=False)
+        except TypeError:
+            ax.boxplot(vals, positions=[y], vert=False, widths=0.6, showfliers=False)
         for dom, colour in (("cult", "#27548a"), ("choir", "#b3322c")):
             pts = [r["cosine"] for r in rows if r["contrast"] == c and r["domain"] == dom]
             ax.scatter(pts, np.full(len(pts), y) + np.random.default_rng(y).uniform(-0.18, 0.18, len(pts)),
@@ -264,11 +267,21 @@ def plot_profile(rows: list[dict], path: Path) -> None:
     ax.set_yticks(range(len(contrasts)), [c.split("_", 1)[1].replace("_", " ") for c in contrasts])
     ax.invert_yaxis()
     ax.set_xlabel("cosine similarity (bge-m3)")
-    ax.legend(loc="lower left", frameon=False)
+    ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1.0), frameon=False, title="domain")
     ax.set_title("Sensitivity profile: similarity by contrast type")
     fig.tight_layout()
     fig.savefig(path, dpi=200)
     plt.close(fig)
+
+
+def run_plot(args) -> Path:
+    """Redraw the profile figure from report/pair_similarities.csv (no vectors needed)."""
+    report = OUT_ROOT / f"run_{args.run_tag}" / "report"
+    with (report / "pair_similarities.csv").open(encoding="utf-8") as f:
+        rows = [{**r, "cosine": float(r["cosine"])} for r in csv.DictReader(f)]
+    plot_profile(rows, report / "calibration_profile.png")
+    print(f"figure -> {report / 'calibration_profile.png'}")
+    return report
 
 
 def run_analyze(args) -> Path:
@@ -312,7 +325,7 @@ def run_analyze(args) -> Path:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("stage", choices=["preview", "embed", "analyze"])
+    ap.add_argument("stage", choices=["preview", "embed", "analyze", "plot"])
     ap.add_argument("--run-tag", required=True)
     ap.add_argument("--calibration", type=Path, default=CALIBRATION_CSV)
     ap.add_argument("--run-dir", type=Path, default=RUN_DIR)
@@ -320,7 +333,7 @@ def main() -> None:
     ap.add_argument("--host", default=DEFAULT_HOST)
     ap.add_argument("--model", default=EMBED_MODEL)
     args = ap.parse_args()
-    {"preview": run_preview, "embed": run_embed, "analyze": run_analyze}[args.stage](args)
+    {"preview": run_preview, "embed": run_embed, "analyze": run_analyze, "plot": run_plot}[args.stage](args)
 
 
 if __name__ == "__main__":
