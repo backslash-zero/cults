@@ -1,0 +1,16 @@
+entity,segments,interviews,pool,chance_precision,precision_unmasked,precision_masked,mean_rank_unmasked,mean_rank_masked
+Bike polo club,4,2,430,0.009,0.75,0.25,3.0,80.2
+Catholicism,8,5,430,0.019,0.5,0.125,13.9,149.8
+Christianity,9,5,430,0.021,0.222,0.0,68.6,170.0
+Islam,11,5,430,0.026,0.364,0.0,25.5,137.3
+Jehovah's Witnesses,7,4,430,0.016,0.857,0.286,4.4,53.0
+Judaism,3,3,430,0.007,0.0,0.0,9.7,50.7
+Ku Klux Klan,3,2,430,0.007,0.667,0.0,75.3,291.3
+Manson family,7,4,430,0.016,1.0,0.143,4.0,80.6
+Mormons,3,2,430,0.007,0.333,0.0,6.0,121.0
+New Age,4,3,430,0.009,0.5,0.0,5.2,158.2
+Orthodox Christianity,6,2,430,0.014,0.167,0.0,22.8,62.0
+Raëlism,8,4,430,0.019,1.0,0.0,4.5,159.1
+Religion in general,55,16,430,0.128,0.655,0.273,44.6,143.4
+Satanists,4,2,430,0.009,0.75,0.0,4.0,113.8
+Scientology,7,5,430,0.016,0.714,0.0,5.4,142.0
