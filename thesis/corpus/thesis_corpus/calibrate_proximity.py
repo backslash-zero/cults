@@ -274,6 +274,8 @@ def plot_profile(rows: list[dict], path: Path) -> None:
 def run_analyze(args) -> Path:
     out = OUT_ROOT / f"run_{args.run_tag}"
     report = out / "report"
+    if not (out / "vectors.jsonl").exists():
+        raise SystemExit(f"No vectors in {out}. Run the embed stage with --run-tag {args.run_tag} first.")
     vec = {}
     with (out / "vectors.jsonl").open(encoding="utf-8") as f:
         for line in f:
