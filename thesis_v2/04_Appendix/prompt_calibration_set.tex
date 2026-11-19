@@ -1,0 +1,37 @@
+% Verbatim prompt given to Claude Opus 5.5 on 18 Nov 2026 to generate the calibration set. Do not edit.
+\begin{quote}
+\footnotesize\ttfamily
+Generate a calibration set of sentence pairs for my master's thesis and save it as a UTF-8 CSV.
+
+\#\# Context\\
+The thesis uses bge-m3 sentence embeddings (cosine similarity) to explore how the contested concept "cult" is talked about in three sources: transcribed interviews (English and French, spoken), scholarly texts (academic English), and French state documents (MIVILUDES, administrative French, using "dérives sectaires"). The calibration set tests what cosine similarity in bge-m3 responds to. Each pair differs from a base sentence in ONE controlled way. Results will be compared across contrast types (an ordering), not against fixed thresholds.
+
+\#\# Design rules\\
+- Write base sentences, then derive all variants from each base, so pairs can also be combined into triplets.\\
+- Keep the group label ("cult") unchanged in every variant except in the label-swap contrast, so only the targeted change varies.\\
+- Change exactly one thing per pair. Negation = add or remove a single "not"/"don't". Opposite stance = the contrary position WITHOUT adding a negation word.\\
+- Bases: 15 about cults and 5 about a neutral group (a choir) as a control. Spread the cult bases over registers: 6 neutral written, 3 spoken (interview-like: fillers, lowercase, "you know", "like"), 3 academic, 3 administrative (MIVILUDES-like). All variants stay in the base's register.\\
+- Make one choir base an exact parallel of one cult base, with "choir" in place of "cult".\\
+- Cover varied claims: isolation from family, danger, obedience to a leader, financial pressure, free entry and exit, stigmatising use of the word, brainwashing, shame after leaving, reporting to authorities, the state not judging beliefs.
+
+\#\# Contrasts to generate per base\\
+0\_near\_identical: same sentence with only case/punctuation changed (upper anchor)\\
+1\_paraphrase: same meaning, different wording\\
+2\_opposite\_stance: opposite position on the same topic (e.g. "Cults are dangerous." / "Cults are harmless.")\\
+3\_negation: e.g. "The group isolates its members." / "The group does not isolate its members."\\
+4\_translation: English base vs a faithful French translation (cult $\rightarrow$ secte). Note in \`{}notes\`{} that "secte" is not a neutral equivalent. Where an administrative base is translated with "dérive sectaire", flag that too.\\
+6\_unrelated: base vs an everyday sentence on an unrelated subject IN THE SAME REGISTER (lower anchor)\\
+7\_same\_topic\_different\_claim: base vs another base of the same domain and register\\
+8\_singular\_plural: grammatical number only ("A cult isolates..." / "Cults isolate..."). Skip if the sentence doesn't allow it.
+
+\#\# Separate contrasts\\
+5\_name\_vs\_description: about 15 real groups often discussed in relation to cults (e.g. Scientology, Peoples Temple, Aum Shinrikyo, Heaven's Gate, Branch Davidians, Order of the Solar Temple, Unification Church, Raëlian Movement, Hare Krishna movement, NXIVM, Children of God, Rajneesh movement, Jehovah's Witnesses, Transcendental Meditation, Falun Gong). Pair each name with a one-sentence, factual, neutral description of what the group is or did (founder, practice, well-documented events). No allegations beyond established facts (e.g. criminal convictions). Also pair each name with ANOTHER group's description as a mismatched control. Add 2 well-known choirs with descriptions as a control.\\
+8b\_single\_word (weak): "cult"/"cults", "secte"/"sectes", "choir"/"choirs", "cult"/"sect", "cult"/"secte". Mark these as out of distribution.\\
+9\_label\_swap (optional): about 5 English frames with "cult" swapped for sect / new religious movement / religious community / choir / company, plus about 3 French frames with "secte" swapped for communauté religieuse / chorale / entreprise (keep gender agreement correct).\\
+10\_register\_shift (optional): for each neutral cult base, the same content rewritten in spoken, academic and administrative register.
+
+\#\# Output\\
+CSV columns: pair\_id, contrast, domain (cult/choir), register, base\_id (same-topic pairs: "N1|N2"), sentence\_a, sentence\_b, lang\_a, lang\_b, notes.\\
+Generate it with a short script so the quoting is correct, and print counts per contrast and domain.\\
+Then list: (1) any pairs where you couldn't change exactly one thing, (2) every French translation that may be terminologically loaded, (3) every group description I should fact-check.
+\end{quote}
