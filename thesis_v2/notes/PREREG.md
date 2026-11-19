@@ -1,8 +1,6 @@
 # Pre-registration: calibration and layered analysis
 
-Status: **DRAFT, to be approved by Celestin before the Ollama run (Thu 19 Nov).** Once approved, the date and the git commit go here, and the file is not edited again. Later changes go in a dated "Deviations" section at the end.
-
-Approved: (date) · commit: (hash)
+Status: **APPROVED by Celestin on 19 Nov 2026, before the Ollama run. Frozen.** The frozen version is the git commit "Approve and freeze PREREG.md". The file is not edited again; later changes go in a dated "Deviations" section at the end.
 
 ## Honest limit
 
@@ -17,7 +15,7 @@ Results of earlier versions of this analysis (steps 02 to 11, the coercive-contr
 - Triplets: for each base, whether each edited variant is closer to the base than the base's same-topic, different-claim partner.
 - Nothing is turned into a threshold or a noise band. The result is an ordering between two anchors (near-identical at the top, unrelated at the bottom).
 
-**Expectations (proposed, Celestin to accept or change before the run).**
+**Expectations (accepted by Celestin, 19 Nov).**
 - E1. Near-identical > paraphrase > same topic different claim > unrelated, by median.
 - E2. Negation pairs sit closer than paraphrases (the model registers negation weakly).
 - E3. Opposite-stance pairs sit closer than same-topic different-claim pairs (topic outweighs stance).

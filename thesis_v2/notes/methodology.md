@@ -18,6 +18,12 @@
 - 12 The 108 MIVILUDES expressions as a figure in the text: keep.
 - MIVILUDES corpus, checked: the activity report gives 94 expressions, the Comment identifier page gives 14 plus the 17 hand-copied criteria.
 
+## Entity and filler review (19 Nov)
+
+- 45 entities, no merges. 15 enter the masked test (3+ segments in 2+ interviews), including the broad category Religion in general (55 segments, 16 interviews).
+- Entities named in only one interview (Druze, Moonies, Children of God, MK Ultra, Tomato cult, AI cult) stay in the map but not in the masked test.
+- Filler rule accepted: 48 participant segments with no content word removed, 430 kept. Three borderline ones stay removed (no answer given): How do we all do the same thing?, Oh, okay, yeah, not good, They sell it that way, okay.
+
 ## Decision on style and authorship (18 Nov)
 
 - No corrections for style or authorship (no register pairs, no subtracting corpus averages, no leave-one-interview-out).
