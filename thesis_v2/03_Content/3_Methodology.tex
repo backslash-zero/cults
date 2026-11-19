@@ -23,7 +23,51 @@ I also tried to be aware of my own biases and assumptions, avoid leading questio
 Each of the three corpora brings its own biases, and the perspective of people who have been part of such groups is missing. These limitations are detailed in \ref{sec:limitations}.
 
 \section{Data Collection}
+% Here insert table of the 3 different epistemologies
 \label{sec:DataCollection}
+The goal is to find ways in which the concept of cult can be understood as a collective knowledge. This step constitute the first step of the research project, and is the most important one. We're looking for associations, definitions, examples, oppositions, limits. In order to achieve this, three different type of epsitemologies are gathered.
+The very first one that was considered was the one suggested by the MIVILUDES since it sparked this research in the first place and present a ready-to-use ontology with its detailed modes of "sectarian drifts".
+Since we focus on use in language, we are looking for the everyday understanding of the term. This was achieved through interviews with non-specialist. Finally, a more informed understanding of the term through researchers and scholars, which was achieved through a systematic literature review.
+
+% Table requested by Celestin on 19 Nov (comment above); facts from notes/data_collection.md and notes/methodology.md
+\begin{table}[htbp]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}XXX@{}}
+\toprule
+ & MIVILUDES & Interviews & Literature \\
+\midrule
+Understanding & institutional, almost-legal & everyday, non-specialist & scholarly \\
+Source & a French state body & 28 people from my own circles & researchers and scholars \\
+Collection & two documents: the 2022 to 2024 activity report and the page \foreignlanguage{french}{Comment identifier une dérive sectaire ?} & semi-structured interviews: 22 in person, 6 as Instagram text answers & systematic search in OpenAlex, screened and ranked \\
+Material & 17 criteria and 108 extracted expressions & 12,181 words; 430 participant segments after filler removal & 68 documents (57 with full text); 5,741 extracted expressions \\
+Language & French, with a working English translation & 22 in English, 6 in French & English search terms \\
+Period & report 2022 to 2024; page accessed 27 Aug 2026 & 5 Aug to 10 Sep 2026 & published 2001 to 2024 \\
+\bottomrule
+\end{tabularx}
+\caption{The three corpora of the Data Collection.}
+\label{tab:epistemologies}
+\end{table}
+
+\subsection{MIVILUDES and Sectarian Drifts}
+
+As mentioned in the \ref{sec:MIVILUDES},  a \text{sectarian drift}\footnote{
+    The english translation of 'Secte' french substantive IS 'Cult', so when the Mivildues refers to sectarian drifts, it is really talking about cult-like negative consequences. See \ref{sec:defining_cult}
+}
+can take different modality, and do not all have to be fulfilled to be worthy of interest from the institutions. Therefore, within this specific framework, we should not conceive a cult as a group that fulfills a list of criteria (although this is the word they use), but rather as signs that they could be conceived as such.
+Of course, this approach betrays the original intent of the MIVILUDES, which is indeed NOT to point at any object as a \textit{cult}, and only draw hints, a silouhette of what it could be. The MIVILUDES provide a rare attempt at an institutional, almost-legal, definition.
+Another critical aspect of the sectarian-drift is that they don't look at the nature of the beliefs but only at behaviours or social relationships.
+\subsubsection{The Documents}
+Conveniantely, the list of so-called \textit{criteria} is provided directly on their website\autocite[postnote]{CommentIdentifierDerive} as 17 criteria and the list and translation can be found in Appendix~\ref{app:miviludes_criteria}.
+Additionaly the MIVILUDES produces regular reports about its activities, which also consititute an intersting knowledge base, with statistics, analysis and writings by researchers.
+
+\subsubsection{The Documents}
+- The 2022 to 2024 activity report: 94 expressions
+- The page Comment identifier une dérive sectaire ? (accessed 27 Aug 2026): 14 expressions, plus the 17 criteria
+
+Criteria and expressions
+- 17 criteria, verbatim in French, with a working English translation
+- 108 expressions in total, shown as a figure
 \subsection{Interviews}
 % Source: notes/data_collection.md, approved by Celestin on 19 Nov as the bullets for this section
 
@@ -34,7 +78,7 @@ Why interviews
 
 Who
 - 28 people already known to me: friends, friends of friends, acquaintances
-    - Instagram stories as a second channel
+- Instagram stories as a second channel
 - 14 men, 12 women, 1 other, 1 redacted
 - Ages 26 to 97, median 34
 - Mostly living in Germany (18) and France (6)
@@ -42,12 +86,12 @@ Who
 
 The questions
 - Two core questions
-    - When you hear the word cult, what comes to mind?
-    - Thinking about the example or image you described, what makes it a cult for you?
+- When you hear the word cult, what comes to mind?
+- Thinking about the example or image you described, what makes it a cult for you?
 - Three neutral follow-ups
-    - What makes you say that?
-    - Which features feel most important?
-    - What would make it no longer a cult?
+- What makes you say that?
+- Which features feel most important?
+- What would make it no longer a cult?
 - Semi-structured
 
 In person and Instagram
@@ -73,7 +117,7 @@ OpenAlex
 
 Search
 - Fixed queries: cult, sect, new religious movements, extreme beliefs
-    - plus sectarian drifts, as the bridge to MIVILUDES
+- plus sectarian drifts, as the bridge to MIVILUDES
 - Titles only, except for sectarian drifts (title and abstract)
 - No NRM on its own: the acronym collides with other fields
 
@@ -85,84 +129,70 @@ Screening and ranking
 Result
 - 68 documents: 33 articles, 23 books, 12 chapters, from 2001 to 2024
 - 57 with full text
-    - 11 missing behind paywalls or out of print: an access bias
+- 11 missing behind paywalls or out of print: an access bias
 - Extracted with Docling, then checked by hand
 
-\subsection{MIVILUDES}
-
-Why it matters
-- A state body with an institutional definition
-- It targets harmful behaviour, not beliefs
-- Footnote: secte means cult, so a sectarian drift is cult-like harm
-
-The documents
-- The 2022 to 2024 activity report: 94 expressions
-- The page Comment identifier une dérive sectaire ? (accessed 27 Aug 2026): 14 expressions, plus the 17 criteria
-
-Criteria and expressions
-- 17 criteria, verbatim in French, with a working English translation
-- 108 expressions in total, shown as a figure
-
 % Source: Celestin's decision of 18 Nov on style and authorship; the controls listed are those of the approved plan
+
 \section{What proximity measures}
 \label{sec:proximity}
 
 % Source: Celestin's brief of 18 Nov (prepared in another conversation); bullets only, Celestin types the final text
 Calibration experiment: framing
 - A sensitivity profile, not a noise band
-    - it shows which kinds of differences the model registers and how strongly
-    - by comparing contrast types against each other: an ordering (paraphrase vs negation vs same topic with a different claim vs unrelated)
+- it shows which kinds of differences the model registers and how strongly
+- by comparing contrast types against each other: an ordering (paraphrase vs negation vs same topic with a different claim vs unrelated)
 - Not a threshold that corpus distances must exceed
-    - group-level comparisons in the corpus need their own checks (for example permutation tests)
-    - the experiment informs interpretation, it does not replace those checks
+- group-level comparisons in the corpus need their own checks (for example permutation tests)
+- the experiment informs interpretation, it does not replace those checks
 - Results reported as distributions per contrast type
-    - near-identical pairs as the top anchor, unrelated pairs as the bottom anchor
-    - because raw cosines in bge-m3 do not span the full 0 to 1 range
+- near-identical pairs as the top anchor, unrelated pairs as the bottom anchor
+- because raw cosines in bge-m3 do not span the full 0 to 1 range
 - Triplets where possible
-    - is the edited sentence closer to the original than a different claim on the same topic?
+- is the edited sentence closer to the original than a different claim on the same topic?
 - Note: the pair list was written with an external LLM, Claude Opus 5.5, from my prompt, then curated by me
-    - prompt and details in the notice of AI use, \ref{sec:ai_notice_calibration}
+- prompt and details in the notice of AI use, \ref{sec:ai_notice_calibration}
 
 [TO REVIEW: aim]
 - Before interpreting distances in the corpus: test what cosine similarity in bge-m3 responds to
-    - hand-written sentence pairs, each differing in one controlled way
+- hand-written sentence pairs, each differing in one controlled way
 - The aim is not a significance threshold
-    - it is which kinds of differences (meaning, stance, negation, language, wording) the model registers, and how strongly relative to one another
+- it is which kinds of differences (meaning, stance, negation, language, wording) the model registers, and how strongly relative to one another
 
 Precedents
 - Controlled sentence pairs and triplets are an established way to probe sentence embeddings
 - Zhu, Li and de Melo 2018 (zhuExploringSemanticProperties2018)
-    - sentence triplets with controlled edits: negation, synonym substitution, passivisation, argument reordering
-    - how these changes affect embedding similarity
+- sentence triplets with controlled edits: negation, synonym substitution, passivisation, argument reordering
+- how these changes affect embedding similarity
 - Nikolaev and Padó 2023 (nikolaevRepresentationBiasesSentence2023) [VERIFY pages: 3701 to 3716 or 3683 to 3698]
-    - controlled sentences with modern sentence transformers
-    - cosine similarity driven more by overlap in the nouns than by predicates or syntactic roles
+- controlled sentences with modern sentence transformers
+- cosine similarity driven more by overlap in the nouns than by predicates or syntactic roles
 - Optional: the 0 to 5 graded similarity scale of the SemEval STS tasks, Cer et al. 2017 (cerSemEval2017Task12017)
-    - level 1 means not equivalent, but on the same topic
+- level 1 means not equivalent, but on the same topic
 
 \begin{table}[htbp]
-\centering
-\footnotesize
-\begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}XX@{}}
-\toprule
-Contrast & Example & What it tests \\
-\midrule
-Paraphrase & A cult isolates its members from their families. / A cult cuts its followers off from their relatives. & whether wording changes alone move similarity \\
-Opposite stance & Cults are dangerous. / Cults are harmless. & whether the model registers evaluative stance on the same topic \\
-Negation & The group isolates its members. / The group does not isolate its members. & sensitivity to explicit negation with high word overlap \\
-Translation & English sentence / its French translation & cross-lingual alignment of equivalent content \\
-Name vs conduct description & Scientology / a one-sentence description of what the group does & whether a group name and a description of its conduct are treated as close \\
-Unrelated & cult sentence / everyday sentence & lower anchor (floor) of similarity \\
-Same topic, unrelated claim & two cult sentences making different claims & how much shared topic alone produces similarity \\
-Singular vs plural & A cult isolates\ldots{} / Cults isolate\ldots{} & sensitivity to grammatical number, generic vs singular reference \\
-\midrule
-\multicolumn{3}{@{}l}{[TO REVIEW: optional rows]} \\
-Near-identical pair & same sentence, case and punctuation changed & upper anchor \\
-Label swap & cult / sect / secte / choir in an identical frame & how much the group label alone drives similarity \\
-\bottomrule
-\end{tabularx}
-\caption{Contrast types of the calibration experiment. A control set uses a neutral social group (a choir). The full set of pairs is in Appendix~\ref{app:calibration}.}
-\label{tab:contrasts}
+    \centering
+    \footnotesize
+    \begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}XX@{}}
+        \toprule
+        Contrast                    & Example                                                                                                & What it tests                                                              \\
+        \midrule
+        Paraphrase                  & A cult isolates its members from their families. / A cult cuts its followers off from their relatives. & whether wording changes alone move similarity                              \\
+        Opposite stance             & Cults are dangerous. / Cults are harmless.                                                             & whether the model registers evaluative stance on the same topic            \\
+        Negation                    & The group isolates its members. / The group does not isolate its members.                              & sensitivity to explicit negation with high word overlap                    \\
+        Translation                 & English sentence / its French translation                                                              & cross-lingual alignment of equivalent content                              \\
+        Name vs conduct description & Scientology / a one-sentence description of what the group does                                        & whether a group name and a description of its conduct are treated as close \\
+        Unrelated                   & cult sentence / everyday sentence                                                                      & lower anchor (floor) of similarity                                         \\
+        Same topic, unrelated claim & two cult sentences making different claims                                                             & how much shared topic alone produces similarity                            \\
+        Singular vs plural          & A cult isolates\ldots{} / Cults isolate\ldots{}                                                        & sensitivity to grammatical number, generic vs singular reference           \\
+        \midrule
+        \multicolumn{3}{@{}l}{[TO REVIEW: optional rows]}                                                                                                                                                                 \\
+        Near-identical pair         & same sentence, case and punctuation changed                                                            & upper anchor                                                               \\
+        Label swap                  & cult / sect / secte / choir in an identical frame                                                      & how much the group label alone drives similarity                           \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Contrast types of the calibration experiment. A control set uses a neutral social group (a choir). The full set of pairs is in Appendix~\ref{app:calibration}.}
+    \label{tab:contrasts}
 \end{table}
 
 % Source: calibration run 20261119 (notes/calibration_results.md), pre-registered in notes/PREREG.md; bullets for Celestin to review
@@ -170,44 +200,44 @@ Label swap & cult / sect / secte / choir in an identical frame & how much the gr
 Calibration results
 - Run: bge-m3 via Ollama, 249 pairs, all kept after curation
 - Ordering of medians, cult set
-    - near-identical 0.98, singular vs plural 0.98, paraphrase 0.90, register shift 0.88, label swap 0.88, translation 0.87, opposite stance 0.84, negation 0.84
-    - same topic, different claim 0.63, unrelated 0.52, name vs description 0.37
+- near-identical 0.98, singular vs plural 0.98, paraphrase 0.90, register shift 0.88, label swap 0.88, translation 0.87, opposite stance 0.84, negation 0.84
+- same topic, different claim 0.63, unrelated 0.52, name vs description 0.37
 - Cosines never go near 0: unrelated pairs still sit around 0.5, so only the ordering is read
 - Pre-registered expectations
-    - holds: the anchors in order; opposite stance closer than a different claim; translation near paraphrase; singular and plural near paraphrase; matched names above mismatched ones; the choir control follows the same ordering
-    - fails: negation was expected closer than paraphrase, it sits slightly below (0.84 vs 0.90)
+- holds: the anchors in order; opposite stance closer than a different claim; translation near paraphrase; singular and plural near paraphrase; matched names above mismatched ones; the choir control follows the same ordering
+- fails: negation was expected closer than paraphrase, it sits slightly below (0.84 vs 0.90)
 - Triplets: every edit (paraphrase, stance, negation, translation, number) stays closer to its base than a different claim on the same topic, 98 of 98
-    - what is claimed counts more than how it is said or whether it is affirmed or denied
+- what is claimed counts more than how it is said or whether it is affirmed or denied
 - The label barely matters: swapping cult for sect, choir or company keeps 0.88
 - Register shift moves similarity about as much as a paraphrase
 - A bare name against a description of the group scores below two unrelated sentences
-    - matches the earlier name-form finding: names and descriptions are not comparable in this model
+- matches the earlier name-form finding: names and descriptions are not comparable in this model
 - Translation slightly lower for cult sentences than for choir sentences (0.87 vs 0.93): a hint that secte is not neutral, too few pairs to claim it
 
 Masked-entity test
 - 15 entities named in at least 3 segments from at least 2 interviews; query is the bare name, pool is the 430 participant segments
 - With the name: strong retrieval (precision 0.71 to 1.0 for Manson family, Raëlism, Scientology, Jehovah's Witnesses, Satanists; chance about 0.02)
 - With the name masked: precision near 0 for most entities
-    - retrieval rested mainly on the name
+- retrieval rested mainly on the name
 - Masked segments still rank better than chance (mean rank about 50 to 170 of 430, chance about 215), except the Ku Klux Klan
-    - some content remains beyond the name
+- some content remains beyond the name
 - Consequence: entity results in Results are read from the quotes, not from proximity to the name
 
 \begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{Figures/calibration_profile.png}
-\caption{Sensitivity profile of bge-m3: cosine similarity by contrast type, for the cult set and the choir control. Pairs in Appendix~\ref{app:calibration}.}
-\label{fig:calibration_profile}
+    \centering
+    \includegraphics[width=\textwidth]{Figures/calibration_profile.png}
+    \caption{Sensitivity profile of bge-m3: cosine similarity by contrast type, for the cult set and the choir control. Pairs in Appendix~\ref{app:calibration}.}
+    \label{fig:calibration_profile}
 \end{figure}
 
 Style and authorship
 - No custom patch for style or authorship
-    - a patch of this kind may also introduce its own biases
+- a patch of this kind may also introduce its own biases
 - This is also a study of language differences
-    - differences in style between interviews, scholars and MIVILUDES are treated as meaningful
-    - they may express similar details, but the analysis does not go that deep
+- differences in style between interviews, scholars and MIVILUDES are treated as meaningful
+- they may express similar details, but the analysis does not go that deep
 - What is still controlled
-    - topic: the calibration pairs, and the check on the word cult itself
-    - names: the masked-entity test, and entities described by their conduct
-    - length: ranks and differences rather than raw distances
-    - generic closeness: the dictionary baseline
+- topic: the calibration pairs, and the check on the word cult itself
+- names: the masked-entity test, and entities described by their conduct
+- length: ranks and differences rather than raw distances
+- generic closeness: the dictionary baseline
