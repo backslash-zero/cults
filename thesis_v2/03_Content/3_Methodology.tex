@@ -25,7 +25,7 @@ Each of the three corpora brings its own biases, and the perspective of people w
 \section{Data Collection}
 % Here insert table of the 3 different epistemologies
 \label{sec:DataCollection}
-The goal is to find ways in which the concept of cult can be understood as a collective knowledge. This step constitutes the first step of the research project, and is the most important one. We're looking for associations, definitions, examples, oppositions, limits. In order to achieve this, three different types of epistemologies are gathered.
+The goal is to find ways in which the concept of cult can be understood as a collective knowledge. This step constitutes the first step of the research project, and is the most important one. We're looking for associations, definitions, examples, oppositions, limits. In order to achieve this, three different types of epistemologies are gathered (Table~\ref{tab:epistemologies}).
 The very first one that was considered was the one suggested by the MIVILUDES since it sparked this research in the first place and presents a ready-to-use ontology with its detailed modes of "sectarian drifts".
 Since we focus on use in language, we are looking for the everyday understanding of the term. This was achieved through interviews with non-specialists. Finally, a more informed understanding of the term through researchers and scholars, which was achieved through a systematic literature review.
 
@@ -52,8 +52,8 @@ Since we focus on use in language, we are looking for the everyday understanding
 
 \subsection{MIVILUDES and Sectarian Drifts}
 
-As mentioned in the \ref{sec:MIVILUDES},  a \textit{sectarian drift}\footnote{
-    The English translation of the French noun 'Secte' IS 'Cult', so when the MIVILUDES refers to sectarian drifts, it is really talking about cult-like negative consequences. See \ref{sec:defining_cult}
+As mentioned in Section~\ref{sec:MIVILUDES}, a \textit{sectarian drift}\footnote{
+    The English translation of the French noun 'Secte' IS 'Cult', so when the MIVILUDES refers to sectarian drifts, it is really talking about cult-like negative consequences. See Section~\ref{sec:defining_cult}.
 }
 can take different modalities, and do not all have to be fulfilled to be worthy of interest from the institutions. Therefore, within this specific framework, we should not conceive a cult as a group that fulfills a list of criteria (although this is the word they use), but rather as signs that they could be conceived as such.
 Of course, this approach betrays the original intent of the MIVILUDES, which is indeed NOT to point at any object as a \textit{cult}, and only draw hints, a silhouette of what it could be. The MIVILUDES provide a rare attempt at an institutional, almost-legal, definition.
@@ -61,50 +61,71 @@ Another critical aspect of the sectarian-drift is that they don't look at the na
 \subsubsection{The Documents}
 Conveniently, the list of so-called \textit{criteria} is provided directly on their website\autocite[]{CommentIdentifierDerive} as 17 criteria and the list and translation can be found in Appendix~\ref{app:miviludes_criteria}.
 Additionally, the MIVILUDES produces regular reports about its activities, which also constitute an interesting knowledge base, with statistics, analysis and writings by researchers.
-e
+
 \subsection{Interviews}
-To get a different idea of the use of ]\textit{cult} in every-day language, it was crucial to gather its use from immediate surrounding.
+To get a different idea of the use of the word \textit{cult} in everyday language, it is also crucial to gather its use by non-specialists.
 
-Why interviews
-- The question is about everyday understanding, next to the scholarly and legal views
-- Open questions, so people use their own words, examples and criteria
-- Expectation: contradicting, media-shaped answers
+The interview methodology was designed to extract people's views without orienting the thought process of the participants, asking a very open-ended question (\enquote{When you hear the word cult, what comes to mind?}, see the protocol in Appendix~\ref{sec:interview_protocol}) and following a normal conversation flow, and only extract relevant data afterwards.
+The open question has the advantage of letting the participant express themselves in their \textit{own words}, which is great for adding diversity of language, criteria, or examples.
 
-Who
-- 28 people already known to me: friends, friends of friends, acquaintances
-- Instagram stories as a second channel
-- 14 men, 12 women, 1 other, 1 redacted
-- Ages 26 to 97, median 34
-- Mostly living in Germany (18) and France (6)
-- Interviewed 5 Aug to 10 Sep 2026, in four batches plus Instagram
+% insert stats summary here
+% Table requested by Celestin on 20 Nov (comment above); counts from thesis/corpus/interviews/metadata/database.csv
+\begin{table}[htbp]
+    \centering
+    \scriptsize
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{0.85\textwidth}{@{}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}X@{}}
+        \toprule
+        Participants & 28, all known to me: friends, friends of friends, acquaintances; Instagram stories as a second channel \\
+        Gender       & 14 male, 12 female, 1 other, 1 redacted \\
+        Age          & 26 to 97, median 34 (one redacted) \\
+        Residence    & Germany 18, France 6, Slovakia 1, Spain 1, United States 1, redacted 1 \\
+        Method       & 22 in person, in four batches (11, 2, 7, 2); 6 Instagram text answers \\
+        Language     & 22 in English; 6 in French, in person, translated into English \\
+        Dates        & 5 Aug to 10 Sep 2026 \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Interview participants.}
+    \label{tab:participants}
+\end{table}
+% - 28 people already known to me: friends, friends of friends, acquaintances
+% - Instagram stories as a second channel
+% - 14 men, 12 women, 1 other, 1 redacted
+% - Ages 26 to 97, median 34
+% - Mostly living in Germany (18) and France (6)
+% - Interviewed 5 Aug to 10 Sep 2026, in four batches plus Instagram
+% In person and Instagram
+% - 22 in person, 6 Instagram text answers
+% - 22 in English, 6 in French (marked as translated)
 
-The questions
-- Two core questions
-- When you hear the word cult, what comes to mind?
-- Thinking about the example or image you described, what makes it a cult for you?
-- Three neutral follow-ups
-- What makes you say that?
-- Which features feel most important?
-- What would make it no longer a cult?
-- Semi-structured
-- Bias: the questions ask people to reflect on the word and the notion
-    - rather than capturing a more spontaneous usage in everyday life
+The interviews were conducted spontaneously in different environments and transcribed in real time by Google Recorder\autocite{google_recorder_2026} for the audio. Then a manual cleanup was performed, first with an LLM\autocite{anthropic_2026} (see the notice of AI use, Section~\ref{sec:ai_notice}) and then manually against the audio. The LLM also performed a batching into one consistent format, and conversions
 
-In person and Instagram
-- 22 in person, 6 Instagram text answers
-- 22 in English, 6 in French (marked as translated)
+% maybe add more stats
+% Table requested by Celestin on 20 Nov (comment above); counts from database.csv, initial_exemplars.csv and processed/analysis_raw/layers/participant_segments.csv
+\begin{table}[htbp]
+    \centering
+    \scriptsize
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{0.85\textwidth}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}X@{}}
+        \toprule
+        Words                  & 12,181 in total; median 287 per interview (111 to 1,536) \\
+        \quad in person        & 11,042; median 394 (156 to 1,536) \\
+        \quad Instagram        & 1,139; median 201 (111 to 273) \\
+        Turns                  & 145 questions, 188 answers \\
+        Participant segments   & 478; 430 after filler removal, median 13 per interview (2 to 44) \\
+        First example mentioned & 26 coded: 12 unclear, 5 classic new religious movement or religious group, 3 named group or movement, 2 metaphorical, 2 mixed, 1 digital or technology, 1 organisation \\
+        Metadata kept          & age, gender, nationality, main language, residence, interview language, method, date \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Interview transcripts.}
+    \label{tab:transcripts}
+\end{table}
+% 12,181 words in total, median 287 per interview
+%- Demographics, language, method, date
+% The first example mentioned: 26 coded, 12 of them unclear
+% One participant's demographics redacted at their request
 
-Transcription
-- Google Recorder for the audio
-- Claude clean-up: transcription slips only, with my approval
-- My manual pass against the audio
-- AI batching into one consistent format
-- 12,181 words in total, median 287 per interview
-
-Metadata
-- Demographics, language, method, date
-- The first example mentioned: 26 coded, 12 of them unclear
-- One participant's demographics redacted at their request
+The final transcripts and statistics can be found in Appendix~\ref{app:interviews}.
 
 \subsection{Literature}
 
