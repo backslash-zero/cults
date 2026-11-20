@@ -1,4 +1,4 @@
-% Budget: 6 pages, ~1,900 words, incl. ~400 on what proximity measures
+% Budget: 5 pages, ~1,500 words
 
 \chapter{Methodology}\label{ch:methodology}
 
@@ -77,53 +77,38 @@ The open question has the advantage of letting the participant express themselve
     \begin{tabularx}{0.85\textwidth}{@{}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}X@{}}
         \toprule
         Participants & 28, all known to me: friends, friends of friends, acquaintances; Instagram stories as a second channel \\
-        Gender       & 14 male, 12 female, 1 other, 1 redacted \\
-        Age          & 26 to 97, median 34 (one redacted) \\
-        Residence    & Germany 18, France 6, Slovakia 1, Spain 1, United States 1, redacted 1 \\
-        Method       & 22 in person, in four batches (11, 2, 7, 2); 6 Instagram text answers \\
-        Language     & 22 in English; 6 in French, in person, translated into English \\
-        Dates        & 5 Aug to 10 Sep 2026 \\
+        Gender       & 14 male, 12 female, 1 other, 1 redacted                                                                \\
+        Age          & 26 to 97, median 34 (one redacted)                                                                     \\
+        Residence    & Germany 18, France 6, Slovakia 1, Spain 1, United States 1, redacted 1                                 \\
+        Method       & 22 in person, in four batches (11, 2, 7, 2); 6 Instagram text answers                                  \\
+        Language     & 22 in English; 6 in French, in person, translated into English                                         \\
+        Dates        & 5 Aug to 10 Sep 2026                                                                                   \\
         \bottomrule
     \end{tabularx}
     \caption{Interview participants.}
     \label{tab:participants}
 \end{table}
-% - 28 people already known to me: friends, friends of friends, acquaintances
-% - Instagram stories as a second channel
-% - 14 men, 12 women, 1 other, 1 redacted
-% - Ages 26 to 97, median 34
-% - Mostly living in Germany (18) and France (6)
-% - Interviewed 5 Aug to 10 Sep 2026, in four batches plus Instagram
-% In person and Instagram
-% - 22 in person, 6 Instagram text answers
-% - 22 in English, 6 in French (marked as translated)
 
-The interviews were conducted spontaneously in different environments and transcribed in real time by Google Recorder\autocite{google_recorder_2026} for the audio. Then a manual cleanup was performed, first with an LLM\autocite{anthropic_2026} (see the notice of AI use, Section~\ref{sec:ai_notice}) and then manually against the audio. The LLM also performed a batching into one consistent format, and conversions
+The interviews were conducted spontaneously in different environments and transcribed in real time by Google Recorder\autocite{google_recorder_2026} for the audio. Then a manual cleanup was performed, first with an LLM\autocite{anthropic_2026} (see the notice of AI use, Section~\ref{sec:ai_notice}) and then manually against the audio. The LLM also performed a batching into one consistent format.
 
-% maybe add more stats
-% Table requested by Celestin on 20 Nov (comment above); counts from database.csv, initial_exemplars.csv and processed/analysis_raw/layers/participant_segments.csv
 \begin{table}[htbp]
     \centering
     \scriptsize
     \renewcommand{\arraystretch}{1.3}
     \begin{tabularx}{0.85\textwidth}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}X@{}}
         \toprule
-        Words                  & 12,181 in total; median 287 per interview (111 to 1,536) \\
-        \quad in person        & 11,042; median 394 (156 to 1,536) \\
-        \quad Instagram        & 1,139; median 201 (111 to 273) \\
-        Turns                  & 145 questions, 188 answers \\
-        Participant segments   & 478; 430 after filler removal, median 13 per interview (2 to 44) \\
+        Words                   & 12,181 in total; median 287 per interview (111 to 1,536)                                                                                                               \\
+        \quad in person         & 11,042; median 394 (156 to 1,536)                                                                                                                                      \\
+        \quad Instagram         & 1,139; median 201 (111 to 273)                                                                                                                                         \\
+        Turns                   & 145 questions, 188 answers                                                                                                                                             \\
+        Participant segments    & 478; 430 after filler removal, median 13 per interview (2 to 44)                                                                                                       \\
         First example mentioned & 26 coded: 12 unclear, 5 classic new religious movement or religious group, 3 named group or movement, 2 metaphorical, 2 mixed, 1 digital or technology, 1 organisation \\
-        Metadata kept          & age, gender, nationality, main language, residence, interview language, method, date \\
+        Metadata kept           & age, gender, nationality, main language, residence, interview language, method, date                                                                                   \\
         \bottomrule
     \end{tabularx}
     \caption{Interview transcripts.}
     \label{tab:transcripts}
 \end{table}
-% 12,181 words in total, median 287 per interview
-%- Demographics, language, method, date
-% The first example mentioned: 26 coded, 12 of them unclear
-% One participant's demographics redacted at their request
 
 The final transcripts and statistics can be found in Appendix~\ref{app:interviews}.
 
@@ -149,112 +134,5 @@ Result
 - 11 missing behind paywalls or out of print: an access bias
 - Extracted with Docling, then checked by hand
 
-% Source: Celestin's decision of 18 Nov on style and authorship; the controls listed are those of the approved plan
 
-\section{What proximity measures}
-\label{sec:proximity}
-
-% Source: Celestin's brief of 18 Nov (prepared in another conversation); bullets only, Celestin types the final text
-Calibration experiment: framing
-- A sensitivity profile, not a noise band
-- it shows which kinds of differences the model registers and how strongly
-- by comparing contrast types against each other: an ordering (paraphrase vs negation vs same topic with a different claim vs unrelated)
-- Not a threshold that corpus distances must exceed
-- group-level comparisons in the corpus need their own checks (for example permutation tests)
-- the experiment informs interpretation, it does not replace those checks
-- Results reported as distributions per contrast type
-- near-identical pairs as the top anchor, unrelated pairs as the bottom anchor
-- because raw cosines in bge-m3 do not span the full 0 to 1 range
-- Triplets where possible
-- is the edited sentence closer to the original than a different claim on the same topic?
-- Note: the pair list was written with an external LLM, Claude Opus 5.5, from my prompt, then curated by me
-- prompt and details in the notice of AI use, \ref{sec:ai_notice_calibration}
-
-[TO REVIEW: aim]
-- Before interpreting distances in the corpus: test what cosine similarity in bge-m3 responds to
-- hand-written sentence pairs, each differing in one controlled way
-- The aim is not a significance threshold
-- it is which kinds of differences (meaning, stance, negation, language, wording) the model registers, and how strongly relative to one another
-
-Precedents
-- Controlled sentence pairs and triplets are an established way to probe sentence embeddings
-- Zhu, Li and de Melo 2018 (zhuExploringSemanticProperties2018)
-- sentence triplets with controlled edits: negation, synonym substitution, passivisation, argument reordering
-- how these changes affect embedding similarity
-- Nikolaev and Padó 2023 (nikolaevRepresentationBiasesSentence2023) [VERIFY pages: 3701 to 3716 or 3683 to 3698]
-- controlled sentences with modern sentence transformers
-- cosine similarity driven more by overlap in the nouns than by predicates or syntactic roles
-- Optional: the 0 to 5 graded similarity scale of the SemEval STS tasks, Cer et al. 2017 (cerSemEval2017Task12017)
-- level 1 means not equivalent, but on the same topic
-
-\begin{table}[htbp]
-    \centering
-    \footnotesize
-    \begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}XX@{}}
-        \toprule
-        Contrast                    & Example                                                                                                & What it tests                                                              \\
-        \midrule
-        Paraphrase                  & A cult isolates its members from their families. / A cult cuts its followers off from their relatives. & whether wording changes alone move similarity                              \\
-        Opposite stance             & Cults are dangerous. / Cults are harmless.                                                             & whether the model registers evaluative stance on the same topic            \\
-        Negation                    & The group isolates its members. / The group does not isolate its members.                              & sensitivity to explicit negation with high word overlap                    \\
-        Translation                 & English sentence / its French translation                                                              & cross-lingual alignment of equivalent content                              \\
-        Name vs conduct description & Scientology / a one-sentence description of what the group does                                        & whether a group name and a description of its conduct are treated as close \\
-        Unrelated                   & cult sentence / everyday sentence                                                                      & lower anchor (floor) of similarity                                         \\
-        Same topic, unrelated claim & two cult sentences making different claims                                                             & how much shared topic alone produces similarity                            \\
-        Singular vs plural          & A cult isolates\ldots{} / Cults isolate\ldots{}                                                        & sensitivity to grammatical number, generic vs singular reference           \\
-        \midrule
-        \multicolumn{3}{@{}l}{[TO REVIEW: optional rows]}                                                                                                                                                                 \\
-        Near-identical pair         & same sentence, case and punctuation changed                                                            & upper anchor                                                               \\
-        Label swap                  & cult / sect / secte / choir in an identical frame                                                      & how much the group label alone drives similarity                           \\
-        \bottomrule
-    \end{tabularx}
-    \caption{Contrast types of the calibration experiment. A control set uses a neutral social group (a choir). The full set of pairs is in Appendix~\ref{app:calibration}.}
-    \label{tab:contrasts}
-\end{table}
-
-% Source: calibration run 20261119 (notes/calibration_results.md), pre-registered in notes/PREREG.md; bullets for Celestin to review
-[TO REVIEW: calibration results]
-Calibration results
-- Run: bge-m3 via Ollama, 249 pairs, all kept after curation
-- Ordering of medians, cult set
-- near-identical 0.98, singular vs plural 0.98, paraphrase 0.90, register shift 0.88, label swap 0.88, translation 0.87, opposite stance 0.84, negation 0.84
-- same topic, different claim 0.63, unrelated 0.52, name vs description 0.37
-- Cosines never go near 0: unrelated pairs still sit around 0.5, so only the ordering is read
-- Pre-registered expectations
-- holds: the anchors in order; opposite stance closer than a different claim; translation near paraphrase; singular and plural near paraphrase; matched names above mismatched ones; the choir control follows the same ordering
-- fails: negation was expected closer than paraphrase, it sits slightly below (0.84 vs 0.90)
-- Triplets: every edit (paraphrase, stance, negation, translation, number) stays closer to its base than a different claim on the same topic, 98 of 98
-- what is claimed counts more than how it is said or whether it is affirmed or denied
-- The label barely matters: swapping cult for sect, choir or company keeps 0.88
-- Register shift moves similarity about as much as a paraphrase
-- A bare name against a description of the group scores below two unrelated sentences
-- matches the earlier name-form finding: names and descriptions are not comparable in this model
-- Translation slightly lower for cult sentences than for choir sentences (0.87 vs 0.93): a hint that secte is not neutral, too few pairs to claim it
-
-Masked-entity test
-- 15 entities named in at least 3 segments from at least 2 interviews; query is the bare name, pool is the 430 participant segments
-- With the name: strong retrieval (precision 0.71 to 1.0 for Manson family, Raëlism, Scientology, Jehovah's Witnesses, Satanists; chance about 0.02)
-- With the name masked: precision near 0 for most entities
-- retrieval rested mainly on the name
-- Masked segments still rank better than chance (mean rank about 50 to 170 of 430, chance about 215), except the Ku Klux Klan
-- some content remains beyond the name
-- Consequence: entity results in Results are read from the quotes, not from proximity to the name
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{Figures/calibration_profile.png}
-    \caption{Sensitivity profile of bge-m3: cosine similarity by contrast type, for the cult set and the choir control. Pairs in Appendix~\ref{app:calibration}.}
-    \label{fig:calibration_profile}
-\end{figure}
-
-Style and authorship
-- No custom patch for style or authorship
-- a patch of this kind may also introduce its own biases
-- This is also a study of language differences
-- differences in style between interviews, scholars and MIVILUDES are treated as meaningful
-- they may express similar details, but the analysis does not go that deep
-- What is still controlled
-- topic: the calibration pairs, and the check on the word cult itself
-- names: the masked-entity test, and entities described by their conduct
-- length: ranks and differences rather than raw distances
-- generic closeness: the dictionary baseline
+\section{Embeddings}

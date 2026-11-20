@@ -28,11 +28,11 @@
 
 - No corrections for style or authorship (no register pairs, no subtracting corpus averages, no leave-one-interview-out).
 - Reason, Celestin's: a custom patch would bring in its own biases, and since this is also a study of language differences, differences in style count as meaningful. They may express similar details, but the analysis does not go that deep.
-- To explain in two places: Introduction (Language as mediation tool, next to proxy presumption) and Methodology (What proximity measures).
+- To explain in two places: Introduction (Language as mediation tool, next to proxy presumption) and What proximity measures (moved to the Conceptual Background on 20 Nov).
 - Controls that stay, because they are part of the existing plan: topic (calibration pairs, the word cult check), names (masked test, conduct descriptions), length (ranks, not cosines), the dictionary baseline, the layered map, and prevalence counted per interview.
 
 Facts only, no old prose. Mark each bullet K (keep), C (cut) or ? (unsure), and add what is missing.
-Budget: about 6 pages, 1,900 words. The old chapter was 14,243 words, so most of it has to go.
+Budget: about 5 pages, 1,500 words (What proximity measures moved to the Conceptual Background on 20 Nov, with its 400 words). The old chapter was 14,243 words, so most of it has to go.
 
 ## Proposed order and budget (change freely)
 
@@ -44,7 +44,6 @@ Budget: about 6 pages, 1,900 words. The old chapter was 14,243 words, so most of
 | Scholarly corpus | 250 |
 | MIVILUDES | 100 |
 | Extraction and embedding | 300 |
-| What proximity measures (calibration figure) | 400 |
 | Analysis: layers, clusters, controls | 200 |
 
 ## What the old draft covered

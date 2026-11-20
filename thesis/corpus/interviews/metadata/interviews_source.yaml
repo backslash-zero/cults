@@ -506,7 +506,7 @@ interviews:
     location: "France"
     interviewee:
       age: 34
-      gender: "woman"
+      gender: "female"
       nationality: "Mexican / American"
       main_language: "Spanish and English"
       language_spoken: "English"
