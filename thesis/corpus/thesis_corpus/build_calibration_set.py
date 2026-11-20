@@ -371,7 +371,7 @@ def write_tex(rows: list[dict]) -> None:
         "",
         r"{\footnotesize",
         r"\begin{longtable}{@{}p{0.07\textwidth}p{0.17\textwidth}p{0.36\textwidth}p{0.36\textwidth}@{}}",
-        r"\caption{Calibration sentence pairs, by contrast type.}\label{tab:calibration_set}\\",
+        r"\caption{Calibration sentence pairs, by contrast type}\label{tab:calibration_set}\\",
         r"\toprule ID & Contrast & Sentence A & Sentence B \\ \midrule \endfirsthead",
         r"\toprule ID & Contrast & Sentence A & Sentence B \\ \midrule \endhead",
         r"\bottomrule \endfoot",

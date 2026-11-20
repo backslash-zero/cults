@@ -2,10 +2,13 @@
 \chapter{OpenAlex Queries}
 \label{app:openalex}
 
+\section{Queries}
+\label{sec:openalex_queries}
+
 {\scriptsize
 \renewcommand{\arraystretch}{1.3}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.15\textwidth}@{}}
-\caption{The five keyword queries sent to the OpenAlex \texttt{/works} endpoint \autocite{priemOpenAlexFullyopenIndex2022}, exactly as written.}\label{tab:openalex_queries} \\
+\caption{The five keyword queries sent to the OpenAlex \texttt{/works} endpoint \autocite{priemOpenAlexFullyopenIndex2022}, exactly as written}\label{tab:openalex_queries} \\
 \toprule
 Query & Searched in & Results requested & Hits returned \\
 \midrule
@@ -27,7 +30,7 @@ Query & Searched in & Results requested & Hits returned \\
 {\scriptsize
 \renewcommand{\arraystretch}{1.3}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}@{}}
-\caption{Parameters shared by every query.}\label{tab:openalex_parameters} \\
+\caption{Parameters shared by every query}\label{tab:openalex_parameters} \\
 \toprule
 Parameter & Value \\
 \midrule
@@ -40,6 +43,7 @@ Sort & \texttt{cited\_by\_count:desc} (most cited first) \\
 Results per query & one page: 200 for title searches, 50 for the title-and-abstract search \\
 Query syntax & OpenAlex search grammar: quotes mark an exact phrase, \texttt{NOT} excludes a term, unquoted terms are stemmed \\
 Pool & 668 hits, 644 unique records after deduplication, 216 after screening \\
+Documents kept & 68, published 2001 to 2024: the window ran to 2026, but no document from 2025 or 2026 was kept \\
 \end{longtable}
 }
 
@@ -48,3 +52,28 @@ Example request, for the first query:
 \begin{lstlisting}[basicstyle=\scriptsize\ttfamily,breaklines=true,frame=single,columns=fullflexible]
 https://api.openalex.org/works?filter=title.search:"cult",publication_year:2001-2026&sort=cited_by_count:desc&per-page=200
 \end{lstlisting}
+
+\section{Retrieval script}
+\label{sec:openalex_script}
+
+% Included live from the script, as in v1; the email address was replaced by a placeholder on 20 Nov
+\lstinputlisting[
+  language=Python,
+  basicstyle=\scriptsize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny,
+  breaklines=true,
+  frame=single,
+  captionpos=b,
+  tabsize=4,
+  extendedchars=true,
+  literate=
+    {—}{{-{}-}}1
+    {ê}{{\^e}}1
+    {î}{{\^i}}1
+    {Α}{{A}}1 {Β}{{B}}1 {Ε}{{E}}1 {Ζ}{{Z}}1 {Η}{{H}}1
+    {Ι}{{I}}1 {Κ}{{K}}1 {Μ}{{M}}1 {Ν}{{N}}1 {Ο}{{O}}1
+    {Ρ}{{P}}1 {Τ}{{T}}1 {Υ}{{Y}}1 {Χ}{{X}}1,
+  caption={The OpenAlex retrieval script, \texttt{thesis/corpus/scripts/fetch\_openalex\_corpus.py}.},
+  label={lst:fetch_openalex_corpus}
+]{../thesis/corpus/scripts/fetch_openalex_corpus.py}

@@ -138,8 +138,9 @@ LITERATURE_RAW_DIR = CORPUS_DIR / "literature" / "raw"
 APPROVED_BIB_PATH = LITERATURE_RAW_DIR / "OpenAlex_corpus.bib"
 
 API_BASE = "https://api.openalex.org/works"
-MAILTO = "celestin.meunier@gmail.com"  # legacy "polite pool" identifier — kept
-                                       # alongside api_key, doesn't hurt
+# legacy "polite pool" identifier, kept alongside api_key; set OPENALEX_MAILTO
+# to your own address before running
+MAILTO = os.environ.get("OPENALEX_MAILTO", "your.name@example.org")
 API_KEY = os.environ.get("OPENALEX_API_KEY")
 FROM_YEAR = 2001
 TO_YEAR = 2026
