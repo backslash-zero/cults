@@ -32,6 +32,10 @@ Work in this order: Methodology, Results, Conceptual Background, Introduction.
 - Use only Celestin's ideas and terms from the transcript. Fix obvious transcription slips and say which ones.
 - Never add arguments, facts or sources to the bullets. Gaps, contradictions, length problems and claims needing a source are reported in the chat as a separate list.
 
+## Tables, figures and diagrams
+
+When Celestin leaves a comment asking for a table, figure or diagram (for example `% Here insert table of ...`), Claude builds it directly, without asking first: facts only, from the notes and data; a short factual caption and a label; a one-line source comment. Keep it light: `\scriptsize`, some row spacing, ragged-right columns. Then compile and push. These are not prose, so the main rule doesn't block them, but captions never carry arguments.
+
 ## Backlog
 
 Text Celestin writes that belongs to a later chapter moves unchanged to that chapter's file, under a plain `Backlog` line. Never edit it. The inventory for that chapter lists it as existing material. Before touching a chapter file he has open, check that his edits are saved.
